@@ -1,0 +1,152 @@
+# Naive Bayes Using 'Klar'
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+```
+
+## Summary
+
+https://www.analyticsvidhya.com/blog/2017/09/naive-bayes-explained/
+
+## Pseudocode
+
+For a discussion of Bayes rule the first place to start is with naming the parts of the formula. Bayes rule can be broken into four named parts.
+
+$P(Y | X) = \frac { P(X | Y)P(Y) }{ P(X) }$
+
+1. $P(Y | X)$, The left-hand side is known as the **Posterior probability of Y** or sometimes the **Posterior distribution**. The posterior probability of a random event is the conditional probability that is assigned after the relevant evidence is taken into account.^[nb1]
+
+^[nb1]:Wikipedia
+
+Now consider right hand side.
+
+2. $P(X | Y)$ The probability of observing X given that Y holds true, sometimes called the **likelihood**.
+
+3. $P(Y)$ The **Class Prior** probability of observing Y.
+
+4. $P(X)$ The probability of observing X.
+
+Bayes rule can be simplified:
+
+**Posterior $\propto$ Likelihood x Prior**
+
+Therefore further simplified to and computed as:
+
+$P(X) = \sum_Y P(X | Y) P(Y) = P(x_1, x_2, ⋅⋅⋅, x_n|Y)P(Y)$
+
+NOTE: Personally, I find it helpful to consider Bayes Rule by stating:
+
+$P(Y | X) =  \frac {P(X ~\cap~ Y)}{P(X)}$
+
+
+Naïve Bayes classification  
+- Assumption that all input features are conditionally independent!
+
+$P(x_1, x_2, ⋅⋅⋅, x_n|Y) = P(x_1|Y) \cdot P(x_2|Y) ⋅⋅⋅ P(x_n|Y)$
+
+
+# Naive Bayes Mathematics
+
+$f(x) = arg max~~ p (C_k | x)$
+
+$~~~~~~~~= arg max~~ p (x | C_k) \times p (C_k)$
+
+$~~~~~~~~= arg max~~ \prod_{i=1}^d p (x_i | C_k) \times p (C_k)$
+
+$~~~~~~~~= arg max~~ \sum_{i=1}^d log p (x_i | C_k) + p (C_k)$
+
+## Hyper-parameters
+
+## Big O
+
+## Model Training & Tuning
+
+Libraries
+```{r, message=FALSE, warning=FALSE}
+Libraries = c("doMC", "caret", "rpart", "beepr")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+```
+
+Import data & data handling
+
+```{r}
+test_harness_paa <- read.csv("data/test_harness_paa.csv")
+test_harness_paa <- test_harness_paa[, -c(2,3)]
+Class <- as.factor(test_harness_paa$Class) # Convert ‘Class’ To Factor
+```
+
+Partition data - training / testing sets
+```{r}
+set.seed(1000)
+index <- createDataPartition(test_harness_paa$Class, p = 0.8, list = FALSE)
+
+training_set <- test_harness_paa[ index,]
+test_set     <- test_harness_paa[-index,]
+
+Class_test <- as.factor(test_set$Class)
+```
+
+### Run Training Set 
+ 
+```{r cache=TRUE}
+set.seed(1000)
+registerDoMC(cores = 3) # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+# Create model, 10X fold CV repeated 5X
+tcontrol <- trainControl(method = "repeatedcv",
+                         number = 10,
+                         repeats = 5,
+                         allowParallel = TRUE)
+
+# preProcValues <- preProcess(training_set, method = c("center",
+#                                                      "scale",
+#                                                      "BoxCox"))
+model_list <- train(Class ~ .,
+                    data = training_set,
+                    methodList = "nb",
+                    trControl = tcontrol)
+
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display time
+registerDoSEQ() # Stop multi-processor mode
+```
+
+### Display Model Results
+
+Model summary
+
+```{r}
+model_list
+```
+
+## Predictions - Run Test Set
+ 
+```{r}
+Predicted_test_vals <- predict(model_list, test_set[,-1])
+
+length(Predicted_test_vals)
+```
+
+Quick summary
+
+```{r}
+summary(Predicted_test_vals)
+```
+
+Confusion matrix
+
+```{r}
+confusionMatrix(Predicted_test_vals, Class_test)
+```
+
+
+

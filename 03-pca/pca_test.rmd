@@ -304,6 +304,22 @@ length(total_pca_1_2_outliers)
 total_pca_1_2_outliers
 ```
 
+### Subset Outliers from PC1 and PC2 data
+myvars <- c("v1", "v2", "v3")
+newdata <- mydata[myvars]
+```{r}
+outliers_only <- c_m_20_PCA$x[total_pca_1_2_outliers]
+head(outliers_only)
+
+plot(x = outliers_only$x[, 1], 
+     y = outliers_only$x[, 2],
+     main = "Boundary (Outlier) Determination of PC1 Vs PC2",
+     xlab = "PC2",
+     ylab = "PC1") 
+```
+
+
+
 
 ```{r}
 plot(x, x, col=ifelse(x==3, "red", "black"),

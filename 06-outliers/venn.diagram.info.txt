@@ -1,7 +1,0 @@
-https://statisticsglobe.com/venn-diagram-in-r
-
-https://stats.idre.ucla.edu/r/faq/how-can-i-generate-a-venn-diagram-in-r/
-
-https://rstudio-pubs-static.s3.amazonaws.com/13301_6641d73cfac741a59c0a851feb99e98b.html
-
-

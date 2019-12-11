@@ -1,0 +1,119 @@
+# Support Vector Machine Radial Basis Function, Using `kernlab`
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+```
+
+## Summary
+
+NOTE: SVM {caret} / https://rpubs.com/PranovMishra/476455
+
+## Pseudocode
+
+
+
+## Hyper-parameters
+
+## Big O
+
+## Model Training & Tuning
+
+Libraries
+```{r, message=FALSE, warning=FALSE}
+Libraries = c("doMC", "caret", "kernlab")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+```
+
+Import data & data handling
+
+```{r}
+test_harness_paa <- read.csv("data/test_harness_paa.csv")
+test_harness_paa <- test_harness_paa[, -c(2,3)]
+Class <- as.factor(test_harness_paa$Class) # Convert ‘Class’ To Factor
+```
+
+Partition data - training / testing sets
+
+```{r}
+set.seed(1000)
+index <- createDataPartition(test_harness_paa$Class, p = 0.8, list = FALSE)
+
+training_set <- test_harness_paa[ index,]
+test_set     <- test_harness_paa[-index,]
+
+Class_test <- as.factor(test_set$Class)
+```
+
+### Run Training Set 
+ 
+```{r cache=TRUE}
+set.seed(1000)
+registerDoMC(cores = 3) # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+# Create grid control: sigma, C
+# tune.Grid = data.frame(expand.grid(sigma = seq(1, 10, 1)),
+#                                    C = seq(1, 10, 1))
+                                          
+# Create model, 10X fold CV repeated 5X
+tcontrol <- trainControl(method = "repeatedcv",
+                         number = 5,
+                         repeats = 3)
+
+model_list <- train(Class ~ .,
+                    data = training_set,
+                    methodList = "svmRadial",
+                    #tuneGrid = tune.Grid,
+                    trControl = tcontrol)
+
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display time
+registerDoSEQ() # Stop multi-processor mode
+```
+
+### Display Model Results
+
+Model summary
+
+```{r}
+model_list
+```
+
+## Predictions - Run Test Set
+
+Predict test set
+ 
+```{r}
+Predicted_test_vals <- predict(model_list, test_set[,-1])
+
+length(Predicted_test_vals)
+```
+
+Quick summary
+
+```{r}
+summary(Predicted_test_vals)
+```
+
+Inspect Model Object
+
+```{r, cache=TRUE}
+names(model_list)
+```
+
+Confusion matrix
+
+```{r}
+confusionMatrix(Predicted_test_vals, Class_test)
+```
+
+
+

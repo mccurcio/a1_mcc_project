@@ -1,0 +1,171 @@
+# C5.0 Model
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+```
+
+## Summary
+
+C5.0 works by splitting based on the maximum information  gain.
+
+- Information Gain:  
+    - Let $S$ be the sample: 
+    - $C_{i}$ is Class $I; i = {1, 2,..., m_{I}(s1, s2, .., sm)} = -\sum \pi * log_{2}(\pi))
+    - $S_{i}$ is the number of samples in class $i, P_{i} = \frac {S_{i}} {S}, log_{2} is the binary logarithm
+    - Let Attribute A have $v$ distinct values.
+    - Entropy = $E(A) = \sum_{j=1} {\frac {(S1j + S2j + ... + Smj)} {S}} * I (s1j, ..., smj)$
+    - Where S_{ij} is samples in Class $i$ and subset $j$ of Attribute $A$.
+    - $I * (S1j, S2j, ..., Smj)  =  -\sum (P_{ij} log2(P_{ij}))$
+    - Gain(A) = $I * (s1, s2, ..., sm) - E(A)$ 
+
+C5.0 uses Shannon's information gain
+
+CART uses GINI index
+
+## Pseudocode
+
+Inputs:
+
+1. R: a set of non-target attributes,  
+1. C: the target attribute,  
+1. S: training data.
+
+Output:
+
+1. Returns a decision tree
+
+Start:
+
+
+1. Initialize to empty tree;
+2. If $S$ is empty then {
+        Return a single node failure value
+   }
+3. If $S$ is made only for the values of the same target then {
+       Return a single node of this value
+   }
+
+4. If $R$ is empty then {
+       Return a single node with value as the most common value of the target attribute values found in $S$
+   }
+5. Assign D = the attribute that has the largest Gain ($D, S$) from all the attributes of $R$.
+6. Assign ${d_{j} = 1, 2, ..., m}$ = Attribute values of $D$
+
+7. ${S_j: j = 1, 2, ..., m}$ = The subsets of $S$ respectively constituted of djrecords attribute value $D$.
+
+8. Return a tree whose root is D and the arcs are labeled by {d1, d2, ..., dm} and going to sub-trees ID3 (R-{D}, C, S1), ID3 (R-{D} C, S2), .., ID3 (R-{D}, C, Sm)
+
+End
+
+---
+
+https://techdifferences.com/difference-between-algorithm-and-pseudocode.html
+
+Difference Between Algorithm and Pseudocode
+
+Comparison Chart
+
+ Pseudocode
+
+|Basis for comparison|Algorithm|Pseudocode|
+|:-------------------|:--------|:---------|
+|Comprehensibility   |Hard to understand |Easy to interpret |
+|Uses                |Complicated programming language |Combination of programming language and natural language |
+| Debugging            | Moderate                         | Simpler                                                  |
+| Ease of construction | Complex                          | Easier                                                   |
+
+
+## Hyper-parameters
+
+## Big O
+
+## Model Training & Tuning
+
+Libraries
+```{r, message=FALSE, warning=FALSE}
+Libraries = c("doMC", "caret", "C50", "plyr")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+```
+
+Import data & data handling
+
+```{r}
+test_harness_paa <- read.csv("data/test_harness_paa.csv")
+test_harness_paa <- test_harness_paa[, -c(2,3)]
+Class <- as.factor(test_harness_paa$Class) # Convert ‘Class’ To Factor
+```
+
+Partition data - training / testing sets
+```{r}
+set.seed(1000)
+index <- createDataPartition(test_harness_paa$Class, p = 0.8, list = FALSE)
+
+training_set <- test_harness_paa[ index,]
+test_set     <- test_harness_paa[-index,]
+
+Class_test <- as.factor(test_set$Class)
+```
+
+## Run Training Set 
+ C5.0	Classification	C50, plyr	trials, model, winnow
+```{r cache=TRUE}
+set.seed(1000)
+registerDoMC(cores = 3) # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+tcontrol <- trainControl(method = "repeatedcv",
+                         number = 5, # 10X fold CV repeated 5X
+                         repeats = 3,
+                         allowParallel = TRUE)
+                  
+model_list <- train(Class ~ .,
+                    data = training_set,
+                    methodList = "C5.0",
+                    trControl = tcontrol)
+
+end_time <- Sys.time() # End timer
+end_time - start_time # Display time
+registerDoSEQ() # Stop multi-processor mode
+```
+
+## Predictions - Run Test Set
+
+Model Summary
+
+```{r}
+model_list
+```
+
+Predict Test Set
+
+```{r}
+Predicted_test_vals <- predict(model_list, test_set[, -1])
+
+length(Predicted_test_vals)
+```
+
+Quick Summary
+
+```{r}
+summary(Predicted_test_vals)
+```
+
+Confusion Matrix
+
+```{r}
+confusionMatrix(Predicted_test_vals, Class_test)
+```
+
+
+## Summary
+
+
+

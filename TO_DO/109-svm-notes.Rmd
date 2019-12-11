@@ -1,0 +1,92 @@
+# SVMs NOTES: Four plots 
+
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+```
+
+The general form of the mathematics for a linear support vector machine are quite straightforward. 
+
+Support Vector Machines are Supervised tools.
+
+SEE: https://rpubs.com/mzc/mlwr_svm_concrete
+
+Therefore, given a set of labeled pairs of data: 
+
+$(x_i, y_i),~~ i = 1, ..., l~~$   where  $~~x_i \in R^n~~$ and $~~y \in \{1, -1\}^l$    
+
+Such that $~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y_i = 1 \\ ~~~< 0; ~y_i = -1 \end{array} \right\}$
+
+where $~~y~~$ is a set of two values which indicate a label, e.g. true or false.
+
+min $\frac{1} {2} W^{T} W ~~+~~ C ~ \sum_{i=1}^l \xi_i$
+
+subject to $~~y_i (w^T \phi (x_i) ~+~ b) \geq (1 - \xi_i)$  where $~\xi_i \geq 0$, 
+
+$C$ is the penalty parameter, *cost*, of the error term, such that $C > 0$.
+
+Furthermore, $K(x_i, x_j) ~~\equiv~~ \phi (x_i)^T \phi (x_j)$ is called the kernel function.
+
+The 4 most common SVM formulae are:
+
+1. Linear: $K(x_i, ~y_j) ~~=~~ <x, ~y>$   
+    - The linear kernel does not transform the data at all.  
+
+2. Polynomial: $K(x_i, x_j) ~~=~~ ( \gamma ~x_i^T ~x_j ~~+~~ r)^{d}, ~\gamma > 0$  
+    - The polynomial kernel has a simple non-linear transform of the data.  
+
+3. Radial Basis Function (RBF):  $K(x_i, x_j) ~~=~~ exp ( - \gamma \parallel x_i^T - x_j \parallel ^2 ), ~\gamma >0$  
+    - The Guassian RBF kernel which performs well on many data and is a good default  
+
+4. Sigmoid: $K(x_i, x_j) ~~=~~ \tanh ( \gamma~ x_i^T ~ x_j ~~+~~ r ), ~\gamma >0$  
+    - The sigmoid kernel produces a SVM analagous to the activation function similar to a [perceptron](https://cs.stanford.edu/people/eroberts/courses/soco/projects/neural-networks/Neuron/index.html) with a sigmoid activation function.[^1]
+    
+[^1]:https://rpubs.com/mzc/mlwr_svm_concrete
+        
+- Such that $~\gamma, ~r~$ and $~d~$ are kernel parameters.  
+
+There are no reliable rules for which kernel to use with any given data set.  
+
+Plots for 4 most common SVM formulae:  
+```{r echo=FALSE}
+xi = seq(-5, 5, 0.1) 
+yi = seq(-5, 5, 0.1) 
+par(mfrow=c(1,4)) 
+
+plot(x=xi, y=0.2*yi, 
+     xlim = c(-5,5), 
+     ylim = c(-1,1), 
+     type="l", 
+     col="blue", 
+     main = "Linear Case", 
+     ylab="y", xlab="x")
+
+plot(x=xi, y=xi^2,
+     xlim = c(-5,5),
+     ylim = c(-1,1),
+     type = "l",
+     col="blue",
+     main = "Polynomial Case, d=2",
+     ylab="y", xlab="x")
+
+plot(x=xi, y=exp(-1*xi^2),
+     xlim = c(-5,5),
+     ylim = c(-1,1),
+     type = "l",
+     col="blue",
+     main = "RBF Case",
+     ylab="y", xlab="x")
+
+plot(x=xi, y=tanh(xi),
+     xlim = c(-5,5),
+     ylim = c(-1,1),
+     type = "l",
+     col="blue",
+     main = "Tanh Case",
+     ylab="y", xlab="x")
+```
+
