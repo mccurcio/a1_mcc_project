@@ -1,0 +1,240 @@
+title: "Neural Network Discussion"  
+
+author: "MCC"
+
+```{r include=FALSE}
+library(knitr)
+```
+
+# Neural Network Discussion
+
+## Introduction
+
+If we are to discuss Neural Networks, we could start by considering our current gold standard, a number of biologial computing systems and the number of neurons each has. By investigating the number of neurons in organisms from along earth's phylogenetic or evolutionary tree we might get a better idea of the type of computing power computer scientists might need to surpass anyone of these creatures. See table 1.
+
+#### Table 1: Organisms Vs Number of Neurons In Each,  [Wikipedia](https://en.wikipedia.org/wiki/List_of_animals_by_number_of_neurons) {-}
+
+Organism | Common Name | Approximate Number of Neurons
+---------|-------------|------------------
+C. elegans | roundworm | 302
+Chrysaora fuscescens | jellyfish | 5,600
+Apis linnaeus | honey bee | 960,000
+Blattodea | family of cockroaches | 1,000,000
+Mus musculus | mouse| 71,000,000
+Felis silvestris |cat | 760,000,000
+Canis lupus familiaris | dog | 2,300,000,000
+Homo sapien sapien | human | 100,000,000,000
+
+This table may portray a powerful picture of the computing power of the human brain over his/her evolutionary ancestors, but there is one other number worth noting. The table above does not describe the inter-connectivity between neurons. The inter-connectivity of neurons varies greatly from lower to higher organisms. For example, some very simple animals have "where some neurons can have four to eight separate branches"[^11], per nerve cell. where as human neurons are inter-connected to approximately 10^4 synaptic junctions per neuron, thus resulting in a total of approximately 600 trillion synapses per human brain.[^2]
+
+[^11]:https://www.wormatlas.org/hermaphrodite/nervous/Neuroframeset.html, "where some neurons can have four to eight separate branches"
+
+[^2]:Shepherd, G. M. (2004), The synaptic organization of the brain (5th ed.), Oxford University Press, New York.
+
+Although neurons have differing morphologies, the most common depiction with respect to computer science discussions is the multipolar neuron, commonly found in the muscle with a large dendritic tree and a long fibrous axon. See Figure 1.1.
+
+```{r echo=FALSE, fig.align="center", fig.cap='Basic Neuron Types and S.E.M. image [^3]', fig.dim = c(4, 7)}
+knitr::include_graphics("pix/basicneurontypes.jpg")
+```
+
+[^3]:https://www.howstuffworks.com/
+
+```{r fig.align = "center", fig.cap="Two Neuron System, Image From The Public Domain", echo=FALSE}
+knitr::include_graphics("pix/two.neuron.system.3.png")
+```
+
+Given an order of operation as input via Dendrite(s) => Fibrous Axon => Output via Synaptic Junction or Synaptic Gap.
+
+However the goal is not to simply have a series of neurons 'blinking' on and off, firing or not. Nevertheless the goal is to have your newly trained neural network 'point' to the correct classification out of a conceivable number given all the sensory inputs at our command. The object is for neural networks to correctly identify an action or item from a list or outputs or classifications and for the network to do so by providing a probability for its choices as justification.
+
+What is Machine Learning?
+
+>"Machine learning is essentially a form of applied statistics with increased emphasis on the use of computers to statistically estimate complicated functions and a decreased emphasis on proving confidence intervals around these functions"
+>
+>Deep Learning, Ian Goodfellow, et al[^10]
+
+[^10]:Ian Goodfellow, Yoshua Bengio, Aaron Courville, 'Deep Learning', MIT Press, 2016, http://www.deeplearningbook.org
+
+```{r fig.cap="Goal of Neural Networks is to generate the correct repsonse(s). [^4]", fig.align="center", echo=FALSE}
+knitr::include_graphics("pix/nn.black.box.png")
+```
+[^4]:https://arstechnica.com/cars/2019/05/feds-autopilot-was-active-during-deadly-march-tesla-crash/
+
+## The One Neuron System
+
+If we investigate a one neuron system, *our* neuron could be diagrammed in four sections.
+
+```{r fig.cap="One Neuron System [^5]", fig.dim = c(4, 7), fig.align="center", echo=FALSE}
+knitr::include_graphics("pix/one.neuron.system.png")
+```
+
+[^5]:Tom Mitchell, Machine Learning, McGraw-Hill, 1997, ISBN: 0070428077
+
+### Input(s) 
+
+In we investigate one neuron for the moment, the dendritic tree which may have multiple channels will receive real number input-values, $x_1$ to $x_n$. These inputs are then multiplied by a set of unique corresponding weights, $w_1$ to $w_n$. Giving in the simplest case;
+
+$$\large {Y} = f^{(1)} \left( \overrightarrow{x}, \overrightarrow{w} \right)$$
+
+### Summation Function
+
+The first function which occurs hidden within the neuron is a Summation (sometimes called the *Summer box*) of the inputs and their weights. One thing interesting item to note is that each neuron in dealing with the vectors of inputs and weights *is carrying* out the *dot product* of these vectors, such that; 
+
+$$\large Y ~=~~ X^T \cdot W ~~=~~ \sum_{i=0}^n x_i w_i$$
+
+### Activation Function(s)
+
+Once the Summation Function yields a value it is sent to the *Activation Function* or *Threshold Function*. 
+
+Initially the neural networks used the Heaviside-Threshold Function, as shown in figure 4, the 'One Neuron System.' The benefits of step functins were their simplicity and high signal to noise ratio. While the detriments were it is a discontinous function, therefore not able to be differentiated.
+
+Let us take into account the product, $x_0 \cdot w_0$. This product may or may not have a physical input and weight. However if we assign $x_0 = T$ and $w_0 = -1$ this simply becomes a bias. This bias allows us the ability to shift our Activation Function and its inflection point in the positive or negative direction along the x-axis.
+
+$$\large {Z} = f^{(2)} \left( \sum_{i=1}^n x_i w_i - T\right)$$
+
+The Activation Function can be developed in several different ways mathematically. As I have shown it in Figure #3 it is a step function. However this step function has a problem, namely it is a discontinuous function and therefore not differentiable. This fact will be become important soon.
+
+There are several functions that can be substituted in place of the step function. Historically the first of which were the hyperbolic tangent function and a sigmoidal function;
+
+$$\large Z = tanh(x) \equiv \frac{1 - e^{-{\alpha}}}{1 + e^{-{\alpha}}} ~~~~or~~~~\large Z = sigmoid(x) = \frac{1}{1 + e^{-{\alpha}}}$$
+
+$$where ~~~ \alpha = \sum_{i=1}^n x_i w_i - T$$
+```{r echo=FALSE, fig.align = "center"}
+x = seq(-4, 4, 0.02)
+par(mfrow=c(1,2))
+y_tanh = tanh(x)
+y_sigmoid = 1/(1+exp(-x))
+
+plot(x, y_tanh, 
+     type = "l",
+     main = "Hyperbolic Tangent Profile",
+     ylab = "tanh(x)")
+abline(h = 0, v = 0, col = "#F24F4F")
+plot(x, y_sigmoid,
+     type = "l",
+     ylim = c(-1,1),
+     main = "Logistic / Sigmoidal Profile",
+     ylab = "sigmoid(x)")
+abline(h = 0, v = 0, col = "#F24F4F")
+```
+
+There are several other functions that are being brought in use for differing reasons. The most common of which are Softmax and reLU functions.
+
+Rectified Linear Activation Unit, (ReLU): 
+
+$$\large ReLU ~= \begin{cases} x \geqq ~~~~y = x\\ x < ~~~~y = 0 \end{cases}$$
+
+### Binary Output Or Probability
+
+In the case of physical neurons the output is off or on, zero or one.  However, in the case of our electronic model it is advantageous to have a probability sent out instead. 
+
+The Softmax function may appear like the Sigmoid function from above but it differs in major ways.[^6]
+
+[^6]:Josh Patterson, Adam Gibson, Deep Learning; A Practitioner’s Approach, 2017, O'Rreilly
+
+* The softmax activation function returns the probability distribution over mutually exclusive output classes.
+* The calculated probabilities will be in the range of 0 to 1.
+* The sum of all the probabilities is equals to 1.
+
+Typically the Softmax Function is used in binary or multiple classification logistic regression model and in building the final output layer of neural networks.
+
+$$\large Softmax(x) = \frac {e^{\alpha_i}}{\sum_{i=1}^n e^{\alpha_i}} ~~~~:~~~~ where ~~~ \alpha = X^T \cdot W + b$$
+
+---
+
+NOTE: The logistic function is very common throughout biology and for biologists working in the field of ELISA assay development or dose-response curves this is also known as the 4-Parameter Regression or it may even be associated with the term Softmax. 
+
+4 Parameter Regression / Softmax: 
+$$F(x) = D+(A-D)/(1+(x/C)^B)$$
+where; $A$ = minimum asymptote, $B$ = Hill's slope, $C$ = inflection point, and $D$ = maximum asymptote.
+
+---
+
+```{r echo=FALSE, fig.align="center"}
+x = seq(-4, 4, 0.02)
+y_relu = c(rep_len(0, 200), seq(0, 4, 0.02))
+  
+par(mfrow=c(1,2))
+
+plot(x, y_relu,
+     type = "l",
+     ylim = c(-1,3),
+     main = "ReLU Profile",
+     ylab = "ReLU(x)")
+abline(h = 0, v = 0, col = "#F24F4F")
+plot(x, y_sigmoid,
+     type = "l",
+     ylim = c(-1,1),
+     main = "Softmax Profile",
+     ylab = "Softmax(x)")
+abline(h = 0, v = 0, col = "#F24F4F")
+```
+
+The benefit of these two activation functions is that they are now differentiable. This fact becomes very important for *Back Propagation*, which is discussed later.
+
+## The Two Neuron System
+
+Building up in complexity slowly, let us could consider our first Neural Network by using only two neurons. In the two neuron system let us first generalize a bit more by adding that $X$ is an array of all the inputs as is $W_1$ and $W_2$ is also an array of weights for each neuron. See figure #4. 
+
+```{r fig.cap="Fig. 4: A Two Neuron System [^4]", fig.align = "center", echo=FALSE}
+knitr::include_graphics("pix/two.neuron.system.png")
+```
+
+### Forward Propagation of the Neural Network
+
+In our two Neuron Network, we can now write out the mathematics for each step as it progresses in a "Forward" (left to right) direction.
+
+$$P_1 = \left( X^T \cdot W_1 - T \right)$$
+Which feeds forward into: 
+$$Y = \left( \frac{1}{1 + e^{- \alpha}} \right) ~:~ where ~~ \alpha = P_1$$
+Which feeds forward into: 
+$$P_2 = \left( Y^T \cdot W_2 - T \right)$$
+Which leads to: 
+$$Z = \left( \frac{1}{1 + e^{- \alpha}} \right) ~~~:~~~ where ~~ \alpha = P_2$$
+
+Now it is matter of feeding one output to the input of the next step, etc., etc.
+
+$$ Z ~=~ f^4 \left( f^3 \left( f^2 \left( f^1 \left( \overrightarrow{x}, \overrightarrow{w} \right) \right) \right) \right)$$
+
+If we consider. If we desire to maximize or Model this performance With the function we might come up with something like 
+
+Performance function equals negative the max magnitude of the vector of D minus the vector of Z magnitude squared. This is no more that a slightly modified mean squared error (MSE).
+
+$$\large \mathbf{P} = -~c \cdot \| d - z \|^2$$
+The negative sign is simply a matter of convention. If one is interested in maximizing your performance then the negative will do nicely because it inverts the paraboloid making it an ascent otherwise use the no sign and one can carry out a minimization instead or gradient descent. 
+
+The negative simply turns this parabolic function around so that now you're looking for a maximum and you can simply solve a maximum problem Ax Men. But your performance will be increasing. If we look at this in terms of an XY graph or a X being W1 and a why being W2 we would simply find that we have a contour map that is formed by the performance function. 
+
+
+If we look at A specific situation where we are climbing To a maximum In a gradient descent one would simply Go move in every direction. And calculate the differences. Adding those differences together. To get the Final direction to climb for our gradient descent. If we were to do this, this would be a huge problem. This is a very expensive problem computationally. Actually, it is intractable problem because We would be trying to maximize. And number of neurons using this Exponentially Expanding Calculation of gradient descent Well, there are several ways to Look at this mathematically. And one way might be to 
+
+Let's consider the simplest neural network of two neurons. We have a series of X has a vector of exes. Input into a Or transformed by x w a vector of W's 
+
+If we consider this two neuron system we can see that this chain rule makes sense in a probabilistic manner as well.
+
+$$p(X) = \prod_{i=1}^n p( x_i | x_1, ..., x_n)$$
+
+
+!
+Partial derivatives of Performance function
+$$\frac{\delta Perf}{\delta X} = \frac{\delta Perf}{\delta z} \cdot \frac{\delta z}{\delta P_2} \cdot \frac{\delta P_2}{\delta w_2} ~~~: ~~~ \cdot \frac{\delta w_2}{\delta Y} ~~~: ~~~ \cdot \frac{\delta Y}{\delta P_1} \cdot \frac{\delta  P_1}{\delta w_1} \cdot \frac{\delta w_1}{\delta X}$$
+
+$$\frac{\delta Perf}{\delta z}  = \frac{ \left\{ -\frac{1}{2} \Large \| d - z \|^2 \right\}} {\delta z} = -(d - z)$$
+
+$$~~~: ~~~ \cdot \frac{\delta~  \{ [1+e^{-w_2}]^{-1} \} }{\delta P_2} \cdot \frac{\delta P_2}{\delta w_2} \cdot \frac{\delta w_2}{\delta Y} \cdot \frac{\delta Y}{\delta P_1} \cdot \frac{\delta  P_1}{\delta w_1} \cdot \frac{\delta w_1}{\delta X}$$
+
+Using the Performance function, P:
+$$\mathbf{P} ~= - \frac{1}{2} \Large \| \overrightarrow{d} - \overrightarrow{z} \|^2$$
+
+
+
+Leading to P1 which is then an input into this activation function. Providing an output Of Y which then goes into our second. Summation Y times the vector of W-2s Producing P2 which is then fed into our second neuron or second activation energy activation function. Providing or producing the final desired output Z Vector Z 
+
+So if we Look at this two neuron system. Well one alternate way to consider this is to look at the changes that are made along the way along each step of the way. So if we're interested in finding out what the change in Z is given the change of p 2 and the change of p 2 given W2 and the change of WW2 given y we can then set up a Set of partial derivatives. That explain or describe the system. Such that. 
+
+The partial of P2 Divided by the partial W 2 times the partial of Z divided by the partial of P2 times the partial P divided by the partial of Z. In this formula 
+
+Partial derivatives of Performance function
+$$\frac{\delta P}{\delta X} = \frac{1}{1} \cdot \frac{1}{1} \cdot \frac{1}{1} \cdot \frac{1}{1}$$
+
+We can break it apart so that we can calculate the partial of P divided by the partial Z looking at a performance function. We find that the partial of P divided by partial of Z is negative 1/2. Times 2 times Z DZ D minus Z Show proof as follows. 

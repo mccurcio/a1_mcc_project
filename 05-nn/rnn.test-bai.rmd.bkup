@@ -1,0 +1,113 @@
+# RNN using `Keras` & `Tensorflow`
+
+## Summary
+
+## Pseudocode
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+## Libraries & Initialize
+Libraries = c("doMC", "keras", "tensorflow")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
+```
+
+
+## Import data & data handling
+```{r}
+data <- read.csv("c_m_transformed.csv", stringsAsFactors = FALSE)
+data <- data[, -c(2,3)]
+
+# Convert dataframe to matrix for Keras/TF
+data <- as.matrix(data)
+dimnames(data) <- NULL  # Remove labels from matrices.
+
+# Normalize c_m_transformed
+data[, 2:21] <- normalize(data[,2:21])
+data[, 1] <- as.numeric(data[, 1])
+```
+
+## Data partitioning: 80% training / 20% testing  
+```{r include=FALSE}
+set.seed(1000)
+index <- sample(2, nrow(data), replace = T, prob = c(0.8, 0.2))
+
+training_set <- data[index == 1, 2:21]
+testing_set  <- data[index == 2, 2:21]
+
+training_target <- data[index == 1, 1]
+testing_target  <- data[index == 2, 1]
+
+train_labels <- to_categorical(training_target)
+test_labels  <- to_categorical(testing_target)
+```
+
+### Create Sequential Model
+
+```{r message=FALSE, warning=FALSE, cache=TRUE}
+rnn_model <- keras_model_sequential()
+rnn_model %>% 
+    layer_dense(units = 10, activation = "relu", input_shape = c(20)) %>%
+    layer_dense(units = 2, activation = "softmax")
+summary(rnn_model)
+```
+
+
+```{r, cache=TRUE}
+# Compile rnn_model
+rnn_model %>% compile(loss = "binary_crossentropy",
+                      optimizer = "adam",
+                      metrics = "accuracy")
+
+registerDoMC(cores = 3) # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+# Fit rnn_model
+history <- rnn_model %>% fit(training_set,
+                             train_labels,
+                             epoch = 200,
+                             batch_size = 32,
+                             validation_split = 0.2)
+
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display time
+registerDoSEQ() # Stop multi-processor mode
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+plot(history)
+```
+
+## Model Evaluation
+
+```{r}
+rnn_model %>% evaluate(testing_set, test_labels)
+```
+
+## Predictions & confusion matrix with `testing_set`
+
+- Note: Testing_set has 447 observations, which is ~20% of total.
+```{r}
+probabilities <- rnn_model %>% predict_proba(testing_set)
+
+predicted_set <- rnn_model %>% predict_classes(testing_set)
+
+table(Predicted = predicted_set, Actual = testing_target)
+```
+
+### Check for Mis-matches
+```{r}
+results <- cbind(probabilities, predicted_set, testing_target)
+head(results)
+```
+
+```{r}
+mis_matches <- which(results[,3] != results[,4])
+length(mis_matches)
+mis_matches
+```
+

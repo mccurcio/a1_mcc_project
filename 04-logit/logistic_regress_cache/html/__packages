@@ -1,0 +1,17 @@
+base
+foreach
+iterators
+doMC
+lattice
+ggplot2
+caret
+dplyr
+beepr
+knitr
+readr
+tidyverse
+tibble
+tidyr
+purrr
+stringr
+forcats

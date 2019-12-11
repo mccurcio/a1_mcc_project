@@ -1,0 +1,23 @@
+---
+title: 'Appendix: Machine Setting & Session Info'
+author: "MCC"
+date: "8/13/2019"
+output: html_document
+---
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+```
+
+```{r}
+machine 
+```
+
+```{r}
+sessionInfo()
+```
+

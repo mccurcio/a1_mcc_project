@@ -1,0 +1,30 @@
+See: https://rpubs.com/corey_sparks/330715,  
+https://rpubs.com/Junran_Cao/logit_explanation,  
+https://rpubs.com/OmaymaS/182726  
+
+https://rpubs.com/Junran_Cao/logit_explanation  
+
+Follow:   
+
+---
+https://www.youtube.com/watch?v=TCkLSYxx21c  
+https://www.youtube.com/watch?v=NmntYoB1uJg
+MIT RES.18-009 Learn Differential Equations: Up Close with Gilbert Strang and Cleve Moler, Fall 2015
+---
+
+https://www.theanalysisfactor.com/r-glm-model-fit/
+
+- Models with Dichotomous Indicator Variables
+- Binary Logistic Regression
+
+
+Logistic Regression is used quite often in biological system not necessarily a line fitting exercise where a series of x-values are input and a corresponding series of y-values is output. More simply, the linear regression that is so commonly taught in first year statistics is not the best description for Logistic regression.  Although Logistic regression is an off shoot from linear regression it grew out of the need or desire to gain a yes or no answer from a series of inputs.  Obviously the yes or no result can be represented as a 0 or 1 mathematically therefore practitioners were interested in having a result between these two values. 
+It is common to have categorical values play an important role in the determination of your data.
+
+In biochemical research the logistic equation is ubiquitous.  Logistic regression describes exponential growth or decay of biological samples where there might be competition or overgrowth due to lack of resources. Logistic regression models are even used when describing drug-dose response curves in humans and otther biological systems. 
+
+The simplest form of a sigmoidal curve is denoted by:
+    
+    $$f(x) ~=~ \frac{M}{1 + Ae^{-kt}}$$
+    
+    
