@@ -1,0 +1,11 @@
+The files in this folder are derived from THE two proteins sets *.fasta files in folder "/a1_mcc_project/00-data/aac_dpc_values/ORIGINAL_DATA".  
+
+- C = denotes control protein set; human proteins not related to myoglobin or hemoglobin.
+- M = denotes protein set which are myoglobin related but different species.
+- C+M = is a concatenation of the control and myoglobin proteins.
+- aac = indicates single amino acid percent composition calculations.
+- dpc = indicates di-peptide percent conposition calculations.
+
+- c_m_RAW_AAC.csv = this file contains 'c'ontrol and 'm'yoglobin derived proteins with only the single amino acid calculations carried out. The RAW indicates that this data has not be transformed or changed.
+
+- c_m_TRANSFORMED = this file contains both 'c'ontrol and 'm'yoglobin protein sets, but the columns {C: cysteine, F:phenylalanine, I:isoluecine} have been transformed with a squareroot function, inorder to reduce skew.

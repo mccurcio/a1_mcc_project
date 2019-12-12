@@ -1,4 +1,4 @@
-gitbook templates
+gitbook templates and info.
 
 ---
 

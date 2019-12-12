@@ -1,0 +1,78 @@
+## C5.0 Model Using Packages: `caret`, `C50`, `plyr`
+
+library(readr)
+
+Libraries
+```{r message=FALSE, warning=FALSE}
+Libraries = c("doMC", "readr", "caret", "C50", "plyr", "knitr")
+
+for(p in Libraries){ # Load Library
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+Import data & data handling
+```{r}
+c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv", 
+                            col_types = cols(Class = col_factor(levels = c("0", "1")), 
+                                             PID = col_skip(), 
+                                             TotalAA = col_skip()))
+```
+Partition data: training and testing sets
+```{r}
+set.seed(1000)
+index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
+
+training_set <- c_m_TRANSFORMED[ index,]
+test_set     <- c_m_TRANSFORMED[-index,]
+#View(training_set)
+```
+
+C50 - Model Building
+```{r, cache = TRUE}
+set.seed(1000)
+registerDoMC(cores = 3) # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+# Create models
+tcontrol <- trainControl(method = "repeatedcv",
+                         number = 10, # 10X fold CV repeated 5X
+                         repeats = 5,
+                         allowParallel = TRUE)
+                         
+mtry_grid <-  expand.grid(mtry = 2)
+
+model_list <- train(Class ~ .,
+                    data = training_set,
+                    methodList = "C5.0",
+                    trControl = tcontrol,
+                    tuneGrid = mtry_grid)
+
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display elapsed time
+registerDoSEQ()  # Stop multi-processor mode
+```
+
+C5.0 - Model Summary
+```{r}
+model_list
+```
+
+C5.0 - Predict new samples (Class_test)
+```{r, cache = TRUE}
+Predicted_test_vals <- predict(model_list, test_set[, -1])
+
+length(Predicted_test_vals)
+```
+
+C5.0 - Quick Summary
+```{r}
+summary(Predicted_test_vals)
+```
+
+C5.0 - Confusion Matrix
+```{r, cache = TRUE}
+confusionMatrix(Predicted_test_vals, test_set$Class)
+```
+
+
