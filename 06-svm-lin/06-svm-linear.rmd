@@ -1,0 +1,88 @@
+# Support Vector Machine; svmLinear Model
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
+for(p in Libraries){  # Install Library if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p) }
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE)
+```
+
+Import data & data handling
+```{r}
+c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_factor(levels = c("0","1")), 
+                                             PID = col_skip(), TotalAA = col_skip()))
+#View(c_m_TRANSFORMED)
+```
+
+Partition data into training and testing sets
+```{r}
+set.seed(1000)
+index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
+
+training_set <- c_m_TRANSFORMED[ index,]
+test_set     <- c_m_TRANSFORMED[-index,]
+
+Class_test <- as.factor(test_set$Class)
+```
+
+## `svmPoly`: Training
+```{r, cache=TRUE}
+set.seed(1000)
+registerDoMC(cores = 3)  # Start multi-processor mode 
+start_time <- Sys.time() # Start timer
+
+# Create model, 10X fold CV repeated 5X
+tcontrol <- trainControl(method = "repeatedcv",
+                         number = 10,
+                         repeats = 5,
+                         savePredictions = "final") # IMPORTANT: Saves predictions for retreival
+
+model_obj <- train(Class ~ .,
+                   data = training_set,
+                   method = "svmLinear",
+                   trControl= tcontrol)
+
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display time
+registerDoSEQ() # Stop multi-processor mode 
+```
+
+## `svmPoly`: Model Summary
+```{r}
+model_obj
+```
+
+## `svmPoly`: Predict test_set
+```{r, cache=TRUE}
+Predicted_test_vals <- predict(model_obj, test_set[, -1])
+
+summary(Predicted_test_vals)
+```
+
+## `svmPoly`: Confusion Matrix
+```{r}
+confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
+```
+
+## Obtain False Positives & False Negatives
+```{r}
+fp_fn_svm_Linear <- model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
+
+# Write CSV in R
+write.table(fp_fn_svm_Linear, 
+            file = "../20-outliers/fp_fn_svm_Linear.csv", 
+            row.names = FALSE, 
+            na = "", 
+            col.names = TRUE, 
+            sep=",")
+
+fp_fn_svm_Linear
+```
+
+EOF
