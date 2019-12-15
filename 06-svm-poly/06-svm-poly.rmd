@@ -4,7 +4,9 @@
 
 ```{r message=FALSE, warning=FALSE}
 ## Load Libraries
+rm(list = ls())
 Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
+
 for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
     library(p, character.only = TRUE)
@@ -31,7 +33,7 @@ test_set     <- c_m_TRANSFORMED[-index,]
 Class_test <- as.factor(test_set$Class)
 ```
 
-## `svmPoly` Model
+## Training
 ```{r, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3) # Start multi-processor mode 
@@ -41,9 +43,8 @@ start_time <- Sys.time() # Start timer
 tcontrol <- trainControl(method = "repeatedcv",
                          number = 10,
                          repeats = 5,
-                         savePredictions = "final") # IMPORTANT: this saves predictions for later retreival
+                         savePredictions = "final") # IMPORTANT: Saves predictions for retreival
 
-# Train
 model_obj <- train(Class ~ .,
                    data = training_set,
                    method = "svmPoly",
@@ -54,21 +55,21 @@ end_time - start_time    # Display time
 registerDoSEQ() # Stop multi-processor mode 
 ```
 
-## `svmPoly`: Model Summary
+## Model Summary
 ```{r}
 model_obj
 ```
 
-## `svmPoly`: Predict new samples (Class_test)
+## ## Predict test_set
 ```{r, cache=TRUE}
 Predicted_test_vals <- predict(model_obj, test_set[, -1])
 
 summary(Predicted_test_vals)
 ```
 
-## `svmPoly`: Confusion Matrix
+## Confusion Matrix
 ```{r}
-confusionMatrix(Predicted_test_vals, Class_test)
+confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
 ```
 
 ## Obtain False Positives & False Negatives
@@ -84,7 +85,8 @@ write.table(fp_fn_svm_poly,
             col.names = TRUE, 
             sep=",")
 
-fp_fn_svm_poly
+nrow(fp_fn_svm_poly)
+head(fp_fn_svm_poly)
 ```
 
 EOF

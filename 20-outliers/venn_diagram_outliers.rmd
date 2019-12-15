@@ -1,0 +1,56 @@
+---
+title: "Venn Diagram of Outliers"
+author: "MCC"
+date: "12/13/2019"
+output: html_document
+---
+
+# Venn Diagram of Outliers
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+# rm(list = ls())
+Libraries = c("doMC", "knitr", "readr", "ggVennDiagram")
+
+for(p in Libraries){  # Install Library if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p) }
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE)
+```
+
+
+Import data & data handling
+```{r}
+# fp_fn_r_forest <- read_csv("../20-outliers/fp_fn_r_forest.csv",
+#                            col_types = cols(Resample = col_skip(), 
+#                                             min.node.size = col_skip(), 
+#                                             mtry = col_skip(),
+#                                             splitrule = col_skip()))
+
+fp_fn_svm_linear <- read_csv("../20-outliers/fp_fn_svm_linear.csv",
+                             col_types = cols(Resample = col_skip(), 
+                                            min.node.size = col_skip(), 
+                                            mtry = col_skip(),
+                                            splitrule = col_skip()))
+
+fp_fn_logit <- read_csv("../20-outliers/fp_fn_logit.csv",
+                        col_types = cols(Resample = col_skip(),
+                                         min.node.size = col_skip(),
+                                         mtry = col_skip(),
+                                         splitrule = col_skip()))
+```
+
+
+
+
+```{r}
+x <- list(A=1:5,B=2:7,C=3:6,D=4:9)
+ggVennDiagram(x)  # 4d venn
+ggVennDiagram(x[1:3])  # 3d venn
+ggVennDiagram(x[1:2])  # 2d venn
+
+```
+

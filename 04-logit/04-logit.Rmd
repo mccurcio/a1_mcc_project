@@ -1,247 +1,112 @@
 # Logistic Regression Model For Binary Classification
 
-## Introduction (FIX)
+## Introduction
 
-IMPORTMNT: https://stats.stackexchange.com/questions/108995/interpreting-residual-and-null-deviance-in-glm-r)
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+rm(list = ls())
+Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret")
 
-For students which have not come across this equation, it is clearer if the exponential curve is shown side by side with the sigmoidal curve,
-
-```{r}
-x = seq(-10, 10 , 0.05)
-y = 1/(1 + exp(-x))
-
-plot(x, y,
-     type = "l",
-     main = "Logistic Sigmoidal Curve",
-     ylim = c(-0.3, 1.3))
-abline(v=0, h=0, col="red")
-abline(h=0, col="red")
-abline(h=1, col="green")
-```
-
-```{r message=FALSE, warning=FALSE, include=FALSE}
-## Libraries
-Libraries = c("knitr", "doMC", "ggplot2", "readr", "caret", "dplyr", "tidyverse")
-
-for (i in Libraries) { 
-    library(i, character.only = TRUE) 
+for(p in Libraries){  # Install Library if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p) }
+    library(p, character.only = TRUE)
 }
+opts_chunk$set(cache = TRUE)
 ```
-
-```{r echo=FALSE}
-## Introductory/Explanatory Material
-set.seed(1000)
-x1 = c(rnorm(20, -3, 1), rnorm(20, 3, 1) )
-y1 = c(rep(0, times=20), rep(1, times=20))
-categorical_1 <- cbind(x1, y1)
-
-plot(categorical_1, 
-     ylim = c(-0.3, 1.3),
-     xlim = c(-6, 6),
-     col = "blue", 
-     main = "Categorical Data Wrongly Plotted With Linear Regression", 
-     ylab = "0 = NO ;  1 = YES",
-     xlab = "X-Values")
-#abline(a=0, b = 0.2, col = "red")
-```
-
-If you have categorical data, how can one have a Y-values less than 0 or greater than 1. Yet, a linear regression would output such Y-values if we were to improperly use it here.
-
-A better way would be to generate a curve where the Y value only varies between {0,1} and has a sloping curve that runs between them. The answer is a curve that follows
-
-The alternative is a line that connects the Y-values 0 and 1 with a slope and values where the Y-values do not go beyond 0 and 1. 
-
-
-```{r}
-x1 = c(rnorm(200, 3, 1), rnorm(200, 7, 1) )
-y1 = c(rep(0, times=200), rep(1, times=200))
-categorical_1 <- as.data.frame(cbind(x1, y1))
-dummy_model <- glm(y1 ~ x1,
-                   data = categorical_1,
-                   family = binomial(link = "logit"))
-
-dummy_model
-```
-
-```{r}
-plot(categorical_1, 
-     ylim = c(-0.3, 1.3),
-     col = "blue", 
-     main = "Categorical Plotted With Logistic Regression", 
-     ylab = "Answer: 0 = NO, 1 = YES",
-     xlab = "X-Values")
-```
-
-If we simplify the right hand side and consider it the formula for the dependent variable we get;
-
-$$ Log ~Odds :~~ ln \left( \frac {p}{1-p} \right) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}$$
-
-$$ln \left( \frac {p_i}{1 - p_i} \right) = \sum_{i=0}^n  \beta x_i  ~+~ \alpha$$
-
-If we rearrange the top log odds ratio so that we can determine the probability we find:
-$$Pr(Protein~ is~ myoglobin) = \frac {exp (Y^*)} {exp (Y^*) + 1} = \frac {e^{Y^*}} {e^{Y^*} + 1}$$
-
-As we can see the above formula for the probability satisfies the domain being (0 <= p <= 1).
-
-## Interpretation of the coefficients for logistic regression
-
-If we are looking for the midpoint for the logistic regression we can calculate
-
-$$0.5 = \frac {e^{Y^*}} {e^{Y^*} + 1}$$
-
-$$0.5 \cdot (e^{Y^*} + 1) =  e^{Y^*}$$
-
-$$0.5 \cdot e^{Y^*} + 0.5 =  e^{Y^*}$$
-
-$$0.5 =  0.5 \cdot e^{Y^*}$$
-
-$$1 =  e^{Y^*}$$
-
-$$ln 1 =  Y^*$$
-
-$$Y^* = 0$$
-
-Therefore when $Y^* = 0$ we find that the logistic regression give a probability of 0.5, or 50%.
-
-With the average protein we find, See EDA section 1.x.x ??????????????????????????
-
-```{r}
-Y = 13.0 -54.5*0.0824 -39.9*0.049 -30.0*0.0619 + 82.2*0.0289-38.1*0.0383 -82.9*0.0382 -15.8*0.0619 -56.6*0.0484 -31.4*0.0364
-Y
-```
-$$Pr =  \frac {e^{-2.41375}} {e^{-2.41375} + 1}$$
-```{r}
-Pr = (exp(Y)) / (exp(Y) + 1)
-Pr
-```
-
-Therefore the average protein has only an 8.21 % chance of being myoglobin using this model.
-
-
-
-## Logit Model #1 w/ 20 Features - Train #1
 
 Import data & data handling
 ```{r}
-setwd("~/Dropbox/a1_mcc_project/04-logit/")
-c_m_transformed <- read_csv("c_m_TRANSFORMED.csv",
-                            col_types = cols(Class = col_factor(levels = c("0","1"))))
-
-c_m_20aa <- c_m_transformed[, -c(2,3)]  # Remove TotalAA & PID
-Class <- as.factor(c_m_20aa$Class)      # Convert ‘Class’ To Factor
+c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_factor(levels = c("0","1")), 
+                                             PID = col_skip(), TotalAA = col_skip()))
+#View(c_m_TRANSFORMED)
 ```
 
-Data  & partitioning - Train #1
-
-- Split `c_m_20aa` data into training set (80%) and testing set (20%). 
-- The percentage of myoglobin proteins versus controls in each set must be same in training and testing as they are for the entire dataset.
-- This is handled by the`caret` library used here.
+Partition data into training and testing sets
 ```{r}
 set.seed(1000)
-Index <- createDataPartition(Class, p = 0.8, list = FALSE) # Partition 80/20
+index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
 
-train_set.1 <- c_m_20aa[ Index, ]
-test_set.1  <- c_m_20aa[-Index, ]
+training_set.1 <- c_m_TRANSFORMED[ index,]
+#test_set.1     <- c_m_TRANSFORMED[-index,] # NOT needed since this run is not kept
+
+#Class_test <- as.factor(test_set.1$Class) # NOT needed since this run is not kept
 ```
 
-### Logit Model #1 Train using 20 features
+## Logit Training #1 using 20 Features
 ```{r, cache = TRUE}
-fitControl <- trainControl(method = "repeatedcv", 
-                           repeats = 5, 
-                           number = 10)
 set.seed(1000)
-registerDoMC(cores = 3)  # use multi-core
+registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
 
-model_logit.1 <- train(Class ~ .,
-                       data = train_set.1,
-                       trControl = fitControl,
-                       method = "glm",
-                       family = "binomial")
+# Create model, 10X fold CV repeated 5X
+tcontrol <- trainControl(method = "repeatedcv",
+                         number = 10,
+                         repeats = 5)
+                         
+model_obj.1 <- train(Class ~ .,
+                     data = training_set.1,
+                     trControl = tcontrol,
+                     method = "glm",
+                     family = "binomial")
 
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
-registerDoSEQ()          # stop multi-core
+registerDoSEQ() # Stop multi-processor mode 
 ```
 
+### `glm/binomial`: Quick Summary
 ```{r}
-model_logit.1
+model_obj.1
 ```
 
-
-### Summary #1
+## `glm/binomial`: Summary #1
 ```{r}
-summary(model_logit.1)
+summary(model_obj.1)
 ```
 
-### McFadden's pseudo $R^2$ calculations (ref:https://www.youtube.com/watch?v=C4N3_XJJ-jU&t=601s)
-(REf:Frank E. Harrell, Jr.
-Regression Modeling
-Strategies
-With Applications to Linear Models,
-Logistic and Ordinal Regression,
-and Survival Analysis
-Second Edition
-Springer International Publishing Switzerland 2015
-deviance, Page 236, 449, 487, 516
-ISBN 978-3-319-19425-7 (eBook)
+## Logit Training #2 using 9 Features
 
----
+- Using **ONLY** features: (C, D, G, H, P, R, S, T, Y)
 
-ll.null <- logit$null.deviance / -2  
-ll.proposed <- model_logit.1$deviance / -2  
-
-Pseudo_R2 <- (ll.null - ll.proposed) / ll.null  
-adjusted R 2  
-```{r echo=FALSE}
-ll.null <- model_logit.1$finalModel$null.deviance / -2
-
-ll.proposed <- model_logit.1$finalModel$deviance / -2
-
-adjusted_R2 <- (ll.null - ll.proposed) / ll.null
-
-adjusted_R2
-```
-
-
-
-### Predicted Model #1
-$$ln \left( \frac {p}{1-p} \right) = 18.038 -56.325 ~ [C] - 44.223 ~ [D] -29.599 ~ [G] + 83.914 ~ [H]$$
-$$- 10.224 ~ [I] -51.151 [P] -94.063 ~ [R] -19.986 ~ [S] -49.619 ~ [T] -37.129 ~ [Y]$$
-
-## Model Logit #2 w/ 9 Features
-
-- Using only features: (C, D, G, H, P, R, S, T, Y)
-
-Data import, handling & data partitioning
+Data import & handling
 ```{r}
-c_m_transformed <- read_csv("c_m_TRANSFORMED.csv",
-                            col_types = cols(Class = col_factor(levels = c("0","1"))))
-# Remove TotalAA, PID & 11 features
-c_m_9aa <- c_m_transformed[, -c(2,3,4,7,8,11,12,13,14,15,17,21,22)]  
+c_m_9aa <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv", 
+    col_types = cols(A = col_skip(), Class = col_factor(levels = c("0", "1")), 
+                     E = col_skip(), F = col_skip(), 
+                     I = col_skip(), K = col_skip(), 
+                     L = col_skip(), M = col_skip(), 
+                     N = col_skip(), PID = col_skip(), 
+                     Q = col_skip(), TotalAA = col_skip(), 
+                     V = col_skip(), W = col_skip()))
+#View(c_m_TRANSFORMED)
+```
 
-Class <- as.factor(c_m_9aa$Class) # Convert ‘Class’ To Factor
-
+Partition data into training and testing sets
+```{r}
 set.seed(1000)
-Index <- createDataPartition(Class, p = 0.8, list = FALSE)
-train_set.2 <- c_m_9aa[ Index, ]
-test_set.2  <- c_m_9aa[-Index, ]
+index <- createDataPartition(c_m_9aa$Class, p = 0.8, list = FALSE)
 
-Class.train_set.2 <- as.factor(train_set.2$Class)
-Class.test_set.2 <- as.factor(test_set.2$Class)
+training_set.2 <- c_m_9aa[ index,]
+test_set.2     <- c_m_9aa[-index,]
+
+Class_test.2 <- as.factor(test_set.2$Class)
 ```
 
-### Train #2 Logit w 9 Features
+## `glm/binomial`: Training #2 Logit with 9 Features
 ```{r, cache = TRUE}
-fitControl <- trainControl(method = "repeatedcv", 
-                           repeats = 5, 
-                           number = 10)
 set.seed(1000)
 registerDoMC(cores = 3)  # Start multi-core
 start_time <- Sys.time() # Start timer
 
-model_logit.2 <- train(Class ~ .,
-                       data = train_set.2,
+# Create model, 10X fold CV repeated 5X
+fitControl <- trainControl(method = "repeatedcv",
+                         number = 10,
+                         repeats = 5,
+                         savePredictions = "final") # IMPORTANT: Saves predictions for retreival
+
+model_obj.2 <- train(Class ~ .,
+                       data = training_set.2,
                        trControl = fitControl,
                        method = "glm",
                        family = "binomial")
@@ -251,111 +116,36 @@ end_time - start_time    # Display time
 registerDoSEQ()          # Stop multi-core
 ```
 
-### Summary #2
+## `glm/binomial` Summary #2
 ```{r}
-summary(model_logit.2)
+summary(model_obj.2)
 ```
 
-### McFadden's pseudo $R^2$ calculations (ref:https://www.youtube.com/watch?v=C4N3_XJJ-jU&t=601s)
+## `glm/binomial`: Predict test_set.2
+```{r, cache=TRUE}
+Predicted_test_vals <- predict(model_obj.2, test_set.2[, -1])
 
----
-
-(REf:Frank E. Harrell, Jr.
-Regression Modeling
-Strategies
-With Applications to Linear Models,
-Logistic and Ordinal Regression,
-and Survival Analysis
-Second Edition
-Springer International Publishing Switzerland 2015
-deviance, Page 236, 449, 487, 516
-ISBN 978-3-319-19425-7 (eBook)
-
----
-
-Gareth James • Daniela Witten • Trevor Hastie
-Robert Tibshirani
-An Introduction to
-Statistical Learning
-with Applications in R
-ISBN 978-1-4614-7138-7 (eBook)
-Springer Science+Business Media New York 2013 (Corrected at 8 th printing 2017)
----
-
-ll.null <- logit$null.deviance / -2  
-ll.proposed <- model_logit.2$deviance / -2  
-
-Pseudo_R2 <- (ll.null - ll.proposed) / ll.null  
-
-```{r echo=FALSE}
-ll.null <- model_logit.2$finalModel$null.deviance / -2
-
-ll.proposed <- model_logit.2$finalModel$deviance / -2
-
-adjusted_R2 <- (ll.null - ll.proposed) / ll.null
-
-adjusted_R2
+summary(Predicted_test_vals)
 ```
 
-
-
-### Predicted Model #2
-$$ln \left( \frac {p}{1 - p} \right) = 11.9 -52.2 [C] -38.4 [D] -28.3 [G] + 84.8 [H] -38.1 [P] -82.9 [R] -15.8 [S] -56.6 [T] -31.4 [Y]$$
-
-## Collection of Outliers
-
-### *Collection of Outliers* uses the complete dataset of 2340 proteins.  
-- This is to gather the largest population of false negatives and positives for examination.  
-- `savePredictions = "final"` in `trainControl` command saves predictions for later collection.  
-```{r, cache = TRUE}
-fitControl <- trainControl(method = "cv",
-                           number = 5,
-                           savePredictions = "final")
-set.seed(1000)
-registerDoMC(cores = 3)  # Start multi-core
-start_time <- Sys.time() # Start timer
-
-model_logit.3 <- train(Class ~ .,
-                       data = c_m_9aa,
-                       trControl = fitControl,
-                       method = "glm",
-                       family = "binomial")
-
-end_time <- Sys.time()   # End timer
-end_time - start_time    # Display time
-registerDoSEQ()          # Stop multi-core
-```
-
-### `pluck("pred")` - Separate predictions where (obs != pred)
+## `glm/binomial`: Confusion Matrix #2
 ```{r}
-outlier_sample <- model_logit.3 %>% 
-                  pluck("pred") %>% 
-                  dplyr::filter(obs != pred)
-
-# out_of_sample
-head(outlier_sample, n = 4)
+confusionMatrix(Predicted_test_vals, Class_test.2, positive = "1")
 ```
 
-### Inner-Join FN/FP row number to percent AAC
+## Obtain False Positives & False Negatives
 ```{r}
-fn_fp_list <- c_m_9aa %>% mutate(rowIndex = 1:nrow(c_m_9aa)) %>% 
-                          inner_join(outlier_sample, by = "rowIndex")
+fp_fn_logit <- model_obj.2 %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
-head(fn_fp_list, n = 4)
-```
+# Write CSV in R
+write.table(fp_fn_logit, 
+            file = "../20-outliers/fp_fn_logit.csv", 
+            row.names = FALSE, 
+            na = "", 
+            col.names = TRUE, 
+            sep=",")
 
-```{r}
-length(fn_fp_list)
-
-fn_fp_list
-```
-
-## Confusion Matrix 
-
-- ? `confusionMatrix(data = model_logit.3$pred, reference = model_logit.3$obs`)
-```{r}
-confusionMatrix(model_logit.3)
-# print(results)
+head(fp_fn_logit)
 ```
 
 

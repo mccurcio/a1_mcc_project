@@ -1,9 +1,10 @@
-# Support Vector Machine; svmLinear Model
+# Support Vector Machine; svmLinear
 
 ## Introduction
 
 ```{r message=FALSE, warning=FALSE}
 ## Load Libraries
+rm(list = ls())
 Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
 for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
@@ -31,11 +32,14 @@ test_set     <- c_m_TRANSFORMED[-index,]
 Class_test <- as.factor(test_set$Class)
 ```
 
-## `svmPoly`: Training
+## Training
 ```{r, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
+
+# tuneGrid = svmLinearGrid
+# svmLinearGrid <- expand.grid(C = 2^seq(from = -5, to = 15, by = 5))
 
 # Create model, 10X fold CV repeated 5X
 tcontrol <- trainControl(method = "repeatedcv",
@@ -53,36 +57,37 @@ end_time - start_time    # Display time
 registerDoSEQ() # Stop multi-processor mode 
 ```
 
-## `svmPoly`: Model Summary
+## Model Summary
 ```{r}
 model_obj
 ```
 
-## `svmPoly`: Predict test_set
+## Predict test_set
 ```{r, cache=TRUE}
 Predicted_test_vals <- predict(model_obj, test_set[, -1])
 
 summary(Predicted_test_vals)
 ```
 
-## `svmPoly`: Confusion Matrix
+## Confusion Matrix
 ```{r}
 confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
 ```
 
 ## Obtain False Positives & False Negatives
 ```{r}
-fp_fn_svm_Linear <- model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
+fp_fn_svm_linear <- model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
 # Write CSV in R
-write.table(fp_fn_svm_Linear, 
-            file = "../20-outliers/fp_fn_svm_Linear.csv", 
+write.table(fp_fn_svm_linear, 
+            file = "../20-outliers/fp_fn_svm_linear.csv", 
             row.names = FALSE, 
             na = "", 
             col.names = TRUE, 
             sep=",")
 
-fp_fn_svm_Linear
+nrow(fp_fn_svm_linear)
+head(fp_fn_svm_linear)
 ```
 
 EOF

@@ -365,11 +365,12 @@ summary {
 </div>
 
 
-<div id="support-vector-machine-svmlinear-model" class="section level1">
-<h1>Support Vector Machine; svmLinear Model</h1>
+<div id="support-vector-machine-svmlinear" class="section level1">
+<h1>Support Vector Machine; svmLinear</h1>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <pre class="r"><code>## Load Libraries
+rm(list = ls())
 Libraries = c(&quot;doMC&quot;, &quot;knitr&quot;, &quot;readr&quot;, &quot;tidyverse&quot;, &quot;caret&quot;, &quot;kernlab&quot;)
 for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
@@ -390,11 +391,14 @@ test_set     &lt;- c_m_TRANSFORMED[-index,]
 
 Class_test &lt;- as.factor(test_set$Class)</code></pre>
 </div>
-<div id="svmpoly-training" class="section level2">
-<h2><code>svmPoly</code>: Training</h2>
+<div id="training" class="section level2">
+<h2>Training</h2>
 <pre class="r"><code>set.seed(1000)
 registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time &lt;- Sys.time() # Start timer
+
+# tuneGrid = svmLinearGrid
+# svmLinearGrid &lt;- expand.grid(C = 2^seq(from = -5, to = 15, by = 5))
 
 # Create model, 10X fold CV repeated 5X
 tcontrol &lt;- trainControl(method = &quot;repeatedcv&quot;,
@@ -409,11 +413,11 @@ model_obj &lt;- train(Class ~ .,
 
 end_time &lt;- Sys.time()   # End timer
 end_time - start_time    # Display time</code></pre>
-<pre><code>## Time difference of 4.483253 secs</code></pre>
+<pre><code>## Time difference of 3.446591 secs</code></pre>
 <pre class="r"><code>registerDoSEQ() # Stop multi-processor mode </code></pre>
 </div>
-<div id="svmpoly-model-summary" class="section level2">
-<h2><code>svmPoly</code>: Model Summary</h2>
+<div id="model-summary" class="section level2">
+<h2>Model Summary</h2>
 <pre class="r"><code>model_obj</code></pre>
 <pre><code>## Support Vector Machines with Linear Kernel 
 ## 
@@ -431,16 +435,16 @@ end_time - start_time    # Display time</code></pre>
 ## 
 ## Tuning parameter 'C' was held constant at a value of 1</code></pre>
 </div>
-<div id="svmpoly-predict-test_set" class="section level2">
-<h2><code>svmPoly</code>: Predict test_set</h2>
+<div id="predict-test_set" class="section level2">
+<h2>Predict test_set</h2>
 <pre class="r"><code>Predicted_test_vals &lt;- predict(model_obj, test_set[, -1])
 
 summary(Predicted_test_vals)</code></pre>
 <pre><code>##   0   1 
 ## 252 215</code></pre>
 </div>
-<div id="svmpoly-confusion-matrix" class="section level2">
-<h2><code>svmPoly</code>: Confusion Matrix</h2>
+<div id="confusion-matrix" class="section level2">
+<h2>Confusion Matrix</h2>
 <pre class="r"><code>confusionMatrix(Predicted_test_vals, Class_test, positive = &quot;1&quot;)</code></pre>
 <pre><code>## Confusion Matrix and Statistics
 ## 
@@ -472,513 +476,26 @@ summary(Predicted_test_vals)</code></pre>
 </div>
 <div id="obtain-false-positives-false-negatives" class="section level2">
 <h2>Obtain False Positives &amp; False Negatives</h2>
-<pre class="r"><code>fp_fn_svm_Linear &lt;- model_obj %&gt;% pluck(&quot;pred&quot;) %&gt;% dplyr::filter(obs != pred)
+<pre class="r"><code>fp_fn_svm_linear &lt;- model_obj %&gt;% pluck(&quot;pred&quot;) %&gt;% dplyr::filter(obs != pred)
 
 # Write CSV in R
-write.table(fp_fn_svm_Linear, 
-            file = &quot;../20-outliers/fp_fn_svm_Linear.csv&quot;, 
+write.table(fp_fn_svm_linear, 
+            file = &quot;../20-outliers/fp_fn_svm_linear.csv&quot;, 
             row.names = FALSE, 
             na = &quot;&quot;, 
             col.names = TRUE, 
             sep=&quot;,&quot;)
 
-fp_fn_svm_Linear</code></pre>
-<pre><code>##     C pred obs rowIndex    Resample
-## 1   1    1   0        2 Fold01.Rep1
-## 2   1    1   0        8 Fold01.Rep1
-## 3   1    0   1     1034 Fold01.Rep1
-## 4   1    0   1     1041 Fold01.Rep1
-## 5   1    0   1     1135 Fold01.Rep1
-## 6   1    0   1     1144 Fold01.Rep1
-## 7   1    0   1     1223 Fold01.Rep1
-## 8   1    0   1     1734 Fold01.Rep1
-## 9   1    0   1     1828 Fold01.Rep1
-## 10  1    0   1     1829 Fold01.Rep1
-## 11  1    0   1     1858 Fold01.Rep1
-## 12  1    0   1     1863 Fold01.Rep1
-## 13  1    0   1     1866 Fold01.Rep1
-## 14  1    0   1     1872 Fold01.Rep1
-## 15  1    1   0        1 Fold02.Rep1
-## 16  1    1   0      150 Fold02.Rep1
-## 17  1    1   0      252 Fold02.Rep1
-## 18  1    1   0      254 Fold02.Rep1
-## 19  1    1   0      518 Fold02.Rep1
-## 20  1    0   1     1116 Fold02.Rep1
-## 21  1    0   1     1121 Fold02.Rep1
-## 22  1    0   1     1279 Fold02.Rep1
-## 23  1    0   1     1510 Fold02.Rep1
-## 24  1    0   1     1585 Fold02.Rep1
-## 25  1    0   1     1594 Fold02.Rep1
-## 26  1    0   1     1622 Fold02.Rep1
-## 27  1    1   0      301 Fold03.Rep1
-## 28  1    1   0      526 Fold03.Rep1
-## 29  1    1   0      542 Fold03.Rep1
-## 30  1    1   0      566 Fold03.Rep1
-## 31  1    0   1     1845 Fold03.Rep1
-## 32  1    0   1     1873 Fold03.Rep1
-## 33  1    1   0      249 Fold04.Rep1
-## 34  1    1   0      516 Fold04.Rep1
-## 35  1    1   0      910 Fold04.Rep1
-## 36  1    0   1     1092 Fold04.Rep1
-## 37  1    0   1     1093 Fold04.Rep1
-## 38  1    0   1     1190 Fold04.Rep1
-## 39  1    0   1     1264 Fold04.Rep1
-## 40  1    0   1     1576 Fold04.Rep1
-## 41  1    0   1     1618 Fold04.Rep1
-## 42  1    0   1     1849 Fold04.Rep1
-## 43  1    1   0       57 Fold05.Rep1
-## 44  1    1   0       58 Fold05.Rep1
-## 45  1    1   0      453 Fold05.Rep1
-## 46  1    1   0      655 Fold05.Rep1
-## 47  1    0   1     1100 Fold05.Rep1
-## 48  1    0   1     1101 Fold05.Rep1
-## 49  1    0   1     1130 Fold05.Rep1
-## 50  1    0   1     1222 Fold05.Rep1
-## 51  1    0   1     1623 Fold05.Rep1
-## 52  1    0   1     1831 Fold05.Rep1
-## 53  1    1   0      580 Fold06.Rep1
-## 54  1    1   0      912 Fold06.Rep1
-## 55  1    0   1     1033 Fold06.Rep1
-## 56  1    0   1     1226 Fold06.Rep1
-## 57  1    0   1     1234 Fold06.Rep1
-## 58  1    0   1     1245 Fold06.Rep1
-## 59  1    0   1     1471 Fold06.Rep1
-## 60  1    0   1     1575 Fold06.Rep1
-## 61  1    0   1     1589 Fold06.Rep1
-## 62  1    0   1     1600 Fold06.Rep1
-## 63  1    0   1     1608 Fold06.Rep1
-## 64  1    0   1     1723 Fold06.Rep1
-## 65  1    0   1     1832 Fold06.Rep1
-## 66  1    1   0       88 Fold07.Rep1
-## 67  1    1   0      407 Fold07.Rep1
-## 68  1    1   0      501 Fold07.Rep1
-## 69  1    1   0      573 Fold07.Rep1
-## 70  1    0   1     1579 Fold07.Rep1
-## 71  1    0   1     1780 Fold07.Rep1
-## 72  1    0   1     1830 Fold07.Rep1
-## 73  1    1   0      130 Fold08.Rep1
-## 74  1    0   1     1069 Fold08.Rep1
-## 75  1    0   1     1106 Fold08.Rep1
-## 76  1    0   1     1136 Fold08.Rep1
-## 77  1    0   1     1139 Fold08.Rep1
-## 78  1    0   1     1140 Fold08.Rep1
-## 79  1    0   1     1145 Fold08.Rep1
-## 80  1    0   1     1867 Fold08.Rep1
-## 81  1    0   1     1868 Fold08.Rep1
-## 82  1    0   1     1870 Fold08.Rep1
-## 83  1    1   0      503 Fold09.Rep1
-## 84  1    0   1      980 Fold09.Rep1
-## 85  1    0   1     1094 Fold09.Rep1
-## 86  1    0   1     1117 Fold09.Rep1
-## 87  1    0   1     1142 Fold09.Rep1
-## 88  1    0   1     1152 Fold09.Rep1
-## 89  1    0   1     1219 Fold09.Rep1
-## 90  1    0   1     1233 Fold09.Rep1
-## 91  1    0   1     1482 Fold09.Rep1
-## 92  1    0   1     1833 Fold09.Rep1
-## 93  1    0   1     1846 Fold09.Rep1
-## 94  1    1   0       46 Fold10.Rep1
-## 95  1    1   0      182 Fold10.Rep1
-## 96  1    1   0      531 Fold10.Rep1
-## 97  1    1   0      913 Fold10.Rep1
-## 98  1    0   1     1032 Fold10.Rep1
-## 99  1    0   1     1035 Fold10.Rep1
-## 100 1    0   1     1067 Fold10.Rep1
-## 101 1    0   1     1282 Fold10.Rep1
-## 102 1    0   1     1569 Fold10.Rep1
-## 103 1    0   1     1588 Fold10.Rep1
-## 104 1    0   1     1693 Fold10.Rep1
-## 105 1    1   0       88 Fold01.Rep2
-## 106 1    1   0      150 Fold01.Rep2
-## 107 1    1   0      252 Fold01.Rep2
-## 108 1    1   0      254 Fold01.Rep2
-## 109 1    1   0      503 Fold01.Rep2
-## 110 1    0   1      980 Fold01.Rep2
-## 111 1    0   1     1033 Fold01.Rep2
-## 112 1    0   1     1092 Fold01.Rep2
-## 113 1    0   1     1100 Fold01.Rep2
-## 114 1    0   1     1223 Fold01.Rep2
-## 115 1    0   1     1508 Fold01.Rep2
-## 116 1    0   1     1510 Fold01.Rep2
-## 117 1    0   1     1576 Fold01.Rep2
-## 118 1    0   1     1622 Fold01.Rep2
-## 119 1    0   1     1723 Fold01.Rep2
-## 120 1    0   1     1828 Fold01.Rep2
-## 121 1    1   0        1 Fold02.Rep2
-## 122 1    1   0        8 Fold02.Rep2
-## 123 1    1   0       57 Fold02.Rep2
-## 124 1    1   0      130 Fold02.Rep2
-## 125 1    1   0      407 Fold02.Rep2
-## 126 1    1   0      526 Fold02.Rep2
-## 127 1    0   1     1575 Fold02.Rep2
-## 128 1    0   1     1579 Fold02.Rep2
-## 129 1    0   1     1780 Fold02.Rep2
-## 130 1    0   1     1833 Fold02.Rep2
-## 131 1    0   1     1873 Fold02.Rep2
-## 132 1    1   0       46 Fold03.Rep2
-## 133 1    1   0      114 Fold03.Rep2
-## 134 1    1   0      182 Fold03.Rep2
-## 135 1    1   0      655 Fold03.Rep2
-## 136 1    1   0      912 Fold03.Rep2
-## 137 1    0   1     1034 Fold03.Rep2
-## 138 1    0   1     1041 Fold03.Rep2
-## 139 1    0   1     1121 Fold03.Rep2
-## 140 1    0   1     1144 Fold03.Rep2
-## 141 1    0   1     1190 Fold03.Rep2
-## 142 1    0   1     1219 Fold03.Rep2
-## 143 1    0   1     1233 Fold03.Rep2
-## 144 1    0   1     1623 Fold03.Rep2
-## 145 1    0   1     1734 Fold03.Rep2
-## 146 1    1   0      301 Fold04.Rep2
-## 147 1    1   0      501 Fold04.Rep2
-## 148 1    1   0      573 Fold04.Rep2
-## 149 1    0   1     1093 Fold04.Rep2
-## 150 1    0   1     1585 Fold04.Rep2
-## 151 1    0   1     1600 Fold04.Rep2
-## 152 1    0   1     1830 Fold04.Rep2
-## 153 1    0   1     1831 Fold04.Rep2
-## 154 1    1   0       58 Fold05.Rep2
-## 155 1    1   0      913 Fold05.Rep2
-## 156 1    0   1     1032 Fold05.Rep2
-## 157 1    0   1     1141 Fold05.Rep2
-## 158 1    0   1     1142 Fold05.Rep2
-## 159 1    0   1     1222 Fold05.Rep2
-## 160 1    0   1     1279 Fold05.Rep2
-## 161 1    0   1     1569 Fold05.Rep2
-## 162 1    0   1     1829 Fold05.Rep2
-## 163 1    0   1     1845 Fold05.Rep2
-## 164 1    0   1     1848 Fold05.Rep2
-## 165 1    0   1     1849 Fold05.Rep2
-## 166 1    0   1     1858 Fold05.Rep2
-## 167 1    0   1     1868 Fold05.Rep2
-## 168 1    0   1     1872 Fold05.Rep2
-## 169 1    1   0      249 Fold06.Rep2
-## 170 1    1   0      518 Fold06.Rep2
-## 171 1    1   0      531 Fold06.Rep2
-## 172 1    1   0      580 Fold06.Rep2
-## 173 1    0   1     1226 Fold06.Rep2
-## 174 1    0   1     1264 Fold06.Rep2
-## 175 1    0   1     1282 Fold06.Rep2
-## 176 1    0   1     1594 Fold06.Rep2
-## 177 1    0   1     1618 Fold06.Rep2
-## 178 1    0   1     1693 Fold06.Rep2
-## 179 1    1   0      542 Fold07.Rep2
-## 180 1    0   1     1094 Fold07.Rep2
-## 181 1    0   1     1117 Fold07.Rep2
-## 182 1    0   1     1234 Fold07.Rep2
-## 183 1    0   1     1281 Fold07.Rep2
-## 184 1    0   1     1471 Fold07.Rep2
-## 185 1    1   0      566 Fold08.Rep2
-## 186 1    0   1     1116 Fold08.Rep2
-## 187 1    0   1     1130 Fold08.Rep2
-## 188 1    0   1     1067 Fold09.Rep2
-## 189 1    0   1     1101 Fold09.Rep2
-## 190 1    0   1     1106 Fold09.Rep2
-## 191 1    0   1     1139 Fold09.Rep2
-## 192 1    0   1     1588 Fold09.Rep2
-## 193 1    1   0      368 Fold10.Rep2
-## 194 1    1   0      453 Fold10.Rep2
-## 195 1    1   0      516 Fold10.Rep2
-## 196 1    1   0      547 Fold10.Rep2
-## 197 1    1   0      910 Fold10.Rep2
-## 198 1    0   1     1035 Fold10.Rep2
-## 199 1    0   1     1069 Fold10.Rep2
-## 200 1    0   1     1482 Fold10.Rep2
-## 201 1    0   1     1589 Fold10.Rep2
-## 202 1    0   1     1832 Fold10.Rep2
-## 203 1    1   0      254 Fold01.Rep3
-## 204 1    1   0      501 Fold01.Rep3
-## 205 1    1   0      547 Fold01.Rep3
-## 206 1    0   1     1033 Fold01.Rep3
-## 207 1    0   1     1117 Fold01.Rep3
-## 208 1    0   1     1222 Fold01.Rep3
-## 209 1    0   1     1482 Fold01.Rep3
-## 210 1    0   1     1508 Fold01.Rep3
-## 211 1    0   1     1623 Fold01.Rep3
-## 212 1    0   1     1830 Fold01.Rep3
-## 213 1    0   1     1849 Fold01.Rep3
-## 214 1    1   0        1 Fold02.Rep3
-## 215 1    1   0        8 Fold02.Rep3
-## 216 1    1   0      542 Fold02.Rep3
-## 217 1    0   1      980 Fold02.Rep3
-## 218 1    0   1     1130 Fold02.Rep3
-## 219 1    0   1     1279 Fold02.Rep3
-## 220 1    0   1     1471 Fold02.Rep3
-## 221 1    0   1     1576 Fold02.Rep3
-## 222 1    0   1     1587 Fold02.Rep3
-## 223 1    0   1     1588 Fold02.Rep3
-## 224 1    0   1     1600 Fold02.Rep3
-## 225 1    0   1     1734 Fold02.Rep3
-## 226 1    0   1     1780 Fold02.Rep3
-## 227 1    0   1     1828 Fold02.Rep3
-## 228 1    1   0       46 Fold03.Rep3
-## 229 1    1   0      182 Fold03.Rep3
-## 230 1    1   0      518 Fold03.Rep3
-## 231 1    1   0      573 Fold03.Rep3
-## 232 1    0   1     1094 Fold03.Rep3
-## 233 1    0   1     1579 Fold03.Rep3
-## 234 1    0   1     1693 Fold03.Rep3
-## 235 1    1   0      249 Fold04.Rep3
-## 236 1    1   0      453 Fold04.Rep3
-## 237 1    1   0      531 Fold04.Rep3
-## 238 1    0   1     1034 Fold04.Rep3
-## 239 1    0   1     1093 Fold04.Rep3
-## 240 1    0   1     1622 Fold04.Rep3
-## 241 1    1   0       10 Fold05.Rep3
-## 242 1    1   0       58 Fold05.Rep3
-## 243 1    1   0       88 Fold05.Rep3
-## 244 1    1   0      580 Fold05.Rep3
-## 245 1    1   0      910 Fold05.Rep3
-## 246 1    0   1     1032 Fold05.Rep3
-## 247 1    0   1     1041 Fold05.Rep3
-## 248 1    0   1     1100 Fold05.Rep3
-## 249 1    0   1     1144 Fold05.Rep3
-## 250 1    0   1     1226 Fold05.Rep3
-## 251 1    0   1     1618 Fold05.Rep3
-## 252 1    1   0       57 Fold06.Rep3
-## 253 1    1   0      114 Fold06.Rep3
-## 254 1    1   0      130 Fold06.Rep3
-## 255 1    1   0      252 Fold06.Rep3
-## 256 1    1   0      516 Fold06.Rep3
-## 257 1    1   0      912 Fold06.Rep3
-## 258 1    0   1     1219 Fold06.Rep3
-## 259 1    0   1     1223 Fold06.Rep3
-## 260 1    0   1     1264 Fold06.Rep3
-## 261 1    0   1     1282 Fold06.Rep3
-## 262 1    0   1     1589 Fold06.Rep3
-## 263 1    1   0      407 Fold07.Rep3
-## 264 1    0   1     1035 Fold07.Rep3
-## 265 1    0   1     1101 Fold07.Rep3
-## 266 1    0   1     1116 Fold07.Rep3
-## 267 1    0   1     1510 Fold07.Rep3
-## 268 1    0   1     1831 Fold07.Rep3
-## 269 1    0   1     1846 Fold07.Rep3
-## 270 1    1   0      566 Fold08.Rep3
-## 271 1    0   1     1067 Fold08.Rep3
-## 272 1    0   1     1136 Fold08.Rep3
-## 273 1    0   1     1234 Fold08.Rep3
-## 274 1    0   1     1575 Fold08.Rep3
-## 275 1    0   1     1594 Fold08.Rep3
-## 276 1    0   1     1608 Fold08.Rep3
-## 277 1    0   1     1723 Fold08.Rep3
-## 278 1    0   1     1833 Fold08.Rep3
-## 279 1    0   1     1847 Fold08.Rep3
-## 280 1    0   1     1873 Fold08.Rep3
-## 281 1    1   0      526 Fold09.Rep3
-## 282 1    1   0      655 Fold09.Rep3
-## 283 1    0   1     1069 Fold09.Rep3
-## 284 1    0   1     1121 Fold09.Rep3
-## 285 1    0   1     1141 Fold09.Rep3
-## 286 1    0   1     1145 Fold09.Rep3
-## 287 1    0   1     1151 Fold09.Rep3
-## 288 1    0   1     1829 Fold09.Rep3
-## 289 1    0   1     1872 Fold09.Rep3
-## 290 1    1   0      150 Fold10.Rep3
-## 291 1    1   0      503 Fold10.Rep3
-## 292 1    0   1     1092 Fold10.Rep3
-## 293 1    0   1     1106 Fold10.Rep3
-## 294 1    0   1     1190 Fold10.Rep3
-## 295 1    0   1     1233 Fold10.Rep3
-## 296 1    0   1     1281 Fold10.Rep3
-## 297 1    0   1     1569 Fold10.Rep3
-## 298 1    0   1     1832 Fold10.Rep3
-## 299 1    1   0        8 Fold01.Rep4
-## 300 1    1   0      252 Fold01.Rep4
-## 301 1    1   0      407 Fold01.Rep4
-## 302 1    0   1     1093 Fold01.Rep4
-## 303 1    0   1     1100 Fold01.Rep4
-## 304 1    0   1     1279 Fold01.Rep4
-## 305 1    0   1     1734 Fold01.Rep4
-## 306 1    1   0      542 Fold02.Rep4
-## 307 1    1   0      580 Fold02.Rep4
-## 308 1    1   0      912 Fold02.Rep4
-## 309 1    0   1     1092 Fold02.Rep4
-## 310 1    0   1     1144 Fold02.Rep4
-## 311 1    0   1     1223 Fold02.Rep4
-## 312 1    0   1     1233 Fold02.Rep4
-## 313 1    0   1     1264 Fold02.Rep4
-## 314 1    0   1     1482 Fold02.Rep4
-## 315 1    0   1     1576 Fold02.Rep4
-## 316 1    1   0       10 Fold03.Rep4
-## 317 1    1   0       58 Fold03.Rep4
-## 318 1    1   0       88 Fold03.Rep4
-## 319 1    0   1     1101 Fold03.Rep4
-## 320 1    0   1     1130 Fold03.Rep4
-## 321 1    0   1     1142 Fold03.Rep4
-## 322 1    0   1     1219 Fold03.Rep4
-## 323 1    0   1     1222 Fold03.Rep4
-## 324 1    0   1     1226 Fold03.Rep4
-## 325 1    0   1     1282 Fold03.Rep4
-## 326 1    0   1     1618 Fold03.Rep4
-## 327 1    0   1     1693 Fold03.Rep4
-## 328 1    0   1     1847 Fold03.Rep4
-## 329 1    1   0      254 Fold04.Rep4
-## 330 1    1   0      526 Fold04.Rep4
-## 331 1    0   1     1033 Fold04.Rep4
-## 332 1    0   1     1069 Fold04.Rep4
-## 333 1    0   1     1117 Fold04.Rep4
-## 334 1    0   1     1128 Fold04.Rep4
-## 335 1    0   1     1234 Fold04.Rep4
-## 336 1    0   1     1471 Fold04.Rep4
-## 337 1    0   1     1623 Fold04.Rep4
-## 338 1    0   1     1828 Fold04.Rep4
-## 339 1    0   1     1829 Fold04.Rep4
-## 340 1    0   1     1833 Fold04.Rep4
-## 341 1    0   1     1849 Fold04.Rep4
-## 342 1    1   0      150 Fold05.Rep4
-## 343 1    1   0      249 Fold05.Rep4
-## 344 1    1   0      566 Fold05.Rep4
-## 345 1    1   0      655 Fold05.Rep4
-## 346 1    1   0      910 Fold05.Rep4
-## 347 1    0   1     1190 Fold05.Rep4
-## 348 1    0   1     1508 Fold05.Rep4
-## 349 1    0   1     1600 Fold05.Rep4
-## 350 1    0   1     1780 Fold05.Rep4
-## 351 1    0   1     1831 Fold05.Rep4
-## 352 1    1   0       57 Fold06.Rep4
-## 353 1    1   0      130 Fold06.Rep4
-## 354 1    1   0      518 Fold06.Rep4
-## 355 1    1   0      547 Fold06.Rep4
-## 356 1    0   1      980 Fold06.Rep4
-## 357 1    0   1     1035 Fold06.Rep4
-## 358 1    0   1     1067 Fold06.Rep4
-## 359 1    0   1     1575 Fold06.Rep4
-## 360 1    0   1     1579 Fold06.Rep4
-## 361 1    0   1     1594 Fold06.Rep4
-## 362 1    1   0       46 Fold07.Rep4
-## 363 1    1   0      301 Fold07.Rep4
-## 364 1    1   0      573 Fold07.Rep4
-## 365 1    0   1     1034 Fold07.Rep4
-## 366 1    0   1     1094 Fold07.Rep4
-## 367 1    0   1     1106 Fold07.Rep4
-## 368 1    0   1     1138 Fold07.Rep4
-## 369 1    0   1     1145 Fold07.Rep4
-## 370 1    0   1     1588 Fold07.Rep4
-## 371 1    0   1     1832 Fold07.Rep4
-## 372 1    1   0      114 Fold08.Rep4
-## 373 1    1   0      503 Fold08.Rep4
-## 374 1    0   1     1121 Fold08.Rep4
-## 375 1    0   1     1845 Fold08.Rep4
-## 376 1    0   1     1873 Fold08.Rep4
-## 377 1    1   0        1 Fold09.Rep4
-## 378 1    1   0      182 Fold09.Rep4
-## 379 1    1   0      368 Fold09.Rep4
-## 380 1    1   0      531 Fold09.Rep4
-## 381 1    0   1     1032 Fold09.Rep4
-## 382 1    0   1     1041 Fold09.Rep4
-## 383 1    0   1     1116 Fold09.Rep4
-## 384 1    0   1     1830 Fold09.Rep4
-## 385 1    1   0      453 Fold10.Rep4
-## 386 1    1   0      501 Fold10.Rep4
-## 387 1    1   0      516 Fold10.Rep4
-## 388 1    0   1     1510 Fold10.Rep4
-## 389 1    0   1     1589 Fold10.Rep4
-## 390 1    0   1     1622 Fold10.Rep4
-## 391 1    1   0        1 Fold01.Rep5
-## 392 1    1   0      542 Fold01.Rep5
-## 393 1    0   1     1033 Fold01.Rep5
-## 394 1    0   1     1092 Fold01.Rep5
-## 395 1    0   1     1135 Fold01.Rep5
-## 396 1    0   1     1144 Fold01.Rep5
-## 397 1    0   1     1233 Fold01.Rep5
-## 398 1    0   1     1734 Fold01.Rep5
-## 399 1    0   1     1873 Fold01.Rep5
-## 400 1    1   0       58 Fold02.Rep5
-## 401 1    1   0      254 Fold02.Rep5
-## 402 1    1   0      516 Fold02.Rep5
-## 403 1    0   1     1032 Fold02.Rep5
-## 404 1    0   1     1069 Fold02.Rep5
-## 405 1    0   1     1117 Fold02.Rep5
-## 406 1    0   1     1471 Fold02.Rep5
-## 407 1    0   1     1510 Fold02.Rep5
-## 408 1    1   0      249 Fold03.Rep5
-## 409 1    1   0      302 Fold03.Rep5
-## 410 1    1   0      573 Fold03.Rep5
-## 411 1    1   0      655 Fold03.Rep5
-## 412 1    0   1     1035 Fold03.Rep5
-## 413 1    0   1     1094 Fold03.Rep5
-## 414 1    0   1     1101 Fold03.Rep5
-## 415 1    0   1     1121 Fold03.Rep5
-## 416 1    0   1     1130 Fold03.Rep5
-## 417 1    0   1     1190 Fold03.Rep5
-## 418 1    0   1     1226 Fold03.Rep5
-## 419 1    0   1     1575 Fold03.Rep5
-## 420 1    0   1     1622 Fold03.Rep5
-## 421 1    1   0       57 Fold04.Rep5
-## 422 1    1   0      130 Fold04.Rep5
-## 423 1    1   0      531 Fold04.Rep5
-## 424 1    0   1     1100 Fold04.Rep5
-## 425 1    0   1     1482 Fold04.Rep5
-## 426 1    0   1     1576 Fold04.Rep5
-## 427 1    0   1     1589 Fold04.Rep5
-## 428 1    0   1     1600 Fold04.Rep5
-## 429 1    0   1     1623 Fold04.Rep5
-## 430 1    0   1     1780 Fold04.Rep5
-## 431 1    1   0      252 Fold05.Rep5
-## 432 1    1   0      301 Fold05.Rep5
-## 433 1    1   0      368 Fold05.Rep5
-## 434 1    1   0      453 Fold05.Rep5
-## 435 1    1   0      518 Fold05.Rep5
-## 436 1    1   0      580 Fold05.Rep5
-## 437 1    1   0      912 Fold05.Rep5
-## 438 1    0   1      980 Fold05.Rep5
-## 439 1    0   1     1041 Fold05.Rep5
-## 440 1    0   1     1116 Fold05.Rep5
-## 441 1    0   1     1219 Fold05.Rep5
-## 442 1    0   1     1585 Fold05.Rep5
-## 443 1    0   1     1618 Fold05.Rep5
-## 444 1    0   1     1723 Fold05.Rep5
-## 445 1    0   1     1828 Fold05.Rep5
-## 446 1    0   1     1831 Fold05.Rep5
-## 447 1    1   0      566 Fold06.Rep5
-## 448 1    0   1     1106 Fold06.Rep5
-## 449 1    0   1     1138 Fold06.Rep5
-## 450 1    0   1     1145 Fold06.Rep5
-## 451 1    0   1     1152 Fold06.Rep5
-## 452 1    0   1     1829 Fold06.Rep5
-## 453 1    0   1     1830 Fold06.Rep5
-## 454 1    0   1     1848 Fold06.Rep5
-## 455 1    1   0      182 Fold07.Rep5
-## 456 1    1   0      501 Fold07.Rep5
-## 457 1    1   0      526 Fold07.Rep5
-## 458 1    0   1     1067 Fold07.Rep5
-## 459 1    0   1     1140 Fold07.Rep5
-## 460 1    0   1     1222 Fold07.Rep5
-## 461 1    0   1     1223 Fold07.Rep5
-## 462 1    0   1     1281 Fold07.Rep5
-## 463 1    0   1     1508 Fold07.Rep5
-## 464 1    0   1     1588 Fold07.Rep5
-## 465 1    0   1     1832 Fold07.Rep5
-## 466 1    0   1     1869 Fold07.Rep5
-## 467 1    1   0       10 Fold08.Rep5
-## 468 1    1   0       46 Fold08.Rep5
-## 469 1    1   0      150 Fold08.Rep5
-## 470 1    1   0      910 Fold08.Rep5
-## 471 1    0   1     1034 Fold08.Rep5
-## 472 1    0   1     1234 Fold08.Rep5
-## 473 1    0   1     1579 Fold08.Rep5
-## 474 1    0   1     1594 Fold08.Rep5
-## 475 1    1   0      547 Fold09.Rep5
-## 476 1    0   1     1279 Fold09.Rep5
-## 477 1    0   1     1522 Fold09.Rep5
-## 478 1    1   0        8 Fold10.Rep5
-## 479 1    1   0       88 Fold10.Rep5
-## 480 1    1   0      503 Fold10.Rep5
-## 481 1    0   1     1093 Fold10.Rep5
-## 482 1    0   1     1136 Fold10.Rep5
-## 483 1    0   1     1141 Fold10.Rep5
-## 484 1    0   1     1143 Fold10.Rep5
-## 485 1    0   1     1146 Fold10.Rep5
-## 486 1    0   1     1282 Fold10.Rep5
-## 487 1    0   1     1569 Fold10.Rep5
-## 488 1    0   1     1693 Fold10.Rep5
-## 489 1    0   1     1833 Fold10.Rep5
-## 490 1    0   1     1845 Fold10.Rep5
-## 491 1    0   1     1850 Fold10.Rep5
-## 492 1    0   1     1852 Fold10.Rep5
-## 493 1    0   1     1853 Fold10.Rep5
-## 494 1    0   1     1866 Fold10.Rep5
-## 495 1    0   1     1868 Fold10.Rep5</code></pre>
+nrow(fp_fn_svm_linear)</code></pre>
+<pre><code>## [1] 495</code></pre>
+<pre class="r"><code>head(fp_fn_svm_linear)</code></pre>
+<pre><code>##   C pred obs rowIndex    Resample
+## 1 1    1   0        2 Fold01.Rep1
+## 2 1    1   0        8 Fold01.Rep1
+## 3 1    0   1     1034 Fold01.Rep1
+## 4 1    0   1     1041 Fold01.Rep1
+## 5 1    0   1     1135 Fold01.Rep1
+## 6 1    0   1     1144 Fold01.Rep1</code></pre>
 <p>EOF</p>
 </div>
 </div>
