@@ -17,9 +17,9 @@ knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy
 
 Import data & data handling
 ```{r}
-data <- read.csv("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
-                 stringsAsFactors = FALSE)
-data <- data[, -c(2,3)]
+data1 <- read.csv("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
+                  stringsAsFactors = FALSE)
+data <- data1[, -c(2,3)]
 
 # Convert dataframe to matrix for Keras/TF
 data <- as.matrix(data)
@@ -27,22 +27,18 @@ dimnames(data) <- NULL  # Remove labels from matrices.
 
 # Normalize c_m_transformed
 data[, 2:21] <- normalize(data[, 2:21])
-data[, 1] <- as.numeric(data[, 1])
+data[, 1] <- as.factor(data[, 1])
 ```
 
-## Data partitioning: 80% training / 20% testing  
-```{r include=FALSE}
+Partition data: training & testing sets
+```{r}
 set.seed(1000)
-index <- sample(2, nrow(data), replace = T, prob = c(0.8, 0.2))
+index <- createDataPartition(data$V1, p = 0.8, list = FALSE)
 
-training_set <- data[index == 1, 2:21]
-testing_set  <- data[index == 2, 2:21]
+training_set <- data[ index,]
+test_set     <- data[-index,] 
 
-training_target <- data[index == 1, 1]
-testing_target  <- data[index == 2, 1]
-
-train_labels <- to_categorical(training_target)
-test_labels  <- to_categorical(testing_target)
+Class_test <- as.factor(test_set$V1) 
 ```
 
 # Neural Network Visualization
@@ -58,7 +54,7 @@ n <- neuralnet(data$V1 ~ .,
 ```{r}
 plot(n,
      col.hidden = "black",
-     col.hidden.synapse = "#a2c523",
+     col.hidden.synapse = "darkgrey",#a2c523
      show.weights = F,
      information = F,
      fill = "white")

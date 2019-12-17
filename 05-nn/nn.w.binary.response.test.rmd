@@ -1,0 +1,69 @@
+---
+title: "NN with Binary Response"
+author: "MCC"
+date: "12/17/2019"
+output: html_document
+---
+
+# NN with Binary Response
+
+```{r}
+## Libraries & Initialize
+rm(list = ls())
+Libraries = c("doMC", "keras", "mlbench", "dplyr", "magrittr", "neuralnet")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
+```
+
+Import data & data handling
+```{r}
+data <- read.csv("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
+                 stringsAsFactors = FALSE)
+data <- data[, -c(2,3)]
+
+# Convert dataframe to matrix for Keras/TF
+data <- as.matrix(data)
+dimnames(data) <- NULL  # Remove labels from matrices.
+```
+
+## Data partitioning: 80% training / 20% testing  
+```{r}
+set.seed(1000)
+
+
+```
+
+Neural Network Mdoeling
+```{r}
+set.seed(1000)
+
+nn_model <- neuralnet(data$V1~.,
+                      data = training_set,
+                      hidden = 1,
+                      err.fct = "ce",
+                      linear.output = FALSE)
+plot(nn_model)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

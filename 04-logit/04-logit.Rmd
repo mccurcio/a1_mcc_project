@@ -22,6 +22,8 @@ c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
 #View(c_m_TRANSFORMED)
 ```
 
+Note: Exploratory Data Analysis (EDA) has been carried out on the file `c_m_TRANSFORMED.csv`.  It's EDA can be found in chapter 3: EDA.
+
 Partition data into training and testing sets
 ```{r}
 set.seed(1000)
@@ -32,6 +34,9 @@ training_set.1 <- c_m_TRANSFORMED[ index,]
 
 #Class_test <- as.factor(test_set.1$Class) # NOT needed since this run is not kept
 ```
+
+The `test.set.1` and `Class.test` data sets are not produced due to the fact that the Logit run with 20 features was not deamed useful.  The  reason for it dismissal was that is contained features which were extraneous.
+
 
 ## Logit Training #1 using 20 Features
 ```{r, cache = TRUE}

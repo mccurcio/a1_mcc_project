@@ -1,5 +1,9 @@
 00-data
 
-- aac_dpc_values - indicates percent amino acid & di-peptide composition files used in machine learning
-- ORIGINAL_DATA - two .fasta files with myoglobin & non-myoglobin/hemoglobin proteins from Uniprot.
-  DO NOT DELETE or CHANGE 'ORIGINAL_DATA' FILES
+- aac_dpc_values: indicates percent amino acid & di-peptide composition files used in machine learning
+- ORIGINAL_DATA: two .fasta files with myoglobin & non-myoglobin/hemoglobin proteins from Uniprot.
+  **DO NOT DELETE or CHANGE 'ORIGINAL_DATA' FILES**
+- full_fp_fn_sets:
+- false_positive_outliers:
+- outliers:
+
