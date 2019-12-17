@@ -1,0 +1,91 @@
+# DNN using `Keras` & `Tensorflow`
+
+## Introduction
+https://www.youtube.com/watch?v=SrQw_fWo4lw&list=PL34t5iLfZddtC6LqEfalIBhQGSZX77bOn&index=2
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+## Libraries & Initialize
+rm(list = ls())
+Libraries = c("doMC", "keras", "mlbench", "dplyr", "magrittr", "neuralnet")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
+```
+
+Import data & data handling
+```{r}
+data <- read.csv("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
+                 stringsAsFactors = FALSE)
+data <- data[, -c(2,3)]
+
+# Convert dataframe to matrix for Keras/TF
+data <- as.matrix(data)
+dimnames(data) <- NULL  # Remove labels from matrices.
+
+# Normalize c_m_transformed
+data[, 2:21] <- normalize(data[, 2:21])
+data[, 1] <- as.numeric(data[, 1])
+```
+
+## Data partitioning: 80% training / 20% testing  
+```{r include=FALSE}
+set.seed(1000)
+index <- sample(2, nrow(data), replace = T, prob = c(0.8, 0.2))
+
+training_set <- data[index == 1, 2:21]
+testing_set  <- data[index == 2, 2:21]
+
+training_target <- data[index == 1, 1]
+testing_target  <- data[index == 2, 1]
+
+train_labels <- to_categorical(training_target)
+test_labels  <- to_categorical(testing_target)
+```
+
+# Neural Network Visualization
+```{r}
+n <- neuralnet(data$V1 ~ .,
+               data = data,
+               hidden = c(10,5),
+               linear.output = F,
+               lifesign = "full",
+               rep = 1)
+```
+
+```{r}
+plot(n,
+     col.hidden = "black",
+     col.hidden.synapse = "#a2c523",
+     show.weights = F,
+     information = F,
+     fill = "white")
+```
+
+## Create Model
+```{r}
+model <- keras_model_sequential()
+model %>% layer_dense(units = 5, activation = 'relu', input_shape = c(13)) %>%
+          layer_dense(units = 1)
+```
+
+## Compile
+```{r}
+model %>% compile(loss = 'mse',
+                  optimizer = 'rmsprop',
+                  metrics = 'mae')
+```
+
+## Evaluate
+```{r}
+model %>% evaluate(test, testtarget)
+pred <- model %>% predict(test)
+mean((testtarget-pred)^2)
+plot(testtarget, pred)
+```
+
+
+
+
