@@ -1,10 +1,12 @@
-# Support Vector Machine; svmRadial Model
+# Support Vector Machine; svmRadialCost Model
 
 ## Introduction
 
 ```{r message=FALSE, warning=FALSE}
 ## Load Libraries
+rm(list = ls())
 Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
+
 for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
     library(p, character.only = TRUE)
@@ -31,17 +33,16 @@ test_set     <- c_m_TRANSFORMED[-index,]
 Class_test <- as.factor(test_set$Class)
 ```
 
-## `svmRadial` Model
+## Training
 ```{r, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3) # Start multi-processor mode 
+registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
 
-# Create grid control: sigma, C
-tune.Grid = data.frame(expand.grid(sigma = seq(1, 10, 1)),
-                                   C = seq(1, 10, 1))
+# Create tuneGrid: Cost
+tune.Grid = data.frame(expand.grid(C = 2^(seq(-5, 15, 2))))
                                           
-# Create model, 10X fold CV repeated 5X
+# Create: 10X fold CV repeated 5X
 tcontrol <- trainControl(method = "repeatedcv",
                          number = 10,
                          repeats = 5,
@@ -49,7 +50,7 @@ tcontrol <- trainControl(method = "repeatedcv",
 
 model_obj <- train(Class ~ .,
                    data = training_set,
-                   method = "svmRadial",
+                   method = "svmRadialCost",
                    tuneGrid = tune.Grid,
                    trControl= tcontrol)
 
@@ -58,37 +59,38 @@ end_time - start_time    # Display time
 registerDoSEQ() # Stop multi-processor mode 
 ```
 
-## `svmRadial`: Model Summary
+## Model Summary
 ```{r}
 model_obj
 ```
 
-## `svmRadial`: Predict new samples (Class_test)
+## Predict test_set
 ```{r, cache=TRUE}
 Predicted_test_vals <- predict(model_obj, test_set[, -1])
 
 summary(Predicted_test_vals)
 ```
 
-## `svmRadial`: Confusion Matrix
+## Confusion Matrix
 ```{r}
-confusionMatrix(Predicted_test_vals, Class_test)
+confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
 ```
 
 ## Obtain False Positives & False Negatives
 
 ```{r}
-fp_fn_svm_Radial <- model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
+fp_fn_svmRadialCost <- model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
 # Write CSV in R
-write.table(fp_fn_svm_Radial, 
-            file = "../20-outliers/fp_fn_svm_Radial.csv", 
+write.table(fp_fn_svmRadialCost, 
+            file = "../20-outliers/fp_fn_svmRadialCost.csv", 
             row.names = FALSE, 
             na = "", 
             col.names = TRUE, 
             sep=",")
 
-fp_fn_svm_Radial
+nrow(fp_fn_svmRadialCost)
+head(fp_fn_svmRadialCost)
 ```
 
 EOF

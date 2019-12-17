@@ -2,7 +2,9 @@
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 ## Initialize libraries
+rm(list = ls())
 Libraries = c("knitr", "ggfortify") 
+
 for(p in Libraries){  
     library(p, character.only = TRUE)
 }
@@ -301,14 +303,20 @@ total_pca_1_2_outliers <- union(outliers_PC1, outliers_PC2)
 total_pca_1_2_outliers <- sort(total_pca_1_2_outliers)
 
 length(total_pca_1_2_outliers)
-total_pca_1_2_outliers
+
+# Write out to Outliers folder
+write.table(total_pca_1_2_outliers, 
+            file = "../00-data/false_positive_outliers/pca_1_2_outliers.csv", 
+            row.names = FALSE, 
+            na = "", 
+            col.names = TRUE, 
+            sep = ",")
+
+head(total_pca_1_2_outliers)
 ```
 
 
-```{r}
-plot(x, x, col=ifelse(x==3, "red", "black"),
-     pch=ifelse(x==3, 19, 1), cex=ifelse(x==3, 2, 1))
-```
+
 
 It is important to remember and understand that this list of "total_pca_1_2_outliers" includes BOTH negative and positive controls. The groupings are as follows:
 

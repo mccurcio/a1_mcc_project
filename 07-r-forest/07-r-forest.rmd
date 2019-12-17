@@ -1,14 +1,10 @@
 # Random Forest	Classification Model Using `e1071` & `ranger`
 
 ## Introduction
-Random Forest	
-method=ranger	
-Classification, Regression	
-libs=e1071, ranger, dplyr	
-params=mtry, splitrule, min.node.size
 
 ```{r message=FALSE, warning=FALSE}
 ## Load Libraries
+rm(list = ls())
 Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "e1071", "dplyr", "ranger")
 for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
@@ -92,7 +88,8 @@ write.table(fp_fn_r_forest,
             col.names = TRUE, 
             sep = ",")
 
-fp_fn_r_forest
+nrow(fp_fn_r_forest)
+head(fp_fn_r_forest)
 ```
 
 EOF

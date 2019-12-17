@@ -60,7 +60,7 @@ registerDoSEQ() # Stop multi-processor mode
 model_obj
 ```
 
-## ## Predict test_set
+## Predict test_set
 ```{r, cache=TRUE}
 Predicted_test_vals <- predict(model_obj, test_set[, -1])
 
