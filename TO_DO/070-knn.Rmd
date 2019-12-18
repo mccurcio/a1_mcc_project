@@ -68,45 +68,13 @@ Procedure
    
    + This is somewhat similar to the Manhatten distance. However, if the value $(x_{i1} - x_{i2})$ are same, the distance D=0. Otherwise D=1.
 
-4. Cosine similarity function = $\frac {X \cdot Y} {\sqrt {X \cdot Y}  \sqrt {X \cdot Y}}$
+4. Cosine similarity function = $\frac {X \cdot Y}{||X|| ~ ||Y||}$
 
    + Where $X \cdot Y$ are the [dot products](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/dot-cross-products/v/vector-dot-product-and-vector-length) of the two matricies $X$ and $Y$.
 
-## Hyper-parameters
-
-## Big O
-
-## Model Training & Tuning
-
-Libraries
-```{r, message=FALSE, warning=FALSE}
-Libraries = c("doMC", "caret")
-
-for(p in Libraries){  # Install if not present
-    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
-    library(p, character.only = TRUE)
-}
-```
-
-Import data, data handling & Partition data - training / testing sets
-
-```{r}
-test_harness_paa <- read.csv("data/test_harness_paa.csv")
-test_harness_paa <- test_harness_paa[, -c(2,3)]
-
-set.seed(1000)
-index <- createDataPartition(test_harness_paa$Class, p = 0.8, list = FALSE)
-
-training_set <- test_harness_paa[ index,]
-test_set     <- test_harness_paa[-index,]
-
-training_set[["Class"]] = factor(training_set[["Class"]])
-test_set[["Class"]]  = factor(test_set[["Class"]])
-```
-
 ### Run KNN Training Set 
  
-```{r, cache = TRUE}
+```{r eval=FALSE, include=FALSE}
 control <- trainControl(method = "repeatedcv",
 	                     number = 5,
 	                     repeats = 5)
@@ -127,54 +95,4 @@ end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
 registerDoSEQ()
 ```
-
-### Model Summary
-
-```{r}
-modelknn
-```
-
-```{r}
-names(modelknn)
-```
-
-```{r}
-names(modelknn$results)
-```
-
-
-```{r}
-plot(x = modelknn$results$k,
-     y = modelknn$results$Accuracy,
-     type = "b",
-     ylim = c(0.75, 0.9))
-```
-
-### Predict Test Set
-
-```{r}
-Predicted_test_vals <- predict(modelknn, test_set[, -1])
-
-length(Predicted_test_vals)
-```
-
-Quick Summary
-
-```{r}
-summary(Predicted_test_vals)
-```
-
-### Confusion Matrix
-
-```{r}
-confusionMatrix(Predicted_test_vals, 
-                test_set[["Class"]])
-```
-
-## Summary
-
-
-
-
-
 

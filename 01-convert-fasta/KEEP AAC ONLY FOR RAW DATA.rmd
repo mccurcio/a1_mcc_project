@@ -6,14 +6,14 @@ output: html_document
 ---
 
 ```{r}
-`C+M_aac_dpc` <- read.csv("~/Dropbox/ALL_ML_myoglobin_vs_ctrl/00-data/aac_dpc_values/C+M_aac_dpc.csv",
-                          stringsAsFactors=FALSE)
-## View(`C+M_aac_dpc`)
+C+M_aac_dpc <- read.csv("~/Dropbox/ALL_ML_myoglobin_vs_ctrl/00-data/aac_dpc_values/C+M_aac_dpc.csv",
+                        stringsAsFactors=FALSE)
+# View(`C+M_aac_dpc`)
 ```
 
 - Select 1st thru 23rd variables
 ```{r}
-c_m_RAW_AAC <- `C+M_aac_dpc`[c(1:23)]
+c_m_RAW_AAC <- C+M_aac_dpc[c(1:23)]
 ```
 
 - To A Comma Delimited Text File

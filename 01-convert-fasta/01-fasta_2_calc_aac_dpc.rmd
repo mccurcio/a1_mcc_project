@@ -108,7 +108,9 @@ for (i in 1:1124) {
 }
 ```
 #################################
-RUN Control / Human-NOT-myoglobin - Import data - Read peptide lines
+RUN Control / Human-NOT-myoglobin 
+
+- Import data - Read peptide lines
 ```{r}
 read_fasta <- function() {
     listo_proteins <- read.fasta(file = "../00-data/ORIGINAL_DATA/uniprot-human+NOT+hemoglobin+NOT+myoglobin+random.fasta",

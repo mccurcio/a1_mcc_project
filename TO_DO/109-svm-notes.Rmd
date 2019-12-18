@@ -1,25 +1,27 @@
 # SVMs NOTES: Four plots 
 
+Support vector machine learning is a very popular technique. It is a supervised learning technique which can be used as a classifier or as a regression for producing predictable numeric values.
 
-```{r, include=FALSE}
-library(knitr)
-knitr::opts_chunk$set(cache = TRUE, 
-                      warning = FALSE, 
-                      message = FALSE, 
-                      cache.lazy = FALSE)
-```
+There are three properties that make SVMs attractive:
 
-The general form of the mathematics for a linear support vector machine are quite straightforward. 
+1. SVMs construct a *maximum margin* separator—a decision boundary with the largest possible distance to example points. This helps them generalize well.
+2. SVMs create a linear separating hyperplane, but they have the ability to embed the
+data into a higher-dimensional space, using the so-called kernel trick. Often, data that are not linearly separable in the original input space are easily separable in the higher-dimensional space. The high-dimensional linear separator is actually nonlinear in the original space. This means the hypothesis space is greatly expanded over methods that use strictly linear representations.
+3. SVMs are a nonparametric method—they retain training examples and potentially need to store them all. On the other hand, in practice they often end up retaining only a small fraction of the number of examples—sometimes as few as a small constant times the number of dimensions. Thus SVMs combine the advantages of nonparametric and parametric models: they have the flexibility to represent complex functions, but they are resistant to overfitting.**[Artificial Intelligence, A Modern Approach, Third Edition, Stuart Russell and Peter Norvig, 2010, Pearson, ISBN-13: 978-0-13-604259-4]**
+
+https://www.youtube.com/watch?v=_PwhiWxHK8o&t=64s
+
+The aim of this method is to identify a hyperplane which separates the samples. The technique can be used for both classification and numerical prediction. It is traditionally applied for binary classification. Benefits include high scalability, but drawbacks, as for neural nets, include models which are very difficult to interpret. SEE: https://rpubs.com/mzc/mlwr_svm_concrete
 
 Support Vector Machines are Supervised tools.
 
-SEE: https://rpubs.com/mzc/mlwr_svm_concrete
+
 
 Therefore, given a set of labeled pairs of data: 
 
 $(x_i, y_i),~~ i = 1, ..., l~~$   where  $~~x_i \in R^n~~$ and $~~y \in \{1, -1\}^l$    
 
-Such that $~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y_i = 1 \\ ~~~< 0; ~y_i = -1 \end{array} \right\}$
+Such that $~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y_i = 1 \\ ~< 0; ~y_i = -1 \end{array} \right\}$
 
 where $~~y~~$ is a set of two values which indicate a label, e.g. true or false.
 
@@ -40,7 +42,7 @@ The 4 most common SVM formulae are:
     - The polynomial kernel has a simple non-linear transform of the data.  
 
 3. Radial Basis Function (RBF):  $K(x_i, x_j) ~~=~~ exp ( - \gamma \parallel x_i^T - x_j \parallel ^2 ), ~\gamma >0$  
-    - The Guassian RBF kernel which performs well on many data and is a good default  
+    - The Guassian RBF kernel which performs well on many data and is a good default 
 
 4. Sigmoid: $K(x_i, x_j) ~~=~~ \tanh ( \gamma~ x_i^T ~ x_j ~~+~~ r ), ~\gamma >0$  
     - The sigmoid kernel produces a SVM analagous to the activation function similar to a [perceptron](https://cs.stanford.edu/people/eroberts/courses/soco/projects/neural-networks/Neuron/index.html) with a sigmoid activation function.[^1]

@@ -13,12 +13,12 @@ c_m_RAW_AAC <- read_csv("c_m_RAW_AAC.csv",
 c_m_TRANSFORMED_AAC <- c_m_RAW_AAC
 ```
 
-1. Transfrom C,F,I using sqrt(x)
+1. Transfrom C,F,I using sqrt(x)  
+2. Columns: C=5, F=8, I=11  
 
-1. Columns: C=5, F=8, I=11
 ```{r}
-c_m_TRANSFORMED_AAC[,5] <- sqrt(c_m_TRANSFORMED_AAC[,5]) # C
-c_m_TRANSFORMED_AAC[,8] <- sqrt(c_m_TRANSFORMED_AAC[,8]) # F
+c_m_TRANSFORMED_AAC[, 5] <- sqrt(c_m_TRANSFORMED_AAC[, 5]) # C
+c_m_TRANSFORMED_AAC[, 8] <- sqrt(c_m_TRANSFORMED_AAC[, 8]) # F
 c_m_TRANSFORMED_AAC[,11] <- sqrt(c_m_TRANSFORMED_AAC[,11]) # I
 
 setwd("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values")
