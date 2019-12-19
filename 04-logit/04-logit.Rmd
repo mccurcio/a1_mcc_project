@@ -11,7 +11,7 @@ for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
     library(p, character.only = TRUE)
 }
-opts_chunk$set(cache = TRUE)
+opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
 Import data & data handling

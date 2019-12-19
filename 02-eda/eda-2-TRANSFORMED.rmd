@@ -22,8 +22,8 @@ opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 
 ### Import data
 
-```{r}
-c_m_TRANSFORMED <- read_csv("/home/mcc/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv")
+```{r message=FALSE, warning=FALSE}
+c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv")
 Class <- as.factor(c_m_TRANSFORMED$Class)
 ```
 

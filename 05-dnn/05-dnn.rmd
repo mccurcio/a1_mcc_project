@@ -3,8 +3,8 @@
 ## Introduction
 https://www.youtube.com/watch?v=SrQw_fWo4lw&list=PL34t5iLfZddtC6LqEfalIBhQGSZX77bOn&index=2
 
+- Libraries & Initialize
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-## Libraries & Initialize
 rm(list = ls())
 Libraries = c("doMC", "keras", "mlbench", "dplyr", "magrittr", "neuralnet")
 
@@ -15,7 +15,7 @@ for(p in Libraries){  # Install if not present
 knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
 ```
 
-Import data & data handling
+- Import data & data handling
 ```{r}
 data1 <- read.csv("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
                   stringsAsFactors = FALSE)

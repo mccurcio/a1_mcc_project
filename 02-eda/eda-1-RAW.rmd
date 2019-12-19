@@ -71,7 +71,7 @@ opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALS
 ### Import data
 
 ```{r message=FALSE, warning=FALSE}
-c_m_RAW_AAC <- read_csv("/home/mcc/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_RAW_AAC.csv")
+c_m_RAW_AAC <- read_csv("../00-data/aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
 ```
 
@@ -460,7 +460,7 @@ It was also found that three amino acids from the single amino acid percent comp
 
 | Protein | Initial skewness | Skew after square root transform |
 |:-------:|:----------------:|:--------------------------------:|
-| C | 2.538162 | 0.3478132 ????????????? |
-| F | 2.128118 | -0.102739  ????????????? |
-| I | 2.192145 | 0.2934749  ????????????? |
+| C | 2.538162 | 0.3478132 |
+| F | 2.128118 | -0.102739 |
+| I | 2.192145 | 0.2934749 |
 
