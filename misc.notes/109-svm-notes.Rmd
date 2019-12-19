@@ -15,7 +15,7 @@ The aim of this method is to identify a hyperplane which separates the samples. 
 
 Support Vector Machines are Supervised tools.
 
-
+IMPORTANT: Cortes, C. & Vapnik, V. (1995).  Support-vector network.Machine Learning,20, 1–25.
 
 Therefore, given a set of labeled pairs of data: 
 

@@ -19,7 +19,5 @@ This folder contains original data, R scripts (.rmd) and output files (.html)use
 - /20-outliers                | Collection of false poisitive/false negative result files
 - /99-Bookdown_templates      | Bookdown templates
 - /misc.notes                 | notes
-- /TO_DO                      | mcc test files and examples
-- a1_mcc_project.Rproj        | RStudio project file
 - LICENSE
 - README.md

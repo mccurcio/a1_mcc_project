@@ -365,8 +365,8 @@ summary {
 </div>
 
 
-<div id="principle-component-analysis-of-myoglobin-vs.-control" class="section level1">
-<h1>Principle Component Analysis of Myoglobin Vs. Control</h1>
+<div id="principle-component-analysis-of-c_m_transformed.csv-for-myoglobin-vs.-control" class="section level1">
+<h1>Principle Component Analysis of <code>c_m_TRANSFORMED.csv</code> for Myoglobin Vs. Control</h1>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>This chapter describes the use, intuition and a functional understanding when using PCA on the <code>c_m_TRANSFORMED.csv</code> myoglobin/control dataset. Principle Component Analysis (PCA) is very popular and commonly used during the Exploratory Data Analysis (EDA) phase to provide information on the proportions of variance found within a dataset.</p>
@@ -388,7 +388,7 @@ summary {
 </blockquote>
 <hr />
 </div>
-<div id="finding-the-covariance-matrix20" class="section level2">
+<div id="finding-the-covariance-matrix11" class="section level2">
 <h2>Finding the Covariance Matrix<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h2>
 <p><a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> provides a measure of the strength of the correlation between two or more sets of random variates.</p>
 <div id="covariance-of-two-variables" class="section level4 unnumbered">
@@ -502,7 +502,7 @@ c_m_20_PCA = prcomp(norm_c_m_20aa)
 
 end_time &lt;- Sys.time()   # End timer
 end_time - start_time    # Display time</code></pre>
-<pre><code>## Time difference of 0.0115757 secs</code></pre>
+<pre><code>## Time difference of 0.008529663 secs</code></pre>
 </div>
 <div id="screeplot-eigenvalues-vs-principal-components" class="section level2">
 <h2>Screeplot: Eigenvalues Vs Principal Components</h2>
@@ -532,8 +532,8 @@ end_time - start_time    # Display time</code></pre>
 <h4>Number of Outliers from PC-1</h4>
 <p>Rule Set:</p>
 <ol style="list-style-type: decimal">
-<li><p>Outlier_1: c_m_20_PCA$x[, 1] &gt; 3</p></li>
-<li><p>Outlier_2: c_m_20_PCA$x[, 1] &lt; -3</p></li>
+<li><p>Outlier_1: c_m_20_PCA$x[, 1] &gt; 3 std dev</p></li>
+<li><p>Outlier_2: c_m_20_PCA$x[, 1] &lt; -3 std dev</p></li>
 </ol>
 <pre class="r"><code>outliers_PC1 &lt;- which((c_m_20_PCA$x[, 1] &gt; 3) | (c_m_20_PCA$x[, 1] &lt; -3))
 length(outliers_PC1)</code></pre>
@@ -544,8 +544,8 @@ length(outliers_PC1)</code></pre>
 <h4>Number of Outliers from PC-2</h4>
 <p>Rule Set:</p>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Outlier_3: c_m_20_PCA$x[, 2] &gt; 3</p></li>
-<li><p>Outlier_4: c_m_20_PCA$x[, 2] &lt; -3</p></li>
+<li><p>Outlier_3: c_m_20_PCA$x[, 2] &gt; 3 std dev</p></li>
+<li><p>Outlier_4: c_m_20_PCA$x[, 2] &lt; -3 std dev</p></li>
 </ol>
 <pre class="r"><code>outliers_PC2 &lt;- which((c_m_20_PCA$x[, 2] &gt; 3) | (c_m_20_PCA$x[, 2] &lt; -3))
 length(outliers_PC2)</code></pre>
@@ -560,12 +560,24 @@ length(outliers_PC2)</code></pre>
 <pre><code>## [1] 461</code></pre>
 <pre><code>## [1]   1   8  72 115 179 180</code></pre>
 <p>It is important to remember and understand that this list of “total_pca_1_2_outliers” includes BOTH negative and positive controls. The groupings are as follows:</p>
-<ul>
-<li>Controls = {1, …, 1217}<br />
-</li>
-<li>Positive samples = {1218, …, 2341}</li>
-</ul>
-<p>Therefore the list of 461 outliers will be further broken into a group of control and positive proteins for later work.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Numbering</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Controls</td>
+<td>{1, …, 1217}</td>
+</tr>
+<tr class="even">
+<td>Positive samples</td>
+<td>{1218, …, 2341}</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="conclusions" class="section level2">

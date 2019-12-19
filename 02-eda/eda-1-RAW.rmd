@@ -18,7 +18,9 @@ Although exploratory data analysis does not always have a formal hypothesis test
 
 1. Do the features have large skewed distributions? If skew values greater than 2.0 are found can a transformation be used to normalize the skewed feature?
 
-1. Can the Random Forest technique known as Boruta[^101], be used for feature importance or reduction? 
+1. Can the Random Forest technique known as Boruta[^2], be used for feature importance or reduction? 
+
+[^2]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11
 
 1. Will coefficients of correlation (R) find collinearity?
 
@@ -28,20 +30,6 @@ Although exploratory data analysis does not always have a formal hypothesis test
 
 1. Is the data *representative* of the entire experimental space?
 
-[^101]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11
-
-## Summarize Data  
-
-The hybrid process which I use to summarize the amino acid dataset is based on three sets of guidelines;  
-
-- NIST Handbook of Statistics,  
-
-- Roger Peng's booklet on 'Exploratory Data Analysis with R,'  
-
-- 'Exploratory Data Analysis Using R', by Ronald K. Pearson.[^102]  
-
-----
-
 1. Is missing data an issue?
 
 1. Are the variables included in the dataset the ones we were expecting?
@@ -49,13 +37,29 @@ The hybrid process which I use to summarize the amino acid dataset is based on t
 1. Are the values of these variables consistent with what we expect?
 
 1. Do the variables in the dataset seem to exhibit the kinds of relationships
-we expect? (Indeed, what relationships do we expect, and why?)[^100]
+we expect? (Indeed, what relationships do we expect, and why?)[^3]
 
-[^100]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
+[^3]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
 
-[^102]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
+### Useful Guides for Exploratory Data Analysis
+
+The hybrid process which I use to summarize the amino acid dataset is based on three sets of guidelines;  
+
+- NIST Handbook of Statistics,[^4]  
+
+- Roger Peng's booklet on 'Exploratory Data Analysis with R,' [^5]
+
+- 'Exploratory Data Analysis Using R', by Ronald K. Pearson.[^6]  
+
+[^4]:https://www.itl.nist.gov/div898/handbook/
+
+[^5]:https://leanpub.com/exdata
+
+[^6]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018, ISBN:9781138480605
 
 ----
+
+## Begin Exploratory Data Analysis
 
 ### Import libraries
 ```{r message=FALSE}
@@ -65,7 +69,7 @@ for (i in Libraries) {
     library(i, character.only = TRUE) 
 }
 
-opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
+opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ### Import data
@@ -75,7 +79,7 @@ c_m_RAW_AAC <- read_csv("../00-data/aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
 ```
 
-### Visually inspect files; 
+### Visually inspect files
 
 - Use command line interface followed by the command `less`.
 - Check for binary instead of ASCII and bad Unicode.
@@ -156,7 +160,6 @@ plot(AA_ave,
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[,4:23]))
 ```
 
-### Grouped barchart of amino acid vs. protein category
 
 ```{r cache=TRUE, include=FALSE}
 # Pseudo-code:  
@@ -179,8 +182,9 @@ data = data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa = as.matrix(t(100*data))
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 # A-4
+### Grouped barchart of amino acid vs. protein category
 barplot(percent_aa, 
         main = "Mean % A.A.Composition Of 3 Protein Groupings",
         ylab = "% AA Composition", 
@@ -240,13 +244,14 @@ boxplot(mgb_set[, 4:23],
 par(mfrow=c(1,2))
 
 boxplot(ctrl_set[, 4:23], 
+        ylim = c(0, 0.3),
         main = "Boxplots: Controls",
         ylab = "% AAC",
         xlab = "Amino Acid",
         las = 1)
 
 boxplot(mgb_set[, 4:23], 
-        ylim = c(0, 0.5),
+        ylim = c(0, 0.3),
         main = "Boxplot: Myoglobin",
         xlab = "Amino Acid",
         las = 1)

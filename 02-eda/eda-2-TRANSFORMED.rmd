@@ -1,10 +1,10 @@
-# Exploratory Data Analysis Of $\sqrt x_i$ Transformed `c_m_RAW_ACC.csv`
+## Exploratory Data Analysis Of $\sqrt x_i$ Transformed `c_m_RAW_ACC.csv`
 
 <br>
 This next section investigates the EDA of the $\sqrt x_i$ *Transformed* data.  The $\sqrt x_i$ *Transformed* data was derived from `c_m_RAW_ACC.csv` where the amino acids C, F, I were transformed using a square root function. This transformation was done in order to reduce the skewness of these samples and avoid modeling problems arising from high skewness.
 
 | Amino Acid | Initial skewness | Skew after square root transformation |
-|:-------:|:----------------:|:--------------------------------:|
+|:----------:|:----------------:|:-------------------------------------:|
 | C | 2.538162 | 0.347813248 |
 | F | 2.128118 | -0.102739748 |
 | I | 2.192145 | 0.293474879 |
@@ -52,12 +52,12 @@ class_table <- table(c_m_TRANSFORMED$Class)
 class_table
 ```
 
-## Visualization of Descriptive Statistics
-
-### Scatter plot of means of *Myoglobin-Control* amino acid composition $\sqrt x_i$ Transformed (c_m_TRANSFORMED) dataframe
+## Visualization of Transformed Data Descriptive Statistics
 
 Formulas for mean:
 $$E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i$$
+
+### Scatter plot of means of *Myoglobin-Control* amino acid composition $\sqrt x_i$ Transformed (c_m_TRANSFORMED) dataframe
 
 - This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n=2340) versus AA type.
 
@@ -74,7 +74,6 @@ plot(AA_ave,
 axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[,4:23]))
 ```
 
-### Grouped barchart of $\sqrt x_i$ Transformed amino acid vs. protein category data
 
 ```{r echo=FALSE, cache=TRUE}
 # Pseudo-code:  
@@ -95,8 +94,11 @@ grand_mean <- apply(c_m_TRANSFORMED[, 4:23], 2, mean)
 # A-3
 data = data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa = as.matrix(t(100*data))
+```
 
+```{r eval=FALSE, include=FALSE}
 # A-4
+### Grouped barchart of $\sqrt x_i$ Transformed amino acid vs. protein category data
 barplot(percent_aa, 
         main = "Mean % A.A.Composition Of Squareroot Transformed Data",
         ylab = "% AA Composition", 
@@ -106,7 +108,7 @@ barplot(percent_aa,
         beside = T)
 ```
 
-### Grouped barchart of means of percent amino acid composition of control & myoglobin categories
+### Grouped barchart of means for percent amino acid composition of Transformed Data; control & myoglobin categories
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 data2 = data.frame(ctrl_means, mgb_means)
@@ -151,7 +153,7 @@ boxplot(mgb_set[, 4:23],
         las = 1)
 ```
 
-### Boxplots of Length of Polypeptides For Myoglobin, Control & Combined of squareroot transformed data
+### Boxplots Of Length Of Polypeptides Of Transformed Data; Myoglobin, Control & Combined
 
 ```{r echo=FALSE}
 ctrl_totalaa <- ctrl_set[,2]
@@ -169,13 +171,15 @@ boxplot(data,
 axis(1, at=1:3, labels = c("Control", "Myoglobin", "Combined"))
 ```
 
-### Plot of normalized standard deviations / coefficient of variance (CV) of squareroot transformed data
+### Coefficient of variance (CV) Of Transformed data
 
 Standard deviations are sensitive to scale. Therefore I compare the normalized standard deviations. This normalized standard deviation is more commonly called coefficient of variation (CV).
 
 $$CV = \frac {\sigma (x)} {E [|x|]} ~~~ where ~~~ \sigma(x) \equiv \sqrt{ E[x - \mu]^2 }$$
 
 $$CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2}$$
+
+### Plot of normalized standard deviations
 
 ```{r echo=FALSE}
 AA_var_norm <- (apply(c_m_TRANSFORMED[, 4:23], 2, sd)) / AA_ave
@@ -193,7 +197,7 @@ axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
 AA_var_norm
 ```
 
-### Skewness of distributions
+### Skewness of distributions Of Transformed Data 
 
 $$Skewness ~= E\left[ \left( \frac{X - \mu}{\sigma(x)} \right)^3 \right] ~~~~ where ~~~~ \sigma(x) \equiv \sqrt{  E[x - \mu]^2 }$$
 
@@ -219,7 +223,7 @@ AA_skewness
 ```
 
 
-### QQ Plots of 20 amino acids of squareroot transformed data
+### QQ Plots of 20 amino acids of Transformed data
 
 ```{r echo=FALSE}
 AA = c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", 
@@ -230,7 +234,7 @@ for (i in 4:23) {
 }
 ```
 
-### Determine coefficients of correlation
+### Determine coefficients of correlation of Transformed Data 
 
 An easily interpretable test, is correlation 2D-plot for investigating multicollinearity or feature reduction. It is clear that fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they are measuring the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^11]
 
@@ -246,7 +250,7 @@ c_m_corr_mat = cor(c_m_TRANSFORMED[, c(2, 4:23)],
                    method = "p") # "p": Pearson test for continous variables
 
 corrplot(abs(c_m_corr_mat),
-         title = "Correlation Plot Of AAC Features", 
+         title = "Correlation Plot Of Transformed Features", 
          method = "square", 
          type = "lower",
          tl.pos = "d",
@@ -263,7 +267,7 @@ c_m_corr_mat["T", "N"]
 c_m_corr_mat["Y", "A"]
 ```
 
-### Boruta - dimensionality reduction
+### Boruta - dimensionality reduction of Transformed data 
 
 ```{r echo=FALSE}
 c_m_class_20 <- c_m_TRANSFORMED[, -c(2,3)]  # Remove TotalAA & PID
@@ -327,14 +331,14 @@ plotImpHistory(boruta_output)
 All features are important. None should be dropped.
 b
 
-## Conclusions For EDA
+## EDA Conclusions For Transformed Data 
 
 Due to prior subject knowledge in the area of utilizing AAC and DPC, it was determined that initially the machine learning modeling should be carried out with the single amino acid percent composition. This is primarily due to the fact that many of the di-peptide percent compositions had skews greater than 2 and some reaching as high as 40. This is most likely due to the lack of large sample sizes used.
 
 It was also found that three amino acids from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
 | Amino Acid | Initial skewness | Skew after square root transform |
-|:-------:|:----------------:|:--------------------------------:|
+|:----------:|:----------------:|:--------------------------------:|
 | C | 2.538162 | 0.347813248 |
 | F | 2.128118 | -0.102739748 |
 | I | 2.192145 | 0.293474879 |
