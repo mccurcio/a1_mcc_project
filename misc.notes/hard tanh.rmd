@@ -1,0 +1,20 @@
+# if (x < 0) {
+#     print("Negative number")
+# } else if (x > 0) {
+#     print("Positive number")
+# } else
+#     print("Zero")
+
+x = seq(-4, 4, 0.02)
+hardtanh <- function(x) {
+    if (x >= 1) {y = 1
+    } else if (x > -1) {
+    } else (x <= -1) y = -1
+}
+y_hard_tanh = hardtanh(x)
+
+plot(x, y_hard_tanh, 
+     type = "l",
+     main = "Hyperbolic Tangent",
+     ylab = "tanh(x)")
+abline(h = 0, v = 0, col = "#F24F4F")

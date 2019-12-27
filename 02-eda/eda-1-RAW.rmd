@@ -63,10 +63,10 @@ The hybrid process which I use to summarize the amino acid dataset is based on t
 
 ### Import libraries
 ```{r message=FALSE}
-Libraries = c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
+Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
 
-for (i in Libraries) { 
-    library(i, character.only = TRUE) 
+for (i in Libraries) {
+    library(i, character.only = TRUE)
 }
 
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
@@ -93,10 +93,10 @@ str(c_m_RAW_AAC)
 ### Check data `head` & `tail`
 
 ```{r}
-head(c_m_RAW_AAC, n=2)
+head(c_m_RAW_AAC, n = 2)
 ```
 ```{r}
-tail(c_m_RAW_AAC, n=2)
+tail(c_m_RAW_AAC, n = 2)
 ```
 
 ### Check data types
@@ -119,10 +119,11 @@ dim(c_m_RAW_AAC)
 
 - **No missing values found.**
 ```{r}
-apply(is.na(c_m_RAW_AAC), 2, which) 
+apply(is.na(c_m_RAW_AAC), 2, which)
 
 # sapply(c_m_RAW_AAC, function(x) sum(is.na(x))) # Sum up NA by columns
-# c_m_RAW_AAC[rowSums(is.na(c_m_RAW_AAC)) != 0,]     # Show rows where NA's is not zero
+# c_m_RAW_AAC[rowSums(is.na(c_m_RAW_AAC)) != 0,]     
+# Show rows where NA's is not zero
 ```
 
 ### Count of polypeptides by group
@@ -149,7 +150,7 @@ $$E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i$
 - This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
 ```{r echo=FALSE}
-AA_ave <- colMeans(c_m_RAW_AAC[,4:23])
+AA_ave <- colMeans(c_m_RAW_AAC[, 4:23])
 plot(AA_ave,
      main = "Plot: Column-Means of % Composition Vs Amino Acid",
      ylab = "% Composition",
@@ -162,15 +163,15 @@ axis(1, at = 1:20, labels = names(c_m_RAW_AAC[,4:23]))
 
 
 ```{r cache=TRUE, include=FALSE}
-# Pseudo-code:  
-# A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets  
-# A-2. Determine column means for each protein class  
-# A-3. Calculate percentage values  
-# A-4. Produce Grouped Bar Plot  
+# Pseudo-code:
+# A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
+# A-2. Determine column means for each protein class
+# A-3. Calculate percentage values
+# A-4. Produce Grouped Bar Plot
 
 # A-1
-ctrl_set <- c_m_RAW_AAC[ which(c_m_RAW_AAC$Class == '0'),]
-mgb_set  <- c_m_RAW_AAC[ which(c_m_RAW_AAC$Class == '1'),]
+ctrl_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "0"), ]
+mgb_set  <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "1"), ]
 
 # A-2
 ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
@@ -178,18 +179,18 @@ mgb_means  <- apply(mgb_set[, 4:23], 2, mean)
 grand_mean <- apply(c_m_RAW_AAC[, 4:23], 2, mean)
 
 # A-3
-data = data.frame(ctrl_means, mgb_means, grand_mean)
-percent_aa = as.matrix(t(100*data))
+data <- data.frame(ctrl_means, mgb_means, grand_mean)
+percent_aa <- as.matrix(t(100*data))
 ```
 
 ```{r echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 # A-4
 ### Grouped barchart of amino acid vs. protein category
-barplot(percent_aa, 
+barplot(percent_aa,
         main = "Mean % A.A.Composition Of 3 Protein Groupings",
-        ylab = "% AA Composition", 
+        ylab = "% AA Composition",
         ylim = c(0, 12),
-        col = colorRampPalette(brewer.pal(4,"Blues"))(3), 
+        col = colorRampPalette(brewer.pal(4,"Blues"))(3),
         legend = T,
         beside = T)
 ```
@@ -197,14 +198,14 @@ barplot(percent_aa,
 ### Means of percent amino acid composition of control & myoglobin categories
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-data2 = data.frame(ctrl_means, mgb_means)
-percent_aa2 = as.matrix(t(100*data2))
+data2 <- data.frame(ctrl_means, mgb_means)
+percent_aa2 <- as.matrix(t(100*data2))
 
-barplot(percent_aa2, 
+barplot(percent_aa2,
         ylim = c(0, 12),
         main = "Mean % A.A.Composition Of Control & Myoglobin",
-        ylab = "% AA Composition", 
-        col = colorRampPalette(brewer.pal(4,"Blues"))(2), 
+        ylab = "% AA Composition",
+        col = colorRampPalette(brewer.pal(4,"Blues"))(2),
         legend = T,
         beside = T)
 ```
@@ -296,8 +297,8 @@ plot(AA_var_norm,
      type = "b",
      xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
-text(x = 2, y = 1.4, label=" C=1.24", col='red')
-text(x = 19, y = 1.1, label="W=0.946", col='red')
+text(x = 2, y = 1.4, label=" C=1.24", col="red")
+text(x = 19, y = 1.1, label="W=0.946", col="red")
 ```
 ```{r}
 AA_var_norm
@@ -322,9 +323,9 @@ plot(AA_skewness,
      xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
 abline(h = 2.0, col = "red")
-text(x = 2, y = 2.8, label=" C=2.5", col='red')
-text(x = 5, y = 2.4, label="F=2.1", col='red')
-text(x = 8, y = 2.4, label="I=2.2", col='red')
+text(x = 2, y = 2.8, label=" C=2.5", col="red")
+text(x = 5, y = 2.4, label="F=2.1", col="red")
+text(x = 8, y = 2.4, label="I=2.2", col="red")
 ```
 
 ### QQ-Plots of 20 amino acids
@@ -409,7 +410,7 @@ set.seed(1000)
 registerDoMC(cores = 3)  # Start multi-processor mode
 start_time <- Sys.time() # Start timer
 
-boruta_output <- Boruta(Class ~ ., 
+boruta_output <- Boruta(Class ~ .,
                         data = c_m_class_20[,-1],
                         mcAdj = TRUE, # See Note above.
                         doTrace = 1) # doTrace = 1, represents non-verbose mode.
@@ -426,9 +427,9 @@ names(boruta_output)
 **Plot variable importance**
 
 ```{r echo=FALSE}
-plot(boruta_output, 
+plot(boruta_output,
      cex.axis = 1,
-     las = 2, 
+     las = 2,
      ylim = c(-5,50),
      main = "Variable Importance (Bigger=Better)")
 ```
@@ -438,13 +439,13 @@ plot(boruta_output,
 ```{r echo=FALSE, message=FALSE}
 roughFixMod <- TentativeRoughFix(boruta_output)
 imps <- attStats(roughFixMod)
-imps2 = imps[imps$decision != 'Rejected', c('meanImp', 'decision')]
+imps2 = imps[imps$decision != "Rejected", c("meanImp", "decision")]
 meanImps <- imps2[order(-imps2$meanImp), ]  # descending sort
 
 knitr::kable(meanImps,
-             full_width = F, 
+             full_width = F,
              position = "left",
-             caption  = 'Mean Importance Scores & Decision')
+             caption  = "Mean Importance Scores & Decision")
 ```
 
 Plot importance history
