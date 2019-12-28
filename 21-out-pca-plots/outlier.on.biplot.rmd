@@ -1,80 +1,65 @@
 ---
 title: "Outliers to PCA biplots"
 author: "MCC"
-date: "12/23/2019"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
 ```{r}
 library(readr)
-c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                             col_types = cols(Class = col_skip(), 
                                              PID = col_skip(), 
                                              TotalAA = col_skip()))
 #View(c_m_TRANSFORMED)
 ```
 
-```{r}
-pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
-biplot(pca_values)
-#summary(pca_values)
-```
-
 
 ```{r eval=FALSE, include=FALSE}
-c_m_trans_covar <- cov(c_m_TRANSFORMED)
-c_m_trans_covar_eigen <- eigen(c_m_trans_covar)
+pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
 
-c_m_trans_covar_eigen
-
-#pc1_values <- pca_values$rotation[,1]
-#pc2_values <- pca_values$rotation[,2]
+pc1_values <- pca_values$rotation[,1]
+pc2_values <- pca_values$rotation[,2]
 ```
-plot(0,0) ## start a plot
-opar <- par(new = TRUE, ## add a new layer
-            mar = c(0,0,0,0)) ## with no margins margins
-## set up the plotting area for this layer
-plot(1,1,xlim=c(0,1),ylim=c(0,1),type='n',xlab='',ylab='') 
-# arrows(0.6,0.6,0.8,1) ## add arrow
-par(opar) ## return the plot parameters to their prior values
+
+
 
 ```{r fig.height=6, fig.width=6}
+## 1st Layer
 plot(x=0, y=0,
      xlim  =c(-0.5, 0.5),
      ylim = c(-0.5, 0.5),
      type = 'n',
-     main = "Outliers on Eigenvalues Col. 1 & 2",
+     main = "\'Outliers\' On The 1st & 2nd Principal Component",
      xlab = 'PC1',
      ylab = 'PC2')
-opar <- par(new = TRUE, ## add a new layer
-            mar = c(0,0,0,0)) ## with no margins margins
+abline(h = 0, col = "grey")
+abline(v = 0, col = "grey")
+#-------------------------------------------------
+## 2nd Layer
+## add a new layer with no margins margins
+opar <- par(new = TRUE, mar = c(0,0,0,0))
 for (i in 1:20) {
     arrows(x0 = 0, 
            y0 = 0, 
            x1 = pc1_values[i], 
            y1 = pc2_values[i], 
            length = 0.05, 
-           col = "#3831F5")
+           col = "#555753")
 }
-opar <- par(new = TRUE, ## add a new layer
-            mar = c(0,0,0,0)) ## with no margins margins
-with(pca_vals, text(PC2 ~ PC1,
-                    labels = row.names(pca_vals$rotation),
-                    pos = 3))
-# opar <- par(new = TRUE, ## add a new layer
-#             mar = c(0,0,0,0)) ## with no margins margins
-# plot(0.25, 0.25, col = "red", pch = 8)
-```
-
-
-To get Specific values use 'pca_values[["x"]]' USE: Columns PC1 and PC2
-
-```{r}
-
+#-------------------------------------------------
+## 3rd Layer
+## add a new layer with no margins margins
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+with(pca_values, text(pc2_values ~ pc1_values, labels = row.names(pca_values$rotation), pos = 3))
+#-------------------------------------------------
+## 4th Layer: Outlier Points??
+## add a new layer with no margins margins
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+plot(0.25, 0.25, col = "red", pch = 4)
 ```
 
 

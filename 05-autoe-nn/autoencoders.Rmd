@@ -1,65 +1,59 @@
 ---
 title: "Use Autoencoder as a Feature Engineering Technique" 
 subtitle: "For Killing Time at the Hospital"
-
-output:
-  html_document: 
-    code_download: true
-    # code_folding: hide
-    highlight: pygments
-    # number_sections: yes
-    theme: "flatly"
-    toc: TRUE
-    toc_float: TRUE
 ---
 
-https://rpubs.com/chidungkt/449797
+* https://rpubs.com/chidungkt/449797
 
-```{r setup,include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+* [Investigation and improvement of multi-layer perceptron neural networks for credit scoring](https://www.sciencedirect.com/science/article/pii/S0957417414007726)
+
+# Title: Autoencoders TEST
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+Libraries = c("doMC", "knitr", "readr", "tidyverse", "magrittr", "caret", "h2o")
+for(p in Libraries){
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-# Introduction
+Import data & data handling
+```{r}
+setwd("~/Dropbox/a1_mcc_project/05-autoe-nn")
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_factor(levels = c("0","1")), 
+                                             PID = col_skip(), TotalAA = col_skip()))
+#View(c_m_TRANSFORMED)
+```
 
-[Investigation and improvement of multi-layer perceptron neural networks for credit scoring](https://www.sciencedirect.com/science/article/pii/S0957417414007726)
+Partition data into training and testing sets
+```{r}
+set.seed(1000)
+index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
 
+training_set <- c_m_TRANSFORMED[ index,]
+test_set     <- c_m_TRANSFORMED[-index,]
 
-![](C:/Users/Zbook/Documents/result_german.png)
+Class_train <- as.factor(training_set$Class)
+Class_test <- as.factor(test_set$Class)
+```
 
 # Default Random Forest
 
 ```{r, fig.fullwidth = TRUE, fig.height=8, fig.width=12}
-#=================================
-#  Stage 1: Data Pre-processing
-#=================================
-
-# Clear workspace: 
-rm(list = ls())
-
-# Load packages and data: 
-library(tidyverse)
-library(magrittr)
-library(caret)
-data("GermanCredit")
-
-# Split data: 
-set.seed(1)
-id <- createDataPartition(y = GermanCredit$Class, p = 0.8, list = FALSE)
-df_train <- GermanCredit[id, ] # For training
-df_test <- GermanCredit[-id, ] # For testing
-
-
 # Activate h2o package for deep learning: 
-library(h2o)
-h2o.init(nthreads = -1, max_mem_size = "16g")
-h2o.no_progress()
+h2o.init(nthreads = 3)   # max_mem_size = "16g")
+#h2o.no_progress() # Progress Bar
 
 # Convert to H2o Frame:
-train <- as.h2o(df_train)
-test <- as.h2o(df_test)
+train <- as.h2o(training_set)
+test <- as.h2o(test_set)
 
 # Identify inputput and output: 
-y <- "Class"
+y <- Class_train
 x <- setdiff(names(train), y)
 
 # Train Default Random Forest: 
@@ -115,12 +109,9 @@ pure_nn %>% results_df() %>% vis_results()
 
 # Autoencoder as a Feature Engineering Technique
 
+# Build a autoencoder(Version 1)
 
-
-```{r, fig.fullwidth = TRUE, fig.height=8, fig.width=12}
-
-# Buil a autoencoder: 
-
+```{r, fig.fullwidth=TRUE, fig.height=8, fig.width=12}
 autoencoder <- h2o.deeplearning(x = x,
                                 training_frame = train, 
                                 autoencoder = TRUE, 
@@ -129,21 +120,15 @@ autoencoder <- h2o.deeplearning(x = x,
                                 epochs = 30, 
                                 activation = "Tanh")
 
-#============================================================
-#  Use Autoencoder as Feature Engineering Method (Version 1)
-#============================================================
-
-
 train_autoen <- h2o.predict(autoencoder, train) %>% 
-  as.data.frame() %>% 
-  mutate(Class = df_train$Class) %>% 
-  as.h2o()
+                as.data.frame() %>% 
+                mutate(Class = df_train$Class) %>% 
+                as.h2o()
 
 test_autoen <- h2o.predict(autoencoder, test) %>% 
-  as.data.frame() %>% 
-  mutate(Class = df_test$Class) %>% 
-  as.h2o()
-
+               as.data.frame() %>% 
+               mutate(Class = df_test$Class) %>% 
+               as.h2o()
 
 nn_autoen_layers1 <- h2o.randomForest(x = setdiff(colnames(train_autoen), "Class"), 
                                       y = y, 
@@ -151,24 +136,21 @@ nn_autoen_layers1 <- h2o.randomForest(x = setdiff(colnames(train_autoen), "Class
                                       nfolds = 10, 
                                       stopping_rounds = 5, 
                                       stopping_metric = "AUC", 
-                                      seed = 29)
+                                      seed = 1000)
 
 
-
-#============================================================
 #  Use Autoencoder as Feature Engineering Method (Version 2)
-#============================================================
 
 train_features_l2 <- h2o.deepfeatures(autoencoder, train, layer = 2) %>%
-  as.data.frame() %>%
-  mutate(Class = df_train$Class) %>% 
-  as.h2o()
+                     as.data.frame() %>%
+                     mutate(Class = df_train$Class) %>% 
+                     as.h2o()
 
 
 test_features_l2 <- h2o.deepfeatures(autoencoder, test, layer = 2) %>%
-  as.data.frame() %>%
-  mutate(Class = df_test$Class) %>% 
-  as.h2o()   
+                    as.data.frame() %>%
+                    mutate(Class = df_test$Class) %>% 
+                    as.h2o()   
 
 
 nn_autoen_layers2 <- h2o.randomForest(x = setdiff(colnames(train_features_l2), "Class"), 
@@ -179,21 +161,18 @@ nn_autoen_layers2 <- h2o.randomForest(x = setdiff(colnames(train_features_l2), "
                                       stopping_metric = "AUC", 
                                       seed = 29)
 
-
-#============================================================
 #  Use Autoencoder as Feature Engineering Method (Version 3)
-#============================================================
 
 train_features_l3 <- h2o.deepfeatures(autoencoder, train, layer = 3) %>%
-  as.data.frame() %>%
-  mutate(Class = df_train$Class) %>% 
-  as.h2o()
+                     as.data.frame() %>%
+                     mutate(Class = df_train$Class) %>% 
+                     as.h2o()
 
 
 test_features_l3 <- h2o.deepfeatures(autoencoder, test, layer = 3) %>%
-  as.data.frame() %>%
-  mutate(Class = df_test$Class) %>% 
-  as.h2o()
+                    as.data.frame() %>%
+                    mutate(Class = df_test$Class) %>% 
+                    as.h2o()
 
 
 nn_autoen_layers3 <- h2o.randomForest(x = setdiff(colnames(train_features_l3), "Class"), 
@@ -208,104 +187,87 @@ nn_autoen_layers3 <- h2o.randomForest(x = setdiff(colnames(train_features_l3), "
 #  Compare between models
 #==========================
 
-do.call("bind_rows", 
-        lapply(list(pure_nn, 
-                    nn_autoen_layers1, 
-                    nn_autoen_layers2, 
-                    nn_autoen_layers3), results_df)) -> df_com
-
+do.call("bind_rows", lapply(list(pure_nn,
+                                 nn_autoen_layers1, 
+                                 nn_autoen_layers2, 
+                                 nn_autoen_layers3), results_df)) -> df_com
 
 df_com %<>% mutate(Model = rep(c("Original", "Layer1", "20Var", "61Var"), each = 10, time = 1))
 
 theme_set(theme_minimal())
-df_com %>% 
-  gather(a, b, -Model) %>% 
-  ggplot(aes(Model, b, fill = Model, color = Model)) + 
-  geom_boxplot(alpha = 0.3) + 
-  scale_y_continuous(labels = scales::percent) + 
-  facet_wrap(~ a, scales = "free") + 
-  labs(x = NULL, y = NULL, title = "Model Performance")
 
+df_com %>% gather(a, b, -Model) %>% 
+           ggplot(aes(Model, b, fill = Model, color = Model)) + 
+           geom_boxplot(alpha = 0.3) + 
+           scale_y_continuous(labels = scales::percent) + 
+           facet_wrap(~ a, scales = "free") + 
+           labs(x = NULL, y = NULL, title = "Model Performance")
 
-df_com %>% 
-  group_by(Model) %>% 
-  summarise_each(funs(mean), Accuracy, AUC, Logloss, Precision, Recall, Specificity) %>% 
-  arrange(-Accuracy) %>% 
-  mutate_if(is.numeric, function(x) {round(x, 3)}) %>% 
-  knitr::kable()
-
+df_com %>% group_by(Model) %>% 
+           summarise_each(funs(mean), Accuracy, AUC, Logloss, Precision, Recall, Specificity) %>% 
+           arrange(-Accuracy) %>% 
+           mutate_if(is.numeric, function(x) {round(x, 3)}) %>% 
+           knitr::kable()
 ```
 
- Feature Engineering. 
+Feature Engineering. 
 
 # Optimal Threshold
 
-
 ```{r, fig.fullwidth = TRUE, fig.height=8, fig.width=12}
-eval_fun <- function(thre) {
-  lapply(1:10, function(x) {
-    
-    set.seed(x)
-    id <- createDataPartition(y = df_test$Class, p = 0.5, list = FALSE)
-    test_df <- df_test[id, ]
+evaluate_func <- function(thre) {
+    lapply(1:10, function(x) {
+        set.seed(x)
+        id <- createDataPartition(y = df_test$Class, p = 0.5, list = FALSE)
+        test_df <- df_test[id, ]
   
-    du_bao_prob <- h2o.predict(pure_nn, test_df %>% as.h2o()) %>% 
-      as.data.frame() %>% 
-      pull(Bad)
+        du_bao_prob <- h2o.predict(pure_nn, test_df %>% as.h2o()) %>% 
+                       as.data.frame() %>% 
+                       pull(Bad)
     
-    du_bao <- case_when(du_bao_prob >= thre ~ "Bad", 
+       du_bao <- case_when(du_bao_prob >= thre ~ "Bad", 
                         du_bao_prob < thre ~ "Good") %>% as.factor()
-    cm <- confusionMatrix(du_bao, test_df$Class, positive = "Bad")
+       cm <- confusionMatrix(du_bao, test_df$Class, positive = "Bad")
     
-    bg_gg <- cm$table %>% 
-      as.vector() %>% 
-      matrix(ncol = 4) %>% 
-      as.data.frame() %>% 
-      rename(TP = V1, FN = V2, FP = V3, TN = V4)
-  
-    
-    kq <- c(cm$overall, cm$byClass) 
-    ten <- kq %>% as.data.frame() %>% row.names()
-    
-    kq %>% 
-      as.vector() %>% 
-      matrix(ncol = 18) %>% 
-      as.data.frame() -> all_df
-    
-    names(all_df) <- ten
-    all_df <- bind_cols(all_df, bg_gg)
-    return(all_df)
-  })
-}
-
-
-
+       bg_gg <- cm$table %>% 
+                as.vector() %>% 
+                matrix(ncol = 4) %>% 
+                as.data.frame() %>% 
+                rename(TP = V1, FN = V2, FP = V3, TN = V4)
+       
+       kq <- c(cm$overall, cm$byClass) 
+       ten <- kq %>% as.data.frame() %>% row.names()
+       
+       kq %>% as.vector() %>% matrix(ncol = 18) %>% as.data.frame() -> all_df
+       
+       names(all_df) <- ten
+       all_df <- bind_cols(all_df, bg_gg)
+       return(all_df)
+    })
+  }
 
 system.time(so_sanh_list <- lapply(seq(0.05, 0.8, by = 0.05), eval_fun))
 
 so_sanh_df <- do.call("bind_rows", so_sanh_list) 
 
-so_sanh_df %<>% 
-  mutate(Threshold = lapply(seq(0.05, 0.8, by = 0.05), function(x) {rep(x, 10)}) %>% unlist())
+so_sanh_df %<>% mutate(Threshold = lapply(seq(0.05, 0.8, by = 0.05), 
+                                          function(x) {rep(x, 10)}) %>% unlist())
 
 theme_set(theme_minimal())
-so_sanh_df %>% 
-  group_by(Threshold) %>% 
-  summarise_each(funs(median), Accuracy, Kappa, Sensitivity, Specificity) %>% 
-  gather(Metric, b, -Threshold) %>% 
-  ggplot(aes(Threshold, b, color = Metric)) + 
-  geom_line() + 
-  geom_point(size = 3) + 
-  scale_y_continuous(labels = scales::percent) + 
-  theme(panel.grid.minor = element_blank()) + 
-  scale_x_continuous(breaks = seq(0.05, 0.8, by = 0.05)) + 
-  labs(y = "Accuracy Rate", 
-       title = "Variation of Classifier's Metrics by Threshold")
+so_sanh_df %>% group_by(Threshold) %>% 
+               summarise_each(funs(median), Accuracy, Kappa, Sensitivity, Specificity) %>% 
+               gather(Metric, b, -Threshold) %>% 
+               ggplot(aes(Threshold, b, color = Metric)) + 
+               geom_line() + 
+               geom_point(size = 3) + 
+               scale_y_continuous(labels = scales::percent) + 
+               theme(panel.grid.minor = element_blank()) + 
+               scale_x_continuous(breaks = seq(0.05, 0.8, by = 0.05)) + 
+                                  labs(y = "Accuracy Rate", 
+                                       title = "Variation of Classifier's Metrics by Threshold")
 ```
 
  (Sensitivity)Good (Specificity) Accuracy 0.7. 
-
-
 
 
 ```{r, fig.fullwidth = TRUE, fig.height=8, fig.width=12}
@@ -341,12 +303,10 @@ vis_detection_rate_dl <- function(x) {
          subtitle = paste0("Detecting Rate for Bad Cases: ", rate, "%", ", ", "Accuracy: ", acc))
   }
 
-
 gridExtra::grid.arrange(vis_detection_rate_dl(1), 
                         vis_detection_rate_dl(2), 
                         vis_detection_rate_dl(3), 
                         vis_detection_rate_dl(4))
-
 ```
 
 

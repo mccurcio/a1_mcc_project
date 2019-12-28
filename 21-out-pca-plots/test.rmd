@@ -39,6 +39,16 @@ Then, let’s use the text() function to add the text labels to the data.  It ha
 
 with(LifeCycleSavings[1:9,], text(sr~dpi, labels = row.names(LifeCycleSavings[1:9,]), pos = 4))
 
+============================
+plot(0,0) ## start a plot
+opar <- par(new = TRUE, ## add a new layer
+            mar = c(0,0,0,0)) ## with no margins margins
+## set up the plotting area for this layer
+plot(1,1,xlim=c(0,1),ylim=c(0,1),type='n',xlab='',ylab='') 
+# arrows(0.6,0.6,0.8,1) ## add arrow
+par(opar) ## return the plot parameters to their prior values
+=======================================================
+
 
 ```{r fig.height=5, fig.width=5}
 plot(PC2~PC1, 
@@ -57,3 +67,8 @@ with(pca_vals, text(PC2 ~ PC1,
 
 ```
 
+```{r}
+pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
+biplot(pca_values)
+#summary(pca_values)
+```
