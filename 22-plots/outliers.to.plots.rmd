@@ -1,10 +1,10 @@
 ---
-title: "Outlier Collection and Mapping"
+title: "Outliers to plots"
 author: "MCC"
 output: html_document
 ---
 
-# Outlier Collection and Mapping(?)
+# Outliers to plots
 
 ## Introduction
 

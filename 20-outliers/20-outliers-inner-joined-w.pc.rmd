@@ -1,0 +1,74 @@
+---
+title: "20-Outliers-Inner-Joined-wPC"
+author: "MCC"
+date: "12/29/2019"
+output: html_document
+---
+
+# 20-Outliers-Inner-Joined-wPC
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+# rm(list = ls())
+Libraries = c("knitr", "readr")
+
+for(p in Libraries){
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE)
+```
+
+## Prepare PCA loadings of PC1 and PC2 for all 2340 proteins
+```{r}
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_skip(),
+                                             PID = col_skip(), 
+                                             TotalAA = col_skip()))
+# View(c_m_TRANSFORMED)
+
+pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
+row_pc12 <- cbind(1:2340, pca_values$x[,1], pca_values$x[,2])
+
+write.table(row_pc12,
+            file = "../00-data/05-outliers_inner_join_pc/row_pc12.csv",
+            col.names = c("rowNum","PC1", "PC2"),
+            sep = ",",
+            row.names = F)
+
+dim(row_pc12)
+```
+
+## Logit set inner-join with row_pc12
+```{r message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+logit <- read_csv("../00-data/04-ordered_unique_outliers/logit_nums.csv")
+logit <- sort(unique(unlist(logit[, keep], use.names = FALSE)))
+#logit_loadings <- merge(x = logit, y = row_pc12, by = "rowNum")
+```
+
+04-ordered_unique_outliers
+
+# Change colname of one column
+colnames(data)[colnames(data) == "Old_Name"] <- "New_Name"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

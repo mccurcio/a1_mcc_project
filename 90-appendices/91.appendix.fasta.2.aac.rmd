@@ -21,7 +21,7 @@ for (p in Libraries) {  # Install Libraries
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
+opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE, align = "center")
 ```
 
 Import uniprot-myoglobin.fasta - Read peptide lines

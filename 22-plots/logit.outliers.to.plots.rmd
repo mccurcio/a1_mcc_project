@@ -1,0 +1,157 @@
+---
+title: "Outliers to plots"
+author: "MCC"
+output: html_document
+---
+
+# Outliers to plots
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+Libraries = c("knitr", "readr")
+
+for(p in Libraries){
+    library(p, character.only = TRUE)
+}
+```
+
+```{r include=FALSE}
+# rm(list = ls())
+opts_chunk$set(cache = TRUE)
+```
+
+## Prepare PCA loadings of PC1 and PC2 for all 2340 proteins
+```{r echo=TRUE}
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_skip(),
+                                             PID = col_skip(), 
+                                             TotalAA = col_skip()))
+# View(c_m_TRANSFORMED)
+
+pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
+
+pca_rot1 <- pca_values$rotation[,1]
+pca_rot2 <- pca_values$rotation[,2]
+
+pc_1_2_values <- cbind(1:2340, pca_values$x[,1], pca_values$x[,2])
+dim(pc_1_2_values)
+
+setwd("~/Dropbox/a1_mcc_project/22-plots")
+write_csv(x = as.data.frame(pc_1_2_values),
+          path = "pc_1_2_values.csv")
+```
+
+## MERGE
+
+df <- merge(x = df1, y = df2, by = "CustomerId")
+
+tab <- merge(x=dwd_nogap, y=dwd_gap, by.x='x1', by.y='x2', fill=-9999)
+
+## Logit inner-join with PC1 and PC2, `pc_1_2_values`
+```{r}
+logit_nums <- read_csv("~/Dropbox/a1_mcc_project/00-data/04-ordered_unique_outliers/logit_nums.csv")
+#View(logit_nums)
+
+logit_loads <- merge(x = logit_nums, y = pc_1_2_values, by.x='rowNum', by.y='V1')
+
+dim(logit_loads)
+
+head(logit_loads)
+
+write.table(logit_loads,
+            file = "logit_nums.csv",
+            col.names = c("rowNum","PC1", "PC2"),
+            sep = ",",
+            row.names = F)
+
+```
+
+
+```{r}
+# PLOT ME
+plot(x = logit_loads$V2, 
+     y = logit_loads$V3, 
+     main = "pc1 vs pc2 outliers of logit",
+     xlab = "pc1",
+     ylab = "pc2",
+     pch = 6,
+     col = "blue")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(logit_loads$V2, logit_loads$V3, labels = logit_loads$rowNum, pos=3)
+
+```
+
+# LOGIT PLOT
+```{r fig.height=6, fig.width=6}
+## 1st Layer
+plot(x=0, y=0,
+     xlim  =c(-10, 10),
+     ylim = c(-5, 5),
+     type = 'n',
+     main = "\'Outliers\' On The 1st & 2nd Principal Component",
+     xlab = 'PC1',
+     ylab = 'PC2')
+abline(h = 0, col = "grey")
+abline(v = 0, col = "grey")
+#-------------------------------------------------
+## 2nd Layer
+## add a new layer with no margins margins
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+for (i in 1:118) {
+    arrows(x0 = 0, 
+           y0 = 0, 
+           x1 = pca_rot1[i], 
+           y1 = pca_rot2[i], 
+           length = 1, 
+           col = "#555753")
+}
+#-------------------------------------------------
+## 3rd Layer
+## add a new layer with no margins margins
+# opar <- par(new = TRUE, mar = c(0,0,0,0))
+# with(pca_values, text(pc2_values ~ pc1_values, labels = row.names(pca_values$rotation), pos = 3))
+#-------------------------------------------------
+## 4th Layer: Outlier Points??
+## add a new layer with no margins margins
+# opar <- par(new = TRUE, mar = c(0,0,0,0))
+# plot(0.25, 0.25, col = "red", pch = 4)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Logit set
+```{r message=FALSE, warning=FALSE}
+
+
+#logit_loads <- merge(x = logit_nums_copy, y = pc_1_2_values_copy, by = "rowNum")
+
+write_csv(x = as.data.frame(logit), 
+          path = "../00-data/04-ordered_unique_outliers/logit_nums.csv")
+
+# write.table(c(df, df1),
+#             file = "../00-data/04-ordered_unique_outliers/logit_nums.csv",
+#             col.names = c("A","B"),
+#             sep = ",",
+#             row.names = F)
+
+
+
+length(logit)
+logit # Display numbers
+```
+
