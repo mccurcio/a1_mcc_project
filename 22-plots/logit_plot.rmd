@@ -1,0 +1,70 @@
+
+# LOGIT plot
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+Libraries = c("knitr", "readr")
+
+for(p in Libraries){
+    library(p, character.only = TRUE)
+}
+# rm(list = ls())
+opts_chunk$set(cache = TRUE, fig.align = "center")
+```
+
+## Prepare PCA loadings of PC1 and PC2 for all 2340 proteins
+```{r echo=TRUE}
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_skip(),
+                                             PID = col_skip(), 
+                                             TotalAA = col_skip()))
+
+pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
+
+pc_1_2_values <- cbind(1:2340, pca_values$x[,1], pca_values$x[,2]) # Save all obs. loadings
+write.table(pc_1_2_values,
+            file = "../00-data/05-outliers_inner_join_pc/pc_1_2_values.tsv",
+            col.names = c("rowNum","PC1", "PC2"),
+            sep = "\t",
+            row.names = F)
+
+pc_rotation_1 <- pca_values$rotation[,1] # Save the rotations for PC1 & PC2
+pc_rotation_2 <- pca_values$rotation[,2]
+```
+
+## MERGE
+
+## Logit Numbers inner-join with PC1 & PC2, `pc_1_2_values`
+```{r message=FALSE, warning=FALSE}
+pc_1_2_values <- read_tsv("../00-data/05-outliers_inner_join_pc/pc_1_2_values.tsv")
+logit_nums <- read_csv("../00-data/04-ordered_unique_outliers/logit_nums.csv")
+
+logit_loads <- merge(x = logit_nums, y = pc_1_2_values, by = 'rowNum')
+
+write.table(logit_loads,
+            file = "logit_nums.csv",
+            col.names = c("rowNum","PC1", "PC2"),
+            sep = ",",
+            row.names = F)
+
+```
+
+## PLOT logit_loads
+```{r fig.height=6, fig.width=6}
+plot(x = logit_loads$PC1, 
+     y = logit_loads$PC2, 
+     main = "Logit FP/FN On PC 1 & 2 Axes",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 4,
+     cex = 0.8,
+     col = "red")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(logit_loads$PC1, 
+     logit_loads$PC2, 
+     labels = logit_loads$rowNum, 
+     col = "#888A85",
+     cex = 0.8, 
+     pos = 2)
+
+```

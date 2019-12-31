@@ -6,45 +6,15 @@
 
 ## Four Step Analysis
 
-At this stage data should be inspected in a careful and structured way. Hence, I have chosen the following four step process: 
+At this stage data should be inspected in a careful and structured way. Hence, I have chosen a four step process: 
 
-**Hypothesize -> Summarize -> Visualize -> Normalize**
+>**Hypothesize -> Summarize -> Visualize -> Normalize**
 
-This four step process is a modification of the more common three step exploratory data analysis (a.k.a.  Summarize, Visualize, Normalize).
+This four step process is an oversimplification of a much more detailed process which is outlined below.  I have derived this process as an amalgamation of several other approaches.
 
-## Hypothesize - Questions During EDA
-
-Although exploratory data analysis does not always have a formal hypothesis testing portion, I do however pose several questions concerning the structure, quality and types of data.
-
-1. Do the features have large skewed distributions? If skew values greater than 2.0 are found can a transformation be used to normalize the skewed feature?
-
-1. Can the Random Forest technique known as Boruta[^2], be used for feature importance or reduction? 
-
-[^2]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11
-
-1. Will coefficients of correlation (R) find collinearity?
-
-1. Will principle component analysis (PCA) be useful?
-
-1. Does the data have certain biases either known or unknown?  
-
-1. Is the data *representative* of the entire experimental space?
-
-1. Is missing data an issue?
-
-1. Are the variables included in the dataset the ones we were expecting?
-
-1. Are the values of these variables consistent with what we expect?
-
-1. Do the variables in the dataset seem to exhibit the kinds of relationships
-we expect? (Indeed, what relationships do we expect, and why?)[^3]
-
-[^3]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
-
-### Useful Guides for Exploratory Data Analysis
+#### Useful Guides for Exploratory Data Analysis {-}
 
 The hybrid process which I use to summarize the amino acid dataset is based on three sets of guidelines;  
-
 - NIST Handbook of Statistics,[^4]  
 
 - Roger Peng's booklet on 'Exploratory Data Analysis with R,' [^5]
@@ -57,40 +27,62 @@ The hybrid process which I use to summarize the amino acid dataset is based on t
 
 [^6]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018, ISBN:9781138480605
 
-----
+## Hypothesize - Questions During EDA
+
+Although exploratory data analysis does not always have a formal hypothesis testing portion, I do however pose several questions concerning the structure, quality and types of data.
+
+1. Do the independent variables of this study have large skewed distributions?
+    + If skew values greater than 2.0 are found, can a transformation be used for normalization?
+    + If so, what transformation should be used?
+
+2. Can **Feature Selection** be used and which procedures are appropriate?
+    + Can the Random Forest technique known as Boruta[^2], be used for feature importance or reduction?
+    + Will coefficients of correlation (R) find collinearity and reduce the number of features?
+    + Will principle component analysis (PCA) be useful in finding hidden structures of patterns?
+    + Can PCA be used successfully for Feature Selection?
+
+[^2]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11
+
+3. What is the structure of the data?
+    + Is the data representative of the entire experimental space?
+    + Is missing data an issue?
+    + Does the data have certain biases either known or unknown?
+    + What relationships do we expect from these variables?[^3]
+
+[^3]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
 
 ## Begin Exploratory Data Analysis
 
 ### Import libraries
+
 ```{r message=FALSE}
 Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
 
 for (i in Libraries) {
     library(i, character.only = TRUE)
 }
-
-opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
+opts_chunk$set(cache = TRUE)
 ```
 
-### Import data
+### Import RAW data
 
 ```{r message=FALSE, warning=FALSE}
-c_m_RAW_AAC <- read_csv("../00-data/aac_dpc_values/c_m_RAW_AAC.csv")
+c_m_RAW_AAC <- read_csv("../00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
 ```
 
-### Visually inspect files
+### Visually inspect RAW data files
 
 - Use command line interface followed by the command `less`.
 - Check for binary instead of ASCII and bad Unicode.
 
-### Inspect dataframe structure, `str()` 
+### Inspect RAW dataframe structure, `str()` 
 
 ```{r echo=FALSE}
 str(c_m_RAW_AAC)
 ```
 
-### Check data `head` & `tail`
+### Check RAW data `head` & `tail`
 
 ```{r}
 head(c_m_RAW_AAC, n = 2)
@@ -99,7 +91,7 @@ head(c_m_RAW_AAC, n = 2)
 tail(c_m_RAW_AAC, n = 2)
 ```
 
-### Check data types
+### Check RAW data types
 
 ```{r echo=TRUE}
 is.data.frame(c_m_RAW_AAC)
@@ -109,13 +101,13 @@ class(c_m_RAW_AAC$PID)          # Col 3
 class(c_m_RAW_AAC$A)            # Col 4
 ```
 
-### Check dataframe dimensions
+### Check RAW dataframe dimensions
 
 ```{r}
 dim(c_m_RAW_AAC)
 ```
 
-### Check for missing values
+### Check RAW for missing values
 
 - **No missing values found.**
 ```{r}
@@ -126,7 +118,7 @@ apply(is.na(c_m_RAW_AAC), 2, which)
 # Show rows where NA's is not zero
 ```
 
-### Count of polypeptides by group
+### Count RAW polypeptides by group
 
 - Class: **0** = Control, **1** = Myoglobin
 ```{r echo=FALSE}
@@ -134,18 +126,18 @@ class_table <- table(c_m_RAW_AAC$Class)
 class_table
 ```
 
-### Numerical summary of features
+### Numerical summary of RAW features
 
 ```{r echo=FALSE}
 summary(c_m_RAW_AAC)
 ```
 
-## Visualize With Descriptive Statistics
+## Visualize RAW Data With Descriptive Statistics
 
 Formulas for mean:
 $$E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i$$
 
-### Scatter plot of means of *Myoglobin-Control* amino acid composition `c_m_RAW_AAC` dataframe
+### Scatter plot of means of *Myoglobin-Control* amino acid composition of `c_m_RAW_AAC` dataframe
 
 - This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
@@ -161,14 +153,13 @@ plot(AA_ave,
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[,4:23]))
 ```
 
+* Pseudo-code for Data manipulation for Grouped Bar charts
+    + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
+    + A-2. Determine column means for each protein class
+    + A-3. Calculate percentage values
+    + A-4. Produce Grouped Bar Plot
 
 ```{r cache=TRUE, include=FALSE}
-# Pseudo-code:
-# A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
-# A-2. Determine column means for each protein class
-# A-3. Calculate percentage values
-# A-4. Produce Grouped Bar Plot
-
 # A-1
 ctrl_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "0"), ]
 mgb_set  <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "1"), ]
@@ -195,7 +186,7 @@ barplot(percent_aa,
         beside = T)
 ```
 
-### Means of percent amino acid composition of control & myoglobin categories
+### Means of percent amino acid composition of control & myoglobin categories, RAW data
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 data2 <- data.frame(ctrl_means, mgb_means)
@@ -210,7 +201,7 @@ barplot(percent_aa2,
         beside = T)
 ```
 
-### Boxplots of grand-means of overall amino acid composition
+### Boxplots of grand-means of overall amino acid composition, RAW data
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 boxplot(c_m_RAW_AAC[,4:23], 
@@ -220,7 +211,7 @@ boxplot(c_m_RAW_AAC[,4:23],
         las = 1)
 ```
 
-### Boxplots of amino acid compositions for control (only)
+### Boxplots of amino acid compositions for control (only), RAW data
 
 ```{r echo=FALSE}
 boxplot(ctrl_set[, 4:23], 
@@ -230,7 +221,7 @@ boxplot(ctrl_set[, 4:23],
         las = 1)
 ```
 
-### Boxplots of amino acid compositions for myoglobin (only)
+### Boxplots of amino acid compositions for myoglobin (only), RAW data
 
 ```{r echo=FALSE}
 boxplot(mgb_set[, 4:23], 
@@ -258,9 +249,7 @@ boxplot(mgb_set[, 4:23],
         las = 1)
 ```
 
-
-
-### Boxplots of Length of Polypeptides For Myoglobin, Control & Combined
+### Boxplots of Length of Polypeptides For Myoglobin, Control & Combined, RAW data
 
 ```{r echo=FALSE}
 ctrl_totalaa <- ctrl_set[,2]
@@ -278,7 +267,7 @@ boxplot(data,
 axis(1, at=1:3, labels = c("Control", "Myoglobin", "Combined"))
 ```
 
-### Plot of normalized standard deviations / coefficient of variance (CV)
+### Plot of normalized standard deviations / coefficient of variance (CV), RAW data
 
 Standard deviations are sensitive to scale. Therefore I compare the normalized standard deviations. This normalized standard deviation is more commonly called coefficient of variation (CV).
 
@@ -304,7 +293,7 @@ text(x = 19, y = 1.1, label="W=0.946", col="red")
 AA_var_norm
 ```
 
-### Skewness of distributions
+### Skewness of distributions, RAW data
 
 $$Skewness ~= E\left[ \left( \frac{X - \mu}{\sigma(x)} \right)^3 \right] ~~~~ where ~~~~ \sigma(x) \equiv \sqrt{  E[x - \mu]^2 }$$
 
@@ -328,7 +317,7 @@ text(x = 5, y = 2.4, label="F=2.1", col="red")
 text(x = 8, y = 2.4, label="I=2.2", col="red")
 ```
 
-### QQ-Plots of 20 amino acids
+### QQ-Plots of 20 amino acids, RAW data
 
 ```{r echo=FALSE}
 AA = c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", 
@@ -339,7 +328,7 @@ for (i in 4:23) {
 }
 ```
 
-### Determine coefficients of correlation
+### Determine coefficients of correlation, RAW data
 
 An easily interpretable test, is correlation 2D-plot for investigating multicollinearity or feature reduction. It is clear that fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they are measuring the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^11]
 
@@ -383,19 +372,18 @@ c_m_corr_mat["T", "N"]
 - According to Max Kuhn[^9] correlation coefficients need only be addressed if the |R| >= 0.75.
 - Therefore is **no reason to consider multicollinearity**.
 
-### How to reduce features given high correlation (|R| >= 0.75)
-
-If the correlation plot produced any values greater than or equal to (|R| >= 0.75) then we could consider feature elimination. This interesting heuristic approach would be used for determining which feature to eliminate.[^12]
+* How to reduce features given high correlation (|R| >= 0.75)
+    + Calculate the correlation matrix of the predictors.
+    + If the correlation plot produced of any two variables is greater than or equal to (|R| >= 0.75) then we could consider feature elimination. This interesting heuristic approach would be used for determining which feature to eliminate.[^12]
+    + Determine if the two predictors associated with the largest absolute pairwise correlation (R > |0.75|), call them predictors A and B.
+    + Determine the average correlation between A and the other variables. Do the same for predictor B.
+    + If A has a larger average correlation, remove it; otherwise, remove predictor B.
+    + Repeat Steps 2–4 until no absolute correlations are above the threshold.
 
 [^12]:"Applied Predictive Modeling", Max Kuhn and Kjell Johnson, Springer Publishing, 2018, P.47 (http://appliedpredictivemodeling.com/)
 
-1. Calculate the correlation matrix of the predictors.
-2. Determine the two predictors associated with the largest absolute pairwise correlation (R > |0.75|), call them predictors A and B.
-3. Determine the average correlation between A and the other variables. Do the same for predictor B.
-4. If A has a larger average correlation, remove it; otherwise, remove predictor B.
-5. Repeat Steps 2–4 until no absolute correlations are above the threshold.
 
-### Boruta - dimensionality reduction
+### Boruta - dimensionality reduction, RAW data
 
 ```{r}
 c_m_class_20 <- c_m_RAW_AAC[, -c(2,3)]  # Remove TotalAA & PID
@@ -458,15 +446,13 @@ plotImpHistory(boruta_output)
 
 **All features are important. None should be dropped.**
 
-## Conclusions For EDA
+## Conclusions For EDA, RAW data
 
-Due to prior subject knowledge in the area of utilizing AAC and DPC, it was determined that initially the machine learning modeling should be carried out with the single amino acid percent composition. This is primarily due to the fact that many of the di-peptide percent compositions had skews greater than 2 and some reaching as high as 40. This is most likely due to the lack of large sample sizes used.
-
-It was also found that three amino acids from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
+It was determined that three amino acids (C, F, I) from the single amino acid percent composition should be transformed by using the square root function. A quick investigation (data not shown) showed that a square root transformation would be sufficient. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
 | Protein | Initial skewness | Skew after square root transform |
-|:-------:|:----------------:|:--------------------------------:|
-| C | 2.538162 | 0.3478132 |
-| F | 2.128118 | -0.102739 |
-| I | 2.192145 | 0.2934749 |
+|:--------|:----------------:|:--------------------------------:|
+| C, Cysteine | 2.538162 | 0.3478132 |
+| F, Phenolalanine | 2.128118 | -0.102739 |
+| I, Isoleucine | 2.192145 | 0.2934749 |
 

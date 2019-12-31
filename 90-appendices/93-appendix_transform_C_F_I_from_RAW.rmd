@@ -7,8 +7,8 @@ output: html_document
 
 ```{r}
 library(readr)
-setwd("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values")
-c_m_RAW_AAC <- read_csv("c_m_RAW_AAC.csv", 
+
+c_m_RAW_AAC <- read_csv("../00-data/02-aac_dpc_values/c_m_RAW_AAC.csv", 
                         col_types = cols(Class = col_factor(levels = c("0","1"))))
 c_m_TRANSFORMED_AAC <- c_m_RAW_AAC
 ```
@@ -21,8 +21,9 @@ c_m_TRANSFORMED_AAC[, 5] <- sqrt(c_m_TRANSFORMED_AAC[, 5]) # C
 c_m_TRANSFORMED_AAC[, 8] <- sqrt(c_m_TRANSFORMED_AAC[, 8]) # F
 c_m_TRANSFORMED_AAC[,11] <- sqrt(c_m_TRANSFORMED_AAC[,11]) # I
 
-setwd("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values")
-write_csv(c_m_TRANSFORMED_AAC, "c_m_TRANSFORMED.csv", col_names = T)
+write_csv(c_m_TRANSFORMED_AAC, 
+          file = "../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv", 
+          col_names = T)
 ```
 
 

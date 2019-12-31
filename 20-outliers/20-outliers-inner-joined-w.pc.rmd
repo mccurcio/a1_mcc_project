@@ -30,15 +30,38 @@ c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
 
 pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
 row_pc12 <- cbind(1:2340, pca_values$x[,1], pca_values$x[,2])
+colnames(row_pc12)[(row_pc12)[1]] <- "rowNum"
+names(row_pc12)[,2] <- "PC1"
+names(row_pc12)[,3] <- "PC2"
+dim(row_pc12)
 
 write.table(row_pc12,
-            file = "../00-data/05-outliers_inner_join_pc/row_pc12.csv",
+            file = "../00-data/05-outliers_inner_join_pc/row_pc12.txt",
             col.names = c("rowNum","PC1", "PC2"),
             sep = ",",
             row.names = F)
-
-dim(row_pc12)
 ```
+
+## Merge Loading (row_pc12) with 7 x 'Outliers.csv'
+```{r}
+outlier_files <- list.files(path = "../00-data/05-outliers_inner_join_pc", pattern = ".csv")
+length(outlier_files)
+
+#typeof(outlier_files)
+
+for (i in 1:length(outlier_files)) {
+    file_name <- paste("../00-data/05-outliers_inner_join_pc/", outlier_files[[1]], sep = "")
+    print(file_name)
+    outliers <- read_csv(file = file_name)
+    outlier_loads <- merge(x = outliers, y = row_pc12, by = "rowNum")
+    length(outlier_loads)
+    head(outlier_loads)
+}
+```
+
+
+
+
 
 ## Logit set inner-join with row_pc12
 ```{r message=FALSE, warning=FALSE}

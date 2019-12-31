@@ -4,7 +4,7 @@ author: "MCC"
 output: html_document
 ---
 
-# Outlier Collection and Mapping(?)
+# Outlier Collection and Mapping
 
 ## Introduction
 

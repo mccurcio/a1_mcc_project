@@ -1,13 +1,14 @@
-## Exploratory Data Analysis Of $\sqrt x_i$ Transformed `c_m_RAW_ACC.csv`
+## Exploratory Data Analysis Of `c_m_TRANSFORMED.csv`
 
-<br>
-This next section investigates the EDA of the $\sqrt x_i$ *Transformed* data.  The $\sqrt x_i$ *Transformed* data was derived from `c_m_RAW_ACC.csv` where the amino acids C, F, I were transformed using a square root function. This transformation was done in order to reduce the skewness of these samples and avoid modeling problems arising from high skewness.
+**This EDA section is a reevaluation square root transformed, `c_m_RAW_ACC.csv` data set, hence called `c_m_TRANSFORMED.csv`. **
+
+The $\sqrt x_i$ *Transformed* data was derived from `c_m_RAW_ACC.csv` where the amino acids C, F, I were transformed using a square root function. This transformation was done in order to reduce the skewness of these samples and avoid modeling problems arising from high skewness, as seen below.
 
 | Amino Acid | Initial skewness | Skew after square root transformation |
-|:----------:|:----------------:|:-------------------------------------:|
-| C | 2.538162 | 0.347813248 |
-| F | 2.128118 | -0.102739748 |
-| I | 2.192145 | 0.293474879 |
+|:-----------|:----------------:|:-------------------------------------:|
+| C, Cysteine | 2.538162 | 0.3478132 |
+| F, Phenolalanine | 2.128118 | -0.102739 |
+| I, Isoleucine | 2.192145 | 0.2934749 |
 
 ```{r message=FALSE, include=FALSE}
 # Import libraries
@@ -16,24 +17,23 @@ Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
 for (i in Libraries) {
     library(i, character.only = TRUE)
 }
-
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
-### Import data
+### Import Transformed data
 
 ```{r message=FALSE, warning=FALSE}
-c_m_TRANSFORMED <- read_csv("../00-data/aac_dpc_values/c_m_TRANSFORMED.csv")
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv")
 Class <- as.factor(c_m_TRANSFORMED$Class)
 ```
 
-### Check dataframe dimensions
+### Check Transformed dataframe dimensions
 
 ```{r}
 dim(c_m_TRANSFORMED)
 ```
 
-### Check for missing values
+### Check Transformed for missing values
 
 ```{r}
 apply(is.na(c_m_TRANSFORMED), 2, which)
@@ -41,7 +41,7 @@ apply(is.na(c_m_TRANSFORMED), 2, which)
 
 - **No missing values found.**
 
-### Count number of polypeptides per class
+### Count Transformed data for number of polypeptides per class
 
 Number of polypeptides per Class:
 
@@ -74,14 +74,13 @@ plot(AA_ave,
 axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
 ```
 
-
+* Pseudo-code for Data manipulation for Grouped Bar charts
+    + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
+    + A-2. Determine column means for each protein class
+    + A-3. Calculate percentage values
+    + A-4. Produce Grouped Bar Plot
+    
 ```{r echo=FALSE, cache=TRUE}
-# Pseudo-code:  
-# A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
-# A-2. Determine column means for each protein class
-# A-3. Calculate percentage values
-# A-4. Produce Grouped Bar Plot
-
 # A-1
 ctrl_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "0"),]
 mgb_set  <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "1"),]
@@ -222,7 +221,6 @@ abline(h = 2.0, col = "red")
 AA_skewness
 ```
 
-
 ### QQ Plots of 20 amino acids of Transformed data
 
 ```{r echo=FALSE}
@@ -236,9 +234,9 @@ for (i in 4:23) {
 
 ### Determine coefficients of correlation of Transformed Data 
 
-An easily interpretable test, is correlation 2D-plot for investigating multicollinearity or feature reduction. It is clear that fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they are measuring the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^11]
+An easily interpretable test, is correlation 2D-plot for investigating multicollinearity or feature reduction. It is clear that fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they are measuring the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^21]
 
-[^11]:"Applied Predictive Modeling", Max Kuhn and Kjell Johnson, Springer Publishing, 2018, P.43
+[^21]:"Applied Predictive Modeling", Max Kuhn and Kjell Johnson, Springer Publishing, 2018, P.43
 
 Pearson's correlation coefficient: 
 $$\rho_{x,y} = \frac {E \left[(X - \mu_x)(X - \mu_y) \right]} {\sigma_x \sigma_y}$$
@@ -326,16 +324,13 @@ Plot importance history
 plotImpHistory(boruta_output)
 ```
 
-**Conclusion for Boruta random forest test**
+#### Conclusion for Boruta random forest test {-}
 
-All features are important. None should be dropped.
-b
+**All features are important. None should be dropped.**
 
 ## EDA Conclusions For Transformed Data 
 
-Due to prior subject knowledge in the area of utilizing AAC and DPC, it was determined that initially the machine learning modeling should be carried out with the single amino acid percent composition. This is primarily due to the fact that many of the di-peptide percent compositions had skews greater than 2 and some reaching as high as 40. This is most likely due to the lack of large sample sizes used.
-
-It was also found that three amino acids from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
+It was determined earlier that three amino acids (C, F, I) from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
 | Amino Acid | Initial skewness | Skew after square root transform |
 |:----------:|:----------------:|:--------------------------------:|
@@ -343,3 +338,4 @@ It was also found that three amino acids from the single amino acid percent comp
 | F | 2.128118 | -0.102739748 |
 | I | 2.192145 | 0.293474879 |
 
+The transformations of the three amino acids (C, F, I) did not appreciablly change any important measures such as the feature importance derived from the Boruta random forest feature selection work. Nor did the transformations of C,F,I apreciably change the correlation coeffiecient matrix, therefore the transformed data will be used throughout this experiment.

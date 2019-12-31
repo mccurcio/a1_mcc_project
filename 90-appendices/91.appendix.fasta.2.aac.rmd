@@ -98,6 +98,7 @@ calc_aac_dpc <- function(peptide, protein_class = "C", i, file_name) {
     write(t(aa_nums), file = file_name, append = TRUE, ncolumns = 423, sep = ",")
 }
 ```
+
 #############
 RUN Myoglobin
 ```{r}
@@ -107,6 +108,7 @@ for (i in 1:1124) {
     calc_aac_dpc(peptide, protein_class = "M", i, file_name)
 }
 ```
+
 #################################
 RUN Control / Human-NOT-myoglobin 
 
