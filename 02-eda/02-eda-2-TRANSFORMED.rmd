@@ -4,11 +4,11 @@
 
 The $\sqrt x_i$ *Transformed* data was derived from `c_m_RAW_ACC.csv` where the amino acids C, F, I were transformed using a square root function. This transformation was done in order to reduce the skewness of these samples and avoid modeling problems arising from high skewness, as seen below.
 
-| Amino Acid | Initial skewness | Skew after square root transformation |
-|:-----------|:----------------:|:-------------------------------------:|
-| C, Cysteine | 2.538162 | 0.3478132 |
-| F, Phenolalanine | 2.128118 | -0.102739 |
-| I, Isoleucine | 2.192145 | 0.2934749 |
+| Amino Acid       | Initial skewness | Skew after square root transformation |
+| :--------------- | :--------------: | :-----------------------------------: |
+| C, Cysteine      |     2.538162     |               0.3478132               |
+| F, Phenolalanine |     2.128118     |               -0.102739               |
+| I, Isoleucine    |     2.192145     |               0.2934749               |
 
 ```{r message=FALSE, include=FALSE}
 # Import libraries
@@ -82,8 +82,8 @@ axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
     
 ```{r echo=FALSE, cache=TRUE}
 # A-1
-ctrl_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "0"),]
-mgb_set  <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "1"),]
+ctrl_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "0"), ]
+mgb_set  <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "1"), ]
 
 # A-2
 ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
@@ -97,7 +97,8 @@ percent_aa <- as.matrix(t(100 * data))
 
 ```{r eval=FALSE, include=FALSE}
 # A-4
-### Grouped barchart of $\sqrt x_i$ Transformed amino acid vs. protein category data
+## Grouped barchart of $\sqrt x_i$ Transformed amino acid vs.
+## protein category data
 barplot(percent_aa,
         main = "Mean % A.A.Composition Of Squareroot Transformed Data",
         ylab = "% AA Composition",
@@ -244,7 +245,7 @@ $$\rho_{x,y} = \frac {E \left[(X - \mu_x)(X - \mu_y) \right]} {\sigma_x \sigma_y
 $$r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }$$
 
 ```{r echo=FALSE}
-c_m_corr_mat = cor(c_m_TRANSFORMED[, c(2, 4:23)],
+c_m_corr_mat <- cor(c_m_TRANSFORMED[, c(2, 4:23)],
                    method = "p") # "p": Pearson test for continous variables
 
 corrplot(abs(c_m_corr_mat),
@@ -268,7 +269,7 @@ c_m_corr_mat["Y", "A"]
 ### Boruta - dimensionality reduction of Transformed data 
 
 ```{r echo=FALSE}
-c_m_class_20 <- c_m_TRANSFORMED[, -c(2,3)]  # Remove TotalAA & PID
+c_m_class_20 <- c_m_TRANSFORMED[, -c(2, 3)]  # Remove TotalAA & PID
 Class <- as.factor(c_m_class_20$Class) # Convert ‘Class’ To Factor
 ```
 
@@ -280,7 +281,7 @@ set.seed(1000)
 registerDoMC(cores = 3)  # Start multi-processor mode
 start_time <- Sys.time() # Start timer
 
-boruta_output <- Boruta(Class ~ ., 
+boruta_output <- Boruta(Class ~ .,
                         data = c_m_class_20[,-1],
                         mcAdj = TRUE, # See Note above.
                         doTrace = 1) # doTrace = 1, represents non-verbose mode.
@@ -288,10 +289,6 @@ boruta_output <- Boruta(Class ~ .,
 registerDoSEQ()  # Stop multi-processor mode
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display elapsed time
-```
-
-```{r}
-#names(boruta_output)
 ```
 
 **Plot variable importance**
@@ -332,10 +329,14 @@ plotImpHistory(boruta_output)
 
 It was determined earlier that three amino acids (C, F, I) from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
-| Amino Acid | Initial skewness | Skew after square root transform |
-|:----------:|:----------------:|:--------------------------------:|
-| C | 2.538162 | 0.347813248 |
-| F | 2.128118 | -0.102739748 |
-| I | 2.192145 | 0.293474879 |
+| Amino Acid       | Initial skewness | Skew after square root transform |
+| :--------------- | :--------------: | :------------------------------: |
+| C, Cysteine      |     2.538162     |           0.347813248            |
+| F, Phenolalanine |     2.128118     |           -0.102739748           |
+| I, Isoleucine    |     2.192145     |           0.293474879            |
 
 The transformations of the three amino acids (C, F, I) did not appreciablly change any important measures such as the feature importance derived from the Boruta random forest feature selection work. Nor did the transformations of C,F,I apreciably change the correlation coeffiecient matrix, therefore the transformed data will be used throughout this experiment.
+
+Regarding Boruta which is used for dimensionality reduction of Transformed data, it showed that all features (x variables) are important for the generation of a Decision Tree. My belief is that this would imply that given that Random Forest approach will be used it would wise to keep all features for that model test and throughout the generation of other models. All features have positive mean importance which are generated by a Gini calculation.
+
+Regarding the coefficients of correlation of the Transformed dataset. There are no examples of coefficients which are greater than or equal to 0.75 therefore this implies that no features are collinear.

@@ -3,6 +3,9 @@ title: "Use Autoencoder as a Feature Engineering Technique"
 subtitle: "For Killing Time at the Hospital"
 ---
 
+Hands-On Machine Learning with R
+* https://bradleyboehmke.github.io/HOML/
+
 * https://rpubs.com/chidungkt/449797
 
 * [Investigation and improvement of multi-layer perceptron neural networks for credit scoring](https://www.sciencedirect.com/science/article/pii/S0957417414007726)
