@@ -7,7 +7,7 @@ IMPORTMNT: https://stats.stackexchange.com/questions/108995/interpreting-residua
 For students which have not come across this equation, it is clearer if the exponential curve is shown side by side with the sigmoidal curve,
 
 ```{r}
-x = seq(-10, 10 , 0.05)
+x = seq(-6, 6, 0.05)
 y = 1/(1 + exp(-x))
 
 plot(x, y,
@@ -20,7 +20,7 @@ abline(h=1, col="green")
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-## Libraries
+## Load libraries
 Libraries = c("knitr", "doMC", "ggplot2", "readr", "caret", "dplyr", "tidyverse")
 
 for (i in Libraries) { 
@@ -44,12 +44,6 @@ plot(categorical_1,
      xlab = "X-Values")
 #abline(a=0, b = 0.2, col = "red")
 ```
-
-If you have categorical data, how can one have a Y-values less than 0 or greater than 1. Yet, a linear regression would output such Y-values if we were to improperly use it here.
-
-A better way would be to generate a curve where the Y value only varies between {0,1} and has a sloping curve that runs between them. The answer is a curve that follows
-
-The alternative is a line that connects the Y-values 0 and 1 with a slope and values where the Y-values do not go beyond 0 and 1. 
 
 
 ```{r}

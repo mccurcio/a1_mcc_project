@@ -1,5 +1,0 @@
-FROM EDA CONCLUSION
-
-This is primarily due to the fact that many of the di-peptide percent compositions had skews greater than 2 and some reaching as high as 40. This is most likely due to the lack of large sample sizes used.
-
-Due to prior subject knowledge in the area of utilizing AAC and DPC, it was determined that initially the machine learning modeling should be carried out with the single amino acid percent composition. 

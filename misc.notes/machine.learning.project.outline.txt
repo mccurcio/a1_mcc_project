@@ -1,7 +1,0 @@
-The process of a machine learning project may not be exactly the same, but there are certain standard and necessary steps:
-
-1. Define Problem.
-2. Prepare Data.
-3. Evaluate Algorithms.
-4. Improve Results.
-5. Present Results.

@@ -507,7 +507,7 @@ c_m_20_PCA &lt;- prcomp(norm_c_m_20aa)
 
 end_time &lt;- Sys.time()   # End timer
 end_time - start_time    # Display time</code></pre>
-<pre><code>## Time difference of 0.01197791 secs</code></pre>
+<pre><code>## Time difference of 0.007448912 secs</code></pre>
 </div>
 <div id="screeplot-and-cumulative-proportion-of-variance-plot" class="section level2">
 <h2>Screeplot and Cumulative Proportion of Variance plot</h2>
@@ -577,10 +577,10 @@ length(total_pca_1_2_outliers)</code></pre>
 <pre><code>## [1] 461</code></pre>
 <pre class="r"><code># Write out to Outliers folder
 write.table(total_pca_1_2_outliers,
-            file = &quot;../00-data/false_positive_outliers/pca_1_2_outliers.csv&quot;,
+            file = &quot;../00-data/03-outliers/pca_outliers.csv&quot;,
             row.names = FALSE,
             na = &quot;&quot;,
-            col.names = TRUE,
+            col.names = &quot;rowNum&quot;,
             sep = &quot;,&quot;)</code></pre>
 <p>It is important to remember and understand that this list of “total_pca_1_2_outliers” includes BOTH negative and positive controls. The groupings are as follows:</p>
 <table>

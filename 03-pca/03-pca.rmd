@@ -353,10 +353,10 @@ length(total_pca_1_2_outliers)
 
 # Write out to Outliers folder
 write.table(total_pca_1_2_outliers,
-            file = "../00-data/false_positive_outliers/pca_1_2_outliers.csv",
+            file = "../00-data/03-outliers/pca_outliers.csv",
             row.names = FALSE,
             na = "",
-            col.names = TRUE,
+            col.names = "rowNum",
             sep = ",")
 ```
 
