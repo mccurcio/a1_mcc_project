@@ -1,11 +1,10 @@
 Folder ../00-data/
 
-files
------
-- 01-ORIGINAL_DATA: two .fasta files with myoglobin & non-myoglobin/hemoglobin proteins from Uniprot.
-  **DO NOT DELETE or CHANGE 'ORIGINAL_DATA' FILES**
-- 02-aac_dpc_values: indicates percent amino acid & di-peptide composition files used in machine learning
-- 03-full_fp_fn_sets  
-- 03-outliers 
-- false_positive_outliers
-- README
+| Directory / file        | Description                                                                                                                         |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| 01-ORIGINAL_DATA        | two .fasta files with myoglobin & non-myoglobin/hemoglobin proteins from Uniprot. **DO NOT DELETE or CHANGE 'ORIGINAL_DATA' FILES** |
+| 02-aac_dpc_values       | indicates percent amino acid & di-peptide composition files used in machine learning                                                |
+| 03-full_fp_fn_sets      |                                                                                                                                     |
+| 03-outliers             |                                                                                                                                     |
+| false_positive_outliers |                                                                                                                                     |
+| README                  |                                                                                                                                     |
