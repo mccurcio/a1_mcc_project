@@ -1,0 +1,342 @@
+## Exploratory Data Analysis Of `c_m_TRANSFORMED.csv`
+
+**This EDA section is a reevaluation square root transformed, `c_m_RAW_ACC.csv` data set, hence called `c_m_TRANSFORMED.csv`. **
+
+The $\sqrt x_i$ *Transformed* data was derived from `c_m_RAW_ACC.csv` where the amino acids C, F, I were transformed using a square root function. This transformation was done in order to reduce the skewness of these samples and avoid modeling problems arising from high skewness, as seen below.
+
+| Amino Acid       | Initial skewness | Skew after square root transformation |
+| :--------------- | :--------------: | :-----------------------------------: |
+| C, Cysteine      |     2.538162     |               0.3478132               |
+| F, Phenolalanine |     2.128118     |               -0.102739               |
+| I, Isoleucine    |     2.192145     |               0.2934749               |
+
+```{r message=FALSE, include=FALSE}
+# Import libraries
+Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
+
+for (i in Libraries) {
+    library(i, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
+```
+
+### Import Transformed data
+
+```{r message=FALSE, warning=FALSE}
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv")
+Class <- as.factor(c_m_TRANSFORMED$Class)
+```
+
+### Check Transformed dataframe dimensions
+
+```{r}
+dim(c_m_TRANSFORMED)
+```
+
+### Check Transformed for missing values
+
+```{r}
+apply(is.na(c_m_TRANSFORMED), 2, which)
+```
+
+- **No missing values found.**
+
+### Count Transformed data for number of polypeptides per class
+
+Number of polypeptides per Class:
+
+- Class 0 = Control,
+- Class 1 = Myoglobin
+```{r echo=FALSE}
+class_table <- table(c_m_TRANSFORMED$Class)
+class_table
+```
+
+## Visualization of Transformed Data Descriptive Statistics
+
+Formulas for mean:
+$$E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i$$
+
+### Scatter plot of means of *Myoglobin-Control* amino acid composition $\sqrt x_i$ Transformed (c_m_TRANSFORMED) dataframe
+
+- This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n=2340) versus AA type.
+
+```{r echo=FALSE}
+AA_ave <- colMeans(c_m_TRANSFORMED[, 4:23])
+plot(AA_ave,
+     main = "Column-Means Vs Amino Acid of Squareroot Transformed Data",
+     ylab = "% Composition",
+     xlab = "Amino Acid",
+     #sub = "(Note: The red line at 0.1 is simply an arbitrary marker)",
+     ylim = c(0, 0.3),
+     type = "b",
+     xaxt = "n")
+axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
+```
+
+* Pseudo-code for Data manipulation for Grouped Bar charts
+    + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
+    + A-2. Determine column means for each protein class
+    + A-3. Calculate percentage values
+    + A-4. Produce Grouped Bar Plot
+    
+```{r echo=FALSE, cache=TRUE}
+# A-1
+ctrl_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "0"), ]
+mgb_set  <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "1"), ]
+
+# A-2
+ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
+mgb_means  <- apply(mgb_set[, 4:23], 2, mean)
+grand_mean <- apply(c_m_TRANSFORMED[, 4:23], 2, mean)
+
+# A-3
+data <- data.frame(ctrl_means, mgb_means, grand_mean)
+percent_aa <- as.matrix(t(100 * data))
+```
+
+```{r eval=FALSE, include=FALSE}
+# A-4
+## Grouped barchart of $\sqrt x_i$ Transformed amino acid vs.
+## protein category data
+barplot(percent_aa,
+        main = "Mean % A.A.Composition Of Squareroot Transformed Data",
+        ylab = "% AA Composition",
+        ylim = c(0, 30),
+        col = colorRampPalette(brewer.pal(4, "Blues"))(3),
+        legend = T,
+        beside = T)
+```
+
+### Grouped barchart of means for percent amino acid composition of Transformed Data; control & myoglobin categories
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+data2 <- data.frame(ctrl_means, mgb_means)
+percent_aa2 <- as.matrix(t(100 * data2))
+
+barplot(percent_aa2,
+        ylim = c(0, 30),
+        main = "Means of % A.A.Composition Of Squareroot Transformed Data",
+        ylab = "% AA Composition",
+        col = colorRampPalette(brewer.pal(4, "Blues"))(2),
+        legend = T,
+        beside = T)
+```
+
+### Boxplots of grand-means of overall amino acid composition of squareroot transformed data
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+boxplot(c_m_TRANSFORMED[, 4:23],
+        main = "% AAC Vs Amino Acid Of Squareroot Transformed Data",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+### Boxplots of amino acid compositions for control (only) of squareroot transformed data
+
+```{r echo=FALSE}
+boxplot(ctrl_set[, 4:23],
+        main = "Control, % AAC Vs Amino Acid Of Squareroot Transformed Data",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+### Boxplots of amino acid compositions for myoglobin of squareroot transformed Data(only) of squareroot transformed data
+
+```{r echo=FALSE}
+boxplot(mgb_set[, 4:23],
+        main = "Myoglobin, % AAC Vs Amino Acid Of Squareroot Transformed Data",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+### Boxplots Of Length Of Polypeptides Of Transformed Data; Myoglobin, Control & Combined
+
+```{r echo=FALSE}
+ctrl_totalaa <- ctrl_set[, 2]
+mgb_totalaa  <- mgb_set[, 2]
+grand_totalaa <- c_m_TRANSFORMED[, 2]
+
+data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
+
+boxplot(data,
+        ylim = c(0, 5000),
+        main = "Length of Polypeptides Of Squareroot Transformed Data",
+        ylab = "Length of Polypeptides",
+        xaxt = "n",
+        las = 2)
+axis(1, at = 1:3, labels = c("Control", "Myoglobin", "Combined"))
+```
+
+### Coefficient of variance (CV) Of Transformed data
+
+Standard deviations are sensitive to scale. Therefore I compare the normalized standard deviations. This normalized standard deviation is more commonly called coefficient of variation (CV).
+
+$$CV = \frac {\sigma (x)} {E [|x|]} ~~~ where ~~~ \sigma(x) \equiv \sqrt{ E[x - \mu]^2 }$$
+
+$$CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2}$$
+
+### Plot of normalized standard deviations
+
+```{r echo=FALSE}
+AA_var_norm <- (apply(c_m_TRANSFORMED[, 4:23], 2, sd)) / AA_ave
+plot(AA_var_norm,
+     main = "Coefficient Of Variance Vs 20 Std AA Of Squareroot Transformed Data",
+     sub = "(Note: Two largest values shown in red.)",
+     ylab = "Coefficient Of Variance (CV)",
+     xlab = "Amino Acid",
+     ylim = c(0, 1.5),
+     type = "b",
+     xaxt = "n")
+axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
+```
+```{r}
+AA_var_norm
+```
+
+### Skewness of distributions Of Transformed Data 
+
+$$Skewness ~= E\left[ \left( \frac{X - \mu}{\sigma(x)} \right)^3 \right] ~~~~ where ~~~~ \sigma(x) \equiv \sqrt{  E[x - \mu]^2 }$$
+
+$$Skewness ~= \frac { \frac{1}{n} \sum^n_{i=1} (x_i - \bar x)^3 } { \left( \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2 } \right) ^ {3}}$$
+
+- Skewness values for each A.A. by Class of squareroot transformed data
+
+```{r echo=FALSE}
+AA_skewness <- (apply(c_m_TRANSFORMED[, 4:23], 2, e1071::skewness))
+plot(AA_skewness,
+     main = "Skewness of Amino Acids, squareroot transformed data",
+     ylab = "Skewness",
+     xlab = "Amino Acid",
+     type = "b",
+     ylim = c(-0.5, 2.3),
+     xaxt = "n")
+axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
+abline(h = 2.0, col = "red")
+```
+
+```{r}
+AA_skewness
+```
+
+### QQ Plots of 20 amino acids of Transformed data
+
+```{r echo=FALSE}
+AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", 
+       "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
+for (i in 4:23) {
+    qqnorm(c_m_TRANSFORMED[[i]], main = AA[[i - 3]])
+    qqline(c_m_TRANSFORMED[[i]], col = "red")
+}
+```
+
+### Determine coefficients of correlation of Transformed Data 
+
+An easily interpretable test, is correlation 2D-plot for investigating multicollinearity or feature reduction. It is clear that fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they are measuring the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^21]
+
+[^21]:"Applied Predictive Modeling", Max Kuhn and Kjell Johnson, Springer Publishing, 2018, P.43
+
+Pearson's correlation coefficient: 
+$$\rho_{x,y} = \frac {E \left[(X - \mu_x)(X - \mu_y) \right]} {\sigma_x \sigma_y}$$
+
+$$r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }$$
+
+```{r echo=FALSE}
+c_m_corr_mat <- cor(c_m_TRANSFORMED[, c(2, 4:23)],
+                   method = "p") # "p": Pearson test for continous variables
+
+corrplot(abs(c_m_corr_mat),
+         title = "Correlation Plot Of Transformed Features",
+         method = "square",
+         type = "lower",
+         tl.pos = "d",
+         cl.lim = c(0, 1),
+         addgrid.col = "lightgrey",
+         cl.pos = "b", # Color legend position bottom.
+         order = "FPC", # "FPC" = first principal component order.
+         mar = c(1, 2, 1, 2),
+         tl.col = "black")
+```
+
+```{r}
+c_m_corr_mat["T", "N"]
+c_m_corr_mat["Y", "A"]
+```
+
+### Boruta - dimensionality reduction of Transformed data 
+
+```{r echo=FALSE}
+c_m_class_20 <- c_m_TRANSFORMED[, -c(2, 3)]  # Remove TotalAA & PID
+Class <- as.factor(c_m_class_20$Class) # Convert ‘Class’ To Factor
+```
+
+**Perform Boruta search**
+
+NOTE: *mcAdj = TRUE*: If True, multiple comparisons  will be adjusted using the Bonferroni method to calculate p-values. Therefore, $p_i \leq \frac {\alpha} {m}$ where $\alpha$ is the desired p-value and $m$ is the total number of null hypotheses. 
+```{r cache=TRUE}
+set.seed(1000)
+registerDoMC(cores = 3)  # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+boruta_output <- Boruta(Class ~ .,
+                        data = c_m_class_20[,-1],
+                        mcAdj = TRUE, # See Note above.
+                        doTrace = 1) # doTrace = 1, represents non-verbose mode.
+
+registerDoSEQ()  # Stop multi-processor mode
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display elapsed time
+```
+
+**Plot variable importance**
+
+```{r}
+plot(boruta_output, 
+     cex.axis = 1,
+     las = 2, 
+     ylim = c(-5,50),
+     main = "Variable Importance (Bigger=Better)")
+```
+
+**Variable importance scores**
+
+```{r message=FALSE}
+roughFixMod <- TentativeRoughFix(boruta_output)
+imps <- attStats(roughFixMod)
+imps2 <- imps[imps$decision != "Rejected", c("meanImp", "decision")]
+meanImps <- imps2[order(-imps2$meanImp), ]  # descending sort
+
+knitr::kable(meanImps,
+             full_width = F,
+             position = "left",
+             caption  = "Mean Importance Scores & Decision")
+```
+
+Plot importance history
+
+```{r}
+plotImpHistory(boruta_output)
+```
+
+#### Conclusion for Boruta random forest test {-}
+
+**All features are important. None should be dropped.**
+
+## EDA Conclusions For Transformed Data 
+
+It was determined earlier that three amino acids (C, F, I) from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
+
+| Amino Acid       | Initial skewness | Skew after square root transform |
+| :--------------- | :--------------: | :------------------------------: |
+| C, Cysteine      |     2.538162     |           0.347813248            |
+| F, Phenolalanine |     2.128118     |           -0.102739748           |
+| I, Isoleucine    |     2.192145     |           0.293474879            |
+
+The transformations of the three amino acids (C, F, I) did not appreciablly change any important measures such as the feature importance derived from the Boruta random forest feature selection work. Nor did the transformations of C,F,I apreciably change the correlation coeffiecient matrix, therefore the transformed data will be used throughout this experiment.
+
+Regarding Boruta which is used for dimensionality reduction of Transformed data, it showed that all features (x variables) are important for the generation of a Decision Tree. My belief is that this would imply that given that Random Forest approach will be used it would wise to keep all features for that model test and throughout the generation of other models. All features have positive mean importance which are generated by a Gini calculation.
+
+Regarding the coefficients of correlation of the Transformed dataset. There are no examples of coefficients which are greater than or equal to 0.75 therefore this implies that no features are collinear.

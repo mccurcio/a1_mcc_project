@@ -56,7 +56,7 @@ PCA is similar to the singular value decomposition (SVD) used when determining e
 
 The intuition for understanding PCA is fairly straightforward. Consider the 2-dimensional data cloud of points or observations in an hypothetical experiment, as seen in the figure on the left. Considering this data, the variances along both the x and y dimensions can be calculated. However, given the data shown, there is a rotation of that x-y plane which will present the data showing its greatest variance. This variance will reside on an axis analogous to points on an Ordinary Least Squares (OLS) line. This axis is called the *first principle component* followed by the second principal component and so on. 
 
-Unlike an OLS calculation, PCA will determine not only the first and largest variance of your data set but it will through the rotation and transform your dataset via linear algebra, calculating N variances within you dataset, where N is equal to the number of features in the dataset. The second principle component will be calculated only along a coordinate axis which is perpendicular (orthogonal or orthonormal) to the first. Each subsequent principle component will then be calculated along axises which are orthogonal to each other. A further benefit of using PCA is that the variances it reports will be ranked in order from highest to lowest.[^36]
+Unlike an OLS calculation, PCA will determine not only the first and largest variance of your data set but it will through the rotation and transform your dataset via linear algebra, calculating N variances within you dataset, where N is equal to the number of features in the dataset. The second principle component will be calculated only along a coordinate axis which is perpendicular (orthogonal or orthonormal) to the first. Each subsequent principle component will then be calculated along axes which are orthogonal to each other. A further benefit of using PCA is that the variances it reports will be ranked in order from highest to lowest.[^36]
 
 [^36]:Brian Everitt, Torsten Hothorn, An Introduction to Applied Multivariate Analysis with R, 2011, Springer, DOI:10.1007/978-1-4419-9650-3
 
@@ -110,7 +110,7 @@ abline(v = 2.77, col = "green")
 | Graphic                 | Range (Green lines) | Differences |
 | :---------------------- | :-----------------: | :---------: |
 | Raw Data (Left)         |     1 <= x <= 4     |   3 units   |
-| Trasformed Data (Right) | -2.45 <= x <= 2.77  | 5.22 units  |
+| Transformed Data (Right) | -2.45 <= x <= 2.77  | 5.22 units  |
 
 If we investigate the figures above we find that the range of the samples is (1 <= x <= 4),
 while the range for the transformed data is (-2.45 <= x <= 2.76). The differences of the two ranges is 3 and 5.21 units respectively. This should be no surprise since the PCA is essentially a maximization of variance.
@@ -198,7 +198,7 @@ The second plot describes the cumulative proportion of variance versus the princ
 
 $$Cumlative ~ Proportion ~of ~Variance ~=~ \frac{\sigma_i^2}{\sum_{i=1}^N \sigma_i^2}$$
 
-Here again there are several criteria regarding how best to use the information from the is plot.  The first of which is Cattell's heuristic. Cattell advises to use the principal component that is above the elbow of the curve. The second heuristic is keeping the total number of factors that best explains 80%-95% of the variance.  There is no hard fast rule at this time, a set of researchers only use the first three factors or none at all.[^311] A second suggestion is to use the Kaiser rule, which states it is sufficient to use Prncipal Components which have a eigenvalue greater than or equal to one.[^312]
+Here again there are several criteria regarding how best to use the information from the is plot.  The first of which is Cattell's heuristic. Cattell advises to use the principal component that is above the elbow of the curve. The second heuristic is keeping the total number of factors that best explains 80%-95% of the variance.  There is no hard fast rule at this time, a set of researchers only use the first three factors or none at all.[^311] A second suggestion is to use the Kaiser rule, which states it is sufficient to use Principal Components which have a eigenvalue greater than or equal to one.[^312]
 
 [^311]:Nicole Radzill, Ph.D., personal communication.
 [^312]:https://stats.stackexchange.com/questions/253535/the-advantages-and-disadvantages-of-using-kaiser-rule-to-select-the-number-of-pr
@@ -369,11 +369,11 @@ Positive (Myoglobin) | 1218, ..., 2341
 
 ## Conclusion(s)
 
-Principal Component Analysis is very popular and an excellent choice to include during Exploratory Data. Analysis.  One objective for using PCA is to filter noise from the dataset used and in turn increase any signal or to sufficiently delineate observations from each other. In fact, one can see that there are five colored groups outisde the main body of observations. These five colored groups are labeled A-E.  It will be intereesting to see if any one of these grooups will be present in the group of false-positives and false-negatives in any of the mcahine learning models. Due the placement of each group in different areas of the Biplot we should be able to glean information of the percent amino acid compositions of the observations.
+Principal Component Analysis is very popular and an excellent choice to include during Exploratory Data. Analysis.  One objective for using PCA is to filter noise from the dataset used and in turn increase any signal or to sufficiently delineate observations from each other. In fact, in the figure below there are five colored groups outside the main body of observations that are marked at 'outliers.' The number of outliers obtained from PCA is 461 proteins. The premise of this experiment is to determine if PCA is a good representative measure for proteins that are categorized is false-positive and false-negatives in the five subsequent machine learning model approaches. It will be interesting to see if any one of these groups will be present in the group of false-positives and false-negatives in any of the machine learning models. 
 
 ### Outliers derived from PC1 Vs PC2 {-}
 
-The table below shows outliers when the first and second principal component are graphed with respect to the observation numbers. It will be very interesting to learn if there is a correlation between the outliers found by PCA are similar ot the false-positives and false-negatives from each of the machine learning models.
+The table and the figure below show a small set outliers produced when the first and second principal component are graphed. My interest lies in finding if any one of the lettered groups (A-E) are part of the false-positives and false-negatives from each of the machine learning models. Each of the five groups is rich is a small number of amino acids. It is hoped that this information will shiine light on how the different machine models work. It is also hoped that this will give help in constructing a model that is more interpretable for the more difficult opaque machine learning models, such as Random Forest, Neural Networks and possibly Support Vector Machine using the Radial Basis Function.
 
 | Group | Increased concentration of amino acid | Example observations |
 | :---: | :-----------------------------------: | :------------------: |

@@ -4,7 +4,7 @@
 
 For students who have studied cell biology and biochemistry, logistic regression may already be familiar. It may also be known as a *sigmoidal curve*, *dose-response curve*, *4-parameter fit*, a *median lethal dose curve* (LD-50) or even an exponential growth curve given limited resources. However it can also be thought of a binary classifier which can toggle between off and on, zero or one.
 
-Logistic regression derives it name from the similarity to linear regression, for reasons you will see below. In this circumstance it does not calculate a dependent variable $(y)$ as a regression is normally thought to do but instead Logistic Regression is used for classification bewteen two states as follows.
+Logistic regression derives it name from the similarity to linear regression, for reasons you will see below. In this circumstance it does not calculate a dependent variable $(y)$ as a regression is normally thought to do but instead Logistic Regression is used for classification between two states as follows.
 
 $$f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.$$
 
@@ -40,7 +40,7 @@ In the specific case of *Logistic Regression for Binary Classification* where we
 
 ---
 
-Since the logistic equation is exponential it is easier to consider working with the formula in terms of the the odds or log odds. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or log odds = $\large ln \left (\frac{p}{1-p} \right )$.
+Since the logistic equation is exponential it is easier to consider working with the formula in terms of the the odds or log odds. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or log odds as $\large ln \left (\frac{p}{1-p} \right )$.
 
 In logistic regression we find that the log odds may be expressed as a set of linear equations in x. This is simply a transformation of exponential curve to make it linear. The set of linear equations is similar to the idea inherent in Linear Regression.
 
@@ -141,9 +141,12 @@ registerDoSEQ() # Stop multi-processor mode
 summary(model_obj.1)
 ```
 
+The Akaike information criterion (AIC) for model #1 is: 699.72. This will be used later to compare the models generated to rate their ability to best utilize the features.
+- The list of probabilities for the estimates leaves us with only **9 important features** to try re-modeling, R, H, P, C, E, Y, T, D, G. 
+
 ## Logit Training #2 using 9 Features
 
-- Using **ONLY** features: (C, D, E, G, H, P, R, T, Y)
+- Using **ONLY** features: (R, H, P, C, E, Y, T, D, G)
 
 ```{r}
 # Data import & handling
@@ -213,33 +216,57 @@ Predicted_test_vals <- predict(model_obj.2, test_set.2[, -1])
 confusionMatrix(Predicted_test_vals, Class_test.2, positive = "1")
 ```
 
-## Obtain False Positives & False Negatives
+- The Akaike information criterion (AIC) for model #2 is: 708.96. This will be used later to compare the models generated to rate their ability to best utilize the features. 
+- The number of unique false-positives and false-negatives are 26.
+
+## Obtain List of False Positives & False Negatives
 
 ```{r}
 fp_fn_logit <- model_obj.2 %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
 # Write CSV in R
 write.table(fp_fn_logit,
-            file = "../20-outliers/fp_fn_logit.csv",
+            file = "../00-data/03-ml_results/fp_fn_logit.csv",
             row.names = FALSE,
             na = "",
             col.names = TRUE,
             sep = ",")
 
-head(fp_fn_logit)
+nrow(fp_fn_logit) ## NOTE: NOT UNIQUE NOR SORTED
 ```
 
+    536 proteins listed although they are NOT UNIQUE NOR SORTED.
+    
 ## Conclusion
 
-model.1
+Logit is easy to implement and understand and can be used for parameter importance measurements.
 
-AIC: 699.72
+Considering the Table Logit Models, below, it is clear that model #2 with 9 features best describes the better of the two models.
 
-model.2
-    Null deviance: 2593.68  on 1872  degrees of freedom
-Residual deviance:  701.04  on 1863  degrees of freedom
-AIC: 708.96
+Akaike Information Criterion:
 
+$$AIC ~=~ 2 K ~-~ ln (\widehat{L})$$
 
-Logit is good for parameter importance
+Where $ln (\widehat{L})$ is the log likelihood, $K$ is the number of parameters.
+
+| Model # | Features |  AIC   |
+| :-----: | :------: | :----: |
+|    1    |    20    | 699.72 |
+|    2    |    9     | 708.96 |
+
+Logit is a common machine learning method. It is easy to understand and explain. This supervised binary classification method is very useful for determining the importance of the features which can be applied. As we saw in Model#1 there were 11 features which had probabilities of the estimates used above the 5% threshold cut-off. In Model#2 only 9 features were used to describe the model and the AIC increased by 9.24.
+
+The nine features which best described the logistic regression model were R, H, P, C, E, Y, T, D, G. If we compare this to the Boruta test carried out in the EDA we find the overlap interesting.
+
+**Test Model / Order of Importance (From Left To Right)**
+
+| Test Model | | | | | | | | | | | | | | | | | | | | |
+| :--------: |:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+|    Order   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11| 12| 13| 14| 15| 16| 17| 18| 19| 20|
+|   Boruta   | R   | H   | P   | K   | C   | E   | Y   | T   | S   | A   | V   | U   | I   | F   | D   | G   | N   | L   | M   | Q   |
+|   Logit    | R   | H   | P   | .   | C   | E   | Y   | T   | .   | .   | .   | .   | .   |  .  | D   | G   | .   | .   | .   | .   |
+
+The first 7 out of 8 amino acid features are seen in the proper order as described by the Boruta Random Forest model. This is confirmation that Logit can pick up the importance of features similar to Boruta.
+
+Logit produced 536 proteins which are false-negatives or false-positives. It should be noted that the 536 are NOT UNIQUE NOR SORTED. The number of FN/FP from the confusion matrix is 26. These proteins will be investigated further in the Outliers section which compares these FN/FP proteins to the PCA outliers.
 

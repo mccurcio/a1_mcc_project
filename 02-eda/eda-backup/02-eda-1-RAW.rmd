@@ -1,0 +1,457 @@
+# Exploratory Data Analysis
+
+>Exploratory data analysis (EDA) is an approach to analyzing data sets to summarize their main characteristics, often with visual methods.[^1]
+
+[^1]:https://en.wikipedia.org/wiki/Exploratory_data_analysis
+
+## Four Step Analysis
+
+At this stage data should be inspected in a careful and structured way. Hence, I have chosen a four step process: 
+
+>**Hypothesize -> Summarize -> Visualize -> Normalize**
+
+This four step process is an oversimplification of a much more detailed process which is outlined below.  I have derived this process as an amalgamation of several other approaches.
+
+#### Useful Guides for Exploratory Data Analysis {-}
+
+The hybrid process which I use to summarize the amino acid dataset is based on three sets of guidelines;  
+- NIST Handbook of Statistics,[^4]  
+
+- Roger Peng's booklet on 'Exploratory Data Analysis with R,' [^5]
+
+- 'Exploratory Data Analysis Using R', by Ronald K. Pearson.[^6]  
+
+[^4]:https://www.itl.nist.gov/div898/handbook/
+
+[^5]:https://leanpub.com/exdata
+
+[^6]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018, ISBN:9781138480605
+
+## Hypothesize - Questions During EDA
+
+Although exploratory data analysis does not always have a formal hypothesis testing portion, I do however pose several questions concerning the structure, quality and types of data.
+
+1. Do the independent variables of this study have large skewed distributions?
+    + If skew values greater than 2.0 are found, can a transformation be used for normalization?
+    + If so, what transformation should be used?
+
+2. Can **Feature Selection** be used and which procedures are appropriate?
+    + Can the Random Forest technique known as Boruta[^2], be used for feature importance or reduction?
+    + Will coefficients of correlation (R) find collinearity and reduce the number of features?
+    + Will principle component analysis (PCA) be useful in finding hidden structures of patterns?
+    + Can PCA be used successfully for Feature Selection?
+
+[^2]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11
+
+3. What is the structure of the data?
+    + Is the data representative of the entire experimental space?
+    + Is missing data an issue?
+    + Does the data have certain biases either known or unknown?
+    + What relationships do we expect from these variables?[^3]
+
+[^3]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
+
+## Begin Exploratory Data Analysis
+
+### Import libraries
+
+```{r message=FALSE}
+Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
+
+for (i in Libraries) {
+    library(i, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE)
+```
+
+### Import RAW data
+
+```{r message=FALSE, warning=FALSE}
+c_m_RAW_AAC <- read_csv("../00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
+Class <- as.factor(c_m_RAW_AAC$Class)
+```
+
+### Visually inspect RAW data files
+
+- Use command line interface followed by the command `less`.
+- Check for binary instead of ASCII and bad Unicode.
+
+### Inspect RAW dataframe structure, `str()` 
+
+```{r echo=FALSE}
+str(c_m_RAW_AAC)
+```
+
+### Check RAW data `head` & `tail`
+
+```{r}
+head(c_m_RAW_AAC, n = 2)
+```
+```{r}
+tail(c_m_RAW_AAC, n = 2)
+```
+
+### Check RAW data types
+
+```{r echo=TRUE}
+is.data.frame(c_m_RAW_AAC)
+class(c_m_RAW_AAC$Class)        # Col 1
+class(c_m_RAW_AAC$TotalAA)      # Col 2
+class(c_m_RAW_AAC$PID)          # Col 3
+class(c_m_RAW_AAC$A)            # Col 4
+```
+
+### Check RAW dataframe dimensions
+
+```{r}
+dim(c_m_RAW_AAC)
+```
+
+### Check RAW for missing values
+
+- **No missing values found.**
+```{r}
+apply(is.na(c_m_RAW_AAC), 2, which)
+
+# sapply(c_m_RAW_AAC, function(x) sum(is.na(x))) # Sum up NA by columns
+# c_m_RAW_AAC[rowSums(is.na(c_m_RAW_AAC)) != 0,] # Show rows where NA's is not zero
+```
+
+### Count RAW polypeptides by group
+
+- Class: **0** = Control, **1** = Myoglobin
+```{r echo=FALSE}
+class_table <- table(c_m_RAW_AAC$Class)
+class_table
+```
+
+### Numerical summary of RAW features
+
+```{r echo=FALSE}
+summary(c_m_RAW_AAC)
+```
+
+## Visualize RAW Data With Descriptive Statistics
+
+Formulas for mean:
+$$E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i$$
+
+### Scatter plot of means of *Myoglobin-Control* amino acid composition of `c_m_RAW_AAC` dataframe
+
+- This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
+
+```{r echo=FALSE}
+AA_ave <- colMeans(c_m_RAW_AAC[, 4:23])
+plot(AA_ave,
+     main = "Plot: Column-Means of % Composition Vs Amino Acid",
+     ylab = "% Composition",
+     xlab = "Amino Acid",
+     ylim = c(0, 0.1),
+     type = "b",
+     xaxt = "n")
+axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
+```
+
+* Pseudo-code for Data manipulation for Grouped Bar charts
+    + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
+    + A-2. Determine column means for each protein class
+    + A-3. Calculate percentage values
+    + A-4. Produce Grouped Bar Plot
+
+```{r cache=TRUE, include=FALSE}
+# A-1
+ctrl_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "0"), ]
+mgb_set  <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "1"), ]
+
+# A-2
+ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
+mgb_means  <- apply(mgb_set[, 4:23], 2, mean)
+grand_mean <- apply(c_m_RAW_AAC[, 4:23], 2, mean)
+
+# A-3
+data <- data.frame(ctrl_means, mgb_means, grand_mean)
+percent_aa <- as.matrix(t(100 * data))
+```
+
+```{r echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# A-4
+### Grouped barchart of amino acid vs. protein category
+barplot(percent_aa,
+        main = "Mean % A.A.Composition Of 3 Protein Groupings",
+        ylab = "% AA Composition",
+        ylim = c(0, 12),
+        col = colorRampPalette(brewer.pal(4,"Blues"))(3),
+        legend = T,
+        beside = T)
+```
+
+### Means of percent amino acid composition of control & myoglobin categories, RAW data
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+data2 <- data.frame(ctrl_means, mgb_means)
+percent_aa2 <- as.matrix(t(100 * data2))
+
+barplot(percent_aa2,
+        ylim = c(0, 12),
+        main = "Mean % A.A.Composition Of Control & Myoglobin",
+        ylab = "% AA Composition",
+        col = colorRampPalette(brewer.pal(4,"Blues"))(2),
+        legend = T,
+        beside = T)
+```
+
+### Boxplots of grand-means of overall amino acid composition, RAW data
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+boxplot(c_m_RAW_AAC[,4:23], 
+        main = "Boxplots: All; % Composition Vs Amino Acid",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+### Boxplots of amino acid compositions for control (only), RAW data
+
+```{r echo=FALSE}
+boxplot(ctrl_set[, 4:23], 
+        main = "Boxplots: Controls; % AAC Vs Amino Acid",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+### Boxplots of amino acid compositions for myoglobin (only), RAW data
+
+```{r echo=FALSE}
+boxplot(mgb_set[, 4:23], 
+        ylim = c(0, 0.5),
+        main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+```{r echo=FALSE}
+par(mfrow = c(1, 2))
+
+boxplot(ctrl_set[, 4:23], 
+        ylim = c(0, 0.3),
+        main = "Boxplots: Controls",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
+
+boxplot(mgb_set[, 4:23], 
+        ylim = c(0, 0.3),
+        main = "Boxplot: Myoglobin",
+        xlab = "Amino Acid",
+        las = 1)
+```
+
+### Boxplots of Length of Polypeptides For Myoglobin, Control & Combined, RAW data
+
+```{r echo=FALSE}
+ctrl_totalaa <- ctrl_set[, 2]
+mgb_totalaa  <- mgb_set[, 2]
+grand_totalaa <- c_m_RAW_AAC[, 2]
+
+data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
+
+boxplot(data, 
+        ylim = c(0, 5000),
+        main = "Boxplot: Length of Polypeptides Vs Control, Myoglobin & Combined",
+        ylab = "Length of Polypeptides",
+        xaxt = "n",
+        las = 2)
+axis(1, at = 1:3, labels = c("Control", "Myoglobin", "Combined"))
+```
+
+### Plot of normalized standard deviations / coefficient of variance (CV), RAW data
+
+Standard deviations are sensitive to scale. Therefore I compare the normalized standard deviations. This normalized standard deviation is more commonly called coefficient of variation (CV).
+
+$$CV = \frac {\sigma (x)} {E [|x|]} ~~~ where ~~~ \sigma(x) \equiv \sqrt{ E[x - \mu]^2 }$$
+
+$$CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2}$$
+
+```{r echo=FALSE}
+AA_var_norm <- (apply(c_m_RAW_AAC[, 4:23], 2, sd)) / AA_ave
+plot(AA_var_norm,
+     main = "Plot of Coefficient Of Variance (CV) Vs 20 Std AA",
+     sub = "(Note: Two largest values shown in red.)",
+     ylab = "Coefficient Of Variance (CV)",
+     xlab = "Amino Acid",
+     ylim = c(0, 1.5),
+     type = "b",
+     xaxt = "n")
+axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
+text(x = 2, y = 1.4, label = " C=1.24", col = "red")
+text(x = 19, y = 1.1, label = "W=0.946", col = "red")
+```
+```{r}
+AA_var_norm
+```
+
+### Skewness of distributions, RAW data
+
+$$Skewness ~= E\left[ \left( \frac{X - \mu}{\sigma(x)} \right)^3 \right] ~~~~ where ~~~~ \sigma(x) \equiv \sqrt{  E[x - \mu]^2 }$$
+
+$$Skewness ~= \frac { \frac{1}{n} \sum^n_{i=1} (x_i - \bar x)^3 } { \left( \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2 } \right) ^ {3}}$$
+
+- Skewness values for each A.A. by Class
+
+```{r echo=FALSE}
+AA_skewness <- (apply(c_m_RAW_AAC[, 4:23], 2, e1071::skewness))
+plot(AA_skewness,
+     main = "Plot of Skewness Vs Amino Acids",
+     ylab = "Skewness",
+     xlab = "Amino Acid",
+     type = "b",
+     ylim = c(-0.5, 3),
+     xaxt = "n")
+axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
+abline(h = 2.0, col = "red")
+text(x = 2, y = 2.8, label = " C=2.5", col = "red")
+text(x = 5, y = 2.4, label = "F=2.1", col = "red")
+text(x = 8, y = 2.4, label = "I=2.2", col = "red")
+```
+
+### QQ-Plots of 20 amino acids, RAW data
+
+```{r echo=FALSE}
+AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", 
+        "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
+for (i in 4:23) {
+    qqnorm(c_m_RAW_AAC[[i]], main = AA[[i - 3]])
+    qqline(c_m_RAW_AAC[[i]], col = "red")
+}
+```
+
+### Determine coefficients of correlation, RAW data
+
+An easily interpretable test, is correlation 2D-plot for investigating multicollinearity or feature reduction. It is clear that fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they are measuring the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^11]
+
+[^11]:"Applied Predictive Modeling", Max Kuhn and Kjell Johnson, Springer Publishing, 2018, P.43
+
+Pearson's correlation coefficient: 
+$$\rho_{x,y} = \frac {E \left[(X - \mu_x)(X - \mu_y) \right]} {\sigma_x \sigma_y}$$
+
+$$r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }$$
+
+```{r message=FALSE, warning=FALSE}
+c_m_corr_mat <- cor(c_m_RAW_AAC[, c(2, 4:23)], 
+                    method = "p") # "p": Pearson test for continous variables
+
+corrplot(abs(c_m_corr_mat),
+         title = "Correlation Plot Of AAC Features", 
+         method = "square", 
+         type = "lower",
+         tl.pos = "d",
+         cl.lim = c(0, 1),
+         addgrid.col = "lightgrey", 
+         cl.pos = "b", # Color legend position bottom.
+         order = "FPC", # "FPC" = first principal component order.
+         mar = c(1, 2, 1, 2),
+         tl.col = "black")
+```
+
+NOTE: Amino acids shown in First Principal Component order, top to bottom.
+
+- Maximum value of Correlation between T & N.
+```{r echo=FALSE}
+c_m_corr_mat["T", "N"]
+# c_m_corr_mat["F", "Y"]
+# c_m_corr_mat["Y", "S"]
+# c_m_corr_mat["F", "G"]
+# c_m_corr_mat["R", "K"]
+# c_m_corr_mat["Y", "A"]
+# c_m_corr_mat["G", "Y"]
+```
+
+- According to Max Kuhn[^9] correlation coefficients need only be addressed if the |R| >= 0.75.
+- Therefore is **no reason to consider multicollinearity**.
+
+* How to reduce features given high correlation (|R| >= 0.75)
+    + Calculate the correlation matrix of the predictors.
+    + If the correlation plot produced of any two variables is greater than or equal to (|R| >= 0.75) then we could consider feature elimination. This interesting heuristic approach would be used for determining which feature to eliminate.[^12]
+    + Determine if the two predictors associated with the largest absolute pairwise correlation (R > |0.75|), call them predictors A and B.
+    + Determine the average correlation between A and the other variables. Do the same for predictor B.
+    + If A has a larger average correlation, remove it; otherwise, remove predictor B.
+    + Repeat Steps 2–4 until no absolute correlations are above the threshold.
+
+[^12]:"Applied Predictive Modeling", Max Kuhn and Kjell Johnson, Springer Publishing, 2018, P.47 (http://appliedpredictivemodeling.com/)
+
+
+### Boruta - dimensionality reduction, RAW data
+
+```{r}
+c_m_class_20 <- c_m_RAW_AAC[, -c(2, 3)]  # Remove TotalAA & PID
+Class <- as.factor(c_m_class_20$Class) # Convert ‘Class’ To Factor
+```
+
+**Perform Boruta search**
+
+NOTE: *mcAdj = TRUE*, If True, multiple comparisons  will be adjusted using the Bonferroni method to calculate p-values. Therefore, $p_i \leq \large \frac {\alpha} {m}$ where $\alpha$ is the desired p-value and $m$ is the total number of null hypotheses. 
+```{r cache=TRUE}
+set.seed(1000)
+registerDoMC(cores = 3)  # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+boruta_output <- Boruta(Class ~ .,
+                        data = c_m_class_20[,-1],
+                        mcAdj = TRUE, # See Note above.
+                        doTrace = 1) # doTrace = 1, represents non-verbose mode.
+
+registerDoSEQ()  # Stop multi-processor mode
+end_time <- Sys.time()   # End timer
+end_time - start_time    # Display elapsed time
+```
+
+```{r eval=FALSE, include=FALSE}
+names(boruta_output)
+```
+
+**Plot variable importance**
+
+```{r echo=FALSE}
+plot(boruta_output,
+     cex.axis = 1,
+     las = 2,
+     ylim = c(-5,50),
+     main = "Variable Importance (Bigger=Better)")
+```
+
+**Variable importance scores**
+
+```{r echo=FALSE, message=FALSE}
+roughFixMod <- TentativeRoughFix(boruta_output)
+imps <- attStats(roughFixMod)
+imps2 <- imps[imps$decision != "Rejected", c("meanImp", "decision")]
+meanImps <- imps2[order(-imps2$meanImp), ]  # descending sort
+
+knitr::kable(meanImps,
+             full_width = F,
+             position = "left",
+             caption  = "Mean Importance Scores & Decision")
+```
+
+Plot importance history
+
+```{r echo=FALSE}
+plotImpHistory(boruta_output)
+```
+
+#### Conclusion for Boruta random forest test {-}
+
+**All features are important. None should be dropped.**
+
+## Conclusions For EDA, RAW data
+
+It was determined that three amino acids (C, F, I) from the single amino acid percent composition should be transformed by using the square root function. A quick investigation (data not shown) showed that a square root transformation would be sufficient. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
+
+| Protein          | Initial skewness | Skew after square root transform |
+| :--------------- | :--------------: | :------------------------------: |
+| C, Cysteine      |     2.538162     |            0.3478132             |
+| F, Phenolalanine |     2.128118     |            -0.102739             |
+| I, Isoleucine    |     2.192145     |            0.2934749             |
+
