@@ -6,7 +6,7 @@ https://www.youtube.com/watch?v=SrQw_fWo4lw&list=PL34t5iLfZddtC6LqEfalIBhQGSZX77
 - Libraries & Initialize
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 rm(list = ls())
-Libraries = c("doMC", "keras", "mlbench", "dplyr", "magrittr", "neuralnet")
+Libraries = c("doMC", "keras", "mlbench", "dplyr", "magrittr", "neuralnet", "caret", "readr")
 
 for(p in Libraries){  # Install if not present
     if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
@@ -17,34 +17,36 @@ knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy
 
 - Import data & data handling
 ```{r}
-data1 <- read.csv("~/Dropbox/a1_mcc_project/00-data/aac_dpc_values/c_m_TRANSFORMED.csv",
-                  stringsAsFactors = FALSE)
-data <- data1[, -c(2,3)]
+data1 <- read_csv("~/Dropbox/a1_mcc_project/00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                  col_types = cols(PID = col_skip(), 
+                                   TotalAA = col_skip()))
 
 # Convert dataframe to matrix for Keras/TF
-data <- as.matrix(data)
-dimnames(data) <- NULL  # Remove labels from matrices.
+data1 <- as.matrix(data1)
+dimnames(data1) <- NULL  # Remove labels from matrices.
+
+head(data1)
 
 # Normalize c_m_transformed
-data[, 2:21] <- normalize(data[, 2:21])
-data[, 1] <- as.factor(data[, 1])
+data1[, 2:21] <- normalize(data1[, 2:21])
+data1[, 1] <- as.factor(data1[, 1])
 ```
 
 Partition data: training & testing sets
 ```{r}
 set.seed(1000)
-index <- createDataPartition(data$V1, p = 0.8, list = FALSE)
+index <- createDataPartition(data1[,1], p = 0.8, list = FALSE)
 
-training_set <- data[ index,]
-test_set     <- data[-index,] 
+training_set <- data1[ index,]
+test_set     <- data1[-index,] 
 
-Class_test <- as.factor(test_set$V1) 
+Class_test <- as.factor(test_set[,1]) 
 ```
 
 # Neural Network Visualization
 ```{r}
-n <- neuralnet(data$V1 ~ .,
-               data = data,
+n <- neuralnet(data1[,1] ~ .,
+               data = data1,
                hidden = c(10,5),
                linear.output = F,
                lifesign = "full",

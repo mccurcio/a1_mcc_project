@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-```{r}
+```{r include=FALSE}
 # Helper packages
 library(dplyr)    # for data manipulation
 library(ggplot2)  # for data visualization
@@ -22,7 +22,7 @@ names(mnist)
 
 ```{r}
 h2o.no_progress()  # turn off progress bars
-h2o.init(max_mem_size = "5g")  # initialize H2O instance
+h2o.init(max_mem_size = "3g")  # initialize H2O instance
 ```
 
 
