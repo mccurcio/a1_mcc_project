@@ -18,7 +18,7 @@ c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
 ```
 
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
 
 pc1_values <- pca_values$rotation[,1]

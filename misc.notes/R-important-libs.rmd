@@ -1,0 +1,60 @@
+```{r}
+#install.packages("rlang")
+library(rlang)
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+
+#Try installing:
+# deb: libcurl4-openssl-dev, libssl-dev, libxml2-dev
+
+load_or_install<-function(package_names) {
+    for(package_name in package_names) {
+        if(!is_installed(package_name)) {
+            install.packages(package_name,repos="http://lib.stat.cmu.edu/R/CRAN",
+                             dependencies = TRUE)
+        }
+        # library(package_name,character.only=TRUE,quietly=TRUE,verbose=FALSE)
+        print("OK")
+        }
+}
+
+load_or_install(c("readr", "doMC", "corrplot", "knitr","caret","tidyverse"))
+```
+
+```{r}
+load_or_install(c("ggplot2", "C50","bookdown","blogdown","kernlab"))
+```
+
+```{r}
+load_or_install(c("mvtnorm","fastAdaboost","e1071","plyr", "RColorBrewer"))
+```
+
+```{r}
+load_or_install(c("rpart", "Cubist", "kknn", "class", "klaR", "MASS"))
+```
+
+```{r}   
+load_or_install(c("LogicReg","naivebayes", "bnclassify", "randomForest", "foreach"))
+```
+
+```{r}
+load_or_install(c("import", "ipred", "dplyr", "stringr", "stringi"))
+```
+
+```{r}
+load_or_install(c("tidyr","lubridate","ggplot2","htmlwidgets", "rmarkdown","zoo", "xtable"))
+```         
+
+```{r}        
+# load_or_install(c("rJava","xlsxjars","xlsx")) # Problematic
+```
+
+
+
+
+
+
+

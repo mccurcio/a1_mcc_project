@@ -71,25 +71,5 @@ Comparison Chart
 | Debugging            | Moderate                         | Simpler                                                  |
 | Ease of construction | Complex                          | Easier                                                   |
 
-## Run Training Set 
- C5.0	Classification	C50, plyr	trials, model, winnow
-```{r eval=FALSE, cache=TRUE, include=FALSE}
-set.seed(1000)
-registerDoMC(cores = 3) # Start multi-processor mode
-start_time <- Sys.time() # Start timer
 
-tcontrol <- trainControl(method = "repeatedcv",
-                         number = 5, # 10X fold CV repeated 5X
-                         repeats = 3,
-                         allowParallel = TRUE)
-                  
-model_list <- train(Class ~ .,
-                    data = training_set,
-                    methodList = "C5.0",
-                    trControl = tcontrol)
-
-end_time <- Sys.time() # End timer
-end_time - start_time # Display time
-registerDoSEQ() # Stop multi-processor mode
-```
 
