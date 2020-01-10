@@ -11,25 +11,27 @@ output: html_document
 
 ```{r message=FALSE, warning=FALSE}
 ## Load Libraries
-# rm(list = ls())
 Libraries = c("knitr", "readr")
 
 for(p in Libraries){
     library(p, character.only = TRUE)
 }
-opts_chunk$set(cache = TRUE)
+opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-## Prepare PCA loadings of PC1 and PC2 for all 2340 proteins
-```{r}
-c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
-                            col_types = cols(Class = col_skip(),
-                                             PID = col_skip(), 
-                                             TotalAA = col_skip()))
-# View(c_m_TRANSFORMED)
+## Prepare PCA: PC1 and PC2 for all 2340 proteins
 
-pca_values <- prcomp(c_m_TRANSFORMED, scale = TRUE)
+```{r}
+norm_c_m_20aa <- read_csv("../00-data/03-ml_results/norm_c_m_20aa.csv")
+
+pca_values <- prcomp(norm_c_m_20aa)
+```
+
+
+```{r}
 row_pc12 <- cbind(1:2340, pca_values$x[,1], pca_values$x[,2])
+
+
 colnames(row_pc12)[(row_pc12)[1]] <- "rowNum"
 names(row_pc12)[,2] <- "PC1"
 names(row_pc12)[,3] <- "PC2"
@@ -58,9 +60,6 @@ for (i in 1:length(outlier_files)) {
     head(outlier_loads)
 }
 ```
-
-
-
 
 
 ## Logit set inner-join with row_pc12

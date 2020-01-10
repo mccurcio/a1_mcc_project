@@ -1,0 +1,228 @@
+---
+author: "MCC"
+output: html_document
+---
+
+# 20-Outliers-Inner-Joined-wPC
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+Libraries = c("knitr", "readr")
+
+for(p in Libraries){
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE, fig.align = "center")
+```
+
+## Prepare PCA: PC1 and PC2 for all 2340 proteins
+
+```{r message=FALSE, warning=FALSE}
+norm_c_m_20aa <- read_csv("../00-data/03-ml_results/norm_c_m_20aa.csv")
+
+pca_values <- prcomp(norm_c_m_20aa)
+
+row_pc12 <- cbind(rowNum = 1:2340, PC1 = pca_values$x[,1], PC2 = pca_values$x[,2])
+# dim(row_pc12)
+```
+
+```{r include=FALSE}
+write.table(row_pc12,
+            file = "../00-data/05-joins_plots/row_pc12.txt",
+            sep = ",",
+            row.names = F)
+```
+
+## Load Files & change column names
+```{r warning=FALSE, include=FALSE}
+# Not elegant but fast 4 me to code ;)
+logit_nums <- read_csv("../00-data/04-sort_unique_outliers/logit_nums.csv")
+pca_outliers <- read_csv("../00-data/04-sort_unique_outliers/pca_outliers.csv")
+rf_nums <- read_csv("../00-data/04-sort_unique_outliers/rf_nums.csv")
+svm_lin_nums <- read_csv("../00-data/04-sort_unique_outliers/svm_lin_nums.csv")
+svm_poly_nums <- read_csv("../00-data/04-sort_unique_outliers/svm_poly_nums.csv")
+svm_rbf_nums <- read_csv("../00-data/04-sort_unique_outliers/svm_rbf_nums.csv")
+
+colnames(logit_nums)[1] = "rowNum" 
+colnames(pca_outliers)[1] = "rowNum" 
+colnames(rf_nums)[1] = "rowNum" 
+colnames(svm_lin_nums)[1] = "rowNum" 
+colnames(svm_poly_nums)[1] = "rowNum" 
+colnames(svm_rbf_nums)[1] = "rowNum" 
+```
+
+
+## Inner-join (merge) with PC 1&2 (row_pc12)
+```{r message=FALSE, warning=FALSE}
+logit_pc    <- merge(x = logit_nums,    y = row_pc12, by = "rowNum")
+pca_pc      <- merge(x = pca_outliers,  y = row_pc12, by = "rowNum")
+rf_pc       <- merge(x = rf_nums,       y = row_pc12, by = "rowNum")
+svm_lin_pc  <- merge(x = svm_lin_nums,  y = row_pc12, by = "rowNum")
+svm_poly_pc <- merge(x = svm_poly_nums, y = row_pc12, by = "rowNum")
+svm_rbf_pc  <- merge(x = svm_rbf_nums,  y = row_pc12, by = "rowNum")
+```
+
+## Generate FP/FN & PCA-Outliers on PCA Plots
+
+png("plot.png")
+# or tiff("plot.tiff")
+plot(...)
+dev.off()
+
+### PCA-Outliers Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+png(filename = "../00-data/05-joins_plots/pca_outlier.png")
+dev.off()
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "PCA-Outliers On PC 1 & 2 Axes",
+     sub = "(PCA-Outlier pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(pca_pc[, 2], 
+     pca_pc[, 3], 
+     labels = pca_pc[, 1], 
+     col = "red",
+     cex = 1.4, 
+     pos = 1)
+
+dev.off()
+```
+
+
+### Logit Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+png(filename = "../00-data/05-joins_plots/logit_pca.png")
+
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "Logit FP/FN On PC 1 & 2 Axes",
+     sub = "(Logit pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(logit_pc[, 2], 
+     logit_pc[, 3], 
+     labels = logit_pc[, 1], 
+     col = "coral",
+     cex = 1.4, 
+     pos = 1)
+dev.off()
+```
+
+### Random Forest Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+png(filename = "../00-data/05-joins_plots/rf_pca.png")
+
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "Random Forest FP/FN On PC 1 & 2 Axes",
+     sub = "(Random Forest pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(rf_pc[, 2], 
+     rf_pc[, 3], 
+     labels = rf_pc[, 1], 
+     col = "cyan3",
+     cex = 1.4, 
+     pos = 1)
+
+dev.off()
+
+```
+
+### SVM-Linear Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+png(filename = "../00-data/05-joins_plots/svm_linear_pca.png")
+
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "SVM-Linear FP/FN On PC 1 & 2 Axes",
+     sub = "(SVM-Linear pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(svm_lin_pc[, 2], 
+     svm_lin_pc[, 3], 
+     labels = svm_lin_pc[, 1], 
+     col = "darkgoldenrod3",
+     cex = 1.4, 
+     pos = 1)
+
+dev.off()
+
+```
+
+
+### SVM-Polynomial Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+png(filename = "../00-data/05-joins_plots/svm_poly_pca.png")
+
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "SVM-Polynomial FP/FN On PC 1 & 2 Axes",
+     sub = "(SVM-Polynomial pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(svm_poly_pc[, 2], 
+     svm_poly_pc[, 3], 
+     labels = svm_poly_pc[, 1], 
+     col = "deepskyblue3",
+     cex = 1.4, 
+     pos = 1)
+
+dev.off()
+```
+
+### SVM-Radial Basis Function Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+png(filename = "../00-data/05-joins_plots/svm_rbf_pca.png")
+
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "SVM-RBF FP/FN On PC 1 & 2 Axes",
+     sub = "(SVM-RBF pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(svm_rbf_pc[, 2], 
+     svm_rbf_pc[, 3], 
+     labels = svm_rbf_pc[, 1], 
+     col = "green4",
+     cex = 1.4, 
+     pos = 1)
+
+dev.off()
+```
+
+
+
+
+
+
+
+
+

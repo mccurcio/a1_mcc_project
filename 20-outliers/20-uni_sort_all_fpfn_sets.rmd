@@ -120,16 +120,15 @@ write_csv(x = as.data.frame(dl_nums),
 
 ## Statistical Learning Method Vs Total Number of FP/FN
 
-| Statistical Method            | Unique | Total Number Produced |
-| :---------------------------- | :----: | :-------------------: |
-| Principal Componnent Analysis |  460   |          461          |
-| Logit                         |  119   |           x           |
-| SVM Linear                    |  125   |           x           |
-| SVM Polynomial                |   70   |           x           |
-| SVM Radial Basis Function     |   58   |           x           |
-| Random Forest                 |   46   |           x           |
-| Deep Learning - Autoencoder   |   x    |           x           |
-
+| Statistical Method            | Unique | Total Number Produced | Total/Unique |
+| :---------------------------- | :----: | :-------------------: | :----------: |
+| Principal Componnent Analysis |  460   |          461          |    1.002     |
+| Logit                         |  119   |          537          |     4.51     |
+| SVM Linear                    |  125   |          496          |     3.97     |
+| SVM Polynomial                |   70   |          278          |     3.97     |
+| SVM Radial Basis Function     |   58   |          244          |     4.21     |
+| Random Forest                 |   46   |          190          |     4.13     |
+| Deep Learning - Autoencoder   |   x    |           x           |       x      |
 
 ## Venn Diagrams 
 

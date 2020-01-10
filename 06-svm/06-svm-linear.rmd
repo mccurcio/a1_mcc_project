@@ -2,9 +2,8 @@
 
 ## Introduction
 
+Load Libraries
 ```{r message=FALSE, warning=FALSE}
-## Load Libraries
-rm(list = ls())
 Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
 for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }

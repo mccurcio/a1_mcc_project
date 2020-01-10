@@ -36,7 +36,7 @@ logit <- read_csv("../00-data/03-ml_results/fp_fn_logit.csv")
 
 logit <- sort(unique(unlist(logit[, keep], use.names = FALSE)))
 
-#logit_loads <- merge(x = logit_nums_copy, y = pc_1_2_values_copy, by = "rowNum")
+# logit_loads <- merge(x = logit_nums_copy, y = pc_1_2_values_copy, by = "rowNum")
 
 write_csv(x = as.data.frame(logit), 
           path = "../00-data/04-ordered_unique_outliers/logit_nums.csv")
@@ -46,8 +46,6 @@ write_csv(x = as.data.frame(logit),
 #             col.names = c("A","B"),
 #             sep = ",",
 #             row.names = F)
-
-
 
 length(logit)
 logit # Display numbers
