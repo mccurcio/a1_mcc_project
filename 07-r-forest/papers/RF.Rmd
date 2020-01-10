@@ -1,0 +1,107 @@
+---
+title: "RF test"
+author: "mcc"
+date: "August 22, 2017"
+output: html_document
+---
+
+## https://www.r-bloggers.com/random-forests-in-r/
+
+
+```{r load}
+#loading the required packages
+
+require(randomForest)
+require(MASS)# MASS contains the Boston housing dataset
+attach(Boston)
+set.seed(101)
+
+dim(Boston)
+```
+
+```{r}
+# Saperating Training and Test Sets
+# training Sample with 300 observations
+train = sample(1:nrow(Boston), 300)
+?Boston  #to search on the dataset
+```
+
+```{r}
+# Fitting the Random Forest
+# We will use all the Predictors in the dataset.
+
+Boston.rf = randomForest(medv ~ . , data = Boston , subset = train)
+Boston.rf
+
+## Call:
+##  randomForest(formula = medv ~ ., data = Boston, subset = train) 
+##                Type of random forest: regression
+##                      Number of trees: 500
+## No. of variables tried at each split: 4
+## 
+##           Mean of squared residuals: 12.62686
+##                     % Var explained: 84.74
+```
+
+
+```{r}
+# Plotting the Error vs Number of Trees Graph.
+
+plot(Boston.rf)
+```
+
+```{r}
+# This plot shows the Error and the Number of Trees.We can easily notice that how the Error is dropping as we keep on adding more and more trees and average them.
+# 
+# Now we can compare the Out of Bag Sample Errors and Error on Test set
+# The above Random Forest model chose Randomly 4 variables to be considered at each split. We could now try all possible 13 predictors which can be found at each split.
+
+oob.err = double(13)
+test.err = double(13)
+
+#mtry is no of Variables randomly chosen at each split
+for(mtry in 1:13) {
+    rf = randomForest(
+        medv ~ . ,
+        data = Boston ,
+        subset = train,
+        mtry = mtry,
+        ntree = 400)
+    oob.err[mtry] = rf$mse[400] #Error of all Trees fitted
+    
+    pred <-
+        predict(rf, Boston[-train, ]) 
+        #Predictions on Test Set for each Tree
+    
+    test.err[mtry] = with(Boston[-train, ], mean((medv - pred) ^ 2)) 
+    #Mean Squared Test Error
+    
+    cat(mtry, " ") 
+    #printing the output to the console
+    
+}
+## 1  2  3  4  5  6  7  8  9  10  11  12  13
+```
+
+
+```{R}
+# Test Error
+
+test.err
+##  [1] 26.06433 17.70018 16.51951 14.94621 14.51686 14.64315 14.60834
+##  [8] 15.12250 14.42441 14.53687 14.89362 14.86470 15.09553
+```
+
+```{R}
+# What happens is that we are growing 400 trees for 13 times i.e for all 13 predictors.
+# 
+# Plotting both Test Error and Out of Bag Error
+matplot(1:mtry, cbind(oob.err,test.err), pch = 19,
+        col = c("red","blue"), type = "b", ylab = "Mean Squared Error",
+        xlab = "Number Of Predictors Considered At Each Split")
+legend("topright",legend = c("Out of Bag Error", "Test Error"),
+       pch = 19, col = c("red", "blue"))
+```
+
+
+

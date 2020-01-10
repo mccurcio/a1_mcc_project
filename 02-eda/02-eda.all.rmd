@@ -191,7 +191,7 @@ barplot(percent_aa,
         main = "Mean % A.A.Composition Of 3 Protein Groupings",
         ylab = "% AA Composition",
         ylim = c(0, 12),
-        col = colorRampPalette(brewer.pal(4,"Blues"))(3),
+        col = colorRampPalette(brewer.pal(4, "Blues"))(3),
         legend = T,
         beside = T)
 ```
@@ -206,7 +206,7 @@ barplot(percent_aa2,
         ylim = c(0, 12),
         main = "Mean % A.A.Composition Of Control & Myoglobin",
         ylab = "% AA Composition",
-        col = colorRampPalette(brewer.pal(4,"Blues"))(2),
+        col = colorRampPalette(brewer.pal(4, "Blues"))(2),
         legend = T,
         beside = T)
 ```
@@ -214,7 +214,7 @@ barplot(percent_aa2,
 ### Boxplots of grand-means of overall amino acid composition, RAW data
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-boxplot(c_m_RAW_AAC[,4:23], 
+boxplot(c_m_RAW_AAC[, 4:23],
         main = "Boxplots: All; % Composition Vs Amino Acid",
         ylab = "% AAC",
         xlab = "Amino Acid",
@@ -224,7 +224,7 @@ boxplot(c_m_RAW_AAC[,4:23],
 ### Boxplots of amino acid compositions for control (only), RAW data
 
 ```{r echo=FALSE}
-boxplot(ctrl_set[, 4:23], 
+boxplot(ctrl_set[, 4:23],
         main = "Boxplots: Controls; % AAC Vs Amino Acid",
         ylab = "% AAC",
         xlab = "Amino Acid",
@@ -234,7 +234,7 @@ boxplot(ctrl_set[, 4:23],
 ### Boxplots of amino acid compositions for myoglobin (only), RAW data
 
 ```{r echo=FALSE}
-boxplot(mgb_set[, 4:23], 
+boxplot(mgb_set[, 4:23],
         ylim = c(0, 0.5),
         main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
         ylab = "% AAC",
@@ -245,14 +245,14 @@ boxplot(mgb_set[, 4:23],
 ```{r echo=FALSE}
 par(mfrow = c(1, 2))
 
-boxplot(ctrl_set[, 4:23], 
+boxplot(ctrl_set[, 4:23],
         ylim = c(0, 0.3),
         main = "Boxplots: Controls",
         ylab = "% AAC",
         xlab = "Amino Acid",
         las = 1)
 
-boxplot(mgb_set[, 4:23], 
+boxplot(mgb_set[, 4:23],
         ylim = c(0, 0.3),
         main = "Boxplot: Myoglobin",
         xlab = "Amino Acid",
@@ -268,7 +268,7 @@ grand_totalaa <- c_m_RAW_AAC[, 2]
 
 data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
 
-boxplot(data, 
+boxplot(data,
         ylim = c(0, 5000),
         main = "Boxplot: Length of Polypeptides Vs Control, Myoglobin & Combined",
         ylab = "Length of Polypeptides",
@@ -330,7 +330,7 @@ text(x = 8, y = 2.4, label = "I=2.2", col = "red")
 ### QQ-Plots of 20 amino acids, RAW data
 
 ```{r echo=FALSE}
-AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", 
+AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
         "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
 for (i in 4:23) {
     qqnorm(c_m_RAW_AAC[[i]], main = AA[[i - 3]])
@@ -350,16 +350,16 @@ $$\rho_{x,y} = \frac {E \left[(X - \mu_x)(X - \mu_y) \right]} {\sigma_x \sigma_y
 $$r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }$$
 
 ```{r message=FALSE, warning=FALSE}
-c_m_corr_mat <- cor(c_m_RAW_AAC[, c(2, 4:23)], 
+c_m_corr_mat <- cor(c_m_RAW_AAC[, c(2, 4:23)],
                     method = "p") # "p": Pearson test for continous variables
 
 corrplot(abs(c_m_corr_mat),
-         title = "Correlation Plot Of AAC Features", 
-         method = "square", 
+         title = "Correlation Plot Of AAC Features",
+         method = "square",
          type = "lower",
          tl.pos = "d",
          cl.lim = c(0, 1),
-         addgrid.col = "lightgrey", 
+         addgrid.col = "lightgrey",
          cl.pos = "b", # Color legend position bottom.
          order = "FPC", # "FPC" = first principal component order.
          mar = c(1, 2, 1, 2),
@@ -408,7 +408,7 @@ registerDoMC(cores = 3)  # Start multi-processor mode
 start_time <- Sys.time() # Start timer
 
 boruta_output <- Boruta(Class ~ .,
-                        data = c_m_class_20[,-1],
+                        data = c_m_class_20[,  -1],
                         mcAdj = TRUE, # See Note above.
                         doTrace = 1) # doTrace = 1, represents non-verbose mode.
 
@@ -427,7 +427,7 @@ names(boruta_output)
 plot(boruta_output,
      cex.axis = 1,
      las = 2,
-     ylim = c(-5,50),
+     ylim = c(-5, 50),
      main = "Variable Importance (Bigger=Better)")
 ```
 
@@ -692,7 +692,7 @@ AA_skewness
 ### QQ Plots of 20 amino acids of Transformed data
 
 ```{r echo=FALSE}
-AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", 
+AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
        "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
 for (i in 4:23) {
     qqnorm(c_m_TRANSFORMED[[i]], main = AA[[i - 3]])
@@ -751,7 +751,7 @@ registerDoMC(cores = 3)  # Start multi-processor mode
 start_time <- Sys.time() # Start timer
 
 boruta_output <- Boruta(Class ~ .,
-                        data = c_m_class_20[,-1],
+                        data = c_m_class_20[, -1],
                         mcAdj = TRUE, # See Note above.
                         doTrace = 1) # doTrace = 1, represents non-verbose mode.
 
@@ -763,10 +763,10 @@ end_time - start_time    # Display elapsed time
 **Plot variable importance**
 
 ```{r}
-plot(boruta_output, 
+plot(boruta_output,
      cex.axis = 1,
-     las = 2, 
-     ylim = c(-5,50),
+     las = 2,
+     ylim = c(-5, 50),
      main = "Variable Importance (Bigger=Better)")
 ```
 

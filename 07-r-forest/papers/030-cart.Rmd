@@ -1,0 +1,11 @@
+# Classification - CART
+
+## Decision Tree Classification in R
+
+See Youtube: Melvin L. [big data](https://youtu.be/JFJIQ0_2ijg)
+
+* Decision Trees using rpart library [https://cran.r-project.org/web/packages/rpart/index.html]
+
+**Limitations, considerations and alternatives: oldest
+**Used for Regression or Classification (CART)
+**Example uses Iris dataset from R.Fisher

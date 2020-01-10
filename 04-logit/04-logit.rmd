@@ -2,13 +2,13 @@
 
 ## Introduction
 
-For students who have studied cell biology and biochemistry, logistic regression may already be familiar. It may also be known as a *sigmoidal curve*, *dose-response curve*, *4-parameter fit*, a *median lethal dose curve* (LD-50) or even an exponential growth curve given limited resources. However it can also be thought of a binary classifier which can toggle between off and on, zero or one.
+For students who have studied cell biology and biochemistry, logistic regression may already be familiar. It may also be known as a *sigmoidal curve*, *dose-response curve*, *4-parameter fit*, a *median lethal dose curve* (LD-50) or even an exponential growth curve is given limited resources. However, it can also be thought of a binary classifier that can toggle between off and on, zero or one.
 
-Logistic regression derives it name from the similarity to linear regression, for reasons you will see below. In this circumstance it does not calculate a dependent variable $(y)$ as a regression is normally thought to do but instead Logistic Regression is used for classification between two states as follows.
+Logistic regression derives its name from the similarity to linear regression, for reasons you will see below. In this circumstance it does not calculate a dependent variable $(y)$ as regression is normally thought to do but instead, Logistic Regression is used for classification between two states as follows.
 
 $$f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.$$
 
-In this simple form we can use the generation of a zero or one as a binary or logical value, hence logistic, zero indicating the absence of some quality or item and one indicating its presence. 
+In this simple form we can use the generation of a zero or one as a binary or logical value, hence logistic, zero indicating the absence of some quality or item and one indicating its presence.
 
 The domain ($x$) of our logistic equation may be ($-\infty$ to $\infty$), but at the **decision boundary** of $x ~=$ 0 (for this example) our system changes from *zero*, absence, to *one*, the presence of a quality or item. In the Logistic/Sigmoidal Curve figure below, the **decision boundary** is denoted by the *red dotted line*.
 
@@ -28,10 +28,10 @@ text(3.5, 0.48, cex = 1.75, "if x >= 0 then y = 1")
 ```
 
 The logistic growth curve is commonly denoted by:
-    
+
 $$f(x) ~=~ \frac{M}{1 + Ae^{-r(x - x_0)}}$$
 
-where $M$ is the curve's maximum value, $r$ is the maximum growth rate (also called the Malthusian parameter[^41]), $x_0$ is the midpoint of the curve, $A$ is the number of times that the initial population must double to reach $M$.[^42] 
+where $M$ is the curve's maximum value, $r$ is the maximum growth rate (also called the Malthusian parameter[^41]), $x_0$ is the midpoint of the curve, $A$ is the number of times that the initial population must double to reach $M$.[^42]
 
 [^41]:https://en.wikipedia.org/wiki/Malthusian_growth_model
 [^42]:https://en.wikipedia.org/wiki/Logistic_function
@@ -40,9 +40,9 @@ In the specific case of *Logistic Regression for Binary Classification* where we
 
 ---
 
-Since the logistic equation is exponential it is easier to consider working with the formula in terms of the the odds or log odds. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or log odds as $\large ln \left (\frac{p}{1-p} \right )$.
+Since the logistic equation is exponential it is easier to consider working with the formula in terms of the odds or log odds. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or log-odds as $\large ln \left (\frac{p}{1-p} \right )$.
 
-In logistic regression we find that the log odds may be expressed as a set of linear equations in x. This is simply a transformation of exponential curve to make it linear. The set of linear equations is similar to the idea inherent in Linear Regression.
+In logistic regression, we find that the log-odds may be expressed as a set of linear equations in x. This is simply a transformation of the exponential curve to make it linear. The set of linear equations is similar to the idea inherent in Linear Regression.
 
 $$ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}$$
 
@@ -53,7 +53,7 @@ $$ln \left( \frac {p}{1-p} \right) =~ \sum_i^{k} \beta_i x_i$$
 Eliminate the natural log by taking the exponent on both sides:
 
 $$\large \frac {p}{1-p} =~ exp \left ( \sum_i^{k} \beta_i x_i \right )$$
- 
+
 $$\large \frac {p}{1-p} =~ e^u ~~:~~ where ~~ u = \sum_i^{k} \beta_i x_i$$
 
 Rearrange to solve for $\large p$ we find:
@@ -93,7 +93,7 @@ opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```{r}
 # Import data & data handling
 c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
-                            col_types = cols(Class = col_factor(levels = c("0","1")),
+                            col_types = cols(Class = col_factor(levels = c("0", "1")),
                                              PID = col_skip(),
                                              TotalAA = col_skip()))
 ```
@@ -110,7 +110,7 @@ training_set.1 <- c_m_TRANSFORMED[index, ]
 #Class_test <- as.factor(test_set.1$Class) # NOT needed since this run is not kept
 ```
 
-The `test.set.1` and `Class.test` data sets are not produced due to the fact that the Logit run with 20 features was not deamed useful. The reason for it dismissal was that is contained features which were extraneous.
+The `test.set.1` and `Class.test` data sets are not produced since that the Logit run with 20 features was not deemed useful. The reason for its dismissal was that is contained extraneous features.
 
 ## Logit Training #1 using 20 Features
 
@@ -141,8 +141,8 @@ registerDoSEQ() # Stop multi-processor mode
 summary(model_obj.1)
 ```
 
-The Akaike information criterion (AIC) for model #1 is: 699.72. This will be used later to compare the models generated to rate their ability to best utilize the features.
-- The list of probabilities for the estimates leaves us with only **9 important features** to try re-modeling, R, H, P, C, E, Y, T, D, G. 
+The Akaike information criterion (AIC) for model #1 is 699.72. This will be used later to compare the models generated to rate their ability to best utilize the features.
+- The list of probabilities for the estimates leaves us with only **9 important features** to try re-modeling, R, H, P, C, E, Y, T, D, G.
 
 ## Logit Training #2 using 9 Features
 
@@ -151,7 +151,7 @@ The Akaike information criterion (AIC) for model #1 is: 699.72. This will be use
 ```{r}
 # Data import & handling
 c_m_9aa <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
-                     col_types = cols(Class = col_factor(levels = c("0","1")),
+                     col_types = cols(Class = col_factor(levels = c("0", "1")),
                                       A = col_skip(),
                                       F = col_skip(),
                                       I = col_skip(),
@@ -216,8 +216,8 @@ Predicted_test_vals <- predict(model_obj.2, test_set.2[, -1])
 confusionMatrix(Predicted_test_vals, Class_test.2, positive = "1")
 ```
 
-- The Akaike information criterion (AIC) for model #2 is: 708.96. This will be used later to compare the models generated to rate their ability to best utilize the features. 
-- The number of unique false-positives and false-negatives are 26.
+- The Akaike information criterion (AIC) for model #2 is 708.96. This will be used later to compare the models generated to rate their ability to best utilize the features.
+- The number of unique false-positives and false-negatives is 26.
 
 ## Obtain List of False Positives & False Negatives
 
@@ -236,7 +236,7 @@ nrow(fp_fn_logit) ## NOTE: NOT UNIQUE NOR SORTED
 ```
 
     536 proteins listed although they are NOT UNIQUE NOR SORTED.
-    
+
 ## Conclusion
 
 Logit is easy to implement and understand and can be used for parameter importance measurements.
@@ -247,14 +247,14 @@ Akaike Information Criterion:
 
 $$AIC ~=~ 2 K ~-~ ln (\widehat{L})$$
 
-Where $ln (\widehat{L})$ is the log likelihood, $K$ is the number of parameters.
+Where $ln (\widehat{L})$ is the log-likelihood, $K$ is the number of parameters.
 
 | Model # | Features |  AIC   |
 | :-----: | :------: | :----: |
 |    1    |    20    | 699.72 |
 |    2    |    9     | 708.96 |
 
-Logit is a common machine learning method. It is easy to understand and explain. This supervised binary classification method is very useful for determining the importance of the features which can be applied. As we saw in Model#1 there were 11 features which had probabilities of the estimates used above the 5% threshold cut-off. In Model#2 only 9 features were used to describe the model and the AIC increased by 9.24.
+Logit is a common machine learning method. It is easy to understand and explain. This supervised binary classification method is very useful for determining the importance of the features which can be applied. As we saw in Model#1 there were 11 features that had probabilities of the estimates used above the 5% threshold cut-off. In Model#2 only 9 features were used to describe the model and the AIC increased by 9.24.
 
 The nine features which best described the logistic regression model were R, H, P, C, E, Y, T, D, G. If we compare this to the Boruta test carried out in the EDA we find the overlap interesting.
 

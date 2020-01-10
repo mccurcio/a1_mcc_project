@@ -1,8 +1,8 @@
-# Principle Component Analysis of `c_m_TRANSFORMED.csv`
+# Principle Component Analysis of Myoglobin/Control Protein Sets
 
 ## Introduction
 
-This chapter describes the use and functional understanding of Principle Component Analysis (PCA) on the `c_m_TRANSFORMED.csv` of the Myoglobin/control dataset. PCA is very popular and commonly used during the EDA phase to provide information on the proportions of variance found within a dataset.
+This chapter describes the use and functional understanding of Principle Component Analysis (PCA) on the `c_m_TRANSFORMED.csv` of the Myoglobin/control protein dataset. PCA is very popular and commonly used during the EDA phase to provide information on the proportions of variance found within a dataset.
 
 >The major goal of principal components analysis is to reveal hidden structure in a dataset. In so doing, we may be able to[^31]
 >
@@ -29,12 +29,14 @@ This chapter describes the use and functional understanding of Principle Compone
 
 ### Finding the Covariance Matrix
 
-Covariance provides a measure of the strength of the correlation between two or more sets of random variates.[^32]
+The first step for calculating PCA is to determine the Covariance matrix. Covariance provides a measure of the strength of the correlation between two or more sets of random variates.[^32]
 
 [^32]:http://mathworld.wolfram.com/Covariance.html
 
 #### Covariance of two variables {-}
-$$cov(X, Y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
+$$cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
+
+This simplified formula is to determine Covariance for a 2 dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent varible, $\bar y$ is the mean of the dependent varialbe.
 
 #### Covariance of matrices[^33] {-}
 
@@ -49,6 +51,8 @@ Determining the covariance using a matrix, $\large M$ using linear algebra notat
 3. Finally calculate the covariance matrix:
 
 $$cov ~ (M) ~=~ \frac{1}{N-1} ~ D^T ~ D, ~~~ where ~~~ D = M - M_{means}$$
+
+Where $D^T$ is the transpose of the difference matrix, $N$ is the number of observations or rows in this case.
 
 PCA is similar to the singular value decomposition (SVD) used when determining eigenvectors and eigenvalues.
 
@@ -119,9 +123,9 @@ abline(v = -2.45, col = "green")
 abline(v = 2.77, col = "green")
 ```
 
-| Graphic                 | Range (Green lines) | Differences |
-| :---------------------- | :-----------------: | :---------: |
-| Raw Data (Left)         |     1 <= x <= 4     |   3 units   |
+| Graphic                  | Range (Green lines) | Differences |
+| :----------------------- | :-----------------: | :---------: |
+| Raw Data (Left)          |     1 <= x <= 4     |   3 units   |
 | Transformed Data (Right) | -2.45 <= x <= 2.77  | 5.22 units  |
 
 If we investigate the figures above we find that the range of the samples is (1 <= x <= 4),
@@ -157,6 +161,14 @@ c_m_20aa <- c_m_transformed[, -c(1:3)] # Keep only 20 AA columns
 centered_c_m_20aa <- data.frame(apply(c_m_20aa, 2, function(x) x - mean(x)))
 # Normalized  data
 norm_c_m_20aa <- data.frame(apply(c_m_20aa, 2, function(x) ((x - mean(x)) / sd(x))))
+
+# Write to Normalized data to .csv
+write.table(norm_c_m_20aa,
+            file = "../00-data/03-ml_results/norm_c_m_20aa.csv", 
+            row.names = FALSE, 
+            na = "", 
+            col.names = TRUE, 
+            sep = ",")
 ```
 
 ### Histograms of Scaled Vs Unscaled data
@@ -263,6 +275,8 @@ autoplot(c_m_20_PCA,
          loadings.label.hjust = 2)
 ```
 
+The first two principal components describe 46.95% of the variance.
+
 ```{r include=FALSE, fig.align = "center"}
 ## Print Biplot1.annotated.png
 ## Biplot 1 for Conclusion discussion
@@ -303,7 +317,7 @@ abline(h =  3, col = "blue", lw = 1)
 ```
 
 ```{r include=FALSE}
-## Print 'Biplot 2'
+## Print 'Biplot 2'. SAVE FOR LATER USE.
 ## Biplot 2 for Conclusion discussion
 png(filename = "Biplot.2.png",
     width = 6,

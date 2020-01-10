@@ -1,10 +1,30 @@
 Folder ../00-data/
 
-| Directory / file        | Description                                                                                                                         |
-| :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| 01-ORIGINAL_DATA        | two .fasta files with myoglobin & non-myoglobin/hemoglobin proteins from Uniprot. **DO NOT DELETE or CHANGE 'ORIGINAL_DATA' FILES** |
-| 02-aac_dpc_values       | indicates percent amino acid & di-peptide composition files used in machine learning                                                |
-| 03-full_fp_fn_sets      |                                                                                                                                     |
-| 03-outliers             |                                                                                                                                     |
-| false_positive_outliers |                                                                                                                                     |
-| README                  |                                                                                                                                     |
+- Directory
+    - FileDescription
+----------------------
+- 01-ORIGINAL_DATA
+    - **DO NOT DELETE or CHANGE 'ORIGINAL_DATA' FILES**
+    - two Uniprot .fasta files, myoglobin & non-myoglobin/hemoglobin proteins
+
+- 02-aac_dpc_values
+    - Files that indicate percent amino acid & di-peptide composition files used in machine learning
+
+- 03-ml_results
+    - FP and FN output from the 7 ML models
+
+- 04-sort_unique_outliers
+    - Unique and Sorted sets of numbers from the 7 different ML models
+    - Numbers only
+
+- 05-joins_plots
+    - Files taken from (04-sort_unique_outliers) and Inner-Joined with PCA 1st and 2nd PC
+    - Ready for Ploting
+
+- 10-images
+   - misc plots and images used in document
+
+- intersection_files
+    - JUNK ?????
+
+- README
