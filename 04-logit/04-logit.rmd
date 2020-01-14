@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Logistic Regression For Binary Classification
 
 ## Introduction
@@ -11,6 +16,7 @@ $$f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{m
 In this simple form we can use the generation of a zero or one as a binary or logical value, hence logistic, zero indicating the absence of some quality or item and one indicating its presence.
 
 The domain ($x$) of our logistic equation may be ($-\infty$ to $\infty$), but at the **decision boundary** of $x ~=$ 0 (for this example) our system changes from *zero*, absence, to *one*, the presence of a quality or item. In the Logistic/Sigmoidal Curve figure below, the **decision boundary** is denoted by the *red dotted line*.
+
 
 ```{r echo=FALSE, fig.align="center"}
 x <- seq(-6, 6, 0.05)
@@ -42,7 +48,9 @@ In the specific case of *Logistic Regression for Binary Classification* where we
 
 Since the logistic equation is exponential it is easier to consider working with the formula in terms of the odds or log odds. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or log-odds as $\large ln \left (\frac{p}{1-p} \right )$.
 
-In logistic regression, we find that the log-odds may be expressed as a set of linear equations in x. This is simply a transformation of the exponential curve to make it linear. The set of linear equations is similar to the idea inherent in Linear Regression.
+In logistic regression, we find that the log-odds may be expressed as a set of linear equations in x.[^43] This is simply a transformation of the exponential curve to make it linear. The set of linear equations is similar to the idea inherent in Linear Regression.
+
+[^43]:http://juangabrielgomila.com/en/logistic-regression-derivation/
 
 $$ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}$$
 
@@ -72,12 +80,10 @@ Separate out to produce two fractions:
 
 $$p'(u) ~=~ \left ( \frac {e^u}{1 + e^u} \right ) \cdot \left ( \frac{1}{1 + e^u} \right )$$
 
-Substitute success and failure variables back into place.
+Substitute success and failure variables back into place:
 
 $$p'(u) ~=~ p(u) \cdot ( 1 - p(u))$$
-[^43]
 
-[^43]:http://juangabrielgomila.com/en/logistic-regression-derivation/
 
 ```{r message=FALSE, warning=FALSE}
 # Load Libraries
@@ -87,6 +93,9 @@ for (p in Libraries) {  # Install Library if not present
     if (!require(p, character.only = TRUE)) { install.packages(p) }
     library(p, character.only = TRUE)
 }
+```
+
+```{r include=FALSE}
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
@@ -106,8 +115,6 @@ set.seed(1000)
 index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
 
 training_set.1 <- c_m_TRANSFORMED[index, ]
-#test_set.1     <- c_m_TRANSFORMED[-index,] # NOT needed since this run is not kept
-#Class_test <- as.factor(test_set.1$Class) # NOT needed since this run is not kept
 ```
 
 The `test.set.1` and `Class.test` data sets are not produced since that the Logit run with 20 features was not deemed useful. The reason for its dismissal was that is contained extraneous features.
@@ -196,7 +203,6 @@ model_obj.2 <- train(Class ~ .,
                      trControl = fitControl,
                      method = "glm",
                      family = "binomial")
-
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
 registerDoSEQ()          # Stop multi-core
@@ -207,6 +213,8 @@ registerDoSEQ()          # Stop multi-core
 ```{r}
 summary(model_obj.2)
 ```
+
+\pagebreak
 
 ## Logit Confusion Matrix #2
 

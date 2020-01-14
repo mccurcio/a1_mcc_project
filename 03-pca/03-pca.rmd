@@ -1,19 +1,34 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
 # Principle Component Analysis of Myoglobin/Control Protein Sets
 
 ## Introduction
 
 This chapter describes the use and functional understanding of Principle Component Analysis (PCA) on the `c_m_TRANSFORMED.csv` of the Myoglobin/control protein dataset. PCA is very popular and commonly used during the EDA phase to provide information on the proportions of variance found within a dataset.
 
->The major goal of principal components analysis is to reveal hidden structure in a dataset. In so doing, we may be able to[^31]
+Principal Components Analysis: A How-To Manual for R[^31]
+
+>The major goal of principal components analysis is to reveal hidden structure in a dataset. In so doing, we may be able to
 >
 >1. identify how different variables work together to create the dynamics of the system
+>
 >2. reduce the dimensionality of the data
+>
 >3. decrease redundancy in the data
+>
 >4. filter some of the noise in the data
->5. compress the data
+>
+>5. compress the data>
+>
 >6. prepare the data for further analysis using other techniques
 
 [^31]:Principal Components Analysis: A How-To Manual for R, Emily Mankin, http://people.tamu.edu/~alawing/materials/ESSM689/pca.pdf
+
+---
 
 - Several advantages for using PCA should be considered.
 
@@ -21,6 +36,8 @@ This chapter describes the use and functional understanding of Principle Compone
 
     2. It may also be efficiently applied to large data sets.
     
+    3. PCA takes very little time even for large datasets.
+
 - While disadvantages include:
 
     1. PCA can easily suffer from scale complications. 
@@ -29,18 +46,19 @@ This chapter describes the use and functional understanding of Principle Compone
 
 ### Finding the Covariance Matrix
 
-The first step for calculating PCA is to determine the Covariance matrix. Covariance provides a measure of the strength of the correlation between two or more sets of random variates.[^32]
+The first step for calculating PCA is to determine the Covariance matrix. Covariance provides a measure of the strength of the correlation between two or more sets of random variates.[^32][^33]
 
 [^32]:http://mathworld.wolfram.com/Covariance.html
 
+[^33]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, 'The Elements of Statistical Learning; Data Mining, Inference, and Prediction', Second Edition, Springer, DOI:10.1007/978-0-387-84858-7, 2009
+
 #### Covariance of two variables {-}
+
 $$cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
 
-This simplified formula is to determine Covariance for a 2 dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent varible, $\bar y$ is the mean of the dependent varialbe.
+This simplified formula is to determine Covariance for a 2 dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent variable, $\bar y$ is the mean of the dependent variable.
 
-#### Covariance of matrices[^33] {-}
-
-[^33]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, 'The Elements of Statistical Learning; Data Mining, Inference, and Prediction', Second Edition, 2009, Springer, DOI:10.1007/978-0-387-84858-7
+#### Covariance of matrices {-}
 
 Determining the covariance using a matrix, $\large M$ using linear algebra notation is;[^34]
 
@@ -54,9 +72,9 @@ $$cov ~ (M) ~=~ \frac{1}{N-1} ~ D^T ~ D, ~~~ where ~~~ D = M - M_{means}$$
 
 Where $D^T$ is the transpose of the difference matrix, $N$ is the number of observations or rows in this case.
 
-PCA is similar to the singular value decomposition (SVD) used when determining eigenvectors and eigenvalues.
+PCA is similar to the singular value decomposition (SVD) used when determining eigenvectors and eigenvalues.[^35]
 
->Singular value decomposition says that every n x p matrix can be written as the product of three matrices: $A = U \Sigma V^T$ where:[^35]
+>Singular value decomposition says that every n x p matrix can be written as the product of three matrices: $A = U \Sigma V^T$ where:
 >
 >1. $U$ is an orthogonal n x n matrix.
 >2. $\Sigma$ is a diagonal n x p matrix. In practice, the diagonal elements are ordered so that $\Sigma_{ii} ~\geqq~ \Sigma_{jj}$ for all i < j.
@@ -65,16 +83,16 @@ PCA is similar to the singular value decomposition (SVD) used when determining e
 >The SVD represents the essential geometry of a linear transformation. It tells us that every linear transformation is a composition of three fundamental actions. Reading the equation from right to left:
 >
 >1. The matrix $V$ represents a rotation or reflection of vectors in the p-dimensional domain.
->2. The matrix $\Sigma$ represents a linear dilation or contraction along each of the p coordinate directions. If n ≠ p, this step also canonically embeds (or projects) the p-dimensional domain into (or onto) the n-dimensional range.
+>2. The matrix $\Sigma$ represents a linear dilation or contraction along each of the p coordinate directions. If n $\neq$ p, this step also canonically embeds (or projects) the p-dimensional domain into (or onto) the n-dimensional range.
 >3. The matrix $U$ represents a rotation or reflection of vectors in the n-dimensional range.
 
 [^35]:https://blogs.sas.com/content/iml/2017/08/28/singular-value-decomposition-svd-sas.html
 
-The intuition for understanding PCA is fairly straightforward. Consider the 2-dimensional data cloud of points or observations in a hypothetical experiment, as seen in the figure on the left. Considering this data, the variances along both the x and y dimensions can be calculated. However, given the data shown, there is a rotation of that x-y plane which will present the data showing its greatest variance. This variance will reside on an axis analogous to points on an Ordinary Least Squares (OLS) line. This axis is called the *first principle component* followed by the second principal component and so on.
+The intuition for understanding PCA is fairly straightforward. Consider the 2-dimensional data cloud of points or observations in a hypothetical experiment, as seen in the figure on the left. Considering this data, the variances along both the x and y dimensions can be calculated. However, given the data shown, there is a rotation of that x-y plane which will present the data showing its greatest variance. This variance will reside on an axis analogous to points on an Ordinary Least Squares (OLS) line. This axis is called the *first principle component* followed by the second principal component and so on. 
 
 Unlike an OLS calculation, PCA will determine not only the first and largest variance of your data set but it will through the rotation and transform your dataset via linear algebra, calculating N variances within your dataset, where N is equal to the number of features in the dataset. The second principal component will be calculated only along a coordinate axis which is perpendicular (orthogonal or orthonormal) to the first. Each subsequent principle component will then be calculated along axes which are orthogonal to each other. A further benefit of using PCA is that the variances it reports will be ranked in order from highest to lowest.[^36]
 
-[^36]:Brian Everitt, Torsten Hothorn, An Introduction to Applied Multivariate Analysis with R, 2011, Springer, DOI:10.1007/978-1-4419-9650-3
+[^36]:Brian Everitt, Torsten Hothorn, An Introduction to Applied Multivariate Analysis with R, Springer, DOI:10.1007/978-1-4419-9650-3, 2011
 
 * For more information on Eigenvalues, Eigenvectors and Eigen decomposition I suggest
     + [CodeEmporium](https://youtu.be/9oSkUej63yk)
@@ -90,7 +108,7 @@ for (p in Libraries) {
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
-### Example of two-dimensional PCA using random data: {-}
+### Example of two-dimensional PCA using random data:
 ```{r echo=FALSE}
 set.seed(1000)
 x <- seq(1, 4, 0.05)
@@ -143,6 +161,8 @@ What do the center and scale arguments do in the `prcomp` command?
 
 While determining the variance of your dataset it should be clear that the order of magnitude of your data features matters greatly. The reasons for this should be clear that if one axis is in 1,000's while the second axis is between 1 and 10, the larger scale will have a greater variance distorting the results.
 
+\pagebreak
+
 There are four common methods for scaling data:
 
 | Scaling Method         | Formula                                                                    |
@@ -164,10 +184,10 @@ norm_c_m_20aa <- data.frame(apply(c_m_20aa, 2, function(x) ((x - mean(x)) / sd(x
 
 # Write to Normalized data to .csv
 write.table(norm_c_m_20aa,
-            file = "../00-data/03-ml_results/norm_c_m_20aa.csv", 
-            row.names = FALSE, 
-            na = "", 
-            col.names = TRUE, 
+            file = "../00-data/03-ml_results/norm_c_m_20aa.csv",
+            row.names = FALSE,
+            na = "",
+            col.names = TRUE,
             sep = ",")
 ```
 
@@ -214,9 +234,9 @@ end_time - start_time    # Display time
 
 There are two plots that are commonly used to determine the number of principal components that a researcher would generally accept as useful. The eigenvalues derived from PCA are proportional to the variances which they represent, and depending on the strategy used to calculate them, the eigenvalues are equal to the variances of the components.
 
-The first of the two plots which I which is the scree plot.[^310] The scree plot is a ranked list of the eigenvalues plotted against its own principal components. An eigenvalue score of one is thought to provide a comparable amount of information as a single variable un-transformed by PCA.[^FIND]
+The first of the two plots which I which is the scree plot.[^310] The scree plot is a ranked list of the eigenvalues plotted against its own principal components. An eigenvalue score of one is thought to provide a comparable amount of information as a single variable un-transformed by PCA.
 
-[^310]:Cattell, Raymond (1966). "The scree test for the number of factors". Multivariate Behavioral Research. 1 (2): 245–76. DOI:10.1207/s15327906mbr0102_10
+[^310]:Raymond Cattell, "The scree test for the number of factors". Multivariate Behavioral Research. 1 (2): 245–76. DOI:10.1207/s15327906mbr0102_10, 1966
 
 The second plot describes the cumulative proportion of variance versus the principal component. This graphic shows how much each principal component describes from the entire cumulative variances or total squared error.
 
@@ -227,9 +247,7 @@ Here again, there are several criteria regarding how best to use the information
 [^311]:Nicole Radzill, Ph.D., personal communication.
 [^312]:https://stats.stackexchange.com/questions/253535/the-advantages-and-disadvantages-of-using-kaiser-rule-to-select-the-number-of-pr
 
-### Screeplot {-}
-
-```{r echo=FALSE, fig.align = "center"}
+```{r echo=FALSE, fig.align="center", fig.height=4, fig.width=4}
 screeplot(c_m_20_PCA,
           main = "Screeplot of c_m_20_PCA",
           sub = "PC(i)\n(Red Line Indicates Kaiser Rule, Eigenvalues = 1)",
@@ -240,11 +258,9 @@ abline(h = 1, col = "red")
 abline(v = 5, col = "green")
 ```
 
-### Cumulative Proportion of Variance Vs Principal Components plot {-}
-
-```{r echo=FALSE, fig.align = "center"}
+```{r echo=FALSE, fig.align="center", fig.height=4, fig.width=4}
 plot(cumsum(c_m_20_PCA$sdev^2 / sum(c_m_20_PCA$sdev^2)),
-     main = "Cumulative Proportion of Variance Vs Principle Component",
+     main = "Cum. Proportion of Variance Vs PC",
      sub = "(Red line indicates p = 0.9, Green line indicates PC = 12)",
      ylab = "% Variance(i) / Total Variance",
      xlab = "PC(i)",
@@ -277,7 +293,7 @@ autoplot(c_m_20_PCA,
 
 The first two principal components describe 46.95% of the variance.
 
-```{r include=FALSE, fig.align = "center"}
+```{r eval=FALSE, include=FALSE}
 ## Print Biplot1.annotated.png
 ## Biplot 1 for Conclusion discussion
 png(filename = "Biplot1.annotated.png",
@@ -301,7 +317,7 @@ dev.off()
 
 ### Biplot 2: Determination Of 4 Rule Set For Outliers
 
-```{r echo=FALSE, fig.height=6, fig.width=6, fig.align = "center"}
+```{r echo=FALSE, fig.height=6, fig.width=6, fig.align="center"}
 plot(x = c_m_20_PCA$x[, 1],
      y = c_m_20_PCA$x[, 2],
      main = "Boundary (Outlier) Determination of PC1 Vs PC2",
@@ -316,7 +332,7 @@ abline(h = -3, col = "blue", lw = 1)
 abline(h =  3, col = "blue", lw = 1)
 ```
 
-```{r include=FALSE}
+```{r eval=FALSE, include=FALSE}
 ## Print 'Biplot 2'. SAVE FOR LATER USE.
 ## Biplot 2 for Conclusion discussion
 png(filename = "Biplot.2.png",
@@ -393,7 +409,7 @@ Group | Range of Groups
 Controls | 1, ..., 1217
 Positive (Myoglobin) | 1218, ..., 2341
 
-## Conclusion(s)
+## Conclusions
 
 Principal Component Analysis is very popular and an excellent choice to include during Exploratory Data. Analysis.  One objective for using PCA is to filter noise from the dataset used and in turn increase any signal or to sufficiently delineate observations from each other. In fact, in the figure below there are five colored groups outside the main body of observations that are marked at 'outliers.' The number of outliers obtained from PCA is 461 proteins. The premise of this experiment is to determine if PCA is a good representative measure for proteins that are categorized is false-positive and false-negatives in the five subsequent machine learning model approaches. It will be interesting to see if anyone of these groups will be present in the group of false-positives and false-negatives in any of the machine learning models.
 
@@ -409,6 +425,6 @@ The table and the figure below show subset of outliers produced when the first a
 |   D   |                 C, S                  |      1360, 2240      |
 |   E   |                G, D, Q                |      664, 2304       |
 
-```{r echo=FALSE, out.width="55%", fig.align = "center"}
+```{r echo=FALSE, out.width="55%", fig.align="center"}
 knitr::include_graphics("../00-data/10-images/Biplot1.annotated.png")
 ```

@@ -1,0 +1,888 @@
+---
+title: "Anomaly/Fraud  Detection in Credit Card Transactions"
+output: html_notebook
+author: Nana Boateng
+df_print: paged
+Time: '`r Sys.time()`'
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+---
+
+#### Description
+
+The data was posted on kaggle for credit card  fraud detection.Anonymized credit card transactions are labeled as genuine or fraudulent. The  The data for the analysis is available here [here](https://www.kaggle.com/dalpozz/creditcardfraud/data).
+
+The datasets contains transactions made by credit cards in September 2013 by european cardholders. These transactions are a subset of all online transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions. The dataset is highly unbalanced, where the positive class (frauds) account for 0.172% of all transactions. It contains only numerical input variables which are the result of a PCA transformation. Unfortunately, due to confidentiality issues, we cannot provide the original features and more background information about the data. Features V1, V2, ... V28 are the principal components obtained with PCA, the only features which have not been transformed with PCA are 'Time(time between transactions in seconds)' and 'Amount'. Feature 'Time' contains the seconds elapsed between each transaction and the first transaction in the dataset. The feature 'Amount' is the transaction Amount(how much money was transferred in this transaction), this feature can be used for example-dependant cost-senstive learning. Feature 'Class' is the response variable and it takes value 1 in case of fraud and 0 otherwise.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+```
+
+```{r,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(h2o)
+library(rio)
+library(doParallel)
+library(viridis)
+library(RColorBrewer)
+library(tidyverse)
+library(ggthemes)
+library(knitr)
+library(tidyverse)
+library(caret)
+library(caretEnsemble)
+library(plotly)
+library(lime)
+library(plotROC)
+library(pROC)
+
+
+
+#h2o.init(nthreads=-1,enable_assertions = FALSE)
+h2o.init(nthreads=-1)
+localH2O = h2o.init(ip = 'localhost', port = 54321, nthreads = -1,max_mem_size = "8G")
+
+
+```
+
+
+
+
+The dataset gives > 280,000 instances of credit card use and for each transaction, we know whether it was fraudulent or not.
+
+Datasets like this needs special treatment when performing machine learning because they are severely unbalanced: in this case, only 0.17% of all transactions are fraudulent.
+
+While we could try to work with classifiers, like random forests or support vector machines, by applying over- or under-sampling techniques, we can alternatively try to find anomalies in the data (assuming we expect our fraud cases to be anomalies within the whole dataset).
+
+When dealing with such a severe unbalance of response labels, we also need to be careful when measuring model performance. Because there are only a handful of fraudulent instances, a model that predicts everything as non-fraud will already achieve a > 99% accuracy. But despite its high accuracy, such a model wonât necessarily help us find fraudulent cases - the proverbial âneedle-in-a-haystackâ - that we actually want to find!
+
+Below, I will show how you can use autoencoders and anomaly detection, how you can use autoencoders to pre-train a classification model and how you can measure model performance on unbalanced data.
+
+
+
+Set up for parallel processing.The parallel processing can reduce the computational time for  such  high volume of computation with deep neural networks.
+```{r,message=FALSE,warning=FALSE}
+# Calculate the number of cores
+no_cores <- detectCores() - 1
+
+cl<-makeCluster(no_cores)
+registerDoParallel(cl)
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+
+setwd("/Users/nanaakwasiabayieboateng/Documents/memphisclassesbooks/DataMiningscience/H20")
+# download from https://www.kaggle.com/dalpozz/creditcardfraud
+#creditcard <- read_csv("creditcard.csv")
+creditcard <- import("creditcard.csv")
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+creditcard%>%head()
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+str(creditcard)
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+psych::describe(creditcard)%>%as_tibble()
+
+
+table(creditcard$Class)
+
+
+#Hmisc::describe(creditcard)
+```
+
+
+###Exploring the data
+
+```{r,message=FALSE,warning=FALSE}
+#==================================================================
+# Histograms
+#==================================================================
+theme_set(theme_economist_white())
+
+
+ggplot(creditcard, aes(x ="",y=V1, fill=Class))+ geom_boxplot()+labs(x="V1",y="")
+
+
+
+ggplot(creditcard,aes(x = Amount)) +
+    geom_histogram(color = "#D53E4F", fill = "#D53E4F", bins = 50) +
+    facet_wrap( ~ Class, scales = "free", ncol = 2)
+
+
+
+ggplot(creditcard, aes(x =Time,fill = Class))+ geom_histogram(bins = 30)+
+   facet_wrap( ~ Class, scales = "free", ncol = 2)
+
+ 
+ggplot(creditcard, aes(x =V2, fill=Class))+ geom_histogram(bins = 30)+
+  facet_wrap( ~ Class, scales = "free", ncol = 2)
+
+ggplot(creditcard, aes(x =V3, fill=Class))+ geom_histogram(bins = 30)+
+ facet_wrap( ~ Class, scales = "free", ncol = 2)
+
+ggplot(creditcard, aes(x =V4,fill=Class))+ geom_histogram(bins = 30)+
+  facet_wrap( ~ Class, scales = "free", ncol = 2)
+
+ggplot(creditcard, aes(x=V6, fill=Class)) + geom_density(alpha=1/3) + scale_fill_hue()
+
+
+ggplot(creditcard, aes(x=V7, fill=Class)) + geom_density(alpha=1/3) + scale_fill_hue()
+
+
+ggplot(creditcard, aes(x=V8, fill=Class)) + geom_density(alpha=1/3) + scale_fill_hue()
+
+
+#ggplot(Data, aes(x="",y =loan, fill=y)) + geom_histogram()
+
+ggplot(creditcard, aes(x ="",y=V10, fill=Class))+ geom_violin(adjust = .5,draw_quantiles = c(0.25, 0.5, 0.75))+labs(x="V10",y="")
+```
+
+Most of the principal components are centered around zero.
+
+```{r,message=FALSE,warning=FALSE}
+creditcard %>%
+  ggplot(aes(x = Class)) +
+    geom_bar(color = "chocolate", fill = "chocolate", width = 0.2) +
+    theme_bw()
+```
+
+
+
+
+To convert the time in seconds to days, we know there is 86400 seconds in a day(60s by 60mins by 24hrs).
+We create two new variables credit card transactions in either the first or second day and credit card time of the day. We can use use an case statement or equivalently the ifelse statement for this step.
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+
+
+creditcard=creditcard %>%  
+  mutate(Day = case_when(.$Time > 3600 * 24 ~ "day2",.$Time < 3600 * 24 ~ "day1"))
+
+creditcard%>%head()
+
+
+#equivalently
+
+#creditcard$day <- if_else(creditcard$Time > 3600 * 24, "day2", "day1")
+
+
+
+
+
+
+
+
+
+creditcard=creditcard %>%  
+  mutate(Time_day = case_when(.$Day == "day2"~ .$Time - 86400 ,.$Day == "day1"~ .$Time))
+
+
+#equivalently
+# make transaction relative to day
+#creditcard$Time_day <- if_else(creditcard$Day == "day2", creditcard$Time - 86400, creditcard$Time)
+
+
+
+
+
+
+table(creditcard[,"Day"])
+
+
+
+#creditcard%>%group_by(Day)%>%dplyr::summarise_at("Time_day",summary)
+
+
+tapply(creditcard$Time_day,creditcard$Day,summary,simplify = FALSE)
+
+
+head(creditcard)
+
+
+#alternatively
+
+creditcard %>%
+  group_by(Day) %>%
+  summarise_at("Time_day",c("min", "max","mean","median"))%>%drop_na()
+
+
+creditcard<-creditcard%>%mutate_if(is.character,as.factor)
+
+```
+
+
+
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+
+#Alternatively
+creditcard=creditcard %>%  
+  mutate(Time_Group = case_when(.$Time_day <= 38138~ "g1" ,
+                                .$Time_day <= 52327~  "g2",
+                                .$Time_day <= 69580~"g3",
+                                .$Time_day > 69580~"g4"))
+
+
+head(creditcard)
+
+
+# bin transactions according to time of day
+# creditcard$Time <- as.factor(ifelse(creditcard$Time_day <= 38138, "gr1", # mean 1st Qu.
+#                           ifelse(creditcard$Time_day <= 52327, "gr2", # mean mean
+#                                  ifelse(creditcard$Time_day <= 69580, "gr3", # mean 3rd Qu
+#                                         "gr4"))))
+# 
+# creditcard$Time%>%head()
+
+
+
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+creditcard %>%drop_na()%>%
+  ggplot(aes(x = Day)) +
+    geom_bar(fill = "chocolate",width = 0.3,color="chocolate") +
+    theme_economist_white()
+```
+
+The number of transactions in the two days are roughly the same.They are both a little under 150000.
+
+
+```{r,message=FALSE,warning=FALSE}
+
+# convert class variable to factor
+creditcard$Class <- factor(creditcard$Class)
+
+
+#c(" Day","Time_day")
+#creditcard <- select(creditcard,-Day)
+
+
+
+str(creditcard)
+
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+creditcard %>%drop_na()%>%
+  ggplot(aes(x = Time_Group)) +
+    geom_bar(color = "#238B45", fill = "#238B45") +
+    theme_bw() +
+    facet_wrap( ~ Class, scales = "free", ncol = 2)
+```
+
+The distribution of transactions over the four Time bins shows, that the majority of fraud cases have happened in group 1 whereas the distribution of genuine transactions remained fairly the same over the four groups.
+
+```{r,message=FALSE,warning=FALSE}
+
+tapply(creditcard$Amount  ,creditcard$Class,summary)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+The fraudulent credit card transactions had a higher mean amount of money that was transferred, but the maximum amount was much lower compared to genuine  transactions.The genuine transactions also had a higher median.
+
+
+#### Modeling
+
+
+We use the h2o infracstructure to train our deep learning models and also perform the anomaly detection.
+
+```{r,message=FALSE,warning=FALSE}
+# convert data to H2OFrame
+
+creditcard_h2o <- as.h2o(creditcard)
+
+
+```
+
+
+
+
+
+We split the data into training set, validation and  test set at 60%,20% and 20% respectively. The test and validation  set would be used for model validation and prediction.
+
+```{r,message=FALSE,warning=FALSE}
+splits <- h2o.splitFrame(creditcard_h2o, 
+                         ratios = c(0.6, 0.2), 
+                         seed = 148)   #partition data into 60%, 20%, 20% chunks
+
+
+
+train <- splits[[1]]
+validation <- splits[[2]]
+test <- splits[[3]]
+
+outcome_name <- "Class"
+features <- setdiff(colnames(train), outcome_name)
+
+
+
+
+
+```
+
+
+
+
+#### Autoencoders
+
+An autoencoder is an artificial neural network used for unsupervised learning of efficient codings. The goal of an autoencoder is to learn a representation (encoding) for a set of data, typically for the purpose of dimensionality reduction.  The model will have to reduce the dimensionality of the input data (in this case, down to 5 nodes/dimensions). The autoencoder will learn the patterns in the credit card transactions to identify anomalies and similar transactions. Autoencoding  reduces the  feature space in order to distill the essential aspects of the data unlike  most conventional deeplearning which blows up the feature space up to capture non-linearities and subtle interactions within the data. Autoencoding can also be seen as a non-linear alternative to PCA.
+
+#### Activation and Loss Functions
+The tanh function is a rescaled and shifted logistic function.It's symmetry around 0 speeds up  the training algorithm to converge faster.Another loss function avaialble in the h2o architecture is  the rectified linear activation function. It has demonstrated high performance on image recognition tasks from practice , and is a more biologically accurate model of neuron activations.The third loss function available is  Maxout which is a generalization of the Rectifier activation, where each neuron picks the larger output of k separate channels, each with its own weights and bias values.
+
+We build our first model nelow. We train a deep learning model by setting  the autoencoder equals to true. y should not be specified for autoencoders set to true.
+
+```{r, eval=FALSE,message=FALSE,warning=FALSE}
+
+
+ model_one = h2o.deeplearning(x = features, training_frame = train,
+autoencoder = TRUE,
+reproducible = TRUE,
+ seed = 148,
+ hidden = c(10,10,10), epochs = 100,activation = "Tanh",
+validation_frame = test)
+
+
+#model_id = " model_one")
+
+
+
+
+```
+
+
+We save the model to file to reuse later to avoid wasting time running each time.
+
+```{r,message=FALSE,warning=FALSE}
+h2o.saveModel(model_one, path="model_one", force = TRUE)
+
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+model_one <- h2o.loadModel("/Users/nanaakwasiabayieboateng/Documents/memphisclassesbooks/DataMiningscience/H20/model_one/DeepLearning_model_R_1507439493390_3791")
+model_one
+```
+
+There are a number of utility functions that allow us to inspect the model.
+
+
+```{r,message=FALSE,warning=FALSE}
+h2o.scoreHistory(model_one)%>%head()
+```
+
+
+
+
+
+
+
+
+
+
+We can use the h2o.predict function  on the test set to predict the fraudulent and genuine transactions.
+
+```{r,message=FALSE,warning=FALSE}
+#Convert to autoencoded representation
+test_autoencoder <- h2o.predict(model_one, test)
+
+```
+
+
+We can extract this hidden feature with the h2o.deepfeatures() function.This shows the reduced data in 5 columns( the inner layer  in the hidden layer has 5 nodes).
+
+```{r,message=FALSE,warning=FALSE}
+train_features <- h2o.deepfeatures(model_one, train, layer = 2) %>%
+  as.data.frame() %>%
+  mutate(Class = as.vector(train[, 31]))
+
+
+train_features%>%head()
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+ggplot(train_features, aes(x = DF.L2.C1, y = DF.L2.C2, color = Class)) +
+  geom_point(alpha = 0.1,size=1.5)+theme_bw()+
+  scale_fill_brewer(palette = "Accent") 
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+ggplot(train_features, aes(x = DF.L2.C3, y = DF.L2.C4, color = Class)) +
+  geom_point(alpha = 0.1,size=1.5)+theme_bw()+
+  scale_fill_brewer(palette = "Accent")
+```
+
+
+
+The fraudulent transactions is  detected by this dimensionality reduction approach using our autoencoder model.The inner hidden layer of 10 does  detect the fraudualent transactions. We can also train  a new model with  the other hidden  layers using our first model. This results in 10 columns since the third layer has 10 nodes.
+
+
+```{r,message=FALSE,warning=FALSE}
+# let's take the third hidden layer
+train_features <- h2o.deepfeatures(model_one, validation, layer = 3) %>%
+  as.data.frame() %>%
+  mutate(Class = as.factor(as.vector(validation[, 31]))) %>%
+  as.h2o()
+
+train_features%>%head()
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+features_two <- setdiff(colnames(train_features), outcome_name)
+features_two
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+model_two <- h2o.deeplearning(y = outcome_name,
+                               x = features_two,
+                               training_frame = train_features,
+                               reproducible = TRUE, 
+                               balance_classes = TRUE,
+                               ignore_const_cols = FALSE,
+                               seed = 148,
+                               hidden = c(10, 5, 10), 
+                               epochs = 100,
+                               activation = "Tanh")
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+h2o.saveModel(model_two, path="model_two", force = TRUE)
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+model_two <- h2o.loadModel("/Users/nanaakwasiabayieboateng/Documents/memphisclassesbooks/DataMiningscience/H20/model_two/DeepLearning_model_R_1507439493390_3792")
+model_two
+```
+
+
+For measuring model performance on test data, we need to convert the test data to the same reduced dimensions as the trainings data:
+
+```{r,message=FALSE,warning=FALSE}
+test_3 <- h2o.deepfeatures(model_one, test, layer = 3)
+test_3%>%head()
+
+#train_features <- h2o.deepfeatures(model_one, test, layer = 3)
+
+
+
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+test_pred=h2o.predict(model_two, test_3,type="response")%>%
+  as.data.frame() %>%
+  mutate(actual = as.vector(test[, 31]))
+
+test_pred%>%head()
+
+
+test_pred%>%tail()
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+h2o.predict(model_two, test_3) %>%
+  as.data.frame() %>%
+  dplyr::mutate(actual = as.vector(test[, 31])) %>%
+  group_by(actual, predict) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(freq = n / sum(n))
+
+```
+
+The second model correctly predicts the the genuine transactions accurately at 81% but does not do a good job at predicting the fraudulent just under  64%.
+
+
+
+
+
+### Anomaly detection
+
+We can also ask which instances were considered outliers or anomalies within our test data, using the h2o.anomaly() function. Based on the autoencoder model that was trained before, the input data will be reconstructed and for each instance, the mean squared error (MSE) between actual value and reconstruction is calculated.
+
+We compute  mean MSE for both class labels.interesting per feature error scores.
+
+
+```{r,message=FALSE,warning=FALSE}
+anomaly <- h2o.anomaly(model_one, test) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column() %>%
+  mutate(Class = as.vector(test[, 31]))
+
+mean_mse <- anomaly %>%
+  group_by(Class) %>%
+  summarise(mean = mean(Reconstruction.MSE))
+
+anomaly<-anomaly%>%mutate_if(is.character,as.factor)
+
+anomaly$rowname=as.numeric(anomaly$rowname)
+
+anomaly%>%head()
+
+mean_mse
+
+```
+
+
+
+We   reconstruct the original data set using the reduced set of features from model_one and calculate  mean squared error between both.We set per_feature parameter to FALSE in the h2o.anomaly function call as we want a reconstruction mean error based on observations, not individual features.
+
+```{r,message=FALSE,warning=FALSE}
+
+creditcard.anon = h2o.anomaly(model_one, train, per_feature=FALSE)
+
+
+
+
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+MSE<-creditcard.anon%>%as_tibble()
+MSE$Index<-1:length(MSE$Reconstruction.MSE)
+
+ggplot(MSE,aes(x=Index,y=sort(Reconstruction.MSE)))+geom_point()+ylab("Reconstruction.MSE")+theme_economist_white()
+
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+anomaly%>%head()
+
+anomaly%>%ggplot( aes(x = rowname, y = Reconstruction.MSE,color=Class)) +
+  geom_point(alpha = 0.3) +
+  #geom_hline(data = mean_mse, aes(yintercept = mean)) +
+  geom_hline(yintercept =0.02,color="#3288BD") +
+  
+  #scale_color_brewer(palette="Reds")
+
+
+  scale_color_manual(breaks = c("0", "1"),values=c("#99D594" ,"#D53E4F"))+
+  
+  labs(x = "instance number", color = "Class")
+
+```
+
+
+
+We can consider any value above the mean squared error as anomaly. There is no perfect cluster/classification between genuine and fraudulent transactions.
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+anomaly <- anomaly %>%
+  mutate(outlier = ifelse(Reconstruction.MSE > 0.02	, "outlier", "no_outlier"))
+
+anomaly %>%
+  group_by(Class, outlier) %>%
+ dplyr:: summarise(n = n()) %>%
+  mutate(freq = n / sum(n)) 
+```
+
+
+
+
+
+
+### Pre-trained supervised model
+
+We can train a supervised model using the autoconder model trained in model_one.
+
+```{r,message=FALSE,warning=FALSE}
+
+
+
+
+model_three <- h2o.deeplearning(y = outcome_name,
+                               x = features,
+                               training_frame = train,
+                               reproducible = TRUE, 
+                               balance_classes = TRUE,
+                              # pretrained_autoencoder  = "model_one",
+                               seed = 148,
+                               hidden = c(10, 2, 10), 
+                               epochs = 100,
+                               activation = "Tanh")
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+h2o.saveModel(model_three, path="model_three", force = TRUE)
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+model_three <- h2o.loadModel("/Users/nanaakwasiabayieboateng/Documents/memphisclassesbooks/DataMiningscience/H20/model_three/DeepLearning_model_R_1507439493390_3815")
+model_three
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+pred <- as.data.frame(h2o.predict(object = model_three, newdata = test)) %>%
+  mutate(actual = as.vector(test[, 31]))
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+pred %>%
+  group_by(actual, predict) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(freq = n / sum(n)) 
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+pred %>%
+  ggplot(aes(x = actual, fill = predict)) +
+    geom_bar() +
+    theme_bw() +
+      scale_fill_brewer(palette = "Accent") +
+    facet_wrap( ~ actual, scales = "free", ncol = 2)
+```
+
+
+Among the genuine transactions, model_three correctly predicts with over 99% accuracy whereas it predicts a fraudulent transaction to about 81% accuracy.
+
+
+
+### Measuring model performance on highly unbalanced data
+The  very high frequency for genuine transactions creates a bias against the fraudulent transactions. We have a case of unbalanced classes.We can not use performance measures like accuracy or area under the curve (AUC), as they would give overly optimistic results based on the high percentage of correct classifications of the majority class.
+
+
+Sensitivity ( true positive rate, the recall, or probability of detection) measures the proportion of positives that are correctly identified as such (e.g. the percentage of sick people who are correctly identified as having the condition).
+Specificity ( true negative rate) measures the proportion of negatives that are correctly identified as such (e.g. the percentage of healthy people who are correctly identified as not having the condition)
+
+```{r,message=FALSE,warning=FALSE}
+library(ROCR)
+
+# http://stackoverflow.com/questions/24563061/computing-integral-of-a-line-plot-in-r
+line_integral <- function(x, y) {
+  dx <- diff(x)
+  end <- length(y)
+  my <- (y[1:(end - 1)] + y[2:end]) / 2
+  sum(dx * my)
+} 
+
+prediction_obj <- prediction(pred$p1, pred$actual)
+
+```
+
+
+
+```{r,message=FALSE,warning=FALSE}
+par(mfrow = c(1, 2))
+par(mar = c(5.1,4.1,4.1,2.1))
+
+# precision-recall curve
+perf1 <- performance(prediction_obj, measure = "prec", x.measure = "rec") 
+
+x <- perf1@x.values[[1]]
+y <- perf1@y.values[[1]]
+y[1] <- 0
+
+plot(perf1, main = paste("Area Under the\nPrecision-Recall Curve:\n", round(abs(line_integral(x,y)), digits = 3)))
+
+# sensitivity-specificity curve
+perf2 <- performance(prediction_obj, measure = "sens", x.measure = "spec") 
+
+x <- perf2@x.values[[1]]
+y <- perf2@y.values[[1]]
+y[1] <- 0
+
+plot(perf2, main = paste("Area Under the\nSensitivity-Specificity Curve:\n", round(abs(line_integral(x,y)), digits = 3)))
+```
+
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+thresholds <- seq(from = 0, to = 1, by = 0.1)
+pred_thresholds <- data.frame(actual = pred$actual)
+
+for (threshold in thresholds) {
+  
+  prediction <- ifelse(pred$p1 > threshold, 1, 0)
+  prediction_true <- ifelse(pred_thresholds$actual == prediction, TRUE, FALSE)
+  pred_thresholds <- cbind(pred_thresholds, prediction_true)
+
+}
+
+colnames(pred_thresholds)[-1] <- thresholds
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+pred_thresholds %>%
+  gather(x, y, 2:ncol(pred_thresholds)) %>%
+  group_by(actual, x, y) %>%
+  dplyr::summarise(n = n()) %>%
+  ggplot(aes(x = as.numeric(x), y = n, color = actual)) +
+    geom_vline(xintercept = 0.6, alpha = 0.5) +
+    geom_line() +
+    geom_point(alpha = 0.5) +
+    theme_bw() +
+    facet_wrap(actual ~ y, scales = "free", ncol = 2) +
+    labs(x = "prediction threshold",
+         y = "number of instances")
+```
+
+
+This plot tells us that we can increase the number of correctly classified non-fraud cases without loosing correctly classified fraud cases when we increase the prediction threshold from the default 0.5 to 0.6:
+
+```{r,message=FALSE,warning=FALSE}
+pred %>%
+  mutate(predict = ifelse(pred$p1 > 0.6, 1, 0)) %>%
+  group_by(actual, predict) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(freq = n / sum(n)) 
+```
+
+The final model now correctly identified 82% of fraud cases and almost 100% of non-fraud cases.
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+predictor=h2o.predict(model_one,validation)
+
+predictor
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+
+test_pred=test_pred%>%mutate_if(is.factor,as.numeric)
+
+auc_rf = pROC::roc(response=test_pred[,"actual"],
+predictor=test_pred[,"predict"])
+
+plot(auc_rf, print.thres = "best", main=paste('AUC:',round(auc_rf$auc[[1]],3)))
+abline(h=1,col="#3288BD")
+abline(h=0,col="#D53E4F")
+
+
+```
+
+
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+
+
+test_pred=test_pred%>%mutate_if(is.character,as.numeric)
+#str(test_pred)
+
+r <-pROC::roc(test_pred$predict,test_pred$actual)
+   
+ #td <- broom::tidy(r)
+# ggplot(td, aes(fpr, tpr)) +
+#      geom_line()+labs(title="The Area Under the ROC Curve",y="TPR/Sensitivity",x="FPR/1-Specitivity")+theme_bw()+geom_abline(slope=1,intercept = 0,color="red")
+# 
+
+
+# r <- roc(churn$predictions,churn$labels)
+#   
+# td <- tidy(r)
+#   
+# 
+#   
+# library(ggplot2)
+#   ggplot(td, aes(fpr, tpr)) +
+#     geom_line()+labs(title="Area under the ROC Curve",y="TPR/Sensitivity",x="FPR/1-Specitivity")+theme_bw()+geom_abline(slope=1,intercept = 0,color="red")
+#   
+#rs <- smooth(r, method="density")
+#plot(r, add=TRUE, col="green")  
+#pROC::plot.roc(r)
+pROC::ggroc(auc_rf, alpha = 0.5, colour = "#FC8D59", linetype = 1, size = 2)+geom_abline(slope=1,intercept = 1,color="black")+theme_bw()+labs(title="Area under the ROC Curve",y="TPR/Sensitivity",x="FPR/1-Specitivity")+ ggplot2::annotate("text",x=0.5,y=0.6, label = paste('AUC:',round(auc_rf$auc[[1]],3)))
+
+
+
+
+```
+
+
+
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+#h2o.shutdown()
+stopImplicitCluster()
+```
+

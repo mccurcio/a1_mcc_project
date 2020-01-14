@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Exploratory Data Analysis
 
 >Exploratory data analysis (EDA) is an approach to analyzing data sets to summarize their main characteristics, often with visual methods.[^1]
@@ -24,9 +29,9 @@ The hybrid process which I use to summarize the amino acid dataset is based on t
 
 [^4]:https://www.itl.nist.gov/div898/handbook/
 
-[^5]:https://leanpub.com/exdata
+[^5]:Peng, Roger, Exploratory Data Analysis with R, https://leanpub.com/exdata, 2016
 
-[^6]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018, ISBN:9781138480605
+[^6]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, ISBN:9781138480605, 2018
 
 ## Hypothesize - Questions During EDA
 
@@ -58,7 +63,7 @@ Although exploratory data analysis does not always have a formal hypothesis test
     
     3.4 What relationships do we expect from these variables?[^3]
 
-[^2]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11
+[^2]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11, 2010
 [^3]:Ronald Pearson, 'Exploratory Data Analysis Using R', P.11, CRC Press, 2018
 
 ## Begin Exploratory Data Analysis
@@ -71,6 +76,9 @@ Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
 for (i in Libraries) {
     library(i, character.only = TRUE)
 }
+```
+
+```{r include=FALSE}
 opts_chunk$set(cache = TRUE)
 ```
 
@@ -332,6 +340,7 @@ text(x = 8, y = 2.4, label = "I=2.2", col = "red")
 ```{r echo=FALSE}
 AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
         "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
+par(mfrow=c(2,2))
 for (i in 4:23) {
     qqnorm(c_m_RAW_AAC[[i]], main = AA[[i - 3]])
     qqline(c_m_RAW_AAC[[i]], col = "red")
@@ -371,12 +380,6 @@ corrplot(abs(c_m_corr_mat),
 1. Maximum value of Correlation between T & N.
 ```{r echo=FALSE}
 c_m_corr_mat["T", "N"]
-# c_m_corr_mat["F", "Y"]
-# c_m_corr_mat["Y", "S"]
-# c_m_corr_mat["F", "G"]
-# c_m_corr_mat["R", "K"]
-# c_m_corr_mat["Y", "A"]
-# c_m_corr_mat["G", "Y"]
 ```
 
 2. According to Max Kuhn[^9] correlation coefficients need only be addressed if the |R| >= 0.75.
@@ -445,9 +448,8 @@ knitr::kable(meanImps,
              caption  = "Mean Importance Scores & Decision")
 ```
 
-#### Plot importance history
-
-```{r echo=FALSE}
+```{r eval=FALSE, include=FALSE}
+## Plot importance history
 plotImpHistory(boruta_output)
 ```
 
@@ -694,6 +696,7 @@ AA_skewness
 ```{r echo=FALSE}
 AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
        "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
+par(mfrow=c(2,2))
 for (i in 4:23) {
     qqnorm(c_m_TRANSFORMED[[i]], main = AA[[i - 3]])
     qqline(c_m_TRANSFORMED[[i]], col = "red")
@@ -730,7 +733,6 @@ corrplot(abs(c_m_corr_mat),
 
 ```{r}
 c_m_corr_mat["T", "N"]
-c_m_corr_mat["Y", "A"]
 ```
 
 **No values in the correlation matrix meet the 0.75 cut off criteria for problems.**
@@ -784,9 +786,8 @@ knitr::kable(meanImps,
              caption  = "Mean Importance Scores & Decision")
 ```
 
-Plot importance history
-
-```{r}
+```{r eval=FALSE, include=FALSE}
+## Plot importance history
 plotImpHistory(boruta_output)
 ```
 

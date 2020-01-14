@@ -1,0 +1,134 @@
+---
+title: "iris test"
+author: "MCC"
+date: "1/10/2020"
+output: html_document
+---
+
+https://rpubs.com/alexv71/237757
+
+```{r}
+# Load the necessary libraries
+library(neuralnet)
+library(caret)
+library(ggplot2)
+```
+
+```{r eval=FALSE, include=FALSE}
+train <- iris
+train <- train[,1:4]
+train <- cbind(train, train)
+```
+
+
+Import
+```{r}
+c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(PID = col_skip(),
+                                             Class = col_skip(),
+                                             TotalAA = col_skip()))
+#View(c_m_TRANSFORMED)
+```
+
+
+```{r}
+# Partition data into training and testing sets
+set.seed(1000)
+index <- createDataPartition(c_m_TRANSFORMED$A, p = 0.8, list = FALSE)
+
+training_set <- c_m_TRANSFORMED[ index, ]
+#training_set
+
+test_set     <- c_m_TRANSFORMED[-index, ]
+```
+
+
+```{r}
+train <- training_set
+train <- cbind(train, train)
+dim(train)
+```
+
+```{r}
+colnames(train) <- c("G.i","P.i","A.i","V.i","L.i",
+                     "I.i","M.i","C.i","F.i","Y.i",
+                     "W.i","H.i","K.i","R.i","Q.i",
+                     "N.i","E.i","D.i","S.i","T.i",  # INPUTS
+                     "G.o","P.o","A.o","V.o","L.o",
+                     "I.o","M.o","C.o","F.o","Y.o",
+                     "W.o","H.o","K.o","R.o","Q.o",
+                     "N.o","E.o","D.o","S.o","T.o")  # AND SAME 4 OUTPUTS
+```
+
+
+```{r}
+# Preprocess train dataset with caret package
+preProcValues <- preProcess(train, method = c("range"))
+train2 <- predict(preProcValues, train)
+```
+
+
+```{r}
+set.seed(1000)
+model.1 <- neuralnet("G.i", "P.i", "A.i", "V.i", "L.i", "I.i", "M.i", "C.i", "F.i", "Y.i", 
+                     "W.i", "H.i", "K.i", "R.i", "Q.i", "N.i", "E.i", "D.i", "S.i", "T.i" ~
+                     "G.o", "P.o", "A.o", "V.o", "L.o", "I.o", "M.o", "C.o", "F.o", "Y.o", 
+                     "W.o", "H.o", "K.o", "R.o", "Q.o", "N.o", "E.o", "D.o", "S.o", "T.o",
+                     train2, hidden = c(3, 2, 3), algorithm = 'backprop+', threshold = 0.01)
+
+# print (paste("Mean square error = ", model2d$result.matrix[1]))
+
+plot(model.1, rep = 1)
+```
+
+```{r}
+result2d <- compute(model2d, train2[,1:4]) # Run input set through the neural network
+out2d <- as.data.frame(result2d$neurons[[3]][,2:3]) # Get the 2D-data from middle layer
+out2d <- cbind(out2d, iris[,5]) # Append labels from source dataset
+colnames(out2d) <- c("HL3.1","HL3.2", "SPECIES")
+ggplot(out2d, aes(x=HL3.1, y=HL3.2, color=SPECIES)) + geom_point() # Visualize it
+
+```
+
+```{r}
+set.seed(1)
+model1d <- neuralnet(SL.O + SW.O + PL.O + PW.O ~ SL.I + SW.I + PL.I + PW.I, 
+                     train2, hidden=c(3,1,3), algorithm = 'rprop+', threshold = 0.01)
+# print (paste("Mean square error = ", model1d$result.matrix[1]))
+
+plot(model1d, rep=1)
+```
+
+```{r}
+result1d <- compute(model1d, train2[,1:4]) #Run them through the neural network
+out1d <- as.data.frame(result1d$neurons[[3]][,2])
+out1d <- cbind(out1d, iris[,5])
+colnames(out1d) <- c("HL1", "SPECIES")
+
+ggplot(out1d, aes(x=SPECIES, y=HL1, color=SPECIES)) +
+        geom_violin(trim = FALSE) +
+        geom_jitter(position=position_jitter(0.2))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
