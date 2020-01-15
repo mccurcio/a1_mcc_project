@@ -1,0 +1,195 @@
+﻿# Support Vector Machines
+
+>Support Vector Machines … are a very sophisticated idea that has a simple implementation, which should be in the tool bag of every civilized person.
+>
+>Patrick Winston, MIT 6.034 Artificial Intelligence, http://ocw.mit.edu/6-034F10, 2010
+
+## Introduction
+
+Support vector machine (SVM) learning is a supervised learning technique which may be used as a binary classification system or to find regression formulae. 
+
+
+Support Vector Machines were described by Vladimir Vapnik and Corinna Cortes in 1995 while at Bell Labs.[^61]
+
+[^61]:Vladimir Vapnik & Corinna Cortes, Machine Learning, 20, 273-297, 1995
+
+SVM is a non-parametric approach to regression and classification models. 
+
+What is Non-parametric? 
+
+For that matter, what is parametric learning and models. Just as we have learned that machine learning models can be supervised, unsupervised or even semi-supervised another characteristic between machine learning models is whether they are parametric or not.
+
+In the Webster's dictionary[^62] states a *parameter* is
+
+>a. Estimation of values which enter into the equation representing the chosen relation
+>
+>b. [An] independent variable through functions of which other functions may be expressed - Frank Yates, a 20th century statistician
+
+[^62]:Webster's third new international dictionary, ISBN 0-87779-201-1, 1986
+
+Another excellent explanation of this idea is
+
+>Does the model have a fixed number of parameters, or does the number of parameters grow with the amount of training data? The former is called a parametric model, and the latter is called a non-parametric model. Parametric models have the advantage of often being faster to use, but the disadvantage of making stronger assumptions about the nature of the data distributions. Non-parametric models are more flexible, but often computationally intractable for large datasets.[^63]
+
+[^63]:Machine Learning, A Probabilistic Perspective, Kevin P. Murphy, MIT Press, ISBN 978-0-262-01802-9, 2012
+
+Since Support Vector Machines are best described as a system where increasing the amount of training data, the numbers of parameters may grow as well. Therefore SVM is a non-parametric technique. Considering Webster’s definition in more detail, the estimation of the decision boundary does not completely rely on the estimation of independent values (i.e. the values of the parameters). SVM is fascinating because the decision boundary may only rely a small number of datapoints otherwise known as support vectors. 
+
+In short, one guiding idea of SVM is a geometric one. In a binary-class learning system, the metric for the concept of the “best” classification function can be realized geometrically[^6x] by using a line or a plane (more precisely called a hyperplane when discussing multi-dimensional datasets) to separate the two labeled groups. The hyperplane that separates the labeled sets is also known as a decision boundary. 
+
+[^6x]:Xindong Wu, et al, Top 10 algorithms in data mining, Knowl Inf Syst, 14:1–37, DOI:10.1007/s10115-007-0114-2, 2008
+
+
+this decision boundary can be described as having a hard or soft margin.  As one might suspect, there are instances where the delineation between the labels is pronounced when this occurs decision boundary produces a hard margin. Alternatively, when the demarcation between the labeled groups is not so well defined by a straight and rigid line the decision boundary produced is a soft margin. In either case, researchers have built up the mathematics to deal with hard and soft margins. As an aside, the use of penalization is one method for dealing with datapoints that impinge on the boundary hyperplane.
+
+
+
+Patrick Winston calls it the 'wide highway approach'.
+- See: [Patrick Winston](https://www.youtube.com/watch?v=_PwhiWxHK8o)
+
+By introducing a "soft margin" instead of a hard boundary we can introduce a slack variable ξ,,i,, to account for the amount of a violation by the classifier which later can be minimized.
+
+
+
+
+
+Because SVM is a supervised learning the role of the independent variables and the role of the labels (as they are commonly called) or dependent variables plays an important role in the workings SVM. For mathematical purposes the labels are a set of 1 or -1.
+
+Therefore, given a set of labeled pairs of data:
+
+$$X \in R^{\large m \times n}, ~~where ~~~~matrix ~~X ~~has ~~m ~~rows ~~and ~~n ~~columns$$
+
+The set of labeled training pairs,
+
+$$\{(x_1, ~y_1),~ ...,~ (x_m, ~y_m)\},~~~ y_i \in \{1, ~-1\}$$ 
+
+so we may write 
+
+$$~~~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y_i = 1 \\ ~< 0; ~y_i = -1 \end{array} \right\}$$
+
+In short, one guiding idea of SVM is a geometric one. In a binary-class learning system, the metric for the concept of the “best” classification function can be realized geometrically[^6x] by using a line or a plane (more precisely called a hyperplane when discussing multi-dimensional datasets) to separate the two labeled groups. The hyperplane that separates the labeled sets is also known as a decision boundary. 
+
+Incidentally, 
+
+
+
+
+
+Big O notation
+
+|  Algorithm   |     Training     |  Prediction   |
+| :----------: | :--------------: | :-----------: |
+| SVM (Kernel) | $O(n^2 p + n^3)$ | $O(n__sv__p)$ |
+
+Where *p* is the number of features, *n__sv__* is
+the number of support vectors
+
+
+
+
+The history of SVMs Large margin linear classifiers
+Vapnik, V., and A. Lerner. Pattern recognition using generalized portrait method. Automation and Remote Control, 24, 774–780, 1963. 
+
+Large margin non-linear classifiers B. Boser, I. Guyon, and V. Vapnik. A training algorithm for optimal margin classifiers.  In Fifth Annual Workshop on Computational Learning Theory, pages 144—152, 1992  
+
+SVMs for non-separable data C. Cortes and V. N. Vapnik, Support vector networks. Machine Learning, vol. 20, no. 3, pp. 273-29
+
+
+
+---
+
+SVM {caret} / https://rpubs.com/PranovMishra/476455
+
+- Tuning parameter C = cost for optimized model
+- grid = expand.grid(C = seq(0.5, 10, 0.5)) USE: 2^-10 to 2^15 ????? SEE PAPER
+
+for rbf:
+- Create grid control: sigma, C
+- tune.Grid = data.frame(expand.grid(sigma = seq(1, 10, 1)),
+-                                    C = seq(1, 10, 1))
+---
+
+
+In the case of this work, the SVM inputs consist of a set of a labeled pair of data, $(X, Y)$.
+
+
+
+There are three properties that make SVMs attractive for data scientists:[^64]
+
+[^64]:Artificial Intelligence, A Modern Approach, Third Edition, Stuart Russell and Peter Norvig, Pearson, ISBN-13: 978-0-13-604259-4, 2010
+
+>1. SVMs construct a maximum margin separator they retain training examples and potentially need to store them all. On the other hand, in practice they often end up retaining only a small fraction of the number of examples25.
+
+   
+
+Such that $~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y_i = 1 \\ ~< 0; ~y_i = -1 \end{array} \right\}$
+
+where $~~y~~$ is a set of two values which indicate a label, e.g. true or false.
+
+min $\frac{1} {2} W^{T} W ~~+~~ C ~ \sum_{i=1}^l \xi_i$
+
+subject to $~~y_i (w^T \phi (x_i) ~+~ b) \geq (1 - \xi_i)$  where $~\xi_i \geq 0$, 
+
+$C$ is the penalty parameter, *cost*, of the error term, such that $C > 0$.
+
+Furthermore, $K(x_i, x_j) ~~\equiv~~ \phi (x_i)^T \phi (x_j)$ is called the kernel function.
+
+The 4 most common SVM formulae are:
+
+1. Linear: $K(x_i, ~y_j) ~~=~~ <x, ~y>$   
+   - The linear kernel does not transform the data at all.  
+
+2. Polynomial: $K(x_i, x_j) ~~=~~ ( \gamma ~x_i^T ~x_j ~~+~~ r)^{d}, ~\gamma > 0$  
+   - The polynomial kernel has a simple non-linear transform of the data.  
+
+3. Radial Basis Function (RBF):  $K(x_i, x_j) ~~=~~ exp ( - \gamma \parallel x_i^T - x_j \parallel ^2 ), ~\gamma >0$
+   - The Gaussian RBF kernel which performs well on many data and is a good default
+
+4. Sigmoid: $K(x_i, x_j) ~~=~~ \tanh ( \gamma~ x_i^T ~ x_j ~~+~~ r ), ~\gamma >0$
+   - The sigmoid kernel produces a SVM analogous to the activation function similar to a [perceptron](https://cs.stanford.edu/people/eroberts/courses/soco/projects/neural-networks/Neuron/index.html) with a sigmoid activation function.[^1]
+   
+[^1]:https://rpubs.com/mzc/mlwr_svm_concrete
+       
+- Such that $~\gamma, ~r~$ and $~d~$ are kernel parameters.  
+
+There are no reliable rules for which kernel to use with any given data set.  
+
+Plots for 4 most common SVM formulae:  
+```{r echo=FALSE}
+xi <- seq(-5, 5, 0.1)
+yi <- seq(-5, 5, 0.1)
+par(mfrow = c(1, 4))
+
+plot(x = xi, y = 0.2 * yi,
+    xlim = c(-5, 5),
+    ylim = c(-1, 1),
+    type = "l",
+    col = "blue",
+    main = "Linear Case",
+    ylab = "y", xlab = "x")
+
+plot(x = xi, y = xi^2,
+    xlim = c(-5, 5),
+    ylim = c(-1, 1),
+    type = "l",
+    col = "blue",
+    main = "Polynomial Case, d=2",
+    ylab = "y", xlab = "x")
+
+plot(x = xi, y = exp(-1*xi^2),
+    xlim = c(-5, 5),
+    ylim = c(-1, 1),
+    type = "l",
+    col = "blue",
+    main = "RBF Case",
+    ylab = "y", xlab = "x")
+
+plot(x = xi, y = tanh(xi),
+    xlim = c(-5, 5),
+    ylim = c(-1, 1),
+    type = "l",
+    col = "blue",
+    main = "Tanh Case",
+    ylab = "y", xlab = "x")
+```
+
