@@ -8,11 +8,9 @@ output:
 
 ## Introduction
 
-This chapter describes the use and functional understanding of Principle Component Analysis (PCA) on the `c_m_TRANSFORMED.csv` of the Myoglobin/control protein dataset. PCA is very popular and commonly used during the EDA phase to provide information on the proportions of variance found within a dataset.
+This chapter describes the use and functional understanding of Principle Component Analysis (PCA). PCA is very popular and commonly used during early phases of model development to provide information on variance. In particular PCA is a transformative process that orders and maximizes variances found within a dataset.
 
-Principal Components Analysis: A How-To Manual for R[^31]
-
->The major goal of principal components analysis is to reveal hidden structure in a dataset. In so doing, we may be able to
+>The major goal of principal components analysis is to reveal hidden structure in a dataset. In so doing, we may be able to[^31]
 >
 >1. identify how different variables work together to create the dynamics of the system
 >
@@ -22,7 +20,7 @@ Principal Components Analysis: A How-To Manual for R[^31]
 >
 >4. filter some of the noise in the data
 >
->5. compress the data>
+>5. compress the data
 >
 >6. prepare the data for further analysis using other techniques
 
@@ -32,35 +30,37 @@ Principal Components Analysis: A How-To Manual for R[^31]
 
 - Several advantages for using PCA should be considered.
 
-    1. PCA Preserves global structure among the datapoints.
+    1. PCA preserves global structure among the datapoints.
 
-    2. It may also be efficiently applied to large data sets.
+    2. It is efficiently applied to large data sets.
     
-    3. PCA takes very little time even for large datasets.
+    3. PCA may provide information on the importance of features found in the original datasets.
 
 - While disadvantages include:
 
     1. PCA can easily suffer from scale complications. 
 
     2. Similarly to the point above PCA is susceptible to big outliers. If the number of samples is small or when values have many potential outliers this can influence scaling and relativce point placement.
+    
+    3. Intuitive understanding can tricky.
 
 ### Finding the Covariance Matrix
 
-The first step for calculating PCA is to determine the Covariance matrix. Covariance provides a measure of the strength of the correlation between two or more sets of random variates.[^32][^33]
+The first step for calculating PCA is to determine the Covariance matrix. Covariance provides a measure of how strongly variables change together.[^32][^33]
 
 [^32]:http://mathworld.wolfram.com/Covariance.html
 
 [^33]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, 'The Elements of Statistical Learning; Data Mining, Inference, and Prediction', Second Edition, Springer, DOI:10.1007/978-0-387-84858-7, 2009
 
-#### Covariance of two variables {-}
+### Covariance of two variables {-}
 
 $$cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
 
-This simplified formula is to determine Covariance for a 2 dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent variable, $\bar y$ is the mean of the dependent variable.
+Remember this simplified formula is to determine covariance for a 2 dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent variable, $\bar y$ is the mean of the dependent variable.
 
-#### Covariance of matrices {-}
+### Covariance of matrices {-}
 
-Determining the covariance using a matrix, $\large M$ using linear algebra notation is;[^34]
+However when dealing with larger number of variables one needds to Determine the covariance of a matrices, $\large M$ using linear algebra notation is;[^34]
 
 [^34]:http://mathworld.wolfram.com/Covariance.html
 
@@ -72,7 +72,13 @@ $$cov ~ (M) ~=~ \frac{1}{N-1} ~ D^T ~ D, ~~~ where ~~~ D = M - M_{means}$$
 
 Where $D^T$ is the transpose of the difference matrix, $N$ is the number of observations or rows in this case.
 
-PCA is similar to the singular value decomposition (SVD) used when determining eigenvectors and eigenvalues.[^35]
+The procedure below is an outline, not the full computation of PCA. 
+
+* For more information on Eigenvalues, Eigenvectors and Eigen decomposition I suggest
+    + [CodeEmporium](https://youtu.be/9oSkUej63yk)
+    + [Victor Lavrenko](https://youtu.be/IbE0tbjy6JQ)
+
+This procedure for PCA relies on the fact that it is similar to the singular value decomposition (SVD) used when determining eigenvectors and eigenvalues.[^35]
 
 >Singular value decomposition says that every n x p matrix can be written as the product of three matrices: $A = U \Sigma V^T$ where:
 >
@@ -94,10 +100,6 @@ Unlike an OLS calculation, PCA will determine not only the first and largest var
 
 [^36]:Brian Everitt, Torsten Hothorn, An Introduction to Applied Multivariate Analysis with R, Springer, DOI:10.1007/978-1-4419-9650-3, 2011
 
-* For more information on Eigenvalues, Eigenvectors and Eigen decomposition I suggest
-    + [CodeEmporium](https://youtu.be/9oSkUej63yk)
-    + [Victor Lavrenko](https://youtu.be/IbE0tbjy6JQ)
-
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 ## Initialize libraries
 Libraries <- c("knitr", "ggfortify")
@@ -108,7 +110,7 @@ for (p in Libraries) {
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
-### Example of two-dimensional PCA using random data:
+#### Example of two-dimensional PCA using random data {-}
 ```{r echo=FALSE}
 set.seed(1000)
 x <- seq(1, 4, 0.05)
@@ -160,8 +162,6 @@ There are many R-packages that will carry out the steps for PCA all behind the '
 What do the center and scale arguments do in the `prcomp` command?
 
 While determining the variance of your dataset it should be clear that the order of magnitude of your data features matters greatly. The reasons for this should be clear that if one axis is in 1,000's while the second axis is between 1 and 10, the larger scale will have a greater variance distorting the results.
-
-\pagebreak
 
 There are four common methods for scaling data:
 

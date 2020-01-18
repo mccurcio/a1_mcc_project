@@ -1,0 +1,31 @@
+BEST
+https://tensorflow.rstudio.com/tutorials/beginners/basic-ml/tutorial_overfit_underfit/
+
+================================
+
+One-Class Learning with SELU Autoencoder for Predicting One-Year Survival of Thoracic Surgery Patients
+
+https://rpubs.com/yoompubs/476942
+
+==============================
+Autoencoder
+
+https://rpubs.com/CANN/NetworkFlows
+
+We will apply an unsupervised deep learning Autoencoder.
+
+An autoencoder is a neural network that learns a representation or encoding of a set of data, typically for the purpose of dimensionality reduction.
+
+For the first task we will procede as if we have no labels on the data and simple try to identify suspicious anomalies in the data.
+
+After building the models we will use the labels to discover if this approach will be useful.
+
+1. Autoencoder H2o.deeplearning
+
+
+
+
+
+
+
+

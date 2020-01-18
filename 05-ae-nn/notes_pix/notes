@@ -1,0 +1,29 @@
+Feed Forward NN
+
+each neuron in the chain has its own properties. EAch neuron or perceptron has its own weights leading into the summation function and activation function
+
+As we saw in the logistical regression system we have
+
+Pix
+N inputs each with its own signal strength n which to be summed. After which the summed signals are sent to an acitvation function with its own bias and slew rate. 
+
+$$\overrightarrow{z} = f(\overrightarrow{x}, \overrightarrow{w}, \overrightarrow{T})$$
+
+$$Y' %>% \sum_{i=1}^N w_i x_i$$
+
+
+===========
+https://machinelearningmastery.com/improve-deep-learning-performance/
+ Improve Performance With Data
+
+You can get big wins with changes to your training data and problem definition. Perhaps even the biggest wins.
+
+Here’s a short list of what we’ll cover:
+
+    Get More Data.
+    Invent More Data.
+    Rescale Your Data.
+    Transform Your Data.
+    Feature Selection.
+
+1) Get More Data

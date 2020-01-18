@@ -1,8 +1,0 @@
-F(x) = D+(A-D)/(1+(x/C)^B)
-where:
-A = Minimum asymptote. In a bioassay where you have a standard curve, this can be thought of as the response value at 0 standard concentration.
-B = Hill's slope. The Hill's slope refers to the steepness of the curve. It could either be positive or negative.
-
-C = Inflection point. The inflection point is defined as the point on the curve where the curvature changes direction or signs. C is the concentration of analyte where y=(D-A)/2.
-
-D = Maximum asymptote. In an bioassay where you have a standard curve, this can be thought of as the response value for infinite standard concentration.
