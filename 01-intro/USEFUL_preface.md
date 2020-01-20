@@ -2,7 +2,7 @@
 
 ## Welcome {-}
 
-This is work has had more lifetimes than a bag full of cats.  It started off as a hands-on Linux command line guide for new biology students.
+This is work has had more lifetimes than a bag full of cats.  It started off as a hands-on Linux command line guide for new biology students. 
 
 However, as I was reading on the topic of Linux, I read a quote that describes the philosophy of Unix.
 
