@@ -7,15 +7,17 @@ output:
 
 ## Introduction
 
-For students who have studied cell biology and biochemistry, logistic regression may already be familiar. It may also be known as a *dose-response curve*, *sigmoidal curve*, *4-parameter fit*, a *median lethal dose curve* (LD-50) or even an exponential growth curve is given limited resources. In this circumstance, it may also be thought of a binary classifier that can toggle between off and on, zero or one.
+For individuals who have studied cell biology or biochemistry, logistic regression may be  familiar as dose-response curves, enzyme kinetic curves, sigmoidal curves, median lethal dose curve (LD-50) or even an exponential growth curve given limited resources. 
 
-Logistic regression derives its name from the similarity to linear regression, for reasons we will see below. In logistic regression, the dependent variable $(y)$ is NOT calculated as is normal with linear regression. Instead, logistic regression is used for classification between two states. Its name implies that one is seeking a regression line although this is not the case. When we consider logistic regression the term we should be reminded that we are using logical values, therefore 0's and 1's. 
+However, in the context of predictive modeling logistic regression is used as a binary classifier that can toggle between logical values of zero or one.
+
+Logistic regression derives its name from its similarity to linear regression, as we shall see below. In logistic regression, the dependent variable ($y$) is NOT calculated as is found with linear regression. Instead, logistic regression is used for classification between two states.  Instead the term logistic should be a reminder that the functions output are logical values, therefore 0's and 1's. 
 
 $$f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.$$
 
-In this simple form we can use the generation of a zero or one as a binary or logical value, hence logistic, zero indicating the absence of some quality or item and one indicating its presence.
+Using logistic regression we may now calculate the presence or absence of a product or quality that we wish to model.
 
-The domain ($x$) of our logistic equation may be ($-\infty$ to $\infty$), but at the **decision boundary** of $x ~=$ 0 (for this example) our system changes from *zero*, absence, to *one*, the presence of a quality or item. In the Logistic/Sigmoidal Curve figure below, the **decision boundary** is denoted by the *red dotted line*.
+As we can see in the figure below the functions domain ($x$) is ($-\infty$ to $\infty$), whereby its range is largely zero or one. In our simple case, the **decision boundary** at $x ~=$ 0 our system changes from *zero*, absence, to *one*, the presence of a quality or item. In the Logistic/Sigmoidal Curve figure below, the **decision boundary** is denoted by the *red dotted line*.
 
 ---
 
@@ -36,8 +38,6 @@ text(3.5, 0.48, cex = 1.75, "if x >= 0 then y = 1")
 
 \pagebreak
 
----
-
 The logistic growth curve is commonly denoted by:
 
 $$f(x) ~=~ \frac{M}{1 + Ae^{-r(x - x_0)}}$$
@@ -51,15 +51,15 @@ In the specific case of *Logistic Regression for Binary Classification* where we
 
 ---
 
-Since the logistic equation is exponential it is easier to consider working with the formula in terms of the odds or log odds. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or log-odds as $\large ln \left (\frac{p}{1-p} \right )$.
+Since the logistic equation is exponential it is easier to work with the formula in terms of its odds or **log odds**. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or more precisely log-odds as $\Large ln \left (\frac{p}{1-p} \right )$.
 
-In logistic regression, we find that the log-odds may be expressed as a set of linear equations in x.[^43] This is simply a transformation of the exponential curve to make it linear. The set of linear equations is similar to the idea inherent in Linear Regression.
+Simply by using log-odds, logistic regression may be more easily expressed as a set of linear equations in x.[^43] Hence we can now go from linear regression to logistic regression.
 
 [^43]:http://juangabrielgomila.com/en/logistic-regression-derivation/
 
 $$ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}$$
 
-Substituting $p$ for $Pr(y_i ~=~ 1|x_i)$ and $1-p$ for $Pr(y_i ~=~ 0|x_i)$ we have:
+Substitute ($p$ for $Pr(y_i ~=~ 1|x_i)$) and ($1-p$ for $Pr(y_i ~=~ 0|x_i)$) and change notation to summation on the right hand side:
 
 $$ln \left( \frac {p}{1-p} \right) =~ \sum_i^{k} \beta_i x_i$$
 
@@ -67,9 +67,11 @@ Eliminate the natural log by taking the exponent on both sides:
 
 $$\large \frac {p}{1-p} =~ exp \left ( \sum_i^{k} \beta_i x_i \right )$$
 
-$$\large \frac {p}{1-p} =~ e^u ~~:~~ where ~~ u = \sum_i^{k} \beta_i x_i$$
+Substitute $u = \sum_i^{k} \beta_i x_i$:
 
-Rearrange to solve for $\large p$ we find:
+$$\large \frac {p}{1-p} =~ e^u$$
+
+Rearrange to solve for $\large p$:
 
 $$\large p(u) ~=~ \frac{e^u}{1 + e^u}$$
 
@@ -87,10 +89,13 @@ Separate out to produce two fractions:
 
 $$p'(u) ~=~ \left ( \frac {e^u}{1 + e^u} \right ) \cdot \left ( \frac{1}{1 + e^u} \right )$$
 
-Substitute success and failure variables back into place:
+Substitute our previous success and failure variables back into place:
 
 $$p'(u) ~=~ p(u) \cdot ( 1 - p(u))$$
 
+Now we can calculate the probabilities as well as the values for any given x value.
+
+## Load libraries and protein dataset
 
 ```{r message=FALSE, warning=FALSE}
 # Load Libraries
@@ -107,14 +112,12 @@ opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ```{r}
-# Import data & data handling
+# Import relevant data
 c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                             col_types = cols(Class = col_factor(levels = c("0", "1")),
                                              PID = col_skip(),
                                              TotalAA = col_skip()))
 ```
-
-Note: Exploratory Data Analysis (EDA) has been carried out on the file `c_m_TRANSFORMED.csv`.  It can be found in the EDA chapter.*******(link to EDA)
 
 ```{r}
 # Partition data into training and testing sets
@@ -127,6 +130,8 @@ training_set.1 <- c_m_TRANSFORMED[index, ]
 The `test.set.1` and `Class.test` data sets are not produced since that the Logit run with 20 features was not deemed useful. The reason for its dismissal was that is contained extraneous features.
 
 ## Logit Training #1 using 20 Features
+
+- The first training (**test**) is to determine if all 20 features (amino acids) are necessary for our logistic regression model.
 
 ```{r, cache = TRUE}
 set.seed(1000)
@@ -146,7 +151,7 @@ model_obj.1 <- train(Class ~ .,
 
 end_time <- Sys.time()  # End timer
 end_time - start_time   # Display time
-registerDoSEQ() # Stop multi-processor mode
+registerDoSEQ()         # Stop multi-processor mode
 ```
 
 ## Logit Results #1
@@ -162,7 +167,7 @@ The Akaike information criterion (AIC)[^44] for model #1 is 699.72. This will be
 
 ## Logit Training #2 using 9 Features
 
-- Using **ONLY** features: (R, H, P, C, E, Y, T, D, G)
+- This test uses **ONLY** 9 features: (R, H, P, C, E, Y, T, D, G)
 
 ```{r}
 # Data import & handling
@@ -252,7 +257,7 @@ write.table(fp_fn_logit,
 nrow(fp_fn_logit) ## NOTE: NOT UNIQUE NOR SORTED
 ```
 
-    536 proteins listed although they are NOT UNIQUE NOR SORTED.
+- The logistic regression second test produced 536 protein samples which are either false-positives or false-negatives. The list of 536 proteins may have duplicates, therefore they are NOT UNIQUE NOR SORTED.
 
 ## Conclusion
 

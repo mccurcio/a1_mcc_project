@@ -16,7 +16,7 @@ Support vector machine (SVM) learning is a supervised learning technique which m
 
 Conceptually the intuition behind SVM is simple for the case of classifiying two classes. If a dataset has two classes where we want to described by a set of feature varialbles which are distinct and separable then it is possible to define a decision boundary between the classes. In the simplest case the decision boundary is linear such that above the plane (or hyperplane in the case of multi-dimensional data) that can be determined from the multi-dimensional data that bisects the data (in the case of binary classification) into two portions of space using a hyperplane. Alternatively, when investigating SVM-regression the hyperplane becomes the regression plane that straddles the function which is being evaluated.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 center_1 <- [ 1, 1]
 center_2 <- [-1,-1]
 random_number <- runif(10, 1, 0.1)
@@ -38,21 +38,21 @@ For example, this experiment has chosen to investigate three possible decision b
 
 Four common SVM kernel formulae investigated are:
 
-1. Linear: $K(x_i, ~y_j) ~~=~~ <x, ~y>$   
+1. Linear: $K(x_i, ~y_j) ~=~ <x, ~y>$   
 
    - The linear kernel does not transform the data at all.  
 
-2. Polynomial: $K(x_i, x_j) ~~=~~ ( \gamma ~x_i^T ~x_j ~~+~~ r)^{\Large d}, ~\gamma > 0$  
+2. Polynomial: $K(x_i, x_j) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~\gamma > 0$  
 
    - The polynomial kernel has a simple non-linear transform of the data.  
    
    - Such that $~\gamma, ~r$ and $d$ are kernel parameters.  
 
-3. Radial Basis Function (RBF):  $K(x_i, x_j) ~~=~~ exp ( - {\Large \gamma} \parallel x_i^T - x_j \parallel ^2 ), \Large \gamma >0$
+3. Radial Basis Function (RBF):  $K(x_i, x_j) ~=~ exp ( - {\Large \gamma} \parallel x_i^T - x_j \parallel ^2 ), \Large \gamma >0$
 
    - The Gaussian RBF kernel which performs well on many data and is a good default
 
-4. Sigmoidal: $K(x_i, x_j) ~~=~~ {\large \tanh} ( \gamma~ x_i^T ~ x_j ~~+~~ r ), ~\gamma >0$
+4. Sigmoidal: $K(x_i, x_j) ~=~ {\large \tanh} ( \gamma~ x_i^T ~ x_j ~+~ r ), ~\gamma >0$
 
    - Incidentally, The sigmoid kernel produces a SVM analogous to the activation function similar to a [perceptron] with a sigmoid activation function.[^63]
    

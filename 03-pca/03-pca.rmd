@@ -54,13 +54,13 @@ The first step for calculating PCA is to determine the Covariance matrix. Covari
 
 ### Covariance of two variables {-}
 
-$$cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
-
 Remember this simplified formula is to determine covariance for a 2 dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent variable, $\bar y$ is the mean of the dependent variable.
+
+$$cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
 
 ### Covariance of matrices {-}
 
-However when dealing with larger number of variables one needds to Determine the covariance of a matrices, $\large M$ using linear algebra notation is;[^34]
+When dealing with larger number of variables one needs to Determine the covariance of a matrices, $\large M$ using linear algebra notation is;[^34]
 
 [^34]:http://mathworld.wolfram.com/Covariance.html
 
@@ -71,6 +71,8 @@ However when dealing with larger number of variables one needds to Determine the
 $$cov ~ (M) ~=~ \frac{1}{N-1} ~ D^T ~ D, ~~~ where ~~~ D = M - M_{means}$$
 
 Where $D^T$ is the transpose of the difference matrix, $N$ is the number of observations or rows in this case.
+
+### Finding PCA via singular value decomposition
 
 The procedure below is an outline, not the full computation of PCA. 
 
@@ -156,6 +158,8 @@ There are many R-packages that will carry out the steps for PCA all behind the '
 [^37]:https://cran.r-project.org/web/packages/available_packages_by_name.html
 [^38]:https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prcomp.html
 [^39]:https://stat.ethz.ch/R-manual/R-devel/library/stats/html/princomp.html
+
+\pagebreak
 
 ## Data centering / scaling / normalization
 
@@ -250,7 +254,7 @@ Here again, there are several criteria regarding how best to use the information
 ```{r echo=FALSE, fig.align="center", fig.height=4, fig.width=4}
 screeplot(c_m_20_PCA,
           main = "Screeplot of c_m_20_PCA",
-          sub = "PC(i)\n(Red Line Indicates Kaiser Rule, Eigenvalues = 1)",
+          sub = "PC(i)\n(Red line indicates Kaiser rule, eigenvalues=1)",
           npcs = 20,
           type = "lines",
           ylim = c(0, 7))
@@ -261,7 +265,7 @@ abline(v = 5, col = "green")
 ```{r echo=FALSE, fig.align="center", fig.height=4, fig.width=4}
 plot(cumsum(c_m_20_PCA$sdev^2 / sum(c_m_20_PCA$sdev^2)),
      main = "Cum. Proportion of Variance Vs PC",
-     sub = "(Red line indicates p = 0.9, Green line indicates PC = 12)",
+     sub = "(Red line p=0.9, green line PC=12)",
      ylab = "% Variance(i) / Total Variance",
      xlab = "PC(i)",
      ylim = c(0, 1),
