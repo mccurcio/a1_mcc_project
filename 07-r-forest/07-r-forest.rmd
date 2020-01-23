@@ -1,4 +1,4 @@
-# Random Forest	Classification Model Using `e1071` & `ranger`
+﻿# Random Forest	Classification Model Using `e1071` & `ranger`
 
 ## Introduction
 
@@ -10,19 +10,19 @@ for(p in Libraries){  # Install Library if not present
     if(!require(p, character.only = TRUE)) { install.packages(p) }
     library(p, character.only = TRUE)
 }
-opts_chunk$set(cache = TRUE)
+opts_chunk$set(cache = TRUE, fig.align=”center”)
 ```
 
-Import data & data handling
 ```{r}
+## Import data & data handling
 c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                             col_types = cols(Class = col_factor(levels = c("0","1")), 
                                              PID = col_skip(), TotalAA = col_skip()))
 #View(c_m_TRANSFORMED)
 ```
 
-Partition data into training and testing sets
 ```{r}
+## Partition data into training and testing sets
 set.seed(1000)
 index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
 

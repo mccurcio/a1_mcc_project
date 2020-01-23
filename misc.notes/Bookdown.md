@@ -15,6 +15,8 @@ plot(cars)  # a scatterplot
 
 figs
 
+![title \label{id}](../images/B.png)
+
 knitr::include_graphics("images/knit-logo.png", out.width = '33%')
 
 =================================
@@ -31,12 +33,13 @@ knitr::kable(
 Cross-references
 
 
-    If you are happy with the section header as the link text, use it inside a single set of square brackets:
-        [Section header text]: example “A single document” via [A single document]
+    If you are happy with the section header as the link text, 
+    use it inside a single set of square brackets:
+    [Section header text]: example “A single document” via [A single document]
     There are two ways to specify custom link text:
-        [link text][Section header text], e.g., “non-English books” via [non-English books][Internationalization]
-        [link text](#ID), e.g., “Table stuff” via [Table stuff](#tables)
-
+    [link text][Section header text], e.g., “non-English books” via 
+    [non-English books][Internationalization]
+    [link text](#ID), e.g., “Table stuff” via [Table stuff](#tables)
 
 ==================================
 

@@ -173,7 +173,8 @@ $$E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i$
 
 - This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.cap='Column-Means of % Composition Vs Amino Acid', out.width='100%', fig.asp=1, fig.align='center'}
 AA_ave <- colMeans(c_m_RAW_AAC[, 4:23])
 plot(AA_ave,
      main = "Plot: Column-Means of % Composition Vs Amino Acid",
@@ -402,13 +403,21 @@ c_m_corr_mat["T", "N"]
 
 ---
 
-### How to reduce features given high correlation (|R| >= 0.75) {-}
-    1. Calculate the correlation matrix of the predictors.  
-    2. If the correlation plot produced of any two variables is greater than or equal to (|R| >= 0.75) then we could consider feature elimination. This interesting heuristic approach would be used for determining which feature to eliminate.[^12]  
-    3. Determine if the two predictors associated with the largest absolute pairwise correlation (R > |0.75|), call them predictors A and B.  
-    4. Determine the average correlation between A and the other variables. Do the same for predictor B.  
-    5. If A has a larger average correlation, remove it; otherwise, remove predictor B.  
-    6. Repeat Steps 2–4 until no absolute correlations are above the threshold.  
+### How to: Dimension Reduction using High Correlation
+
+How to reduce features given high correlation (|R| >= 0.75) {-}
+
+1. Calculate the correlation matrix of the predictors.  
+
+2. If the correlation plot produced of any two variables is greater than or equal to (|R| >= 0.75) then we could consider feature elimination. This interesting heuristic approach would be used for determining which feature to eliminate.[^12]  
+
+3. Determine if the two predictors associated with the largest absolute pairwise correlation (R > |0.75|), call them predictors A and B.  
+
+4. Determine the average correlation between A and the other variables. Do the same for predictor B.  
+
+5. If A has a larger average correlation, remove it; otherwise, remove predictor B.  
+
+6. Repeat Steps 2–4 until no absolute correlations are above the threshold.  
 
 ---
 
@@ -814,7 +823,7 @@ plotImpHistory(boruta_output)
 
 - All features are important. None should be dropped.
 
-### EDA Conclusions For Transformed Data 
+## Overall EDA Conclusion
 
 It was determined earlier that three amino acids (C, F, I) from the single amino acid percent composition should be transformed by using the square root function. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
