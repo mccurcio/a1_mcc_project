@@ -24,7 +24,11 @@ At the intersection between Applied Mathematics, Computer Science and an underst
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-![Venn Diagrams of Bioinformatics Vs Data Science \label{venn_daigram}](../00-data/10-images/Bio-DS-Venn-diagram-42per.png)
+![Venn Diagrams of Bioinformatics Vs Data Science \label{venn_daigram}](../00-data/10-images/Venn-diagram-original-768x432.png)
+
+[^122]
+
+[^122]:http://omgenomics.com/what-is-bioinformatics/
 
 ## What is Predictive Modeling?
 
@@ -102,7 +106,13 @@ In order for the K-NN algorithm to function optimally the data most be complete 
 
 Six of the seven algorithms that this report investigates are supervised. Logit, support vector machines, Random Forest and the neural network that I have chosen require labels for the classification process.
 
-![K-Nearest-Neighbor \label{knn}](../00-data/10-images/K-Nearest-Neighbor.png) [^18]
+```{r echo=FALSE}
+opts_chunk$set(cache = TRUE, fig.align = "center")
+```
+
+![K-Nearest-Neighbor \label{knn}](../00-data/10-images/K-Nearest-Neighbor.50.png) 
+
+[^18]
 
 [^18]:https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
 
@@ -110,7 +120,7 @@ Six of the seven algorithms that this report investigates are supervised. Logit,
 
 Let us investigate the K-NN algorithm and figure a little further. If we change our value of $K$ to 5 then we see a different result. By using $K = 5$ we will now consider the out dashed-black line. This larger $K$ value contains three blue widgets and two red widgets. If we are now asked to vote our choice, we find that 3 blue beats the 2 red and we assign the unknown a BLUE widget.  This assignment is the opposite of the inner circle. 
 
-If a researcher were to use K-NN then the algorithm would have to test many possible $K$ values and compare the results, then choose the $K$ with the highest accuracy. However, this is where K-NN falters. To use K-NN the computer algorithm needs to keep all data points it used for its initial training (accuracy testing). Any new unknowns could be conceivably tested against any or all the previous data points. The K-NN does use a generalized rule that would make future assignment quick on the contrary it must memorize all the points for the algorithm to work. K-NN cannot delete the points until it is complete.  It is true that the algorithm is simple but not efficient. Matter and fact, as the number of feature dimensions increases this causes the complexity (also known as Big O) to rise. The complexity of K-NN is: $O(K-NN) ~~\propto ~~nkd$ .
+If a researcher were to use K-NN then the algorithm would have to test many possible $K$ values and compare the results, then choose the $K$ with the highest accuracy. However, this is where K-NN falters. To use K-NN the computer algorithm needs to keep all data points it used for its initial training (accuracy testing). Any new unknowns could be conceivably tested against any or all the previous data points. The K-NN does use a generalized rule that would make future assignment quick on the contrary it must memorize all the points for the algorithm to work. K-NN cannot delete the points until it is complete.  It is true that the algorithm is simple but not efficient. Matter and fact, as the number of feature dimensions increases this causes the complexity (also known as Big O) to rise. The complexity of K-NN is: $O(K-NN) ~\propto ~nkd$ .
 
 Where $n$ is the number of observations, $k$ is the number of nearest neighbors it must check and d is the number of dimensions.[^19]
 
@@ -118,39 +128,29 @@ Where $n$ is the number of observations, $k$ is the number of nearest neighbors 
 
 Given that K-NN tends to 'memorize' its data to complete its task it is considered a lazy and a shallow learner. Lazy indicates that the decision is left to the moment a new point is learned of predicted. If we were to use a more generalized rule, such as **{Blue** for ($x <= 5$)**}** this would be more dynamic and deeper approach by comparison.
 
-#### What is deep learning? {-}
-
-By contrast a deep learning system is one that able to generalize information constructing multiple levels of representation or learning a hierarchy of features, ..., one  level at a time, using unsupervised feature learning to learn a new transformation at each level.[^110]
-
-[^110]:Yoshua Bengio, Aaron Courville, and Pascal Vincent, Representation Learning: A Review and New Perspectives, arXiv:1206.5538v3, 23 Apr 2014
-
-Another much simpler definition states, "What is not a multi-layer neural network is not deep learning - Anonymous."
-
-
-?
-
-
 ### Unsupervised Learning
 
 By contrast to the supervised learning system, unsupervised learning does not require a label for it to operate. 
 
 **Data set**: $(X_1), (X_2),  ~. . .,  ~(X_N)$ where $X$ may represent a matrix ($m$ observations by $n$ features) of values.
 
-Principal Component Analysis is an example of unsupervised learning, which we will discuss in more detail in chapter 3. The data despite or without its labels are transformed to provide a maximization of the variances in the dataset. Yet another objective of Unsupervised learning is to discover "interesting structures"[^111] in the data. There are several methods that structure may show itself these include clustering, knowledge discovery of latent variable or discovering graph structure. In many instances and as a subheading to the a fore mentioned points unsupervised learning is used for dimension reduction or feature selection.
+Principal Component Analysis is an example of unsupervised learning, which we will discuss in more detail in chapter 3. The data despite or without its labels are transformed to provide a maximization of the variances in the dataset. Yet another objective of Unsupervised learning is to discover "interesting structures"[^110] in the data. There are several methods that structure may show itself these include clustering, knowledge discovery of latent variable or discovering graph structure. In many instances and as a subheading to the a fore mentioned points unsupervised learning is used for dimension reduction or feature selection.
 
-[^111]:Kevin Murphy, Machine learning a probabilistic perspective, 2012, ISBN 978-0-262-01802-9
+[^110]:Kevin Murphy, Machine learning a probabilistic perspective, 2012, ISBN 978-0-262-01802-9
 
 Among the simplest unsupervised learning algorithms is K-means. K-means does not rely on the class labels of the dataset at all. In fact, K-means may be used to determine any number of classes despite any predetermined values. K-means can discover clusters which may then be used in classification or hierarchical feature representation. K-means has several alternative methods but in general calculates the distance (or conversely the similarity) of observations to a  mean value of the $K$th grouping. The mean value is called the center of mass, the Physics term that provides an excellent analogy since the center of mass is a weighted average. By choosing different number of groupings (values of $K$ much like the K-NN) then comparing the grouping by a measure of accuracy, one example being, mean square error. 
 
-![K-Means \label{kmeans}](../00-data/10-images/k-means-2.png)[^112]
+![K-Means \label{kmeans}](../00-data/10-images/k-means-2.50.png)
 
-[^112]:https://www.slideshare.net/teofili/machine-learning-with-apache-hama/20-KMeans_clustering_20
+[^111]
+
+[^111]:https://www.slideshare.net/teofili/machine-learning-with-apache-hama/20-KMeans_clustering_20
 
 It is easy to see through much or machine learning or predictive modeling if one understands bits of the inner workings of these algorithms,
 
 ### Four Challenges In Predictive Modeling
 
-To many predictive modeling is a panacea for all sorts of issues. Although this *may* be true now or in the future there are many hurdles which need to be overcome. Martin Jaggi[^113] has summarized four points which elucidate current problems in the field that need to be tackled.
+To many predictive modeling is a panacea for all sorts of issues. Although it does show promise there are hurdles which need to be overcome. Martin Jaggi[^112] has summarized four points which elucidate current problems in the field that need to be tackled.
 
 Problem 1: The vast majority of information in the world in unlabeled so it would be advantageous to have a good Unsupervised machine learning algorithms to use.
 
@@ -160,7 +160,9 @@ Problem 3: Transfer learning to new environments
 
 Problem 4: Scale, the scale of information is huge in reality and we have computers that work in gigabytes not the Exabytes that humans may have available to them. The scale of distributed Big Data...
 
-[^113]:https://www.machinelearning.ai/machine-learning/4-big-challenges-in-machine-learning-ft-martin-jaggi-2/
+[^112]:https://www.machinelearning.ai/machine-learning/4-big-challenges-in-machine-learning-ft-martin-jaggi-2/
+
+The predictive models which are executed in this report will be discusses in further detail in their own sections. 
 
 ### Experimental Procedure
 
@@ -182,19 +184,19 @@ Once the three features were transformed this dataset was denoted
 
 `~/00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv` and used throughout the rest of the analysis.
 
-It was decided early in the work that R[^114], RStudio[^115] and its machine learning library / framework `caret`[^116] would be used
+It was decided early in the work that R[^113], RStudio[^114] and its machine learning library / framework `caret`[^115] would be used
 
-[^114]:https://cran.r-project.org/
+[^113]:https://cran.r-project.org/
 
-[^115]:https://rstudio.com/
+[^114]:https://rstudio.com/
 
-[^116]:http://topepo.github.io/caret/index.html
+[^115]:http://topepo.github.io/caret/index.html
 
 #### Caret library for R
 
-The R/caret library is attractive to use for many reasons. It currently allows some 238 machine learning models which have been written using disparate options and data structures. [^117] The utility of caret is that it organizes the input and output into a common format making the need for learning only one grammar and syntax.
+The R/caret library is attractive to use for many reasons. It currently allows some 238 machine learning models which have been written using disparate options and data structures. [^116] The utility of caret is that it organizes the input and output into a common format making the need for learning only one grammar and syntax. caret also harmonizes the use of hyperparamters such that they are more easily repeated.
 
-[^117]:http://topepo.github.io/caret/available-models.html
+[^116]:http://topepo.github.io/caret/available-models.html
 
 #### Data Partitioning
 
@@ -211,37 +213,66 @@ test_set     <- c_m_9aa[-index, ]
 
 #### Training the Predictive model
 
-The training section for caret can be broken into three parts, each atttempting to solve different questions. The most common questions that a researcher may have with regard to Predictive Modeling are:
+Setting up the training section for caret, for this experiment, can be broken into three parts.
 
-##### How does one map the experimental space? 
+##### Tuning Hyperparameters
 
+The `tune.grid` command set allows a reasearcher to experiment by varying the hyperparameters of the given model to investigate optimum values.  Currently there are no algorithms which allow for the quick and robust tuning of parameters. Instead searching the experiemental space in a methodical fashion is easily carried by defining an n-dimensional grid to search along.
 
-##### How does one validate the results and assure reproducibility?
+Although some models have many parameters the most common one is to search along the cost hyperparameter. 
 
-- Why to separate training data set and test data set for validation?
-- Requirements of Learning: Cannot expect a learner to learn a concept exactly. There are only a small fraction of examples that describe our available instance/experimental space. It may be very difficult to describe the entire space with a small set.
-- Cannot always expect to learn a close approximation to the target concept, the training set will not be representative of your model. It will may/contain uncommon examples.
-- The only reason we can hope for this is the *consistent distribution assumption*.
+>The function we want to minimize or maximize is called the objective function or criterion. When we are minimizing it, we may also call it the cost function, loss function , or error function. [^117]
 
-##### How does a researcher set up the parameters and options for each modeling attempt?
+[^117]:Ian Goodfellow, Yoshua Bengio, Aaron Courville,  Deep Learning, MIT Press, http://www.deeplearningbook.org, 2016
+
+The cost function (a term derived from business modeling, i.e. optimizing the cost) is an estimate as how well a models predicted value fits from the actual value. A typical cost function is the square error function which is the difference of the actual value minus the estimated function squared.
+
+Example Cost Function [^118]
+$$Cost ~=~ \left ( y_i - \hat f(x_i) \right )^2$$
+
+[^118]:Roberto Battiti and Mauro Brunato, The LION way. Machine Learning-Intelligent Optimization, LIONlab, University of Trento, Italy", 2017", http://intelligent-optimization.org/LIONbook
+
+It may be important to search the literature to determine if other researchers have used a specific range of optimum value which may speed your own search. For example, C.W. Hsu at al suggest using a broad range of 20 orders of magnitude of powers of 2,
+
+e.g. `cost = ` $2^{-5}, 2^{-3}, ..., 2^{15}$ for an intial gross search then switching to
+
+4 or 5 orders of magnitude with 1/4 log steps.
+
+e.g. `cost = ` $2^{1}, 2^{1.25}, ..., 2^{5}$ for a fine search for unknown SVM using a radial basis function. [^119]
+
+[^119]:Chih-Wei Hsu, et al, A Practical Guide to Support Vector Classification, 2016, http://www.csie.ntu.edu.tw/~cjlin
+
+##### k-Fold Cross validation of results
+
+Another valuable option that caret has is the ability to cross validate results. 
+
+Cross-validation is a statistical method used to estimate the skill of machine learning models.[^120]
+
+[^120]:https://machinelearningmastery.com/k-fold-cross-validation/
+
+>The samples are randomly partitioned into k sets of roughly equal size. A model is fit using the all samples except the first subset (called the first fold). The held-out samples are predicted by this model and used to estimate performance measures. The first subset is returned to the training set and procedure repeats with the second subset held out, and so on. The k resampled estimates of performance are summarized (usually with the mean and standard error) and used to understand the relationship between the tuning parameter(s) and model utility.[^121]
+
+[^121]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, 2013, ISBN 978-1-4614-6848-6
+
+Cross-validation has the advantage of using the entire dataset for training and for testing, increasing the opportunity that more training samples will produce a better model. 
+
+Example R/caret code:
 
 ```
-## Training caret-R code
-set.seed(1000)
-
-## Map a range of cost function values, C
-grid = expand.grid(C = seq(0.5, 10, 0.5))
-
-## Create model, 10 fold cross validation repeated 5X
+## 10 fold Cross Validation repeated 5 times
 fitControl <- trainControl(method = "repeatedcv", 
                            number = 10,
                            repeats = 5,
                            savePredictions = "final")
-                           
-## Grid exploration
-grid = expand.grid(C = seq(0.5, 10, 0.5))
+```
 
-## Train command
+##### Train command
+
+
+
+
+Example Train command
+```
 model_object <- train(Class ~ .,
                       data = training_set,
                       trControl = fitControl,
@@ -253,48 +284,6 @@ model_object <- train(Class ~ .,
 
 ####  Analysis of results
 
-- Using Testing data set Predict classes and generate CM.
 - Compile CM output (Accuracy, MCC, etc.) for comparing 10 models.
-- The fundamental goal of machine learning is to generalize beyond the examples in the training set.
+
 - No matter how much data we have, it is very unlikely that we will see those exact examples again at test time.
-- The most common mistake among machine learning beginners is to test on the training data and have the illusion of success. If the chosen classifier is then tested on new data, it is often no better than random guessing.
-- HOLD back some data for more testing
-- if you hire someone to build a classifier, be sure to keep some of the data to yourself and test the classifier they give you on it.
-
--------------------
-
-- "Probably approximately correct" learning theory by Leslie Valiant
-
-----------------------------------------------
-
-OVERFITTING HAS MANY FACES
-
-- Bias and Variance
-- One way to understand over-fitting is by decomposing generalization error into bias and variance. Bias is a learner’s tendency to consistently learn the same wrong thing. Variance is the tendency to learn random things irrespective of the real signal.
-
---------------------------------------------
-
-**Excellent description of splitting, p.160**
-
-----------------------------------------------
-
-- Over-Fitting and Model Tuning
-
-- Choosing Between Models, See P.78
-
-- Measuring Performance in Classification Models
-
-------------------------------------
-
-
-Parameters vs. Hyperparameters
-
-- A hyperparameter is a property of a learning algorithm, usually (but not always) having a numerical value. That value influences the way the algorithm works. Hyperparameters aren’t learned by the algorithm itself from data. They have to be set by the data analyst before running the algorithm.
-
--------------------------------------------
-
-- Model evaluation
-
-- Some widely used model evaluation parameters for classification models (including cross validation) are as follows:
-
-- Confusion matrix (accuracy, precision, recall, and F1-score)

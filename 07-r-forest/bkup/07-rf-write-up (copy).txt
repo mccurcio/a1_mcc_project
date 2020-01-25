@@ -9,7 +9,7 @@ output:
 
 ## Introduction
 
-If you have played the child's game *20 Questions* [^71] where the answers are *Yes/No* (true/false) then this analogy may help you? One game of *20 Questions* is an example of one Decision Tree. Now imagine a person plays this game tens, hundreds or even thousands of times. After a number of games one should learn the *best* questions to ask and become faster and better at guessing the result. Random Forests are very much like this child’s game which is played over and over.
+If you have played the child's game *20 Questions* [^71] where the answers are *Yes/No* (true/false) then this analogy may help you understand Random Forest classification? Consider for a moment all the questions that could be asked are all branches that you could traverse. This tree of all possible questions is akin to a decision tree. Now imagine a person plays this game tens, hundreds or even thousands of times. After a number of games one would learn the *best* questions to ask and the quickest way to win. Random Forests are very much like the child’s game *20 Questions* which is played over and over in the hope of finding the best questions such that you may sort through all the possibilities in order to win quickly.
 
 [^71]:https://en.wikipedia.org/wiki/Twenty_Questions
 
