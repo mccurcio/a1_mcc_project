@@ -40,14 +40,14 @@ write.table(row_pc12,
 # Not elegant but fast 4 me to code ;)
 logit_nums <- read_csv("../00-data/04-sort_unique_outliers/logit_nums.csv")
 pca_outliers <- read_csv("../00-data/04-sort_unique_outliers/pca_outliers.csv")
-rf_nums <- read_csv("../00-data/04-sort_unique_outliers/rf_nums.csv")
+# rf_nums <- read_csv("../00-data/04-sort_unique_outliers/rf_nums.csv")
 svm_lin_nums <- read_csv("../00-data/04-sort_unique_outliers/svm_lin_nums.csv")
 svm_poly_nums <- read_csv("../00-data/04-sort_unique_outliers/svm_poly_nums.csv")
 svm_rbf_nums <- read_csv("../00-data/04-sort_unique_outliers/svm_rbf_nums.csv")
 
 colnames(logit_nums)[1] = "rowNum" 
 colnames(pca_outliers)[1] = "rowNum" 
-colnames(rf_nums)[1] = "rowNum" 
+# colnames(rf_nums)[1] = "rowNum" 
 colnames(svm_lin_nums)[1] = "rowNum" 
 colnames(svm_poly_nums)[1] = "rowNum" 
 colnames(svm_rbf_nums)[1] = "rowNum" 
@@ -58,7 +58,7 @@ colnames(svm_rbf_nums)[1] = "rowNum"
 ```{r message=FALSE, warning=FALSE}
 logit_pc    <- merge(x = logit_nums,    y = row_pc12, by = "rowNum")
 pca_pc      <- merge(x = pca_outliers,  y = row_pc12, by = "rowNum")
-rf_pc       <- merge(x = rf_nums,       y = row_pc12, by = "rowNum")
+# rf_pc       <- merge(x = rf_nums,       y = row_pc12, by = "rowNum")
 svm_lin_pc  <- merge(x = svm_lin_nums,  y = row_pc12, by = "rowNum")
 svm_poly_pc <- merge(x = svm_poly_nums, y = row_pc12, by = "rowNum")
 svm_rbf_pc  <- merge(x = svm_rbf_nums,  y = row_pc12, by = "rowNum")
@@ -108,7 +108,7 @@ text(logit_pc[, 2],
 ```
 
 ### Random Forest Plot
-```{r echo=FALSE, fig.height=7, fig.width=7}
+```{r eval=FALSE, fig.height=7, fig.width=7, include=FALSE}
 plot(x = row_pc12[, 2], 
      y = row_pc12[, 3], 
      main = "Random Forest FP/FN On PC 1 & 2 Axes",

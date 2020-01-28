@@ -6,7 +6,8 @@ output: html_document
 ---
 
 ```{r}
-C+M_aac_dpc <- read.csv("../00-data/aac_dpc_values/C+M_aac_dpc.csv",
+file = "../00-data/aac_dpc_values/C+M_aac_dpc.csv"
+C+M_aac_dpc <- read.csv(file,
                         stringsAsFactors=FALSE)
 # View(`C+M_aac_dpc`)
 

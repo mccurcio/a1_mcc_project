@@ -6,7 +6,7 @@ output:
 
 # Support Vector Machines for Binary Classification
 
->"Support Vector Machines … are a very sophisticated idea that has a simple implementation, which should be in the tool bag of every civilized person." - Patrick Winston[^61]
+>"Support Vector Machines ... are a very sophisticated idea ... which should be in the tool bag of every civilized person." - Patrick Winston [^61]
 
 [^61]:Patrick Winston, 6.034 Artificial Intelligence, Fall 2010, Massachusetts Institute of Technology: MIT OpenCourseWare, http://ocw.mit.edu/6-034F10
 
@@ -14,49 +14,41 @@ output:
 
 Support vector machine (SVM) learning is a supervised learning technique which may be used as a binary classification system or to find regression formulae. 
 
-Conceptually the intuition behind SVM is simple for the case of classifiying two classes. If a dataset has two classes where we want to described by a set of feature varialbles which are distinct and separable then it is possible to define a decision boundary between the classes. In the simplest case the decision boundary is linear such that above the plane (or hyperplane in the case of multi-dimensional data) that can be determined from the multi-dimensional data that bisects the data (in the case of binary classification) into two portions of space using a hyperplane. Alternatively, when investigating SVM-regression the hyperplane becomes the regression plane that straddles the function which is being evaluated.
+The intuition behind SVM is simple for the case of classifying two classes. In a multi-dimensional feature space with binary labels there exists a hyperplane which can bisect the n-dimensional feauture space. In the simplest case the decision boundary is linear such that above the plane (or hyperplane in the case of multi-dimensional data) that can be determined from the multi-dimensional data that bisects the data (in the case of binary classification) into two portions of space using a hyperplane. Alternatively, when investigating SVM-regression the hyperplane becomes the regression plane that straddles the function which is being evaluated.
 
-```{r eval=FALSE, include=FALSE}
-center_1 <- [ 1, 1]
-center_2 <- [-1,-1]
-random_number <- runif(10, 1, 0.1)
+insert picture--------
 
-set.seed(1000)
-field <- exp(x + random_number)/(2*3.14*sigma) + exp(y + random_number)/(2*3.14*sigma)
-
-```
-
-The first mention of a SVM-like system is by Vapnik and Lerner in 1963 where the two described an implementation of a non-linear generalization called a Generalized Portrait algorithm.[^62] As research has progressed the types and complexity of SVM implementations have grown to encompass many circumstances. The ability of SVM to deal with different problems and handle different decision boundary shapes has made SVM a very powerful tool.
+The first mention of a SVM like system is by Vapnik and Lerner in 1963 where the two described an implementation of a non-linear generalization called a Generalized Portrait algorithm.[^62] As research has progressed the types and complexity of SVM implementations have grown to encompass many circumstances. The ability of SVM to deal with different problems and handle different decision boundary shapes has made SVM a very powerful tool.
 
 [^62]:Vapnik, V., and A. Lerner, 1963. Pattern recognition using generalized portrait method. Automation and Remote Control, 24, 774–780
 
 For example, this experiment has chosen to investigate three possible decision boundary shapes for the two class protein data. The three mathematical constructs which will be tested are:
 
-1. Linear hyperplane (sometimes denoted "vanilla"),
+1. Linear hyperplane (also known as "vanilla"),
 2. Curvilinear or polynomial hyperplane and,
-3. A Radial basis function hyperplane.
+3. A radial basis function hyperplane.
 
 Four common SVM kernel formulae investigated are:
 
-1. Linear: $K(x_i, ~y_j) ~=~ <x, ~y>$   
+1. Linear: $K(x, ~y) ~=~ w^T x + b$   
 
    - The linear kernel does not transform the data at all.  
 
-2. Polynomial: $K(x_i, x_j) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~\gamma > 0$  
+2. Polynomial: $K(x_i, x_j) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~~\Large \gamma > 0$  
 
    - The polynomial kernel has a simple non-linear transform of the data.  
    
    - Such that $~\gamma, ~r$ and $d$ are kernel parameters.  
 
-3. Radial Basis Function (RBF):  $K(x_i, x_j) ~=~ exp ( - {\Large \gamma} \parallel x_i^T - x_j \parallel ^2 ), \Large \gamma >0$
+3. Radial Basis Function (RBF):  $K(x_i, x_j) ~=~ exp ( - {\Large \gamma} \parallel x_i^T - x_j \parallel ^2 ), ~~\Large \gamma >0$
 
    - The Gaussian RBF kernel which performs well on many data and is a good default
 
-4. Sigmoidal: $K(x_i, x_j) ~=~ {\large \tanh} ( \gamma~ x_i^T ~ x_j ~+~ r ), ~\gamma >0$
+4. Sigmoidal: $K(x, y) ~=~ {\large \tanh} (~\Large \gamma~ x^T ~ y ~+~ r ), ~~\Large \gamma >0$
 
    - Incidentally, The sigmoid kernel produces a SVM analogous to the activation function similar to a [perceptron] with a sigmoid activation function.[^63]
    
-[^63]:(https://cs.stanford.edu/people/eroberts/courses/soco/projects/neural-networks/Neuron/index.html)
+[^63]:(https://data-flair.training/blogs/svm-kernel-functions/)
        
 **It is important to note**, at this time there are no reliable rules for which kernel, i.e. boundary shape, to use with any given data set.
 
@@ -82,7 +74,7 @@ plot(x = xi, y = 0.05*xi^2,
     main = "Polynomial, d=2",
     ylab = "y", xlab = "x")
 
-plot(x = xi, y = exp(-1*xi^2),
+plot(x = xi, y = exp(-0.4*xi^2),
     xlim = c(-5, 5),
     ylim = c(-1, 1),
     type = "l",
@@ -109,13 +101,13 @@ knitr::include_graphics("../00-data/10-images/vapnick_svm_paper_diagram.png")
 ```
 Given a set of labeled pairs of data:
 
-$$\{(x_1, ~y_1),~ ...,~ (x_m, ~y_m)\},~~~ y_i \in \{1, ~-1\}$$ 
+$$\{(X_1, ~y),~ ...,~ (X_m, ~y)\},~~~ y \in \{1, ~-1\}, ~~~ where ~X^{m~x~n} \in \Re$$ 
 
 For mathematical convenience the labels are a set of values 1 or -1.
 
 Therefore, we may write 
 
-$$~~~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y_i = 1 \\ ~< 0; ~y_i = -1 \end{array} \right.$$
+$$~~~f(x_i) = \left\{ \begin{array}{cc} \geq 0; ~y = 1 \\ ~< 0; ~y = -1 \end{array} \right.$$
 
 This is no different than is currently done in beginner level algebra. As is shown in the example below the same is true for higher dimensional problems.
 
@@ -125,7 +117,7 @@ knitr::include_graphics("../00-data/10-images/svm.geometric.margin.png")
 
 will be described and calculated in more detail in this report. However, there are alternative implementations of SVM. 
 
-In this experiment three implementations of SVM have been used. The three are denoted as SVM-Linear (SVM-lin), SVM-polynomial (SVM-poly), and SVM-radial basis function (SVM-rbf). 
+In this experiment three implementations of SVM have been used. The three are denoted as SVM-Linear (SVM-lin), SVM-Polynomial (SVM-poly), and SVM-Radial Basis Function (SVM-rbf). 
 
 The switches in the R/caret software are easy such that one can use a number of kernels by changing the method=???.
 
@@ -183,9 +175,6 @@ By introducing a "soft margin" instead of a hard boundary we can introduce a sla
 ```{r echo=FALSE, fig.align="center", out.width="55%"}
 knitr::include_graphics("../00-data/10-images/SVM_optimize_2.png")
 ```
-
-
-
 
 If we were trying to find:
 
@@ -257,6 +246,6 @@ There are three properties that make SVMs attractive for data scientists:[^699]
 
 [^699]:Artificial Intelligence, A Modern Approach, Third Edition, Stuart Russell and Peter Norvig, Pearson, ISBN-13: 978-0-13-604259-4, 2010
 
->1. SVMs construct a maximum margin separator they retain training examples and potentially need to store them all. On the other hand, in practice they often end up retaining only a small fraction of the number of examples25.
+>1. SVMs construct a maximum margin separator they retain training examples and potentially need to store them all. On the other hand, in practice they often end up retaining only a small fraction of the number of examples 25.
 >2. FIND # 2 AND 3 FOR WRITE UP.
 >3.

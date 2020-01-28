@@ -1,14 +1,4 @@
-#--- 
-#title:  "Just Enough Machine Learning"
-#author: "Matthew Curcio"
-#date:   "`r gsub(' 0', ' ', format(Sys.Date(), '%B %d, %Y'))`"
-#site:   bookdown::bookdown_site
-#output:
-#  bookdown::gitbook: default
-#  bookdown::pdf_book: default
-#github-repo: rstudio/bookdown-demo
-#description: "Work based on 'Top 10 Algorithms In Data Mining' by X.Wu etal, Knowl Inf Syst (2008) 14:1-37 and 'Applied Predictive Modeling', Max Kuhn etal, Springer, 2018."
-#---
+# Install all R libraries
 
 
 ```{r, include=FALSE}
@@ -191,6 +181,7 @@ If you copy the text below into a RMarkdown file (.rmd) you will be able to load
 
 --- 
 Copy from here:
+
 ```{r eval=FALSE}
 install.packages("rlang")
 library(rlang)

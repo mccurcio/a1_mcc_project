@@ -1,0 +1,66 @@
+# Install all R libraries
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+```
+
+
+
+## Load all libraries used in this project
+
+If you use the R code below, you will be able to load all the libraries you 
+will need.
+
+--- 
+
+
+```{r}
+install.packages("rlang")
+library(rlang)
+knitr::opts_chunk$set(cache = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      cache.lazy = FALSE)
+                      
+#### If you are using Ubuntu Linux may need these Linux libraries first.
+#### Install: libcurl4-openssl-dev, libssl-dev, libxml2-dev
+
+load_or_install <- function(package_names) {
+    for(package_name in package_names) {
+        if(!is_installed(package_name)) {
+            install.packages(package_name, repos = "http://lib.stat.cmu.edu/R/CRAN",
+                             dependencies = TRUE)
+        }
+        # Uncomment line below to load libraries.
+        # library(package_name,character.only=TRUE,quietly=TRUE,verbose=FALSE) 
+        print("OK")
+        }
+}
+
+load_or_install(c("readr", "doMC", "corrplot", "knitr", "caret", "tidyverse"))
+```
+
+```{r}
+load_or_install(c("ggplot2", "rmarkdown", "bookdown", "blogdown", "kernlab"))
+```
+
+```{r}
+load_or_install(c("e1071", "plyr", "RColorBrewer"))
+```
+
+```{r eval=FALSE}
+load_or_install(c("rpart", "MASS", "tidyr", "ggplot2"))
+```
+
+```{r eval=FALSE}
+load_or_install(c("LogicReg", "randomForest", "foreach"))
+```
+
+```{r eval=FALSE}
+load_or_install(c("import", "dplyr", "stringr", "stringi"))
+```
+

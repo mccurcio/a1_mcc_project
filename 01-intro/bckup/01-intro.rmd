@@ -12,7 +12,7 @@ for (i in Libraries) { library(i, character.only = TRUE) }
 
 # Introduction
 
-At the intersection between Applied Mathematics, Computer Science and an understanding of Biological Sciences is subset of knowledge known as Bioinformatics. Some find Bioinformatics and its more general title Data Science difficult to define. The most ubiquitous pictograph is indeed the intersection of three fields of study. See Figure \ref{venn_daigram}. Data Science is simply the overall title when more general domain knowledge is discussed. Other fields you may come across would be, the study of business or marketing begets Business Intelligence. The study of chemistry begets the field Chemoinformatics.[^11] [^12] Health or Healthcare begets the field Healthcare-Informatics.[^13]
+At the intersection between Applied Mathematics, Computer Science and an understanding of Biological Sciences is subset of knowledge known as Bioinformatics. Some find Bioinformatics and its more general title Data Science difficult to define. The most ubiquitous pictograph is indeed the intersection of three fields of study. See Figure \ref{venn_diagram}. Data Science is simply the overall title when more general domain knowledge is discussed. Other fields you may come across would be, the study of business or marketing begets Business Intelligence. The study of chemistry begets the field Chemoinformatics.[^11] [^12] Health or Healthcare begets the field Healthcare-Informatics.[^13]
 
 [^11]:https://www.acs.org/content/acs/en/careers/college-to-career/chemistry-careers/cheminformatics.html
 
@@ -268,22 +268,30 @@ fitControl <- trainControl(method = "repeatedcv",
 
 ##### Train command
 
+The train command produces an object of the model and data that were calculated. The first line should point out the "Formula" which is being modeled. The dependent variable is placed before the `~` (tilda sign), which indicates a model is being described, then the desried features can be listed or abbbrevaited with the all (.) sign. 
 
-
-
-Example Train command
+Example Train command:
 ```
-model_object <- train(Class ~ .,
-                      data = training_set,
-                      trControl = fitControl,
-                      method = "svmLinear",
-                      tune.Grid = grid)
+model_object <- train(Class ~ .,             <-- READ: Class is modeled by all features.
+                      data = training_set,   <-- data label
+                      trControl = fitControl,<-- Train control allows Cross Validation setup
+                      method = "svmLinear",  <-- Use any method from 238 caret utilizes
+                      tune.Grid = grid)      <-- Hyperparameter scouting and exploration
 ```
 
 
 
 ####  Analysis of results
 
-- Compile CM output (Accuracy, MCC, etc.) for comparing 10 models.
+In binary classification, a two by two contingency table is used to descirbe predicted versus actual value classifications. This is also known as a confusion matrix to machine learning students. 
 
-- No matter how much data we have, it is very unlikely that we will see those exact examples again at test time.
+| 2 x 2 Confusion Matrix |   Actual = 0    |   Actual = 1    |
+| :--------------------: | :-------------: | :-------------: |
+|     Predicted = 0      | True-Negatives  | False-Negatives |
+|     Predicted = 1      | False-Positives |  True-Postives  |
+
+There are many ways to further describe the results using this confusion matrix, however the one measure which will be used here is Accuracy.
+
+$$Accuracy ~=~ \frac{TP + TN}{Total ~ Number}$$
+
+The second goal of this experiment is to produce the False Positives and False-Negtives and evaluating these by comparing them to the Principal Component Analysis Biplot of the first two Principal Components.

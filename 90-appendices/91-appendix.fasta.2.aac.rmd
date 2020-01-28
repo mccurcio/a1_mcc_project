@@ -1,12 +1,21 @@
 # Appendix
 
-## Calculate the amino acid compositions (AAC) and Di-peptide compositions (DPC) from .fasta formats, {Myoglobin, Non-Myoglobin}
+## Calculate the amino acid compositions (AAC) and Di-peptide compositions (DPC)
+ from .fasta formats, {Myoglobin, Non-Myoglobin}
 
-Calculating the Amino Acid and Di-peptide composition of a protein string is a simple calculation requiring the total amino acid length of the peptide or poly-peptide of interest and a count of substrings. Initially, the command `seqinr::read.fasta` reads .fasta file formats and returns a list of proteins stripping away all other information. Secondly, the command `stringr::str_count()` produces an integer value of the number of substrings in a larger string, i.e. `peptide`. 
+Calculating the Amino Acid and Di-peptide composition of a protein string is a 
+simple calculation requiring the total amino acid length of the peptide or 
+poly-peptide of interest and a count of substrings. Initially, the command 
+`seqinr::read.fasta` reads .fasta file formats and returns a list of proteins 
+stripping away all other information. Secondly, the command 
+`stringr::str_count()` produces an integer value of the number of substrings 
+in a larger string, i.e. `peptide`. 
 
 For example, `aa_nums[j] = str_count(peptide, col_titles[j]) / total_aa`, 
 
-Where; `aa_nums[j]` is an array to saving values for later writing to file, `peptide` is the string to check, i.e. protein of interest, `col_titles[j]` is the substring which is either a single amino acid or di-peptide.
+Where; `aa_nums[j]` is an array to saving values for later writing to file, 
+`peptide` is the string to check, i.e. protein of interest, `col_titles[j]` 
+is the substring which is either a single amino acid or di-peptide.
 
 Input: .fasta  
 Output: .csv
@@ -21,21 +30,26 @@ for (p in Libraries) {  # Install Libraries
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE, align = "center")
+opts_chunk$set(cache = TRUE, 
+               warning = FALSE, 
+               message = FALSE, 
+               cache.lazy = FALSE, 
+               align = "center")
 ```
 
 Import uniprot-myoglobin.fasta - Read peptide lines
 ```{r}
-read_fasta <- function() {
-    listo_proteins <- read.fasta(file = "../00-data/ORIGINAL_DATA/uniprot-myoglobin.fasta",
-                            seqtype = "AA",
-                            as.string = TRUE,
-                            seqonly = FALSE,
-                            strip.desc = TRUE)
+read_fasta <- function(file) {
+    listo_proteins <- read.fasta(file = file,
+                                 seqtype = "AA",
+                                 as.string = TRUE,
+                                 seqonly = FALSE,
+                                 strip.desc = TRUE)
     return(listo_proteins)
 }
 
-myoglobins <- read_fasta()
+file = "../00-data/ORIGINAL_DATA/uniprot-myoglobin.fasta"
+myoglobins <- read_fasta(file)
 ```
 
 Column_titles
@@ -45,6 +59,7 @@ column_titles = function() {
                  "G", "H", "I", "K", "L",
                  "M", "N", "P", "Q", "R",
                  "S", "T", "V", "W", "Y")
+                 
     # Add DIPEPTIDES column titles
     di_titles = vector(mode = "character", length = 400)
     k = 1
@@ -79,7 +94,7 @@ write_empty_csv <- function(protein_class = "C") {
 file_name <- write_empty_csv()
 ```
 
-`calc_aac_dpc` function
+Calculate AAC and DPC values function
 ```{r}
 calc_aac_dpc <- function(peptide, protein_class = "C", i, file_name) {
     aa_nums = matrix(0, ncol = 423)
@@ -99,7 +114,8 @@ calc_aac_dpc <- function(peptide, protein_class = "C", i, file_name) {
 }
 ```
 
-#############
+---
+
 RUN Myoglobin
 ```{r}
 # RUN Myoglobin
@@ -109,13 +125,14 @@ for (i in 1:1124) {
 }
 ```
 
-#################################
+---
+
 RUN Control / Human-NOT-myoglobin 
 
 - Import data - Read peptide lines
 ```{r}
-read_fasta <- function() {
-    listo_proteins <- read.fasta(file = "../00-data/ORIGINAL_DATA/uniprot-human+NOT+hemoglobin+NOT+myoglobin+random.fasta",
+read_fasta <- function(file) {
+    listo_proteins <- read.fasta(file = file,
                             seqtype = "AA",
                             as.string = TRUE,
                             seqonly = FALSE,
@@ -123,7 +140,8 @@ read_fasta <- function() {
     return(listo_proteins)
 }
 
-controls <- read_fasta()
+file = "../00-data/ORIGINAL_DATA/uniprot-human+NOT+hemoglobin+NOT+myoglobin+random.fasta"
+controls <- read_fasta(file)
 ```
 
 RUN controls
@@ -133,4 +151,5 @@ for (i in 1:1216) {
     calc_aac_dpc(peptide, protein_class = "C", i, file_name)
 }
 ```
+
 EOF
