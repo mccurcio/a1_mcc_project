@@ -7,79 +7,73 @@ output: html_document
 
 https://rpubs.com/alexv71/237757
 
-```{r}
-# Load the necessary libraries
-library(neuralnet)
-library(caret)
-library(ggplot2)
+
+```{r message=FALSE, warning=FALSE}
+# Load Libraries
+Libraries <- c("doMC", "knitr", "readr", "caret", "nnet", "ggplot2")
+for (p in Libraries) {  
+    library(p, character.only = TRUE)
+}
 ```
 
-```{r eval=FALSE, include=FALSE}
-train <- iris
-train <- train[,1:4]
-train <- cbind(train, train)
-```
-
-
-Import
 ```{r}
+## Import data
 c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                             col_types = cols(PID = col_skip(),
                                              Class = col_skip(),
                                              TotalAA = col_skip()))
-#View(c_m_TRANSFORMED)
 ```
 
-
+First, we create a train dataset with the same inputs and ouputs and do the simple preprocess (normalization):
 ```{r}
-# Partition data into training and testing sets
-set.seed(1000)
-index <- createDataPartition(c_m_TRANSFORMED$A, p = 0.8, list = FALSE)
-
-training_set <- c_m_TRANSFORMED[ index, ]
-#training_set
-
-test_set     <- c_m_TRANSFORMED[-index, ]
-```
-
-
-```{r}
-train <- training_set
+train <- c_m_TRANSFORMED
 train <- cbind(train, train)
-dim(train)
-```
+# AA.i indicates inputs while AA.o indicates outputs
+colnames(train) <- c("A.i", "C.i", "D.i", "E.i", "F.i", 
+                     "G.i", "H.i", "I.i", "K.i", "L.i", 
+                     "M.i", "N.i", "P.i", "Q.i", "R.i", 
+                     "S.i", "T.i", "V.i", "W.i", "Y.i",
+                     "A.o", "C.o", "D.o", "E.o", "F.o", 
+                     "G.o", "H.o", "I.o", "K.o", "L.o", 
+                     "M.o", "N.o", "P.o", "Q.o", "R.o", 
+                     "S.o", "T.o", "V.o", "W.o", "Y.o")
 
-```{r}
-colnames(train) <- c("G.i","P.i","A.i","V.i","L.i",
-                     "I.i","M.i","C.i","F.i","Y.i",
-                     "W.i","H.i","K.i","R.i","Q.i",
-                     "N.i","E.i","D.i","S.i","T.i",  # INPUTS
-                     "G.o","P.o","A.o","V.o","L.o",
-                     "I.o","M.o","C.o","F.o","Y.o",
-                     "W.o","H.o","K.o","R.o","Q.o",
-                     "N.o","E.o","D.o","S.o","T.o")  # AND SAME 4 OUTPUTS
-```
-
-
-```{r}
 # Preprocess train dataset with caret package
 preProcValues <- preProcess(train, method = c("range"))
 train2 <- predict(preProcValues, train)
+is.data.frame(train2)
 ```
 
+Classification, Regression	nnet	size, decay
 
+we create the neural netwok model that compress 20D source data to 2D dataset:
 ```{r}
 set.seed(1000)
-model.1 <- neuralnet("G.i", "P.i", "A.i", "V.i", "L.i", "I.i", "M.i", "C.i", "F.i", "Y.i", 
-                     "W.i", "H.i", "K.i", "R.i", "Q.i", "N.i", "E.i", "D.i", "S.i", "T.i" ~
-                     "G.o", "P.o", "A.o", "V.o", "L.o", "I.o", "M.o", "C.o", "F.o", "Y.o", 
-                     "W.o", "H.o", "K.o", "R.o", "Q.o", "N.o", "E.o", "D.o", "S.o", "T.o",
-                     train2, hidden = c(3, 2, 3), algorithm = 'backprop+', threshold = 0.01)
+model2d <- neuralnet(A.i + C.i + D.i + E.i + F.i + G.i + H.i + I.i + K.i + L.i +
+                     M.i + N.i + P.i + Q.i + R.i + S.i + T.i + V.i + W.i + Y.i ~
+                     A.o + C.o + D.o + E.o + F.o + G.o + H.o + I.o + K.o + L.o +
+                     M.o + N.o + P.o + Q.o + R.o + S.o + T.o + V.o + W.o + Y.o,
+                     train2, 
+                     hidden = c(5, 3, 5), 
+                     algorithm = 'backprop',
+                     learningrate = 1,
+                     threshold = 0.01)
 
-# print (paste("Mean square error = ", model2d$result.matrix[1]))
-
-plot(model.1, rep = 1)
+plot(model2d, rep = 1)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
 result2d <- compute(model2d, train2[,1:4]) # Run input set through the neural network

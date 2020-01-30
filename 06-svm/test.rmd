@@ -1,0 +1,37 @@
+
+set.seed(1000)
+
+x <- c(rnorm(10, mean = 5, sd = 0.5), rnorm(10, mean = 2, sd = 0.5))
+y <- c(rnorm(10, mean = 5, sd = 0.5), rnorm(10, mean = 2, sd = 0.5))
+z <- c(rep( 1, 10), rep(-1, 10))
+data_svm <- data.frame("x" = x, "y" = y, "z" = z)
+
+plot(x = data_svm[,1],
+     y = data_svm[,2],
+     xlim = c(0, 6),
+     ylim = c(0, 6),
+     main = "2-Dimensional Example",
+     pch = 5,
+     col = "#4E9A06")
+
+library(e1071)
+Class <- as.factor(data_svm[,3])
+
+svmfit1 <- svm(z ~ .,
+               data = data_svm,
+               kernel = "linear")
+
+plot(svmfit1, data_svm)
+
+
+
+
+
+
+
+
+
+
+
+
+
