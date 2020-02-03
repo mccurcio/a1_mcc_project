@@ -6,11 +6,11 @@ html_document: default
 
 
 ------
-sudo apt-get install xorg 
-sudo apt-get install libx11-dev 
-sudo apt-get install libglu1-mesa-dev
-sudo apt-get install libfreetype6-dev
-install (car, rgl) in R
+<!-- sudo apt-get install xorg  -->
+<!-- sudo apt-get install libx11-dev  -->
+<!-- sudo apt-get install libglu1-mesa-dev -->
+<!-- sudo apt-get install libfreetype6-dev -->
+<!-- install (car, rgl) in R -->
 -----------
 
 
@@ -22,48 +22,54 @@ install (car, rgl) in R
 
 ## Introduction
 
-Support vector machine (SVM) learning is a supervised learning technique that may be used as a binary classification system or to find regression formulae. Support vector machines are a “maximum margin classifier. SVM finds the separating hyperplane with the maximum margin to its closest data points.” [^62]
+Support Vector Machine (SVM) learning is a supervised learning technique that may be used as a binary classification system or to find regression formula. Support vector machines are a “maximum margin classifier. SVM finds the separating hyperplane with the maximum margin to its closest data points.” [^62]
 
 [^62]:Emanuel Ferm, http://www.eferm.com
 
 Although there are many different mathematical approaches to solving SVM, many which include kernels, Let us first describe the Linear SVM. Consider a situation where we need to distinguish between two circumstances.  
 
-In an imaginary biochemistry laboratory, researchers find a novel enzyme found in different tissues throughout the human body. Biochemists purify the enzyme from several cadavers and several different tissue samples. There is literature that shows this newly found enzyme has two isozymes, Alpha has a high activity and Gamma has a lower activity. It know seems like a simple task to learn which isozyme is in which tissue samples, investigate the enzyme activity and look for the production of a fluorescent compound. You plot the enzyme activities found in the lab.
+In an imaginary biochemistry laboratory, researchers find a novel enzyme found in different tissues throughout the human body. Biochemists purify the enzyme from several cadavers and several different tissue samples. There is literature that shows this newly found enzyme has two isozymes, Alpha has a high activity and Gamma has a lower activity. It know seems like a simple task to learn which isozyme is in which tissue samples. Therefore investigate the enzyme activity by looking for the production of a fluorescent compound. 
 
-
-```{r}
+```{r include=FALSE}
 knitr::opts_chunk$set(cache = TRUE, fig.align = "center")
+```
 
+```{r echo=FALSE, fig.height=3}
 set.seed(1000)
 x1 = rnorm(20, mean = 1.5, sd = 0.5)
 x1_max = max(x1)
 x2 = rnorm(20, mean = 4, sd = 0.5)
 x2_min = min(x2)
 midpt = (x2_min - x1_max)/2 + x1_max
-y = rep(1,20)
+y = rep(1, 20)
 
 plot(x = x1, y,
-     main = "Enzyme Activities",
-     xlab = "Activity (micromoles / min)",
+     main = "Enzyme Activities, Test #1",
+     xlab = "Activity (nanomoles / min)",
      xlim = c(0, 6),
      pch = 16,
      col = "green")
-points(x = x2, y,
-       col = "blue")
-abline(v = x1_max, col = "red")
-abline(v = midpt, col = "black", lty = 2)
-abline(v = x2_min, col = "red")
+points(x = x2, y, col = "blue")
+abline(v = x1_max, col = "red", lwd = 3)
+abline(v = midpt, col = "black", lwd = 3, lty = 2)
+abline(v = x2_min, col = "red", lwd = 3)
 ```
 
-In the figure above it is easy to see that the isozymes have distinct activities.  In this case, the isozymes are separated by activity alone. In this first figure, it is said the data is "linearly separabale". [^63] To state the obvous, the two groups are linearly separable by the fact that a single straight line can partition the data.
+You plot the enzyme activities found in the lab. In test #1, it is easy to see that the isozymes have distinct activities.  In this case, the isozymes are separated by activity alone. In this first figure, it is said the data is "linearly separable". [^63] To state the obvious, the two groups are linearly separable by the fact that a single straight line can partition the data.
 
 [^63]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, 2017, https://web.stanford.edu/~hastie/ElemStatLearn/
 
-Incidentally, Patrick Winston's lecture on SVM, calls SVM the "widest street approach".  
+Incidentally, in Patrick Winston's lecture on SVM,  he calls SVM the "widest street approach". There are many possible streets which can be traced BUT the goal is to find the *widest street*. This *widest street* leads to the best separation.
 
-However, in the figure above, we can see that linearly separable may not be clear since there are an infinite number of lines with varying slopes that separate the groups. 
+However, in the figure above, we can see that linearly separable could imply an infinite number of lines with varying slopes that separate the groups. But this is where adding the idea or intuition that the optimal decision booundary, i.e. the widest highway, is advantageous because it leads us to a wider decision boundary and a higher ability to generalize. In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes."[^64]
 
-But in real life, linearly separabale data is rarely the case. Most often the activities are mixed as shown in figure #2.
+```{r echo=FALSE, fig.align="center", out.width="65%"}
+knitr::include_graphics("../00-data/10-images/vapnick_svm_paper_diagram.png")
+```
+
+[^64]:C. Cortes, V. Vapnik, Machine Learning, 20, 273-297, 1995
+
+However in real life, linearly separabale data is rarely the case. Most often the activities are mixed as shown in test #2.
 
 ```{r echo=FALSE, fig.height=3}
 set.seed(1000)
@@ -72,29 +78,32 @@ x2 = rnorm(20, mean = 3.25, sd = 0.85)
 y = rep(1,20)
 
 plot(x = x1, y,
-     main = "Enzyme Activities",
+     main = "Enzyme Activities, Situation #2",
      xlab = "Activity (micromoles generated/ min)",
      xlim = c(0, 6),
      pch = 16,
      col = "green")
 points(x = x2, y,
        col = "blue")
-abline(v = x1_max, col = "red")
-abline(v = midpt, col = "black", lty = 2)
-abline(v = x2_min, col = "red")
+abline(v = x1_max, col = "red", lwd = 3)
+abline(v = midpt, col = "black", lty = 2, lwd = 3)
+abline(v = x2_min, col = "red", lwd = 3)
 ```
 
-In the case above, the activities overlap hence determining which isozyme is Alpha or Gamma is more difficult.  
+In the case above, the activities overlap hence determining which isozyme is Alpha or Gamma is more difficult. In 1995, C. Cortes and V. Vapnik introduced the mathematics and ideas for "Soft Margins" or non-separable training data.[^64] 
+
+[^64]:C. Cortes, V. Vapnik, Machine Learning, 20, 273-297, 1995
 
 The same is true of an n-dimensional system.
 
-```{r}
-# set.seed(1000)
+```{r echo=FALSE}
+library(e1071)
+set.seed(1000)
 
 x <- c(rnorm(10, mean = 4, sd = 0.1), rnorm(10, mean = 2, sd = 0.1))
 y <- c(rnorm(10, mean = 4, sd = 0.1), rnorm(10, mean = 2, sd = 0.1))
 z <- c(rep( 1, 10), rep(-1, 10))
-data_svm <- data.frame("x" = x, "y" = y, "z" = as.factor(data_svm[,3]))
+data_svm <- data.frame("x" = x, "y" = y, "z" = as.factor(z))
  
 svm_model_1 <- svm(z ~ .,
                    data = data_svm,
@@ -105,13 +114,6 @@ svm_model_1 <- svm(z ~ .,
 plot(svm_model_1,
      data = data_svm)
 ```
-
-```{r}
-svm_model_1
-```
-
-
-
 
 The first mention of an SVM like system is by Vapnik and Lerner in 1963, where the two described an implementation of a non-linear generalization called a Generalized Portrait algorithm.[^64] As research has progressed, the types and complexity of SVM implementations have grown to encompass many circumstances. The ability of SVM to deal with different problems and handle different decision boundary shapes has made SVM a potent tool.
 

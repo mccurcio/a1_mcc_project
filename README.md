@@ -14,12 +14,12 @@ This folder contains original data, R scripts (.rmd) and output files (.html) us
 | [/04-logit](https://github.com/mccurcio/a1_mcc_project/tree/master/04-logit) | Logistic regression analysis |
 | [/05-ae-nn](https://github.com/mccurcio/a1_mcc_project/tree/master/05-ae-nn) | Deep Learning Neural Network NEEDS WORK |
 | [/06-svm](https://github.com/mccurcio/a1_mcc_project/tree/master/06-svm) | Support vector machine models (lin, poly, rbf) NEEDS WORK |
-| [/07-r-forest](https://github.com/mccurcio/a1_mcc_project/tree/master/07-r-forest) | Random forest using 'gini' NEEDS WORK |
+| [/07-r-forest](https://github.com/mccurcio/a1_mcc_project/tree/master/07-r-forest) | Random forest: OMIT DUE TIME |
 | [/20-outliers](https://github.com/mccurcio/a1_mcc_project/tree/master/20-outliers) | Collection of false positive/false negative result files  |
 | [/21-out-pca-plots](https://github.com/mccurcio/a1_mcc_project/tree/master/21-out-pca-plots) |
 | [/22-plots](https://github.com/mccurcio/a1_mcc_project/tree/master/22-plots) |
 | [/90-appendices](https://github.com/mccurcio/a1_mcc_project/tree/master/90-appendices) | R scripts which produce AAC |
-| [/99-Bookdown_templates](https://github.com/mccurcio/a1_mcc_project/tree/master/99-Bookdown_templates) | Bookdown templates|
+| [/99-Bookdown_templates](https://github.com/mccurcio/a1_mcc_project/tree/master/99-Bookdown_templates) | Bookdown templates |
 | [/misc.notes](https://github.com/mccurcio/a1_mcc_project/tree/master/misc.notes) | |
 | [/misc.pics](https://github.com/mccurcio/a1_mcc_project/tree/master/misc.pics) | notes |
 | a1_mcc_project.Rproj        | RStudio project file |

@@ -12,7 +12,7 @@ for (i in Libraries) { library(i, character.only = TRUE) }
 
 # Introduction
 
-At the intersection between Applied Mathematics, Computer Science, and an understanding of Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its more general title Data Science difficult to define. The most ubiquitous pictograph is indeed the intersection of three fields of study. See Figure \ref{venn_diagram}. Data Science is simply the overall title when more general domain knowledge is discussed. Other fields you may come across would be the study of business or marketing begets Business Intelligence. The study of chemistry begets the field of Chemoinformatics.[^11] [^12] Health or Healthcare begets the field Healthcare-Informatics.[^13]
+At the intersection between Applied Mathematics, Computer Science, and an understanding of Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its more general cousin Data Science difficult to define. The most ubiquitous pictograph is indeed the intersection of three fields of study. See Figure \ref{venn_diagram}. More pointedly Data Science is a mixture of biological data analysis, using computers and software and importantly predicitive modeling. For some Bioinformaticians the question becomes can we use readily availabble data and describe it, model it by using mathematics. Other similar fields you may come across would be the study of chemistry with computers and applied mathematics which beget the field of Chemoinformatics.[^11] [^12] Health or Healthcare begets the field Healthcare-Informatics.[^13]
 
 [^11]:https://www.acs.org/content/acs/en/careers/college-to-career/chemistry-careers/cheminformatics.html
 
@@ -36,13 +36,13 @@ The term 'Predictive Modeling' should bring to mind work in the computer science
 
 >Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data.[^14]
 >
-> --- Applied Predictive Modeling
+> --- Max Kuhn
 
 [^14]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, Springer, ISBN:978-1-4614-6848-6, 2013
 
 As a heads-up, I use `Predictive Modeling` and `Machine Learning` interchangeably in this document.
 
-In the booklet entitled "The Elements of Data Analytic Style" [^15], there is an exciting checklist for the uninitiated into the realm of science report writing and, indeed, scientific thinking. A shorter, more succinct listing of the steps, which I prefer, and is described by Roger Peng in his book, The Art Of Data Science. The book lists what he describes as the "Epicycle of Analysis." [^16]
+In the booklet entitled "The Elements of Data Analytic Style" [^15], there is an useful checklist for the uninitiated into the realm of science report writing and, indeed, scientific thinking. A shorter, more succinct listing of the steps, which I prefer, and is described by Roger Peng in his book, The Art Of Data Science. The book lists what he describes as the "Epicycle of Analysis." [^16]
 
 [^15]:Jeff Leek, The Elements of Data Analytic Style, A guide for people who want to analyze data., Leanpub Books, http://leanpub.com/datastyle, 2015
 [^16]:Roger D. Peng and Elizabeth Matsui, The Art of Data Science, A Guide for Anyone Who Works with Data, Leanpub Books, http://leanpub.com/artofdatascience, 2015
