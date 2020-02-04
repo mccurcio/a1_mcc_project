@@ -1,7 +1,7 @@
 ---
 output:
-pdf_document: default
-html_document: default
+    pdf_document: default
+    #html_document: default
 ---
 
 
@@ -16,7 +16,7 @@ html_document: default
 
 # Support Vector Machines for Binary Classification
 
->"Support Vector Machines ... are a very sophisticated idea ... which should be in the tool bag of every civilized person." - Patrick Winston [^61]
+>"Support Vector Machines should be in the tool bag of every civilized person." - Patrick Winston [^61]
 
 [^61]:Patrick Winston, 6.034 Artificial Intelligence, Fall 2010, Massachusetts Institute of Technology: MIT OpenCourseWare, http://ocw.mit.edu/6-034F10
 
@@ -28,13 +28,13 @@ Support Vector Machine (SVM) learning is a supervised learning technique that ma
 
 Although there are many different mathematical approaches to solving SVM, many which include kernels, Let us first describe the Linear SVM. Consider a situation where we need to distinguish between two circumstances.  
 
-In an imaginary biochemistry laboratory, researchers find a novel enzyme found in different tissues throughout the human body. Biochemists purify the enzyme from several cadavers and several different tissue samples. There is literature that shows this newly found enzyme has two isozymes, Alpha has a high activity and Gamma has a lower activity. It know seems like a simple task to learn which isozyme is in which tissue samples. Therefore investigate the enzyme activity by looking for the production of a fluorescent compound. 
+In an imaginary biochemistry laboratory, researchers discover a novel enzyme found in different tissues throughout the human body. Biochemists purify the enzyme from several cadavers and several different tissue samples. There is literature that shows this newly found enzyme has two isozymes, 1) Alpha has a high enzyme activity and 2) Gamma has a lower enzyme activity. It know seems like a simple task to learn which isozyme is in which tissue samples. Therefore measuring the enzyme activities by using an assay with the production of a fluorescent compound would be appropriate.
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-```{r echo=FALSE, fig.height=3}
+```{r echo=FALSE, fig.height=2.8}
 set.seed(1000)
 x1 = rnorm(20, mean = 1.5, sd = 0.5)
 x1_max = max(x1)
@@ -45,7 +45,7 @@ y = rep(1, 20)
 
 plot(x = x1, y,
      main = "Enzyme Activities, Test #1",
-     xlab = "Activity (nanomoles / min)",
+     xlab = "Activity",
      xlim = c(0, 6),
      pch = 16,
      col = "green")
@@ -55,15 +55,36 @@ abline(v = midpt, col = "black", lwd = 3, lty = 2)
 abline(v = x2_min, col = "red", lwd = 3)
 ```
 
-You plot the enzyme activities found in the lab. In test #1, it is easy to see that the isozymes have distinct activities.  In this case, the isozymes are separated by activity alone. In this first figure, it is said the data is "linearly separable". [^63] To state the obvious, the two groups are linearly separable by the fact that a single straight line can partition the data.
+You plot the enzyme activities found in the lab. In test #1, it is easy to see that the isozymes have distinct activities.  In this case, the isozymes can separated by activity alone. In this first figure, it is said the data is "linearly separable". [^63] To state the obvious, the two groups are linearly separable by the fact that a single straight line can partition the data.
 
 [^63]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, 2017, https://web.stanford.edu/~hastie/ElemStatLearn/
 
-Incidentally, in Patrick Winston's lecture on SVM,  he calls SVM the "widest street approach". There are many possible streets which can be traced BUT the goal is to find the *widest street*. This *widest street* leads to the best separation.
+Incidentally, in Patrick Winston's lecture on SVM,  he calls SVM the "widest street approach". Why does he use this term? There are many possible streets which can be traced BUT the goal is to find the *widest street*. This *widest street* leads to the best separation.
 
-However, in the figure above, we can see that linearly separable could imply an infinite number of lines with varying slopes that separate the groups. But this is where adding the idea or intuition that the optimal decision booundary, i.e. the widest highway, is advantageous because it leads us to a wider decision boundary and a higher ability to generalize. In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes."[^64]
+However, in test #1, we can see that linearly separable could imply an infinite number of lines with varying slopes that separate the groups. But this is where adding the idea or intuition that the optimal decision booundary, i.e. the widest highway, is advantageous because it leads us to a wider decision boundary and a higher ability to generalize.  In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes."[^64]
 
-```{r echo=FALSE, fig.align="center", out.width="65%"}
+What does linearly separable data have to do with a higher ability to generlize in machine learning? One explanation harkens back to first semester statistics classes. Remember the discussion on Student's t-test and analysis of variance testing (ANOVA)?  
+
+2.2.2 The Bias-Variance Trade-Off
+
+$$E \left ( y_0 - \hat f(x_0)^2 \right ) ~=~ Var ( \hat f(x_0)) + [Bias (\hat f(x_0))]^2 + Var (\epsilon)$$
+
+The bias-variance dilemma can be stated as follows.
+
+- Models with too few parameters are inaccurate because of a large bias: they lack flexibility.
+
+- Models with too many parameters are inaccurate because of a large variance: they are too sensitive to the sample details (changes in the details will produce huge variations).
+
+- Identifying the best model requires controlling the “model complexity”, i.e., the proper architecture and number of parameters, to reach an appropriate compromise between bias and variance.
+
+```{r echo=FALSE, fig.align="center", out.width="70%"}
+knitr::include_graphics("../00-data/10-images/p-values_schematic.jpg")
+```
+
+
+
+
+```{r echo=FALSE, fig.align="center", out.width="85%"}
 knitr::include_graphics("../00-data/10-images/vapnick_svm_paper_diagram.png")
 ```
 
@@ -71,7 +92,7 @@ knitr::include_graphics("../00-data/10-images/vapnick_svm_paper_diagram.png")
 
 However in real life, linearly separabale data is rarely the case. Most often the activities are mixed as shown in test #2.
 
-```{r echo=FALSE, fig.height=3}
+```{r echo=FALSE, fig.height=2.8}
 set.seed(1000)
 x1 = rnorm(20, mean = 2, sd = 0.75)
 x2 = rnorm(20, mean = 3.25, sd = 0.85)
@@ -213,11 +234,11 @@ knitr::include_graphics("../00-data/10-images/svm.geometric.margin.png")
 
 Will be described and calculated in more detail in this report. However, there are alternative implementations of SVM. 
 
-In this experiment, three implementations of SVM have been used. The three are denoted as SVM-Linear (SVM-lin), SVM-Polynomial (SVM-poly), and SVM-Radial Basis Function (SVM-rbf). 
+In this experiment, three implementations of SVM have been used. The three are denoted as SVM-Linear (svm-lin), SVM-Polynomial (svm-poly), and SVM-Radial Basis Function (svm-rbf). 
 
-The switches in the R/caret software are easy such that one can use a number of kernels by changing the method=???.
+The switches in the R/caret software are easy such that one can use a number of kernels by changing the name of method..
 
-with differing amounts of hyperparameters to modify. The intuition for the SVM-poly and SVM-rbf is also fairly straightforward. Instead of using a linear hyperplane to bisect the hi-dimensional space, which describes the decision boundary, the mathematics for a polynomial curvilinear function or a radial basis function may be utilized. 
+with differing amounts of hyperparameters to modify. The intuition for the svm-poly and svm-rbf is also fairly straightforward. Instead of using a linear hyperplane to bisect the hi-dimensional space, which describes the decision boundary, the mathematics for a polynomial curvilinear function or a radial basis function may be utilized. 
 
 Yet another measurable difference that was investigated in this experiment was the use of a kernel transformation. It is conceivable to envision a hyperplane with no transformations utilized. Alternatively, the kernel transformations of original data can be used to increase the ability of the function to differentiate between positively and negatively labeled samples. A mathematical treatment can be found by Christopher Burges.[^66]
 
