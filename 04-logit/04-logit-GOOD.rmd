@@ -1,7 +1,7 @@
 ---
 output:
     pdf_document: default
-#html_document: default
+    # html_document: default
 ---
 # Logistic Regression For Binary Classification
 
@@ -11,7 +11,7 @@ For individuals who have studied cell biology or biochemistry, logistic regressi
 
 However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that can toggle between logical values of zero or one.
 
-Logistic regression derives its name from its similarity to linear regression, as we shall see below. In Logistic Regression, the dependent variable, $y$, is NOT calculated, as is found with Linear Regression. Instead, Logistic Regression is used for classification between two states. Instead, the term logistic should be a reminder that the function's output is logical values, 0's and 1's. 
+Logistic regression derives its name from its similarity to linear regression, as we shall see below. The output of a Logistic Regression is not represented by the set of real numbers, ($y ~ \notin ~ \Re$), as is found with Linear Regression, instead, Logistic Regression is used for classification between two states. The term logistic should be a reminder that the function's output is a set logical values, 0's and 1's. 
 
 $$f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.$$
 

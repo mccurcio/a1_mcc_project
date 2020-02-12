@@ -1,8 +1,8 @@
 ---
 output:
     pdf_document: default
-#bookdown::gitbook: default
-#html_document: default
+    # bookdown::gitbook: default
+    html_document: default
 ---
 
 ```{r, 11, include=FALSE}
@@ -12,7 +12,7 @@ for (i in Libraries) { library(i, character.only = TRUE) }
 
 # Introduction
 
-At the intersection between Applied Mathematics, Computer Science, and an understanding of Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its more general cousin Data Science difficult to define. The most ubiquitous pictograph is indeed the intersection of three fields of study. See Figure \ref{venn_diagram}. More pointedly Data Science is a mixture of biological data analysis, using computers and software and importantly predicitive modeling. For some Bioinformaticians the question becomes can we use readily availabble data and describe it, model it by using mathematics. Other similar fields you may come across would be the study of chemistry with computers and applied mathematics which beget the field of Chemoinformatics.[^11] [^12] Health or Healthcare begets the field Healthcare-Informatics.[^13]
+At the intersection between Applied Mathematics, Computer Science, and an understanding of Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its relative Data Science difficult to define. But the most ubiquitous pictograph of Data Science indeed says a thousand words if we cannot. See Figure \ref{venn_diagram}. More generally Data Science is a mixture using biological data analysis, computers, software and importantly predicitive modeling to describe a narrative of some systematic research. For a number of Bioinformaticians the question becomes can we readily use availabble data, describe it, model it by using  applied mathematics. Other similar fields you may come across would be the study of chemistry using applied mathematics and computeers which beget the field of Chemoinformatics.[^11] [^12] While the career path of Health or Healthcare begets the field of Healthcare-Informatics.[^13]
 
 [^11]:https://www.acs.org/content/acs/en/careers/college-to-career/chemistry-careers/cheminformatics.html
 
@@ -30,13 +30,21 @@ opts_chunk$set(cache = TRUE, fig.align = "center")
 
 [^122]:http://omgenomics.com/what-is-bioinformatics/
 
+## What is Machine Learning?
+
+>"Machine learning is essentially a form of applied statistics with increased emphasis on the use of computers to statistically estimate complicated functions and a decreased emphasis on proving confidence intervals around these functions"
+>
+>--- Ian Goodfellow, et al[^140]
+
+[^140]:Ian Goodfellow, Yoshua Bengio, Aaron Courville, 'Deep Learning', MIT Press, 2016, http://www.deeplearningbook.org
+
 ## What is Predictive Modeling?
 
 The term 'Predictive Modeling' should bring to mind work in the computer science field, also called Machine Learning (ML), Artificial Intelligence (AI), Data Mining, Knowledge discovery in databases (KDD), and possibly even encompassing Big Data as well.
 
->Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data.[^14]
+>Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data.
 >
-> --- Max Kuhn
+>--- Max Kuhn[^14]
 
 [^14]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, Springer, ISBN:978-1-4614-6848-6, 2013
 

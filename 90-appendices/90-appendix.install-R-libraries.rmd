@@ -64,3 +64,11 @@ load_or_install(c("LogicReg", "randomForest", "foreach"))
 load_or_install(c("import", "dplyr", "stringr", "stringi"))
 ```
 
+
+------
+<!-- sudo apt-get install xorg  -->
+<!-- sudo apt-get install libx11-dev  -->
+<!-- sudo apt-get install libglu1-mesa-dev -->
+<!-- sudo apt-get install libfreetype6-dev -->
+<!-- install (car, rgl) in R -->
+-----------

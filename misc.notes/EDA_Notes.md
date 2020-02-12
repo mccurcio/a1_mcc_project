@@ -15,9 +15,9 @@
 
 (EDA). When one obtains a data set it is important to get an intuitive feel for the numbers at hand.
 
-1 - First approach to data  
-2 - Analyzing categorical variables  
-3 - Analyzing numerical variables  
+1 - First approach to data
+2 - Analyzing categorical variables
+3 - Analyzing numerical variables
 4 - Analyzing numerical and categorical at the same time
 
 
