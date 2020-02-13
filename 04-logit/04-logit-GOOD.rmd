@@ -9,17 +9,17 @@ output:
 
 For individuals who have studied cell biology or biochemistry, logistic regression may be familiar as dose-response curves, enzyme kinetic curves, sigmoidal curves, median lethal dose curve (LD-50) or even an exponential growth curve given limited resources. 
 
-However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that can toggle between logical values of zero or one.
+However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that toggle between the logical values of zero or one.
 
-Logistic regression derives its name from its similarity to linear regression, as we shall see below. The output of a Logistic Regression is not represented by the set of real numbers, ($y ~ \notin ~ \Re$), as is found with Linear Regression, instead, Logistic Regression is used for classification between two states. The term logistic should be a reminder that the function's output is a set logical values, 0's and 1's. 
+Logistic regression derives its name from its similarity to linear regression, as we shall see below. The output of a Logistic Regression is not represented by the set of real numbers, ($Y ~ \notin ~ \Re$), as is found with Linear Regression, instead, Logistic Regression is used for classification between two states given a set of real variables, ($X ~ \in ~ \Re$).
 
-$$f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.$$
+\begin{equation}
+f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.
+\end{equation}
 
-Using Logistic Regression, we may now calculate the presence or absence of a product or quality that we wish to model.
+Using Logistic Regression, we may calculate the presence or absence of a product or quality that we wish to model given a difficult situation where the transition is not clear.
 
-As we can see in the figure below, the function's domain ($x$) is ($-\infty$ to $\infty$), whereby its range is largely zero or one. In our simple case, the **decision boundary** at $x ~=$ 0, our system changes from *zero*, absence, to *one*, the presence of quality or item. In the Logistic/Sigmoidal Curve figure below, the **decision boundary** is denoted by the *red dotted line*.
-
----
+In the figure below, the function's domain, $X \in \{-\infty$ to $\infty\}$, whereby its range is {0, 1}. In the figure, the *decision boundary* is $x ~=$ 0,  denoted by the *red dotted line*. At the inflection point the curves range changes from *zero*, absence, to *one*, the presence of quality or item.
 
 ```{r echo=FALSE, fig.align="center"}
 x <- seq(-6, 6, 0.05)
@@ -36,11 +36,13 @@ text(-3.5, 0.48, cex = 1.75, "if x < 0 then y = 0")
 text(3.5, 0.48, cex = 1.75, "if x >= 0 then y = 1")
 ```
 
-\pagebreak
+\newpage
 
 The logistic growth curve is commonly denoted by:
 
-$$f(x) ~=~ \frac{M}{1 + Ae^{-r(x - x_0)}}$$
+\begin{equation}
+f(x) ~=~ \frac{M}{1 + Ae^{-r(x - x_0)}}
+\end{equation}
 
 where $M$ is the curve's maximum value, $r$ is the maximum growth rate (also called the Malthusian parameter[^41]), $x_0$ is the midpoint of the curve, $A$ is the number of times that the initial population must double to reach $M$.[^42]
 
@@ -49,9 +51,9 @@ where $M$ is the curve's maximum value, $r$ is the maximum growth rate (also cal
 
 In the specific case of *Logistic Regression for Binary Classification* where we have a probability between 0 and 1, $M$, and $A$ take on the value one.
 
-$$\Large f(x) ~=~ \frac{1}{1 + e^{-(wx+b)}}$$
-
----
+\begin{equation}
+f(x) ~=~ \frac{1}{1 + e^{-(WX+b)}}
+\end{equation}
 
 Since the logistic equation is exponential, it is easier to work with the formula in terms of its odds or *log-odds*. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or more precisely log-odds as $\Large ln \left (\frac{p}{1-p} \right )$.
 
@@ -59,41 +61,59 @@ Simply by using log-odds, logistic regression may be more easily expressed as a 
 
 [^43]:http://juangabrielgomila.com/en/logistic-regression-derivation/
 
-$$ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}$$
+\begin{equation}
+ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}
+\end{equation}
 
 Substitute ($p$ for $Pr(y_i ~=~ 1|x_i)$) and ($1-p$ for $Pr(y_i ~=~ 0|x_i)$) and change notation to summation on the right hand side:
 
-$$ln \left( \frac {p}{1-p} \right) =~ \sum_i^{k} \beta_i x_i$$
+\begin{equation}
+ln \left( \frac {p}{1-p} \right) =~ \sum_i^{k} \beta_i x_i
+\end{equation}
 
 Eliminate the natural log by taking the exponent on both sides:
 
-$$\large \frac {p}{1-p} =~ exp \left ( \sum_i^{k} \beta_i x_i \right )$$
+\begin{equation}
+\frac {p}{1-p} =~ exp \left ( \sum_i^{k} \beta_i x_i \right )
+\end{equation}
 
 Substitute $u = \sum_i^{k} \beta_i x_i$:
 
-$$\large \frac {p}{1-p} =~ e^u$$
+\begin{equation}
+\frac {p}{1-p} =~ e^u
+\end{equation}
 
 Rearrange to solve for $\large p$:
 
-$$\large p(u) ~=~ \frac{e^u}{1 + e^u}$$
+\begin{equation}
+p(u) ~=~ \frac{e^u}{1 + e^u}
+\end{equation}
 
 Take the derivative of both sides using quotient rule:
 
-$$p'(u) ~=~ \frac {(e^u)(1 + e^u) - (e^u)(e^u)}{(1 + e^u)^2}$$
-
-\pagebreak
+\begin{equation}
+p'(u) ~=~ \frac {(e^u)(1 + e^u) - (e^u)(e^u)}{(1 + e^u)^2}
+\end{equation}
 
 Simplify:
 
-$$p'(u) ~=~ \frac {e^u}{(1 + e^u)^2}$$
+\begin{equation}
+p'(u) ~=~ \frac {e^u}{(1 + e^u)^2}
+\end{equation}
 
 Separate out to produce two fractions:
 
-$$p'(u) ~=~ \left ( \frac {e^u}{1 + e^u} \right ) \cdot \left ( \frac{1}{1 + e^u} \right )$$
+\begin{equation}
+p'(u) ~=~ \left ( \frac {e^u}{1 + e^u} \right ) \cdot \left ( \frac{1}{1 + e^u} \right )
+\end{equation}
 
 Substitute our previous success and failure variables back into place:
 
-$$p'(u) ~=~ p(u) \cdot ( 1 - p(u))$$
+\begin{equation}
+p'(u) ~=~ p(u) \cdot ( 1 - p(u))
+\end{equation}
+
+---
 
 Now we can calculate the probabilities as well as the values for any given x value.
 
@@ -128,7 +148,7 @@ training_set.1 <- c_m_TRANSFORMED[index, ]
 
 The `test.set.1` and `Class.test` data sets are not produced since the Logit run with 20 features was not deemed useful. The reason for its dismissal was that is contained extraneous features.
 
-## Logit Training #1 using 20 Features
+## Logit Training #1 Using 20 Features
 
 - The first training run is to determine if all 20 features (amino acids) are necessary for our logistic regression model.
 
@@ -164,7 +184,7 @@ The Akaike information criterion (AIC)[^44] for model #1 is 699.72. This will be
 
 [^44]:https://en.wikipedia.org/wiki/Akaike_information_criterion
 
-## Logit Training #2 using 9 Features
+## Logit Training #2 Using 9 Features
 
 - This test uses **ONLY** 9 features: (R, H, P, C, E, Y, T, D, G)
 
@@ -192,7 +212,7 @@ test_set.2     <- c_m_9aa[-index, ]
 Class_test.2 <- as.factor(test_set.2$Class)
 ```
 
-### Logit Training #2 with 9 Features
+### Logit Training #2 Using 9 Features
 
 ```{r, cache = TRUE}
 set.seed(1000)
@@ -222,7 +242,7 @@ registerDoSEQ()                  # Stop multi-core
 summary(model_obj.2)
 ```
 
-\pagebreak
+\newpage
 
 ## Logit Confusion Matrix #2
 
@@ -253,9 +273,9 @@ nrow(fp_fn_logit) ## NOTE: NOT UNIQUE NOR SORTED
 
 - The logistic regression second test produced 536 protein samples, which are either false-positives or false-negatives. The list of 536 proteins may have duplicates. Therefore they are NOT UNIQUE NOR SORTED.
 
-## Conclusion
+## Logit Conclusion
 
-Logit is easy to implement and understand and can be used for parameter importance measurements.
+Logit is easy to implement and understand and can be used for feature selection.
 
 Considering the table Logit Models, below, it is clear that model #2 with nine features best describes the better of the two models.
 
@@ -263,34 +283,31 @@ Akaike Information Criterion [^45]
 
 [^45]:https://en.wikipedia.org/wiki/Akaike_information_criterion
 
-$$AIC ~=~ 2 K ~-~ ln (\widehat{L})$$
+\begin{equation}
+AIC ~=~ 2 K ~-~ ln (\widehat{L})
+\end{equation}
 
 Where $ln (\widehat{L})$ is the log-likelihood, $K$ is the number of parameters.
 
----
+#### Two Logit Models {-}
 
-#### Two Logit Models
-
-| Model # | Features | AIC |
+| Model # | Features |  AIC   |
 | :-----: | :------: | :----: |
-| 1 | 20 | 699.72 |
-| 2 | 9 | 708.96 |
+|    1    |    20    | 699.72 |
+|    2    |    9     | 708.96 |
 
 Logit is a common machine learning method. It is easy to understand and explain. This supervised binary classification method is very useful for determining the importance of the features which can be applied. As we saw in Model#1, there were 11 features that had probabilities of the estimates used above the 5% threshold cut-off. In Model#2, only nine features were used to describe the model, and the AIC increased by 9.24.
 
 The nine features which best described the logistic regression model were R, H, P, C, E, Y, T, D, G. If we compare this to the Boruta test carried out in the EDA, we find the overlap interesting.
 
----
+#### Comparison of Boruta Vs Logit: Order of Importance {-}
 
-#### Test Model / Order of Importance (From Left To Right)
-
-| Test Model | | | | | | | | | | | | | | | | | | | | |
-| :--------: |:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
-| Order | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11| 12| 13| 14| 15| 16| 17| 18| 19| 20|
-| Boruta | R | H | P | K | C | E | Y | T | S | A | V | U | I | F | D | G | N | L | M | Q |
-| Logit | R | H | P | . | C | E | Y | T | . | . | . | . | . | . | D | G | . | . | . | . |
+| Test Model | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  |
+| :--------: | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+|   Boruta   | R   | H   | P   | K   | C   | E   | Y   | T   | S   | A   | V   | U   | I   | F   | D   | G   | N   | L   | M   | Q   |
+|   Logit    | R   | H   | P   | .   | C   | E   | Y   | T   | .   | .   | .   | .   | .   | .   | D   | G   | .   | .   | .   | .   |
 
 The first 7 out of 8 amino acid features are seen in the proper order, as described by the Boruta Random Forest model. This is confirmation that Logit can pick up the importance of features similar to Boruta.
 
-Logit produced 536 proteins, which are false-negatives or false-positives. It should be noted that the 536 are NOT UNIQUE NOR SORTED. The number of FN/FP from the confusion matrix is 26. These proteins will be investigated further in the Outliers section, which compares these FN/FP proteins to the PCA outliers.
+Logit produced 536 proteins, which are false-negatives or false-positives. It should be noted that the 536 are NOT UNIQUE NOR SORTED. The number of unique FN/FP from the confusion matrix is 26. These proteins will be investigated further in the Outliers chapter, which compares these FN/FP proteins to the PCA outliers.
 
