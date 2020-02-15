@@ -1,0 +1,24 @@
+sample_list <- list("Matched x" = c("Ella", "Mila"), 
+                    "Unmatched x" = c("Isla"), 
+                    "Matched y" = c(), 
+                    "Unmatched y" = c("Emma", "Olivia"))
+sample_list
+==============
+
+sample_list <- list("Matched x" = c("Ella", "Mila"), 
+                    "Unmatched x" = c("Isla"),
+                    "Matched y" = c(), 
+                    "Unmatched y" = c("Emma", "Olivia"))
+
+max_len <- max(lengths(sample_list))
+
+df <- do.call(cbind.data.frame, 
+              c(lapply(sample_list, function(x) c(x, rep('', max_len - length(x)))), 
+              stringsAsFactors = FALSE))
+knitr::kable(df)
+
+==================
+
+data.frame(lapply(sample_list, 
+                  function(x) c(x, rep('', max_len - length(x)))), 
+                  check.names=FALSE)
