@@ -1,0 +1,173 @@
+---
+title: "NN Tutorial"
+author: "MCC"
+date: "2/19/2020"
+output: html_document
+---
+
+# NN Tutorial
+
+https://rpubs.com/Spencer_Butt_RPubs/301131
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load Libraries
+Libraries <- c("tidyverse", "knitr", "neuralnet", "GGally")
+for (p in Libraries) {  
+    library(p, character.only = TRUE)
+}
+```
+
+```{r}
+Hab_Data <- read_csv(file = "http://archive.ics.uci.edu/ml/machine-learning-databases//haberman/haberman.data", 
+    col_names = c("Age", "Operation_Year", "Number_Pos_Nodes", "Survival")) %>% 
+    na.omit() %>% mutate(Survival = ifelse(Survival == 2, 0, 1)) %>% mutate(Survival = factor(Survival))
+```
+
+```{r}
+ggpairs(Hab_Data, title = "Scatterplot Matrix of the Features of the Haberman's Survival Data Set")
+```
+
+```{r}
+scale01 <- function(x) {
+    (x - min(x))/(max(x) - min(x))
+}
+
+Hab_Data <- Hab_Data %>% mutate(Age = scale01(Age), 
+                                Operation_Year = scale01(Operation_Year),
+                                Number_Pos_Nodes = scale01(Number_Pos_Nodes))
+
+Hab_Data <- Hab_Data %>% mutate(Survival = as.numeric(Survival) - 1)
+```
+
+```{r}
+Hab_Data <- Hab_Data %>% mutate(Survival = as.integer(Survival) - 1) %>% 
+                         mutate(Survival = ifelse(Survival == 1, TRUE, FALSE))
+```
+
+```{r}
+set.seed(123)
+Hab_NN1 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, Hab_Data,
+                     linear.output = FALSE, 
+                     err.fct = "ce", 
+                     likelihood = TRUE)
+```
+
+```{r}
+plot(Hab_NN1, rep = "best")
+```
+
+```{r}
+Hab_NN1_Train_Error <- Hab_NN1$result.matrix[1, 1]
+paste("CE Error: ", round(Hab_NN1_Train_Error, 4))
+```
+
+```{r}
+Hab_NN1_AIC <- Hab_NN1$result.matrix[4, 1]
+paste("AIC: ", round(Hab_NN1_AIC, 4))
+```
+
+```{r}
+Hab_NN2_BIC <- Hab_NN1$result.matrix[5, 1]
+paste("BIC: ", round(Hab_NN2_BIC, 4))
+```
+
+```{r}
+set.seed(123)
+Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
+                     Hab_Data, 
+                     linear.output = FALSE, 
+                     err.fct = "ce", 
+                     likelihood = TRUE, 
+                     hidden = c(2, 1))
+
+set.seed(123)
+Hab_NN3 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes,
+                                Hab_Data, 
+                                linear.output = FALSE, 
+                                err.fct = "ce", 
+                                likelihood = TRUE, 
+                                hidden = c(2, 2))
+set.seed(123)
+Hab_NN4 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes,
+                                Hab_Data, 
+                                linear.output = FALSE, 
+                                err.fct = "ce", 
+                                likelihood = TRUE, 
+                                hidden = c(1, 2))
+```
+
+
+```{r}
+# Bar plot of results
+Class_NN_ICs <- tibble(Network = rep(c("NN1", "NN2", "NN3", "NN4"), each = 3),
+                       Metric = rep(c("AIC", "BIC", "ce Error * 100"), length.out = 12), 
+                       Value = c(Hab_NN1$result.matrix[4, 1], 
+                                 Hab_NN1$result.matrix[5, 1], 
+                                 100 * Hab_NN1$result.matrix[1, 1],
+                                 Hab_NN2$result.matrix[4, 1], 
+                                 Hab_NN2$result.matrix[5, 1], 
+                                 100 * Hab_NN2$result.matrix[1, 1], 
+                                 Hab_NN3$result.matrix[4, 1], 
+                                 Hab_NN3$result.matrix[5, 1], 
+                                 100 * Hab_NN3$result.matrix[1, 1], 
+                                 Hab_NN4$result.matrix[4, 1], 
+                                 Hab_NN4$result.matrix[5, 1], 
+                                 100 * Hab_NN4$result.matrix[1, 1]))
+```
+
+```{r}
+Class_NN_ICs %>% ggplot(aes(Network, Value, fill = Metric)) + geom_col(position = "dodge") + ggtitle("AIC, BIC, and Cross-Entropy Error of the Classification ANNs", "Note: ce Error displayed is 100 times its true value")
+```
+
+
+```{r}
+# One example
+Example_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
+                         Hab_Data, 
+                         linear.output = FALSE, 
+                         err.fct = "ce", 
+                         likelihood = TRUE, 
+                         hidden = 3, 
+                         rep = 10)
+plot(Example_NN2, rep = "best")
+```
+
+```{r}
+iris_data <- iris %>% mutate(Setosa = ifelse(Species == "setosa", TRUE, FALSE),
+                             Versicolor = ifelse(Species == "versicolor", TRUE, FALSE), 
+                             Virginica = ifelse(Species == "virginica", TRUE, FALSE)) %>%
+                      mutate(Sepal.Length = scale01(Sepal.Length), 
+                             Sepal.Width = scale01(Sepal.Width), 
+                             Petal.Length = scale01(Petal.Length), 
+                             Petal.Width = scale01(Petal.Width))
+
+# To build a 3-class classification ANN
+iris_NN <- neuralnet(Setosa + Versicolor + Virginica ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                     iris_data, 
+                     linear.output = FALSE, 
+                     err.fct = "ce", 
+                     likelihood = TRUE,
+                     hidden = 4, 
+                     rep = 3)
+plot(iris_NN, rep = "best")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

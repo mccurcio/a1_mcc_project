@@ -1,0 +1,89 @@
+# DNN using `Keras` & `Tensorflow`
+
+## Introduction
+https://www.youtube.com/watch?v=SrQw_fWo4lw&list=PL34t5iLfZddtC6LqEfalIBhQGSZX77bOn&index=2
+
+- Libraries & Initialize
+```{r message=FALSE, warning=FALSE, include=FALSE}
+rm(list = ls())
+Libraries = c("doMC", "keras", "mlbench", "dplyr", "magrittr", "neuralnet", "caret", "readr")
+
+for(p in Libraries){  # Install if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p, dependencies = TRUE) }
+    library(p, character.only = TRUE)
+}
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
+```
+
+- Import data & data handling
+```{r}
+data1 <- read_csv("~/Dropbox/a1_mcc_project/00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                  col_types = cols(PID = col_skip(), 
+                                   TotalAA = col_skip()))
+
+# Convert dataframe to matrix for Keras/TF
+data1 <- as.matrix(data1)
+dimnames(data1) <- NULL  # Remove labels from matrices.
+
+head(data1)
+
+# Normalize c_m_transformed
+data1[, 2:21] <- normalize(data1[, 2:21])
+data1[, 1] <- as.factor(data1[, 1])
+```
+
+Partition data: training & testing sets
+```{r}
+set.seed(1000)
+index <- createDataPartition(data1[,1], p = 0.8, list = FALSE)
+
+training_set <- data1[ index,]
+test_set     <- data1[-index,] 
+
+Class_test <- as.factor(test_set[,1]) 
+```
+
+# Neural Network Visualization
+```{r}
+n <- neuralnet(data1[,1] ~ .,
+               data = data1,
+               hidden = c(10,5),
+               linear.output = F,
+               lifesign = "full",
+               rep = 1)
+```
+
+```{r}
+plot(n,
+     col.hidden = "black",
+     col.hidden.synapse = "darkgrey",#a2c523
+     show.weights = F,
+     information = F,
+     fill = "white")
+```
+
+## Create Model
+```{r}
+model <- keras_model_sequential()
+model %>% layer_dense(units = 5, activation = 'relu', input_shape = c(13)) %>%
+          layer_dense(units = 1)
+```
+
+## Compile
+```{r}
+model %>% compile(loss = 'mse',
+                  optimizer = 'rmsprop',
+                  metrics = 'mae')
+```
+
+## Evaluate
+```{r}
+model %>% evaluate(test, testtarget)
+pred <- model %>% predict(test)
+mean((testtarget-pred)^2)
+plot(testtarget, pred)
+```
+
+
+
+

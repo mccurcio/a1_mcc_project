@@ -15,7 +15,7 @@ Folder ../00-data/
 
 - 04-sort_unique_outliers
     - Unique and Sorted sets of numbers from the 7 different ML models
-    - Numbers only
+    - Row Numbers only
 
 - 05-joins_plots
     - Files taken from (04-sort_unique_outliers) and Inner-Joined with PCA 1st and 2nd PC

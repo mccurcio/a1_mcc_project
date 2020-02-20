@@ -1,0 +1,66 @@
+---
+title: "keras trial"
+author: "MCC"
+date: "1/13/2020"
+output: html_document
+---
+
+https://blogs.rstudio.com/tensorflow/posts/2018-01-24-keras-fraud-autoencoder/
+
+https://www.youtube.com/watch?v=FzS3tMl4Nsc
+
+http://www.deeplearningbook.org/contents/autoencoders.html
+
+```{r}
+c_m_TRANSFORMED <- read_csv("~/Dropbox/a1_mcc_project/00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv", 
+                            col_types = cols(PID = col_skip(), TotalAA = col_skip()))
+
+norm_c_m_20aa <- read_csv("~/Dropbox/a1_mcc_project/00-data/03-ml_results/norm_c_m_20aa.csv")
+
+norm_c_m_20aa_class <- cbind(c_m_TRANSFORMED$Class, norm_c_m_20aa)
+
+```
+
+For an autoencoder to work well we have a strong initial assumption: that the distribution of variables for normal transactions is different from the distribution for fraudulent ones. Let’s make some plots to verify this. Variables were transformed to a [0,1] interval for plotting.
+
+TODO: tranform all variables in norm_c_m_20aa to [0,1] normalized.
+
+
+
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(ggridges)
+
+df %>%
+  gather(variable, value, -Class) %>%
+  ggplot(aes(y = as.factor(variable), 
+             fill = as.factor(Class), 
+             x = percent_rank(value))) +
+  geom_density_ridges()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

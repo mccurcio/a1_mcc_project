@@ -1,7 +1,6 @@
 ---
 output:
-    #pdf_document: default
-    html_document: default
+  pdf_document: default
 ---
 
 # Principle Component Analysis of Myoglobin/Control Protein Sets
@@ -118,13 +117,17 @@ The first step for calculating PCA is to determine the Covariance matrix. Covari
 
 ### Covariance of two variables {-}
 
-Remember, this simplified formula is to determine covariance for a two-dimensional system. Where $N$ is the number of observations, $\bar x$ is the mean of the independent variable, $\bar y$ is the mean of the dependent variable.
+Remember, this simplified formula is to determine covariance for a two-dimensional system.
 
-$$cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)$$
+\begin{equation}
+cov(x, y) ~=~ \frac{1}{N} \sum_{i=1}^N (x_i - \bar x) (y_i - \bar y)
+\end{equation}
+
+Where $N$ is the number of observations, $\bar x$ is the mean of the independent variable, $\bar y$ is the mean of the dependent variable.
 
 ### Covariance of matrices {-}
 
-When dealing with a many feature variables one needs to determine the covariance of matrices, $\large M$ using linear algebra.[^34]
+When dealing with a many feature variables one needs to determine the covariance of matrices, $\large M$ using linear algebra. [^34]
 
 [^34]:http://mathworld.wolfram.com/Covariance.html
 
@@ -132,19 +135,15 @@ When dealing with a many feature variables one needs to determine the covariance
 2. Find the difference matrix, $D ~=~ M - M_{means}$.
 3. Finally calculate the covariance matrix:
 
-$$cov ~ (M) ~=~ \left( \frac{1}{N-1} \right) ~ D^T \cdot D, ~~~ where ~~~~~ D = M - M_{means}$$
+\begin{equation}
+cov ~ (M) ~=~ \left( \frac{1}{N-1} \right) ~ D^T \cdot D, ~~~ where ~~~~~ D = M - M_{means}
+\end{equation}
 
 Where $D^T$ is the transpose of the difference matrix, $N$ is the number of observations or rows in this case.
 
 ### Finding PCA via singular value decomposition
 
 The procedure below is an outline, not the full computation of PCA. 
-
-For more information on Eigenvalues, Eigenvectors and Eigen decomposition I suggest:
-
-1. [CodeEmporium](https://youtu.be/9oSkUej63yk)
-
-2. [Victor Lavrenko](https://youtu.be/IbE0tbjy6JQ)
 
 This procedure for PCA relies on the fact that it is similar to the singular value decomposition (SVD) used when determining eigenvectors and eigenvalues. [^35]
 
@@ -164,7 +163,7 @@ This procedure for PCA relies on the fact that it is similar to the singular val
 
 The intuition for understanding PCA is reasonably straightforward. Consider the 2-dimensional data cloud of points or observations in a hypothetical experiment, as seen in the figure on the left. Variances along both the x and y dimensions are calculated. However, given the data shown, there is a rotation of that x-y plane, which will present the data showing its most significant variance. This variance will reside on an axis analogous to points on an Ordinary Least Squares (OLS) line. This axis is called the *first principle component* followed by the second principal component and so on. 
 
-Unlike an OLS calculation, PCA will determine not only the first and most significant variance of your data set, but it will, through the rotation and transform your dataset via linear algebra, calculating N variances within your dataset, where N is equal to the number of features in the dataset. The second principal component will be calculated only along a coordinate axis, which is perpendicular (orthogonal or orthonormal) to the first. Each subsequent principal component will then be calculated along axes which are orthogonal to each other. A further benefit of using PCA is that the variances it reports will be ranked in order from highest to lowest.[^36]
+Unlike an OLS calculation, PCA will determine not only the first and most significant variance of your data set, but it will, through the rotation and transform your dataset via linear algebra, calculating N variances within your dataset, where N is equal to the number of features in the dataset. The second principal component will be calculated only along a coordinate axis, which is perpendicular (orthogonal or orthonormal) to the first. Each subsequent principal component will then be calculated along axes which are orthogonal to each other. A further benefit of using PCA is that the variances it reports will be ranked in order from highest to lowest. [^36]
 
 [^36]:Brian Everitt, Torsten Hothorn, An Introduction to Applied Multivariate Analysis with R, Springer, DOI:10.1007/978-1-4419-9650-3, 2011
 
@@ -212,10 +211,10 @@ abline(v = -2.45, col = "green")
 abline(v = 2.77, col = "green")
 ```
 
-| Graphic | Range (Green lines) | Differences |
+| Graphic                  | Range (Green lines) | Differences |
 | :----------------------- | :-----------------: | :---------: |
-| Raw Data (Left) | 1 <= x <= 4 | 3 units |
-| Transformed Data (Right) | -2.45 <= x <= 2.77 | 5.22 units |
+| Raw Data (Left)          |     1 <= x <= 4     |   3 units   |
+| Transformed Data (Right) | -2.45 <= x <= 2.77  | 5.22 units  |
 
 If we investigate the figures above we find that the range of the samples is (1 <= x <= 4),
 while the range for the transformed data is (-2.45 <= x <= 2.76). The differences between the two ranges are 3 and 5.21 units, respectively. The rotation should be no surprise since the PCA is essentially a maximization of variance.
@@ -241,15 +240,17 @@ end_time - start_time # Display time
 
 Two plots are commonly used to determine the number of principal components that a researcher would generally accept as useful. The eigenvalues derived from PCA are proportional to the variances which they represent, and depending on the strategy used to calculate them, the eigenvalues are equal to the variances of the components.
 
-The first of the two plots which I which is the scree plot.[^310] The scree plot is a ranked list of the eigenvalues plotted against its principal components. An eigenvalue score of one is thought to provide a comparable amount of information as a single variable un-transformed by PCA.
+The first of the two plots which I which is the scree plot. [^310] The scree plot is a ranked list of the eigenvalues plotted against its principal components. An eigenvalue score of one is thought to provide a comparable amount of information as a single variable un-transformed by PCA.
 
 [^310]:Raymond Cattell, "The scree test for the number of factors." Multivariate Behavioral Research. 1 (2): 245–76. DOI:10.1207/s15327906mbr0102_10, 1966
 
 The second plot describes the cumulative proportion of variance versus the principal component. This graphic shows how much each principal component represents the entire cumulative variances or total squared error.
 
-$$Cumlative ~ Proportion ~of ~Variance ~=~ \frac{\sigma_i^2}{\sum_{i=1}^N \sigma_i^2}$$
+\begin{equation}
+Cumlative ~ Proportion ~of ~Variance ~=~ \frac{\sigma_i^2}{\sum_{i=1}^N \sigma_i^2}
+\end{equation}
 
-Here again, there are several criteria regarding how best to use the information from the is plot. The first of which is Cattell's heuristic. Cattell advises using the principal component that is above the elbow of the curve. The second heuristic is keeping the total number of factors that best explains 80%-95% of the variance. There is no hard-fast rule at this time; a set of researchers only uses the first three factors or none at all.[^311] A second suggestion is to use the Kaiser rule, which states it is sufficient to use Principal Components, which have an eigenvalue greater than or equal to one.[^312]
+Here again, there are several criteria regarding how best to use the information from the is plot. The first of which is Cattell's heuristic. Cattell advises using the principal component that is above the elbow of the curve. The second heuristic is keeping the total number of factors that best explains 80%-95% of the variance. There is no hard-fast rule at this time; a set of researchers only uses the first three factors or none at all.[^311] A second suggestion is to use the Kaiser rule, which states it is sufficient to use Principal Components, which have an eigenvalue greater than or equal to one. [^312]
 
 [^311]:Nicole Radzill, Ph.D., personal communication.
 [^312]:https://stats.stackexchange.com/questions/253535/the-advantages-and-disadvantages-of-using-kaiser-rule-to-select-the-number-of-pr
@@ -364,7 +365,7 @@ dev.off()
 
 ## Obtain Outliers From Biplot #2: PC1 Vs. PC2
 
-I have chosen to analyze the PCA biplot of the first and second principal components. The first and second components were used because they describe 46.95% of the variance (nearly 50%) and for brevity.
+I have chosen to analyze the PCA biplot of the first and second principal components. The first and second components were used because they describe nearly 50% of the variance (46.95%).
 
 ### Outliers from Principal Component-1
 
@@ -411,10 +412,10 @@ sep = ",")
 
 It is important to remember and understand that this list of "total_pca_1_2_outliers" includes BOTH negative and positive controls. The groupings are as follows:
 
-Group | Range of Groups
-------|----------------
-Controls | 1, ..., 1217
-Positive (Myoglobin) | 1218, ..., 2341
+| Group                | Range of Groups |
+| :------------------- | --------------: |
+| Controls             | 1, ..., 1217    |
+| Positive (Myoglobin) | 1218, ..., 2341 |
 
 ## Logit Conclusions
 
@@ -426,12 +427,20 @@ The table and the figure below show a subset of outliers produced when the first
 
 | Group | Increased concentration of amino acid | Example observations |
 | :---: | :-----------------------------------: | :------------------: |
-| A | H, L, K | 1478 |
-| B | E, K | 1934, 1870, 2100 |
-| C | V, I, F, Y | 182, 1752, 2156 |
-| D | C, S | 1360, 2240 |
-| E | G, D, Q | 664, 2304 |
+|   A   |                H, L, K                |         1478         |
+|   B   |                 E, K                  |   1934, 1870, 2100   |
+|   C   |              V, I, F, Y               |   182, 1752, 2156    |
+|   D   |                 C, S                  |      1360, 2240      |
+|   E   |                G, D, Q                |      664, 2304       |
 
 ```{r echo=FALSE, out.width="55%", fig.align="center"}
 knitr::include_graphics("../00-data/10-images/Biplot1.annotated.png")
 ```
+
+---
+
+Note: For more information on Eigenvalues, Eigenvectors and Eigen decomposition I suggest:
+
+1. [CodeEmporium](https://youtu.be/9oSkUej63yk)
+
+2. [Victor Lavrenko](https://youtu.be/IbE0tbjy6JQ)

@@ -2,7 +2,7 @@
 output:
     pdf_document: default
     # bookdown::gitbook: default
-    html_document: default
+    #html_document: default
 ---
 
 ```{r, 11, include=FALSE}
@@ -12,7 +12,7 @@ for (i in Libraries) { library(i, character.only = TRUE) }
 
 # Introduction
 
-At the intersection between Applied Mathematics, Computer Science, and an understanding of Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its relative Data Science difficult to define. But the most ubiquitous pictograph of Data Science indeed says a thousand words if we cannot. See Figure \ref{venn_diagram}. More generally Data Science is a mixture using biological data analysis, computers, software and importantly predicitive modeling to describe a narrative of some systematic research. For a number of Bioinformaticians the question becomes can we readily use availabble data, describe it, model it by using  applied mathematics. Other similar fields you may come across would be the study of chemistry using applied mathematics and computeers which beget the field of Chemoinformatics.[^11] [^12] While the career path of Health or Healthcare begets the field of Healthcare-Informatics.[^13]
+At the intersection between Applied Mathematics, Computer Science, and Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its relative Data Science difficult to define. But the most ubiquitous pictograph of Data Science indeed says a thousand words if we cannot. See Figure 1. More generally Data Science is a mixture using biological data analysis, computers, software and importantly statistical or predictive modeling to describe a narrative of some systematic research. For some Bioinformaticians the question is 'How can we use available data? describe it? model it by using applied mathematics? DNA and Proteins are coded strands of information which can be categorized and enumerated in a myriad ways. Other currently popular fields one may come across are the study of chemistry using applied mathematics and computers which beget the field of Chemoinformatics.[^11] [^12] While the career path of Health or Healthcare begets the field of Healthcare-Informatics.[^13]
 
 [^11]:https://www.acs.org/content/acs/en/careers/college-to-career/chemistry-careers/cheminformatics.html
 
@@ -24,7 +24,7 @@ At the intersection between Applied Mathematics, Computer Science, and an unders
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-![Venn Diagrams of Bioinformatics Vs Data Science \label{venn_daigram}](../00-data/10-images/Venn-diagram-original-768x432.png)
+![Venn Diagrams of Bioinformatics Vs Data Science](../00-data/10-images/Venn-diagram-original-768x432.png)
 
 [^122]
 
@@ -42,17 +42,18 @@ opts_chunk$set(cache = TRUE, fig.align = "center")
 
 The term 'Predictive Modeling' should bring to mind work in the computer science field, also called Machine Learning (ML), Artificial Intelligence (AI), Data Mining, Knowledge discovery in databases (KDD), and possibly even encompassing Big Data as well.
 
->Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data.
+>"Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data."
 >
->--- Max Kuhn[^14]
+>--- Max Kuhn [^14]
 
 [^14]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, Springer, ISBN:978-1-4614-6848-6, 2013
 
-As a heads-up, I use `Predictive Modeling` and `Machine Learning` interchangeably in this document.
+As an aside, I use `Predictive Modeling` and `Machine Learning` interchangeably in this document.
 
-In the booklet entitled "The Elements of Data Analytic Style" [^15], there is an useful checklist for the uninitiated into the realm of science report writing and, indeed, scientific thinking. A shorter, more succinct listing of the steps, which I prefer, and is described by Roger Peng in his book, The Art Of Data Science. The book lists what he describes as the "Epicycle of Analysis." [^16]
+In the booklet entitled "The Elements of Data Analytic Style," [^15] there is an useful checklist for the uninitiated into the realm of science report writing and, indeed, scientific thinking. A shorter, more succinct listing of the steps, which I prefer, and is described by Roger Peng in his book, The Art Of Data Science. The book lists what he describes as the "Epicycle of Analysis." [^16]
 
 [^15]:Jeff Leek, The Elements of Data Analytic Style, A guide for people who want to analyze data., Leanpub Books, http://leanpub.com/datastyle, 2015
+
 [^16]:Roger D. Peng and Elizabeth Matsui, The Art of Data Science, A Guide for Anyone Who Works with Data, Leanpub Books, http://leanpub.com/artofdatascience, 2015
 
 ## The Epicycle of Analysis
@@ -63,41 +64,15 @@ In the booklet entitled "The Elements of Data Analytic Style" [^15], there is an
 1. Interpreting the results 
 1. Communicating the results 
 
-Therefore let us start by posing a question;
-
-- Is there a correlation between the data points, which are outliers from principal component analysis (PCA), and 6 types of predictive modeling? 
-
-This experiment is interested in determining if PCA would provide information on the false-positives and false-negatives that were an inevitable part of model building and optimization. The six predictive models that have chosen for this work are Logistic Regression, Support Vector Machines (SVM) (linear, polynomial, and radial basis function kernels), Random Forest, and a Neural Network which uses Auto-encoding.
-
-It is common for Data Scientists to test their data sets for feature importance and feature selection. One test that has interested this researcher is Principal component analysis. It can be a useful tool. PCA is an unsupervised machine learning technique which "reduces data by geometrically projecting them onto lower dimensions called principal components (PCs), with the goal of finding the best summary of the data using a limited number of PCs." [^17] However, the results that it provides may not be immediately intuitive to the layperson.
-
-[^17]:Jake Lever, Martin Krzywinski, Naomi Altman, Principal component analysis, Nature Methods, Vol.14 No.7, July 2017, 641-2
-
-How do the advantages and disadvantages of using PCA compare with other machine learning techniques? The advantages are numerable. They include dimensionality reduction and filtering out noise inherent in the data, and it may preserve the global structure of the data. Does the global and graphical structure of the data produced by the first two principal components provide any insights into how the predictive models of Logistic Regression, Neural Networks utilizing auto-encoders, Support Vector Machines, and Random Forest? In essence, is PCA sufficiently similar to any of the applied mathematics tools of more advanced approaches? Also, this work is to teach me machine learning or predictive modeling techniques.
-
-The data for this study is from the Uniprot database. From the Uniprot database was queried for two protein groups. The first group was Myoglobin, and the second was a control group comprised of human proteins not related to Hemoglobin or Myoglobin. See Figure \ref{c_m_aac} There have been a group of papers that are striving to classify types of proteins by their amino acid structure alone. The most straightforward classification procedures involve using the percent amino acid composition (AAC). The AAC is calculated by using the count of an amino acid over the total number in that protein.
-
-Percent Amino Acid Composition: 
-$$\%AAC_X ~=~ \frac{N_{Amino~Acid~X}}{Total ~ N ~ of ~ AA}$$
-
-The Exploratory Data Analysis determines if features were skewed and needed must be transformed. In a random system where amino acids were chosen at random, one would expect the percent amino acid composition to be close to 5%. However, this is far from the case for the Myoglobin proteins or the control protein samples.
-
-```{r, 13, echo=FALSE}
-opts_chunk$set(cache = TRUE, fig.align = "center")
-```
-
-![Mean % Amino Acid Compositions for Control & Myoglobin \label{c_m_aac}](../00-data/10-images/c_m_Mean_AAC.png)
-
 ## Predictive Modeling
 
-In general, there are four types of Predictive Modeling or machine learning approaches.
+In general, there are three types of Predictive Modeling or Machine Learning approaches;
 
 1. Supervised,
 2. Unsupervised,
-3. Reinforcement,
-4. Semi-Supervised.
+3. Reinforcement.
 
-For the sake of this document, only the first two approaches (Supervised & Unsupervised learning) are discussed. 
+For the sake of this brevity, only Supervised & Unsupervised learning are discussed in this document.
 
 ### Supervised Learning
 
@@ -109,7 +84,7 @@ A machine learning algorithm determines a pattern from the input information and
 
 One example might be that we require a machine that separates red widgets from blue widgets. One predictive algorithm is called a K-Nearest Neighbor (K-NN) algorithm. K-NN looks at an unknown object and then proceeds to calculate the distance (most commonly, the euclidean distance) to the $K$ nearest neighbors. If we consider the figure below and choose $K$ = 3, we would find a circumstance as shown. In the dark solid black on the K-Nearest-Neighbor figure, we find that the green widget is nearest to two red widgets and one blue widget. In the voting process, the K-NN algorithm (2 reds vs. 1 blue) means that the consignment of our unknown green object is red. 
 
-For the K-NN algorithm to function, the data optimally most be complete with a set of features and a label of each item. Without the corresponding label, a data scientist would need different criteria to track the widgets. 
+For the K-NN algorithm to function, the data optimally most be complete with a set of features and a label of each item. Without the corresponding label, a data scientist would need different criteria to track the widgets.
 
 Five of the six algorithms that this report investigates are supervised. Logit, support vector machines, and the neural network that I have chosen require labels for the classification process.
 
@@ -133,11 +108,11 @@ Where $n$ is the number of observations, $k$ is the number of nearest neighbors 
 
 [^19]:Olga Veksler, Machine Learning in Computer Vision, http://www.csd.uwo.ca/courses/CS9840a/Lecture2_knn.pdf
 
-Given that K-NN tends to 'memorize' its data to complete its task, it is considered a lazy and shallow learner. Lazy indicates that the decision is left to the moment a new point is learned of predicted. If we were to use a more generalized rule, such as **{Blue** for ($x <= 5$)**}** this would be a more dynamic and more in-depth approach by comparison.
+Given that K-NN tends to 'memorize' its data to complete its task, it is considered a lazy and shallow learner. Lazy indicates that the decision is left to the moment a new point is learned of predicted. If we were to use a more generalized rule, such as {Blue for ($x <= 5$)} this would be a more dynamic and more in-depth approach by comparison.
 
 ### Unsupervised Learning
 
-In contrast to the supervised learning system, unsupervised learning does not require a label for it to operate. 
+In contrast to the supervised learning system, unsupervised learning does not require a label for it to operate.
 
 **Data set**: $(X_1), (X_2), ~. . ., ~(X_N)$ where $X$ may represent a matrix ($m$ observations by $n$ features) of values.
 
@@ -155,7 +130,9 @@ Among the simplest unsupervised learning algorithms is K-means. K-means does not
 
 It is easy to see through much or machine learning or predictive modeling if one understands bits of the inner workings of these algorithms,
 
-### Four Challenges In Predictive Modeling
+\newpage
+
+## Four Challenges In Predictive Modeling
 
 To many predictive modeling is a panacea for all sorts of issues. Although it does show promise, some hurdles need research. Martin Jaggi[^112] has summarized four points that elucidate current problems in the field that need research.
 
@@ -169,7 +146,38 @@ Problem 4: Scale, the scale of information is vast in reality, and we have compu
 
 [^112]:https://www.machinelearning.ai/machine-learning/4-big-challenges-in-machine-learning-ft-martin-jaggi-2/
 
-The predictive models which executed in this report discuss in further detail in their sections. 
+The specific predictive models which are executed in this report are discussed in further detail in their own sections. 
+
+==========================================
+
+## SECTION TITLE (??)
+
+Therefore let us start by posing a question;
+
+- Is there a correlation between the data points, which are outliers from principal component analysis (PCA), and 6 types of predictive modeling? 
+
+This experiment is interested in determining if PCA would provide information on the false-positives and false-negatives that were an inevitable part of model building and optimization. The six predictive models that have chosen for this work are Logistic Regression, Support Vector Machines (SVM) (linear, polynomial, and radial basis function kernels), Random Forest, and a Neural Network which uses Auto-encoding.
+
+It is common for Data Scientists to test their data sets for feature importance and feature selection. One test that has interested this researcher is Principal component analysis. It can be a useful tool. PCA is an unsupervised machine learning technique which "reduces data by geometrically projecting them onto lower dimensions called principal components (PCs), with the goal of finding the best summary of the data using a limited number of PCs." [^17] However, the results that it provides may not be immediately intuitive to the layperson.
+
+[^17]:Jake Lever, Martin Krzywinski, Naomi Altman, Principal component analysis, Nature Methods, Vol.14 No.7, July 2017, 641-2
+
+How do the advantages and disadvantages of using PCA compare with other machine learning techniques? The advantages are numerable. They include dimensionality reduction and filtering out noise inherent in the data, and it may preserve the global structure of the data. Does the global and graphical structure of the data produced by the first two principal components provide any insights into how the predictive models of Logistic Regression, Neural Networks utilizing auto-encoders, Support Vector Machines, and Random Forest? In essence, is PCA sufficiently similar to any of the applied mathematics tools of more advanced approaches? Also, this work is to teach me machine learning or predictive modeling techniques.
+
+The data for this study is from the Uniprot database. From the Uniprot database was queried for two protein groups. The first group was Myoglobin, and the second was a control group comprised of human proteins not related to Hemoglobin or Myoglobin. See Figure \ref{c_m_aac} There have been a group of papers that are striving to classify types of proteins by their amino acid structure alone. The most straightforward classification procedures involve using the percent amino acid composition (AAC). The AAC is calculated by using the count of an amino acid over the total number in that protein.
+
+Percent Amino Acid Composition: 
+\begin{equation} 
+\%AAC_X ~=~ \frac{N_{Amino~Acid~X}}{Total ~ N ~ of ~ AA}
+\end{equation}
+
+The Exploratory Data Analysis determines if features were skewed and needed must be transformed. In a random system where amino acids were chosen at random, one would expect the percent amino acid composition to be close to 5%. However, this is far from the case for the Myoglobin proteins or the control protein samples.
+
+```{r, 13, echo=FALSE}
+opts_chunk$set(cache = TRUE, fig.align = "center")
+```
+
+![Mean % Amino Acid Compositions for Control & Myoglobin \label{c_m_aac}](../00-data/10-images/c_m_Mean_AAC.png)
 
 ### Experimental Procedure
 
@@ -179,13 +187,13 @@ The experimental procedure is broken into 3 significant steps.
 
 During EDA, the data is checked for irregularities, such as missing data, outliers among features, skewness, and visually for normality using QQ-plots. The only irregularity that posed a significant issue was the skewness of the amino acid features. Many of 20 amino acid features had a significant number of outliers, as seen by Boxplot analysis. However, only three features had skew, which might have presented a problem. Dealing with the skew of the AA was necessary since Principal Component Analysis was a significant aspect of this experiment.
 
-Testing determined earlier that three amino acids (C, F, I) from the single amino acid percent composition needs transformation by using the square root function. The choice of transformations was Natural log, log base 10, squaring ($x^2$), and using the reciprocal ($1 / x$) of the values. The square root transformation lowered the skewness to values of less than 1.0 from highpoints of greater than 2 in all three cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
+Testing determined earlier that three amino acids (C, F, I) from the single amino acid percent composition needs transformation by using the square root function. The choice of transformations was Natural log, log base 10, squaring ($x^2$), and using the reciprocal ($1 / x$) of the values. The square root transformation lowered the skewness to values of less than 1.0 from high points of greater than 2 in all three cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
-| Amino Acid | Initial skewness | Skew after square root transform |
+| Amino Acid       | Initial skewness | Skew after square root transform |
 | :--------------- | :--------------: | :------------------------------: |
-| C, Cysteine | 2.538162 | 0.347813248 |
-| F, Phenolalanine | 2.128118 | -0.102739748 |
-| I, Isoleucine | 2.192145 | 0.293474879 |
+| C, Cysteine      |     2.538162     |           0.347813248            |
+| F, Phenolalanine |     2.128118     |           -0.102739748           |
+| I, Isoleucine    |     2.192145     |           0.293474879            |
 
 Three transformations take place for this dataset. 
 
@@ -201,7 +209,7 @@ All work uses R[^113], RStudio[^114] and a machine learning library/framework `c
 
 #### Caret library for R
 
-The R/caret library is attractive to use for many reasons. It currently allows 238 machine learning models that use different options and data structures. [^116] The utility of caret is that it organizes the input and output into a standard format making the need for learning only one grammar and syntax. Caret also harmonizes the use of hyperparameters. Work becomes reproducible.
+The R/caret library is attractive to use for many reasons. It currently allows 238 machine learning models that use different options and data structures. [^116] The utility of caret is that it organizes the input and output into a standard format making the need for learning only one grammar and syntax. Caret also harmonizes the use of hyper-parameters. Work becomes reproducible.
 
 [^116]:http://topepo.github.io/caret/available-models.html
 
@@ -209,11 +217,11 @@ The R/caret library is attractive to use for many reasons. It currently allows 2
 
 Setting up the training section for caret, for this experiment, can be broken into three parts.
 
-##### Tuning Hyperparameters
+##### Tuning Hyper-parameters
 
-The `tune.grid` command set allows a researcher to experiment by varying the hyperparameters of the given model to investigate optimum values. Currently, there are no algorithms that allow for the quick and robust tuning of parameters. Instead of searching, a sizeable experimental space test searches an n-dimensional grid in a full factorial design if desired.
+The `tune.grid` command set allows a researcher to experiment by varying the hyper-parameters of the given model to investigate optimum values. Currently, there are no algorithms that allow for the quick and robust tuning of parameters. Instead of searching, a sizable experimental space test searches an n-dimensional grid in a full factorial design if desired.
 
-Although some models have many parameters, the most common one is to search along a cost hyperparameter. 
+Although some models have many parameters, the most common one is to search along a cost hyper-parameter. 
 
 >The function we want to minimize or maximize is called the objective function or criterion. When we are minimizing it, we may also call it the cost function, loss function, or error function. [^117]
 
@@ -221,8 +229,10 @@ Although some models have many parameters, the most common one is to search alon
 
 The cost function (a term derived from business modeling, i.e., optimizing the cost) is an estimate as to how well models predicted value fits from the actual value. A typical cost function is the squared error function.
 
-Example Cost Function [^118]
-$$Cost ~=~ \left ( y_i - \hat f(x_i) \right )^2$$
+Example Cost Function: [^118]
+\begin{equation} 
+Cost ~=~ \left ( y_i - \hat f(x_i) \right )^2
+\end{equation}
 
 [^118]:Roberto Battiti and Mauro Brunato, The LION way. Machine Learning-Intelligent Optimization, LIONlab, University of Trento, Italy", 2017", http://intelligent-optimization.org/LIONbook
 
@@ -242,7 +252,7 @@ Cross-validation is a statistical method used to estimate the skill of machine l
 
 [^120]:https://machinelearningmastery.com/k-fold-cross-validation/
 
->The samples are randomly partitioned into k sets of roughly equal size. A model is fit using all samples except the first subset (called the first fold). The held-out samples are used for prediction by the recent model. The performance estimate measures the accuracy of the "out of bag" or "held out" samples. The first subset is returned to the training set, and the procedure repeats with the second subset held out, and so on. The k resampled estimates of performance are summarized (usually with the mean and standard error) and used to understand the relationship between the tuning parameter(s) and model utility.[^121]
+>"The samples are randomly partitioned into k sets of roughly equal size. A model is fit using all samples except the first subset (called the first fold). The held-out samples are used for prediction by the recent model. The performance estimate measures the accuracy of the "out of bag" or "held out" samples. The first subset is returned to the training set, and the procedure repeats with the second subset held out, and so on. The k resampled estimates of performance are summarized (usually with the mean and standard error) and used to understand the relationship between the tuning parameter(s) and model utility." [^121]
 
 [^121]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, 2013, ISBN 978-1-4614-6848-6
 
@@ -275,13 +285,15 @@ model_object <- train(Class ~ .,              # READ: Class is modeled by all fe
 
 In binary classification, a two by two contingency table describes predicted versus actual value classifications. This table is also known as a confusion matrix for machine learning students. 
 
-| 2 x 2 Confusion Matrix | Actual = 0 | Actual = 1 |
+| 2 x 2 Confusion Matrix |   Actual = 0    |   Actual = 1    |
 | :--------------------: | :-------------: | :-------------: |
-| Predicted = 0 | True-Negatives | False-Negatives |
-| Predicted = 1 | False-Positives | True-Postives |
+|     Predicted = 0      | True-Negatives  | False-Negatives |
+|     Predicted = 1      | False-Positives | True-Positives  |
 
 There are many ways to describe the results further using this confusion matrix. However, Accuracy is used for all comparisons.
 
-$$Accuracy ~=~ \frac{TP + TN}{N_{Total}}$$
+\begin{equation} 
+Accuracy ~=~ \frac{TP + TN}{N_{Total}}
+\end{equation}
 
 The second goal of this experiment is to produce the False Positives and False-Negatives and evaluating these by comparing them to the Principal Component Analysis Biplot of the first two Principal Components.

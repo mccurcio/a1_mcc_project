@@ -1,3 +1,13 @@
+---
+title: "NN Classiffication - Amino Acid Example"
+author: "MCC"
+date: "2/19/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", cache = TRUE)
+```
 
 # Obtain uniquely sorted FP & FN from number sets
 
@@ -97,46 +107,40 @@ svm_svmRadial_fp_fn_nums <- sort(unique(unlist(fp_fn_svmRadialCost[, keep], use.
 length(svm_svmRadial_fp_fn_nums)
 svm_svmRadial_fp_fn_nums
 
-write_csv(x = as.data.frame(svm_svmRadial_fp_fn_nums), 
+write_csv(x = as.data.frame(svm_svmRadial_fp_fn_nums),
           path = "../00-data/04-sort_unique_outliers/svm_rbf_nums.csv")
 ```
 
 - The 'SVM-Polynomial Kernel set' included a total of 58 unique observations containing both FP and FN.
 
 ## NEED DEEP LEARNING set
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-dl_nums <- read_csv(" ")
-
-dl_nums <- sort(unique(unlist( [, keep], use.names = FALSE)))
-
-length(dl_nums)
-dl_nums
-
-write_csv(x = as.data.frame(dl_nums), 
-          path = "../00-data/04-sort_unique_outliers/svm_rbf_nums.csv")
+```{r}
+NNModel_fp_fn_nums <- read.csv("~/Dropbox/a1_mcc_project/05-ae-nn/NN_nums.csv", sep="")
 ```
 
 - The 'DL set' included a total of X unique observations containing both FP and FN.
 
 ## Statistical Learning Method Vs Total Number of FP/FN
 
-| Statistical Method            | Unique | Total Number Produced | Total/Unique |
-| :---------------------------- | :----: | :-------------------: | :----------: |
-| Principal Componnent Analysis |  460   |          461          |    1.002     |
-| Logit                         |  119   |          537          |     4.51     |
-| SVM Linear                    |  125   |          496          |     3.97     |
-| SVM Polynomial                |   70   |          278          |     3.97     |
-| SVM Radial Basis Function     |   58   |          244          |     4.21     |
-| Random Forest                 |   46   |          190          |     4.13     |
-| Deep Learning - Autoencoder   |   x    |           x           |       x      |
+| Statistical Method            | Total Number Produced | Unique | Total/Unique |
+| :---------------------------- | :-------------------: | :----: | :----------: |
+| Principal Componnent Analysis |          461          |  460   |    1.002     |
+| Logit                         |          537          |  119   |     4.51     |
+| SVM Linear                    |          496          |  125   |     3.97     |
+| SVM Polynomial                |          278          |   70   |     3.97     |
+| SVM Radial Basis Function     |          244          |   58   |     4.21     |
+| Random Forest                 |          190          |   46   |     4.13     |
+| Deep Learning                 |          347          |  133   |     2.61     |
+
+\newpage
 
 ## Venn Diagrams 
 
-### SVM_RBF ∩ SVM_Poly ∩ RF
+### SVM_RBF $\bigcap$ SVM_Poly $\bigcap$ RF
 
 This will be known as the **Round** set.
 
-- RF ∩ SVM_Poly ∩ SVM_RBF = 33
+- RF $\bigcap$ SVM_Poly $\bigcap$ SVM_RBF = 33
 ```{r}
 round_set <- list(SVM_RBF = svm_svmRadial_fp_fn_nums,
                   SVM_Poly = svm_poly_fp_fn_nums,
@@ -145,16 +149,20 @@ round_set <- list(SVM_RBF = svm_svmRadial_fp_fn_nums,
 ggVennDiagram(round_set)
 ```
 
-### Logit ∩ SVM_Lin
+\newpage
+
+### Logit $\bigcap$ SVM_Lin
 
 This will be known as the **Linear** set.
 
-- Logit ∩ SVM_Lin = 105 
+- Logit $\bigcap$ SVM_Lin = 105 
 ```{r}
 linear_set <- list(Logit = logit_fp_fn_nums,
                    SVM_Lin = svm_linear_fp_fn_nums)
 ggVennDiagram(linear_set) 
 ```
+
+\newpage
 
 ### Find Intersecting numbers from *Round* Vs *Linear* sets
 
@@ -169,6 +177,8 @@ x <- list(Rnd = round_set,
           Lin = linear_set)
 ggVennDiagram(x) 
 ```
+
+\newpage
 
 ############################ ??????????????????????
 ### Unique Round
