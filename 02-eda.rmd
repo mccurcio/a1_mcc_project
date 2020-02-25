@@ -1,11 +1,3 @@
----
-title: "EDA-II"
-author: "MCC"
-date: "2/15/2020"
-output:
-    pdf_document: default
-    #html_document: default
----
 
 # Exploratory Data Analysis
 
@@ -23,7 +15,7 @@ This work is to characterize the outliers derived from PCA and compare them to t
 2. SVM-Linear,
 3. SVM-polynomial, 
 4. SVM-RBF, 
-5. Neural Network with auto-encoding.
+5. Neural Network.
 
 ### Four-Step Analysis
 
@@ -99,7 +91,7 @@ opts_chunk$set(cache = TRUE)
 
 ```{r, 23, message=FALSE, warning=FALSE}
 # Import RAW data
-c_m_RAW_AAC <- read_csv("../00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
+c_m_RAW_AAC <- read_csv("./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
 ```
 
@@ -538,7 +530,7 @@ opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 
 ```{r, 234, message=FALSE, warning=FALSE}
 # Import Transformed data
-c_m_TRANSFORMED <- read_csv("../00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv")
+c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv")
 Class <- as.factor(c_m_TRANSFORMED$Class)
 ```
 
@@ -851,9 +843,7 @@ caption = "Mean Importance Scores & Decision")
 plotImpHistory(boruta_output)
 ```
 
-### Conclusion for Boruta random forest test {-}
-
-- All features are essential. None should be dropped.
+The 'Boruta random forest test' shows that all features are essential. None should be dropped.
 
 ## EDA Conclusion
 
@@ -862,7 +852,7 @@ It was determined earlier that three amino acids (C, F, I) from the single amino
 | Amino Acid       | Initial skewness | Skew after square root transform |
 | :--------------- | :--------------: | :------------------------------: |
 | C, Cysteine      |     2.538162     |           0.347813248            |
-| F, Phenolalanine |     2.128118     |           -0.102739748           |
+| F, Phenolalanine |     2.128118     |          -0.102739748            |
 | I, Isoleucine    |     2.192145     |           0.293474879            |
 
 The transformations of the three amino acids (C, F, I) did not appreciably change any critical measures, such as the feature importance derived from the Boruta random forest feature selection work. Nor did the transformations of C, F, I appreciably change the correlation coefficient matrix. Therefore the transformed data will be used throughout this experiment.

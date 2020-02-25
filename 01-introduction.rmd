@@ -1,9 +1,4 @@
----
-output:
-    pdf_document: default
-    # bookdown::gitbook: default
-    #html_document: default
----
+
 
 ```{r, 11, include=FALSE}
 Libraries <- c("knitr")
@@ -24,7 +19,7 @@ At the intersection between Applied Mathematics, Computer Science, and Biologica
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-![Venn Diagrams of Bioinformatics Vs Data Science](../00-data/10-images/Venn-diagram-original-768x432.png)
+![Venn Diagrams of Bioinformatics Vs Data Science](./00-data/10-images/Venn-diagram-original-768x432.png)
 
 [^122]
 
@@ -92,7 +87,7 @@ Five of the six algorithms that this report investigates are supervised. Logit, 
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-![K-Nearest-Neighbor \label{knn}](../00-data/10-images/K-Nearest-Neighbor.50.png) 
+![K-Nearest-Neighbor \label{knn}](./00-data/10-images/K-Nearest-Neighbor.50.png) 
 
 [^18]
 
@@ -122,7 +117,7 @@ Principal Component Analysis is an example of unsupervised learning, which we di
 
 Among the simplest unsupervised learning algorithms is K-means. K-means does not rely on the class labels of the dataset at all. K-means may be used to determine any number of classes despite any predetermined values. K-means can discover clusters later used in classification or hierarchical feature representation. K-means has several alternative methods but, in general, calculates the distance (or conversely the similarity) of observations to a mean value of the $K$th grouping. The mean value is called the center of mass, the Physics term that provides an excellent analogy since the center of mass is a weighted average. By choosing a different number of groupings (values of $K$, much like the K-NN), then comparing the grouping by a measure of accuracy, one example being, mean square error. 
 
-![K-Means \label{kmeans}](../00-data/10-images/k-means-2.50.png)
+![K-Means \label{kmeans}](./00-data/10-images/k-means-2.50.png)
 
 [^111]
 
@@ -177,7 +172,7 @@ The Exploratory Data Analysis determines if features were skewed and needed must
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-![Mean % Amino Acid Compositions for Control & Myoglobin \label{c_m_aac}](../00-data/10-images/c_m_Mean_AAC.png)
+![Mean % Amino Acid Compositions for Control & Myoglobin \label{c_m_aac}](./00-data/10-images/c_m_Mean_AAC.png)
 
 ### Experimental Procedure
 

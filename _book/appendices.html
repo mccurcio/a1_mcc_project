@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Appendices | Comparison of Binary Classification Using Six Machine Learning Methods</title>
+  <meta name="description" content="Matthew Curcio’s Masters thesis written for Worcester Polytechnic Institute" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Appendices | Comparison of Binary Classification Using Six Machine Learning Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Matthew Curcio’s Masters thesis written for Worcester Polytechnic Institute" />
+  <meta name="github-repo" content="github.com/mccurcio/a1_mcc_project" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Appendices | Comparison of Binary Classification Using Six Machine Learning Methods" />
+  
+  <meta name="twitter:description" content="Matthew Curcio’s Masters thesis written for Worcester Polytechnic Institute" />
+  
+
+<meta name="author" content="Matthew C. Curcio" />
+
+
+<meta name="date" content="2020-02-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="neural-networks-for-binary-classification.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#what-is-machine-learning"><i class="fa fa-check"></i><b>2.1</b> What is Machine Learning?</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#what-is-predictive-modeling"><i class="fa fa-check"></i><b>2.2</b> What is Predictive Modeling?</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#the-epicycle-of-analysis"><i class="fa fa-check"></i><b>2.3</b> The Epicycle of Analysis</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction.html"><a href="introduction.html#predictive-modeling"><i class="fa fa-check"></i><b>2.4</b> Predictive Modeling</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="introduction.html"><a href="introduction.html#supervised-learning"><i class="fa fa-check"></i><b>2.4.1</b> Supervised Learning</a></li>
+<li class="chapter" data-level="2.4.2" data-path="introduction.html"><a href="introduction.html#unsupervised-learning"><i class="fa fa-check"></i><b>2.4.2</b> Unsupervised Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="introduction.html"><a href="introduction.html#four-challenges-in-predictive-modeling"><i class="fa fa-check"></i><b>2.5</b> Four Challenges In Predictive Modeling</a></li>
+<li class="chapter" data-level="2.6" data-path="introduction.html"><a href="introduction.html#section-title"><i class="fa fa-check"></i><b>2.6</b> SECTION TITLE (??)</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction.html"><a href="introduction.html#experimental-procedure"><i class="fa fa-check"></i><b>2.6.1</b> Experimental Procedure</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#four-step-analysis"><i class="fa fa-check"></i><b>3.1.1</b> Four-Step Analysis</a></li>
+<li class="chapter" data-level="3.1.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#useful-guides-for-exploratory-data-analysis"><i class="fa fa-check"></i><b>3.1.2</b> Useful Guides for Exploratory Data Analysis</a></li>
+<li class="chapter" data-level="3.1.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#questions-during-eda"><i class="fa fa-check"></i><b>3.1.3</b> Questions During EDA</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#analysis-of-raw-data"><i class="fa fa-check"></i><b>3.2</b> Analysis of RAW data</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-inspect-raw-data-files"><i class="fa fa-check"></i><b>3.2.1</b> Visually inspect RAW data files</a></li>
+<li class="chapter" data-level="3.2.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#inspect-raw-dataframe-structure-str"><i class="fa fa-check"></i><b>3.2.2</b> Inspect RAW dataframe structure, <code>str()</code></a></li>
+<li class="chapter" data-level="3.2.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#check-raw-data-head-tail"><i class="fa fa-check"></i><b>3.2.3</b> Check RAW data <code>head</code> &amp; <code>tail</code></a></li>
+<li class="chapter" data-level="3.2.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#check-raw-data-types"><i class="fa fa-check"></i><b>3.2.4</b> Check RAW data types</a></li>
+<li class="chapter" data-level="3.2.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#check-raw-dataframe-dimensions"><i class="fa fa-check"></i><b>3.2.5</b> Check RAW dataframe dimensions</a></li>
+<li class="chapter" data-level="3.2.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#check-raw-for-missing-values"><i class="fa fa-check"></i><b>3.2.6</b> Check RAW for missing values</a></li>
+<li class="chapter" data-level="3.2.7" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#number-of-polypeptides-per-class"><i class="fa fa-check"></i><b>3.2.7</b> Number of polypeptides per Class:</a></li>
+<li class="chapter" data-level="3.2.8" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#numerical-summary-of-raw-features"><i class="fa fa-check"></i><b>3.2.8</b> Numerical summary of RAW features</a></li>
+<li class="chapter" data-level="3.2.9" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visualize-raw-data-with-descriptive-statistics"><i class="fa fa-check"></i><b>3.2.9</b> Visualize RAW Data With Descriptive Statistics</a></li>
+<li class="chapter" data-level="3.2.10" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#scatter-plot-of-means-of-myoglobin-control-amino-acid-composition-of-c_m_raw_aac-dataframe"><i class="fa fa-check"></i><b>3.2.10</b> Scatter plot of means of <em>Myoglobin-Control</em> amino acid composition of <code>c_m_RAW_AAC</code> dataframe</a></li>
+<li class="chapter" data-level="3.2.11" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#means-of-percent-amino-acid-composition-of-control-myoglobin-categories-raw-data"><i class="fa fa-check"></i><b>3.2.11</b> Means of percent amino acid composition of control &amp; myoglobin categories, RAW data</a></li>
+<li class="chapter" data-level="3.2.12" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-grand-means-of-overall-amino-acid-composition-raw-data"><i class="fa fa-check"></i><b>3.2.12</b> Boxplots of grand-means of overall amino acid composition, RAW data</a></li>
+<li class="chapter" data-level="3.2.13" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-amino-acid-compositions-for-control-only-raw-data"><i class="fa fa-check"></i><b>3.2.13</b> Boxplots of amino acid compositions for control (only), RAW data</a></li>
+<li class="chapter" data-level="3.2.14" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-amino-acid-compositions-for-myoglobin-only-raw-data"><i class="fa fa-check"></i><b>3.2.14</b> Boxplots of amino acid compositions for myoglobin (only), RAW data</a></li>
+<li class="chapter" data-level="3.2.15" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-length-of-polypeptides-for-combined-raw-data"><i class="fa fa-check"></i><b>3.2.15</b> Boxplots Of Length Of Polypeptides For Combined RAW Data</a></li>
+<li class="chapter" data-level="3.2.16" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#plot-coefficient-of-variance-for-raw-data"><i class="fa fa-check"></i><b>3.2.16</b> Plot Coefficient Of Variance For RAW Data</a></li>
+<li class="chapter" data-level="3.2.17" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#skewness-of-distributions-raw-data"><i class="fa fa-check"></i><b>3.2.17</b> Skewness of distributions, RAW data</a></li>
+<li class="chapter" data-level="3.2.18" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#qq-plots-of-20-amino-acids-raw-data"><i class="fa fa-check"></i><b>3.2.18</b> QQ-Plots of 20 amino acids, RAW data</a></li>
+<li class="chapter" data-level="3.2.19" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#determine-coefficients-of-correlation-raw-data"><i class="fa fa-check"></i><b>3.2.19</b> Determine coefficients of correlation, RAW data</a></li>
+<li class="chapter" data-level="3.2.20" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-to-dimension-reduction-using-high-correlation"><i class="fa fa-check"></i><b>3.2.20</b> How to: Dimension Reduction using High Correlation</a></li>
+<li class="chapter" data-level="3.2.21" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boruta---dimensionality-reduction-raw-data"><i class="fa fa-check"></i><b>3.2.21</b> Boruta - dimensionality reduction, RAW data</a></li>
+<li class="chapter" data-level="3.2.22" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#plot-variable-importance"><i class="fa fa-check"></i><b>3.2.22</b> Plot variable importance</a></li>
+<li class="chapter" data-level="3.2.23" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#variable-importance-scores"><i class="fa fa-check"></i><b>3.2.23</b> Variable importance scores</a></li>
+<li class="chapter" data-level="3.2.24" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#conclusion-for-boruta-random-forest-test"><i class="fa fa-check"></i><b>3.2.24</b> Conclusion for Boruta random forest test</a></li>
+<li class="chapter" data-level="3.2.25" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#conclusions-for-eda-raw-data"><i class="fa fa-check"></i><b>3.2.25</b> Conclusions For EDA, RAW data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#analysis-of-transformed-data"><i class="fa fa-check"></i><b>3.3</b> Analysis of TRANSFORMED data</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#check-transformed-dataframe-dimensions"><i class="fa fa-check"></i><b>3.3.1</b> Check Transformed dataframe dimensions</a></li>
+<li class="chapter" data-level="3.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#check-transformed-for-missing-values"><i class="fa fa-check"></i><b>3.3.2</b> Check Transformed for missing values</a></li>
+<li class="chapter" data-level="3.3.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#count-transformed-data-for-the-number-of-polypeptides-per-class"><i class="fa fa-check"></i><b>3.3.3</b> Count Transformed data for the number of polypeptides per class</a></li>
+<li class="chapter" data-level="3.3.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visualization-of-transformed-data-descriptive-statistics"><i class="fa fa-check"></i><b>3.3.4</b> Visualization of Transformed Data Descriptive Statistics</a></li>
+<li class="chapter" data-level="3.3.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#scatter-plot-of-means-of-myoglobin-control-amino-acid-composition-sqrt-x_i-transformed-c_m_transformed-dataframe"><i class="fa fa-check"></i><b>3.3.5</b> Scatter plot of means of <em>Myoglobin-Control</em> amino acid composition <span class="math inline">\(\sqrt x_i\)</span> Transformed (c_m_TRANSFORMED) dataframe</a></li>
+<li class="chapter" data-level="3.3.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#grouped-bar-chart-of-means-for-percent-amino-acid-composition-of-transformed-data-control-myoglobin-categories"><i class="fa fa-check"></i><b>3.3.6</b> Grouped bar chart of means for percent amino acid composition of Transformed Data; control &amp; myoglobin categories</a></li>
+<li class="chapter" data-level="3.3.7" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-grand-means-of-the-overall-amino-acid-composition-of-square-root-transformed-data"><i class="fa fa-check"></i><b>3.3.7</b> Boxplots of grand-means of the overall amino acid composition of square-root transformed data</a></li>
+<li class="chapter" data-level="3.3.8" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-amino-acid-compositions-for-control-only-of-square-root-transformed-data"><i class="fa fa-check"></i><b>3.3.8</b> Boxplots of amino acid compositions for control (only) of square-root transformed data</a></li>
+<li class="chapter" data-level="3.3.9" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-amino-acid-compositions-for-myoglobin-of-square-root-transformed-dataonly-of-square-root-transformed-data"><i class="fa fa-check"></i><b>3.3.9</b> Boxplots of amino acid compositions for myoglobin of square-root transformed Data(only) of square-root transformed data</a></li>
+<li class="chapter" data-level="3.3.10" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boxplots-of-length-of-polypeptides-of-transformed-data-myoglobin-control-combined"><i class="fa fa-check"></i><b>3.3.10</b> Boxplots Of Length Of Polypeptides Of Transformed Data; Myoglobin, Control &amp; Combined</a></li>
+<li class="chapter" data-level="3.3.11" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#coefficient-of-variance-cv-of-transformed-data"><i class="fa fa-check"></i><b>3.3.11</b> Coefficient of variance (CV) Of Transformed data</a></li>
+<li class="chapter" data-level="3.3.12" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#plot-of-coefficient-of-variance-cv"><i class="fa fa-check"></i><b>3.3.12</b> Plot of Coefficient Of Variance (CV)</a></li>
+<li class="chapter" data-level="3.3.13" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#skewness-of-distributions-of-transformed-data"><i class="fa fa-check"></i><b>3.3.13</b> Skewness of distributions Of Transformed Data</a></li>
+<li class="chapter" data-level="3.3.14" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#qq-plots-of-20-amino-acids-of-transformed-data"><i class="fa fa-check"></i><b>3.3.14</b> QQ Plots of 20 amino acids of Transformed data</a></li>
+<li class="chapter" data-level="3.3.15" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#determine-coefficients-of-correlation-of-transformed-data"><i class="fa fa-check"></i><b>3.3.15</b> Determine coefficients of correlation of Transformed Data</a></li>
+<li class="chapter" data-level="3.3.16" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#boruta---dimensionality-reduction-of-transformed-data"><i class="fa fa-check"></i><b>3.3.16</b> Boruta - dimensionality reduction of Transformed data</a></li>
+<li class="chapter" data-level="3.3.17" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#plot-variable-importance-1"><i class="fa fa-check"></i><b>3.3.17</b> Plot variable importance</a></li>
+<li class="chapter" data-level="3.3.18" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#variable-importance-scores-1"><i class="fa fa-check"></i><b>3.3.18</b> Variable importance scores</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#eda-conclusion"><i class="fa fa-check"></i><b>3.4</b> EDA Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><i class="fa fa-check"></i><b>4</b> Principle Component Analysis of Myoglobin/Control Protein Sets</a><ul>
+<li class="chapter" data-level="4.1" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#introduction-2"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#data-centering-scaling-normalization"><i class="fa fa-check"></i><b>4.2</b> Data centering / scaling / normalization</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#histograms-of-scaled-vs.-unscaled-data"><i class="fa fa-check"></i><b>4.2.1</b> Histograms of Scaled Vs. Unscaled data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#finding-the-covariance-matrix"><i class="fa fa-check"></i><b>4.2.2</b> Finding the Covariance Matrix</a></li>
+<li class="chapter" data-level="" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#covariance-of-two-variables"><i class="fa fa-check"></i>Covariance of two variables</a></li>
+<li class="chapter" data-level="" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#covariance-of-matrices"><i class="fa fa-check"></i>Covariance of matrices</a></li>
+<li class="chapter" data-level="4.2.3" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#finding-pca-via-singular-value-decomposition"><i class="fa fa-check"></i><b>4.2.3</b> Finding PCA via singular value decomposition</a></li>
+<li class="chapter" data-level="4.2.4" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#example-of-two-dimensional-pca-using-random-data"><i class="fa fa-check"></i><b>4.2.4</b> Example of two-dimensional PCA using random data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#principle-component-analysis-using-norm_c_m_20aa"><i class="fa fa-check"></i><b>4.3</b> Principle component analysis using <code>norm_c_m_20aa</code></a></li>
+<li class="chapter" data-level="4.4" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#screeplot-and-cumulative-proportion-of-variance-plot"><i class="fa fa-check"></i><b>4.4</b> Screeplot and Cumulative Proportion of Variance plot</a></li>
+<li class="chapter" data-level="4.5" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#biplots"><i class="fa fa-check"></i><b>4.5</b> Biplots</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#biplot-1-pc1-vs.-pc2-with-class-by-color-labels"><i class="fa fa-check"></i><b>4.5.1</b> Biplot 1: PC1 Vs. PC2 with ‘Class’ by color labels</a></li>
+<li class="chapter" data-level="4.5.2" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#biplot-2-determination-of-4-rule-set-for-outliers"><i class="fa fa-check"></i><b>4.5.2</b> Biplot 2: Determination Of 4 Rule Set For Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#obtain-outliers-from-biplot-2-pc1-vs.-pc2"><i class="fa fa-check"></i><b>4.6</b> Obtain Outliers From Biplot #2: PC1 Vs. PC2</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#outliers-from-principal-component-1"><i class="fa fa-check"></i><b>4.6.1</b> Outliers from Principal Component-1</a></li>
+<li class="chapter" data-level="4.6.2" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#outliers-from-principal-component-2"><i class="fa fa-check"></i><b>4.6.2</b> Outliers from Principal Component-2</a></li>
+<li class="chapter" data-level="4.6.3" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#list-of-all-outliers-union-and-sorted-found-using-the-ruleset-1-through-4"><i class="fa fa-check"></i><b>4.6.3</b> List of all outliers (union and sorted) found using the ruleset 1 through 4</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#pca-conclusions"><i class="fa fa-check"></i><b>4.7</b> PCA Conclusions</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="principle-component-analysis-of-myoglobincontrol-protein-sets.html"><a href="principle-component-analysis-of-myoglobincontrol-protein-sets.html#outliers-derived-from-pc1-vs-pc2"><i class="fa fa-check"></i><b>4.7.1</b> Outliers derived from PC1 Vs PC2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html"><i class="fa fa-check"></i><b>5</b> Logistic Regression For Binary Classification</a><ul>
+<li class="chapter" data-level="5.1" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#introduction-3"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-training-1-using-20-features"><i class="fa fa-check"></i><b>5.2</b> Logit Training #1 Using 20 Features</a></li>
+<li class="chapter" data-level="5.3" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-results-1"><i class="fa fa-check"></i><b>5.3</b> Logit Results #1</a></li>
+<li class="chapter" data-level="5.4" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-training-2-using-9-features"><i class="fa fa-check"></i><b>5.4</b> Logit Training #2 Using 9 Features</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-training-2-using-9-features-1"><i class="fa fa-check"></i><b>5.4.1</b> Logit Training #2 Using 9 Features</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-summary-2"><i class="fa fa-check"></i><b>5.5</b> Logit Summary #2</a></li>
+<li class="chapter" data-level="5.6" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-confusion-matrix-2"><i class="fa fa-check"></i><b>5.6</b> Logit Confusion Matrix #2</a></li>
+<li class="chapter" data-level="5.7" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#obtain-list-of-false-positives-false-negatives"><i class="fa fa-check"></i><b>5.7</b> Obtain List of False Positives &amp; False Negatives</a></li>
+<li class="chapter" data-level="5.8" data-path="logistic-regression-for-binary-classification.html"><a href="logistic-regression-for-binary-classification.html#logit-conclusion"><i class="fa fa-check"></i><b>5.8</b> Logit Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html"><i class="fa fa-check"></i><b>6</b> Neural Networks For Binary Classification</a><ul>
+<li class="chapter" data-level="6.1" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#introduction-4"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#the-one-neuron-system"><i class="fa fa-check"></i><b>6.2</b> The One Neuron System</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#summation-function"><i class="fa fa-check"></i><b>6.2.1</b> Summation Function</a></li>
+<li class="chapter" data-level="6.2.2" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#activation-functions"><i class="fa fa-check"></i><b>6.2.2</b> Activation Functions</a></li>
+<li class="chapter" data-level="6.2.3" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#binary-output-or-probability"><i class="fa fa-check"></i><b>6.2.3</b> Binary Output Or Probability</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#the-two-neuron-system"><i class="fa fa-check"></i><b>6.3</b> The Two Neuron System</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#feed-forward-in-a-two-neuron-network"><i class="fa fa-check"></i><b>6.3.1</b> Feed-Forward In A Two Neuron Network</a></li>
+<li class="chapter" data-level="6.3.2" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#error-back-propagation"><i class="fa fa-check"></i><b>6.3.2</b> Error Back-propagation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#neural-network-experiment-for-binary-classification"><i class="fa fa-check"></i><b>6.4</b> Neural Network Experiment For Binary Classification</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#train-model-with-neural-networks"><i class="fa fa-check"></i><b>6.4.1</b> Train model with neural networks</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="neural-networks-for-binary-classification.html"><a href="neural-networks-for-binary-classification.html#neural-network-conclusion"><i class="fa fa-check"></i><b>6.5</b> Neural Network Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="appendices.html"><a href="appendices.html"><i class="fa fa-check"></i><b>7</b> Appendices</a><ul>
+<li class="chapter" data-level="7.1" data-path="appendices.html"><a href="appendices.html#install-r-rstudio"><i class="fa fa-check"></i><b>7.1</b> Install R &amp; RStudio</a></li>
+<li class="chapter" data-level="7.2" data-path="appendices.html"><a href="appendices.html#load-libraries-used-in-this-project"><i class="fa fa-check"></i><b>7.2</b> Load Libraries Used In This Project</a></li>
+<li class="chapter" data-level="7.3" data-path="appendices.html"><a href="appendices.html#calculate-the-amino-acid-compositions-aac-and-di-peptide-compositions-dpc"><i class="fa fa-check"></i><b>7.3</b> Calculate the amino acid compositions (AAC) and Di-peptide compositions (DPC)</a></li>
+<li class="chapter" data-level="7.4" data-path="appendices.html"><a href="appendices.html#calculate-aac-and-dpc-values-function"><i class="fa fa-check"></i><b>7.4</b> Calculate AAC and DPC values function</a></li>
+<li class="chapter" data-level="7.5" data-path="appendices.html"><a href="appendices.html#run-myoglobin"><i class="fa fa-check"></i><b>7.5</b> Run Myoglobin</a></li>
+<li class="chapter" data-level="7.6" data-path="appendices.html"><a href="appendices.html#run-control-human-not-myoglobin"><i class="fa fa-check"></i><b>7.6</b> Run Control / Human-NOT-myoglobin</a></li>
+<li class="chapter" data-level="7.7" data-path="appendices.html"><a href="appendices.html#run-controls"><i class="fa fa-check"></i><b>7.7</b> Run Controls</a></li>
+<li class="chapter" data-level="7.8" data-path="appendices.html"><a href="appendices.html#keep-aac-only-for-raw-data"><i class="fa fa-check"></i><b>7.8</b> KEEP AAC ONLY FOR RAW DATA</a></li>
+<li class="chapter" data-level="7.9" data-path="appendices.html"><a href="appendices.html#transform-c-f-i-from-c_m_raw_aac"><i class="fa fa-check"></i><b>7.9</b> Transform {C, F, I} from c_m_RAW_AAC</a></li>
+<li class="chapter" data-level="7.10" data-path="appendices.html"><a href="appendices.html#where-to-find-help"><i class="fa fa-check"></i><b>7.10</b> Where To Find Help</a></li>
+<li class="chapter" data-level="7.11" data-path="appendices.html"><a href="appendices.html#machine-setting-session-info"><i class="fa fa-check"></i><b>7.11</b> Machine Setting &amp; Session Info</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Binary Classification Using Six Machine Learning Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="appendices" class="section level1">
+<h1><span class="header-section-number">7</span> Appendices</h1>
+<p><strong>Word To The Wise</strong></p>
+<ul>
+<li><p>LEARN GIT, get a Github account! Put Every computer program you write and Eevery stick of knowledge related to your work in a clean format on Git. You will benefit from it in the long run…</p></li>
+<li><p>To Biologists and Biochemists (which I also consider myself), it is your task to become more familiar with computer languages, miscellaneous computer concepts and statistics.</p></li>
+</ul>
+<p>As of the writing of this booklet, Data Science and Bioinformatics are now centered around the computer languages <a href="https://cran.r-project.org/">R</a> and <a href="https://www.anaconda.com/">Python</a>.</p>
+<p>To many researchers in data science and bioinformatics the field now includes such languages as,<br />
+<em>in no particular order</em>,</p>
+<ul>
+<li><a href="https://cran.r-project.org/">R</a></li>
+<li><a href="https://www.anaconda.com/">Python</a><br />
+</li>
+<li><a href="https://www.datascienceatthecommandline.com/">Bash shell scripting</a><br />
+</li>
+<li><a href="https://en.wikipedia.org/wiki/SQL">SQL</a><br />
+</li>
+<li><a href="https://julialang.org/">Julia</a><br />
+</li>
+<li><a href="https://www.perl.org/">Perl</a></li>
+<li><a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a><br />
+</li>
+<li><a href="https://www.javascript.com/">Javascript</a></li>
+<li><a href="https://rmarkdown.rstudio.com/">RMarkdown</a>, (this one is fun and easy)</li>
+</ul>
+<div id="just-start-with-one-language" class="section level4 unnumbered">
+<h4>Just start with one language</h4>
+<ul>
+<li>Stick with it for a time and learn it. Learn the ins-and-outs of one language first.</li>
+</ul>
+</div>
+<div id="is-r-or-python-better" class="section level4 unnumbered">
+<h4>Is R or Python better?</h4>
+<ol style="list-style-type: decimal">
+<li>R &amp; Python are both FREE,</li>
+<li>Both have great integrated development environments (IDEs),
+<ul>
+<li><a href="https://www.rstudio.com/">RStudio</a> is great &amp; FREE,</li>
+<li><a href="https://www.spyder-ide.org/">Spyder</a> is also great &amp; FREE,</li>
+<li><a href="https://www.jetbrains.com/pycharm/">PyCharm</a></li>
+<li><a href="https://www.sublimetext.com/">Sublime</a></li>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a></li>
+<li><a href="https://www.vim.org/">Vim</a></li>
+<li><a href="https://jupyter.org/">Jupyter Notebook</a></li>
+</ul></li>
+<li>Both languages have been around for &gt; 20 years, therefore both have tons of FREE information &amp; tutorials on YouTube,</li>
+</ol>
+</div>
+<div id="install-r-rstudio" class="section level2">
+<h2><span class="header-section-number">7.1</span> Install R &amp; RStudio</h2>
+<p><strong>NOTE</strong>: I use <a href="https://www.ubuntu.com/">Ubuntu</a>.</p>
+<ol style="list-style-type: decimal">
+<li><p>Go to: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></p></li>
+<li><p>Choose R for your operating system.</p></li>
+<li>If you are using Linux, I recommend that you download/install 4 R files.
+<ol style="list-style-type: decimal">
+<li>r-base-core_#.#.#.*.deb (approx. 30 MB)</li>
+<li>r-base-dev_#.#.#.*.deb (approx. 45 KB)</li>
+<li>r-base_#.#.#*.deb (approx. 90 KB)</li>
+<li>r-base-html-#.#.#*.deb (approx. 90 KB)</li>
+</ol></li>
+<li><p>If you do have Linux you may try this video: <a href="https://www.youtube.com/watch?v=LeB15G14N7g">How to install R.</a></p></li>
+<li><p>Go to: <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a></p></li>
+<li><p>From RStudio’s homepage click, <em>Products</em> then click <em>RStudio</em> from the dropdown menu.</p></li>
+<li><p>Click the Download of the FREE version of RStudio Desktop</p></li>
+<li><p>Click <em>RStudio #.#</em> to download a version for your machine</p></li>
+<li><p>Have Linux? Try this - <a href="https://www.youtube.com/watch?v=LeB15G14N7g">How to install RStudio.</a></p></li>
+<li>If you are looking for instructions for Mac &amp; Windows machines try:
+<ul>
+<li><a href="https://guide.freecodecamp.org/r/">FreeCodeCamp</a></li>
+</ul></li>
+</ol>
+</div>
+<div id="load-libraries-used-in-this-project" class="section level2">
+<h2><span class="header-section-number">7.2</span> Load Libraries Used In This Project</h2>
+<p>If you are using Ubuntu/Linux you may need these Linux libraries first.</p>
+<pre><code>sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libssl-dev
+sudo apt-get install libxml2-dev</code></pre>
+<p>To install <code>car</code> &amp; <code>rgl</code></p>
+<pre><code>sudo apt-get install xorg
+sudo apt-get install libx11-dev
+sudo apt-get install libglu1-mesa-dev
+sudo apt-get install libfreetype6-dev</code></pre>
+<pre><code>install.packages(&quot;rlang&quot;)
+library(rlang)
+
+load_or_install &lt;- function(package_names) {
+    for(package_name in package_names) {
+        if(!is_installed(package_name)) {
+            install.packages(package_name,
+            repos = &quot;http://lib.stat.cmu.edu/R/CRAN&quot;,
+            dependencies = TRUE)
+        }
+        library(package_name,character.only=TRUE,quietly=TRUE,verbose=FALSE) 
+        print(&quot;OK&quot;)
+        }
+}</code></pre>
+<pre><code>load_or_install(c(&quot;readr&quot;, &quot;doMC&quot;, &quot;corrplot&quot;, &quot;knitr&quot;, &quot;caret&quot;, &quot;tidyverse&quot;))
+
+load_or_install(c(&quot;ggplot2&quot;, &quot;rmarkdown&quot;, &quot;bookdown&quot;, &quot;blogdown&quot;, &quot;kernlab&quot;))
+
+load_or_install(c(&quot;e1071&quot;, &quot;plyr&quot;, &quot;RColorBrewer&quot;, &quot;neuralnet&quot;))
+
+load_or_install(c(&quot;rpart&quot;, &quot;MASS&quot;, &quot;tidyr&quot;, &quot;ggplot2&quot;, &quot;seqinr&quot;))
+
+load_or_install(c(&quot;LogicReg&quot;, &quot;randomForest&quot;, &quot;foreach&quot;))
+
+load_or_install(c(&quot;import&quot;, &quot;dplyr&quot;, &quot;stringr&quot;, &quot;stringi&quot;))</code></pre>
+</div>
+<div id="calculate-the-amino-acid-compositions-aac-and-di-peptide-compositions-dpc" class="section level2">
+<h2><span class="header-section-number">7.3</span> Calculate the amino acid compositions (AAC) and Di-peptide compositions (DPC)</h2>
+<p>from .fasta formats, {Myoglobin, Non-Myoglobin}</p>
+<p>Calculating the Amino Acid and Di-peptide composition of a protein string is a
+simple calculation requiring the total amino acid length of the peptide or
+poly-peptide of interest and a count of substrings. Initially, the command
+<code>seqinr::read.fasta</code> reads .fasta file formats and returns a list of proteins
+stripping away all other information. Secondly, the command
+<code>stringr::str_count()</code> produces an integer value of the number of substrings
+in a larger string, i.e. <code>peptide</code>.</p>
+<p>For example, <code>aa_nums[j] = str_count(peptide, col_titles[j]) / total_aa</code>,</p>
+<p>Where; <code>aa_nums[j]</code> is an array to saving values for later writing to file,
+<code>peptide</code> is the string to check, i.e. protein of interest, <code>col_titles[j]</code>
+is the substring which is either a single amino acid or di-peptide.</p>
+<p>Input: .fasta<br />
+Output: .csv</p>
+<p>Libraries</p>
+<pre><code>Libraries = c(&quot;stringr&quot;, &quot;knitr&quot;, &quot;seqinr&quot;)
+
+for (p in Libraries) {  # Install Libraries
+    library(p, character.only = TRUE)
+}
+
+opts_chunk$set(cache = TRUE, 
+               warning = FALSE, 
+               message = FALSE,
+               align = &quot;center&quot;)</code></pre>
+<p>Import uniprot-myoglobin.fasta - Read peptide lines</p>
+<pre><code>read_fasta &lt;- function(file) {
+    listo_proteins &lt;- read.fasta(file = file,
+                                 seqtype = &quot;AA&quot;,
+                                 as.string = TRUE,
+                                 seqonly = FALSE,
+                                 strip.desc = TRUE)
+    return(listo_proteins)
+}
+
+file = &quot;./00-data/ORIGINAL_DATA/uniprot-myoglobin.fasta&quot;
+myoglobins &lt;- read_fasta(file)</code></pre>
+<p>Column_titles</p>
+<pre><code>column_titles = function() {
+    peptides = c(&quot;A&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;,
+                 &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;K&quot;, &quot;L&quot;,
+                 &quot;M&quot;, &quot;N&quot;, &quot;P&quot;, &quot;Q&quot;, &quot;R&quot;,
+                 &quot;S&quot;, &quot;T&quot;, &quot;V&quot;, &quot;W&quot;, &quot;Y&quot;)
+                 
+    # Add DIPEPTIDES column titles
+    di_titles = vector(mode = &quot;character&quot;, length = 400)
+    k = 1
+    for (i in 1:20) {
+        for (j in 1:20) {
+            di_titles[k] &lt;- paste(peptides[i], peptides[j], sep = &quot;&quot;)
+            k = k + 1
+        }
+    }
+    aa_di_titles &lt;- c(&quot;Class&quot;,&quot;TotalAA&quot;,&quot;PID&quot;, peptides, di_titles)
+    return(aa_di_titles)
+}
+
+col_titles &lt;- column_titles()
+col_titles</code></pre>
+<p>Write empty .csv</p>
+<pre><code>write_empty_csv &lt;- function(protein_class = &quot;C&quot;) {
+    col_titles &lt;- column_titles()
+    file_name &lt;- paste(protein_class, &quot;_aac_dpc.csv&quot;, sep = &quot;&quot;)
+    write.table(t(col_titles), 
+                file_name,  
+                sep = &quot;,&quot;, 
+                col.names = FALSE, 
+                row.names = FALSE, 
+                eol = &quot;\n&quot;)
+    return(file_name)
+}
+
+file_name &lt;- write_empty_csv()</code></pre>
+</div>
+<div id="calculate-aac-and-dpc-values-function" class="section level2">
+<h2><span class="header-section-number">7.4</span> Calculate AAC and DPC values function</h2>
+<pre><code>calc_aac_dpc &lt;- function(peptide, protein_class = &quot;C&quot;, i, file_name) {
+    aa_nums = matrix(0, ncol = 423)
+    ###############################
+    # First column is class
+    aa_nums[1] = ifelse(protein_class == &quot;C&quot;, 0, 1)
+    # Second column is total number of amino acids
+    total_aa = nchar(peptide)
+    aa_nums[2] = total_aa
+    # Third line is &#39;Protein ID&#39;, PID
+    aa_nums[3] = paste(protein_class, i, sep = &quot;&quot;)
+    # Column 4:423 - Calculate AAC/DPC
+    for (j in 4:423) {
+        aa_nums[j] = str_count(peptide, col_titles[j]) / total_aa
+        }
+    write(t(aa_nums), file = file_name, append = TRUE, ncolumns = 423, sep = &quot;,&quot;)
+}</code></pre>
+</div>
+<div id="run-myoglobin" class="section level2">
+<h2><span class="header-section-number">7.5</span> Run Myoglobin</h2>
+<pre><code># RUN Myoglobin
+for (i in 1:1124) {
+    peptide &lt;- myoglobins[[i]][1]
+    calc_aac_dpc(peptide, protein_class = &quot;M&quot;, i, file_name)
+}</code></pre>
+</div>
+<div id="run-control-human-not-myoglobin" class="section level2">
+<h2><span class="header-section-number">7.6</span> Run Control / Human-NOT-myoglobin</h2>
+<ul>
+<li>Import data - Read peptide lines</li>
+</ul>
+<pre><code>read_fasta &lt;- function(file) {
+    listo_proteins &lt;- read.fasta(file = file,
+                            seqtype = &quot;AA&quot;,
+                            as.string = TRUE,
+                            seqonly = FALSE,
+                            strip.desc = TRUE)
+    return(listo_proteins)
+}
+
+file = &quot;./00-data/ORIGINAL_DATA/uniprot-human+NOT+hemoglobin+NOT+myoglobin+random.fasta&quot;
+controls &lt;- read_fasta(file)</code></pre>
+</div>
+<div id="run-controls" class="section level2">
+<h2><span class="header-section-number">7.7</span> Run Controls</h2>
+<pre><code>for (i in 1:1216) {
+    peptide &lt;- controls[[i]][1]
+    calc_aac_dpc(peptide, protein_class = &quot;C&quot;, i, file_name)
+}</code></pre>
+</div>
+<div id="keep-aac-only-for-raw-data" class="section level2">
+<h2><span class="header-section-number">7.8</span> KEEP AAC ONLY FOR RAW DATA</h2>
+<pre><code>file = &quot;./00-data/aac_dpc_values/C+M_aac_dpc.csv&quot;
+C+M_aac_dpc &lt;- read.csv(file,
+                        stringsAsFactors=FALSE)
+# View(`C+M_aac_dpc`)
+
+# Select 1st thru 23rd variables
+c_m_RAW_AAC &lt;- C+M_aac_dpc[c(1:23)]</code></pre>
+<ul>
+<li>To A Comma Delimited Text File</li>
+</ul>
+<pre><code>setwd(&quot;../00-data/02-aac_dpc_values/&quot;)
+
+write.table(c_m_RAW_AAC, 
+            file = &quot;./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv&quot;, 
+            sep = &quot;,&quot;, 
+            row.names = F)</code></pre>
+</div>
+<div id="transform-c-f-i-from-c_m_raw_aac" class="section level2">
+<h2><span class="header-section-number">7.9</span> Transform {C, F, I} from c_m_RAW_AAC</h2>
+<pre><code>library(readr)
+
+file = &quot;../00-data/02-aac_dpc_values/c_m_RAW_AAC.csv&quot;
+c_m_RAW_AAC &lt;- read_csv(file, 
+                        col_types = cols(Class = col_factor(levels = c(&quot;0&quot;,&quot;1&quot;))))
+c_m_TRANSFORMED_AAC &lt;- c_m_RAW_AAC</code></pre>
+<ol style="list-style-type: decimal">
+<li>Transfrom C,F,I using sqrt(x)<br />
+</li>
+<li>Columns: C=5, F=8, I=11</li>
+</ol>
+<pre><code>c_m_TRANSFORMED_AAC[, 5] &lt;- sqrt(c_m_TRANSFORMED_AAC[, 5]) # C
+c_m_TRANSFORMED_AAC[, 8] &lt;- sqrt(c_m_TRANSFORMED_AAC[, 8]) # F
+c_m_TRANSFORMED_AAC[,11] &lt;- sqrt(c_m_TRANSFORMED_AAC[,11]) # I
+
+file = &quot;./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv&quot;
+write_csv(c_m_TRANSFORMED_AAC, 
+          file = file, 
+          col_names = T)</code></pre>
+</div>
+<div id="where-to-find-help" class="section level2">
+<h2><span class="header-section-number">7.10</span> Where To Find Help</h2>
+<ol style="list-style-type: decimal">
+<li><a href="https://resources.rstudio.com/rstudio-cheatsheets">Cheat Sheets</a></li>
+<li><a href="https://community.rstudio.com" class="uri">https://community.rstudio.com</a></li>
+<li><a href="https://www.reddit.com/r/RStudio/" class="uri">https://www.reddit.com/r/RStudio/</a></li>
+<li><a href="https://R-bloggers.com/" class="uri">https://R-bloggers.com/</a></li>
+<li><a href="https://resources.rstudio.com/" class="uri">https://resources.rstudio.com/</a></li>
+<li><a href="https://rpubs.com/">Rpubs.com</a></li>
+</ol>
+<ul>
+<li><strong>Rpubs.com</strong> contains R/RStudio notebooks and Markdown pages, VERY HELPFUL work from other peoples online R documents. It is a way to learn from others and share your work. - Sign up, it is <a href="https://rpubs.com/">FREE</a>! then press: <em>Get Started</em></li>
+</ul>
+<p><strong>NOTE</strong>: If you are interested in seeing what others have published search Google, Rpubs.com does not have its own search function. In Google, Search: <code>site:rpubs.com eda</code></p>
+<p>Other sites:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.coursera.org/">Coursera</a></li>
+<li><a href="https://stackoverflow.com/">Stack Overflow</a></li>
+<li><a href="https://www.quora.com/What-is-data-science">Quora</a></li>
+<li><a href="https://youtu.be/ZXrHkIz-krE?t=15">Roger Peng’s EDA</a><br />
+</li>
+<li><a href="https://bookdown.org/">Bookdown</a> - <strong>terrible</strong> not necessary resource</li>
+</ol>
+<p>The Lean Publishing (<a href="https://leanpub.com" class="uri">https://leanpub.com</a>) company contains a library in the form of FREE down-loadable books/pdfs. I recommend;</p>
+<ol style="list-style-type: decimal">
+<li>How to be a modern scientist<a href="#fn62" class="footnote-ref" id="fnref62"><sup>62</sup></a> by Jeffrey Leek<a href="#fn63" class="footnote-ref" id="fnref63"><sup>63</sup></a></li>
+<li>R Programming for Data Science<a href="#fn64" class="footnote-ref" id="fnref64"><sup>64</sup></a> by Roger Peng<a href="#fn65" class="footnote-ref" id="fnref65"><sup>65</sup></a></li>
+<li>Exploratory Data Analysis with R<a href="#fn66" class="footnote-ref" id="fnref66"><sup>66</sup></a> by Roger Peng</li>
+<li>Data Analysis for the Life Sciences<a href="#fn67" class="footnote-ref" id="fnref67"><sup>67</sup></a> by Rafael Irizarry &amp; Michael Love</li>
+</ol>
+</div>
+<div id="machine-setting-session-info" class="section level2">
+<h2><span class="header-section-number">7.11</span> Machine Setting &amp; Session Info</h2>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="kw">Sys.info</span>()[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>)]</a></code></pre></div>
+<pre><code>##                                       sysname                                       release 
+##                                       &quot;Linux&quot;                           &quot;4.15.0-88-generic&quot; 
+##                                       version                                       machine 
+## &quot;#88-Ubuntu SMP Tue Feb 11 20:11:34 UTC 2020&quot;                                      &quot;x86_64&quot;</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<pre><code>## R version 3.6.2 (2019-12-12)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Linux Mint 19.2
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8       
+##  [4] LC_COLLATE=en_US.UTF-8     LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                  LC_ADDRESS=C              
+## [10] LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] grid      parallel  stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] nnet_7.3-12        MASS_7.3-51.5      png_0.1-7          jpeg_0.1-8.1       caret_6.0-85      
+##  [6] lattice_0.20-40    forcats_0.4.0      stringr_1.4.0      dplyr_0.8.4        purrr_0.3.3       
+## [11] tidyr_1.0.2        tibble_2.1.3       tidyverse_1.3.0    ggfortify_0.4.8    ggplot2_3.2.1     
+## [16] Boruta_6.0.0       ranger_0.12.1      doMC_1.3.6         iterators_1.0.12   foreach_1.4.8     
+## [21] corrplot_0.84      RColorBrewer_1.1-2 readr_1.3.1        knitr_1.28        
+## 
+## loaded via a namespace (and not attached):
+##  [1] nlme_3.1-144         fs_1.3.1             lubridate_1.7.4      httr_1.4.1          
+##  [5] tools_3.6.2          backports_1.1.5      utf8_1.1.4           R6_2.4.1            
+##  [9] rpart_4.1-15         DBI_1.1.0            lazyeval_0.2.2       colorspace_1.4-1    
+## [13] withr_2.1.2          tidyselect_1.0.0     gridExtra_2.3        compiler_3.6.2      
+## [17] cli_2.0.1            rvest_0.3.5          xml2_1.2.2           labeling_0.3        
+## [21] bookdown_0.17        scales_1.1.0         digest_0.6.24        rmarkdown_2.1       
+## [25] pkgconfig_2.0.3      htmltools_0.4.0      dbplyr_1.4.2         highr_0.8           
+## [29] rlang_0.4.4          readxl_1.3.1         rstudioapi_0.11      farver_2.0.3        
+## [33] generics_0.0.2       jsonlite_1.6.1       ModelMetrics_1.2.2.1 magrittr_1.5        
+## [37] Matrix_1.2-18        Rcpp_1.0.3           munsell_0.5.0        fansi_0.4.1         
+## [41] lifecycle_0.1.0      pROC_1.16.1          stringi_1.4.6        yaml_2.2.1          
+## [45] plyr_1.8.5           recipes_0.1.9        crayon_1.3.4         haven_2.2.0         
+## [49] splines_3.6.2        hms_0.5.3            pillar_1.4.3         stats4_3.6.2        
+## [53] reshape2_1.4.3       codetools_0.2-16     reprex_0.3.0         glue_1.3.1          
+## [57] packrat_0.5.0        evaluate_0.14        data.table_1.12.8    modelr_0.1.5        
+## [61] vctrs_0.2.3          cellranger_1.1.0     gtable_0.3.0         assertthat_0.2.1    
+## [65] xfun_0.12            gower_0.2.1          prodlim_2019.11.13   broom_0.5.4         
+## [69] e1071_1.7-3          class_7.3-15         survival_3.1-8       timeDate_3043.102   
+## [73] lava_1.6.6           ipred_0.9-9</code></pre>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="62">
+<li id="fn62"><p><a href="https://leanpub.com/modernscientist" class="uri">https://leanpub.com/modernscientist</a><a href="appendices.html#fnref62" class="footnote-back">↩</a></p></li>
+<li id="fn63"><p><a href="http://jtleek.com" class="uri">http://jtleek.com</a><a href="appendices.html#fnref63" class="footnote-back">↩</a></p></li>
+<li id="fn64"><p><a href="https://leanpub.com/rprogramming" class="uri">https://leanpub.com/rprogramming</a><a href="appendices.html#fnref64" class="footnote-back">↩</a></p></li>
+<li id="fn65"><p><a href="https://simplystatistics.org" class="uri">https://simplystatistics.org</a><a href="appendices.html#fnref65" class="footnote-back">↩</a></p></li>
+<li id="fn66"><p><a href="https://leanpub.com/exdata" class="uri">https://leanpub.com/exdata</a><a href="appendices.html#fnref66" class="footnote-back">↩</a></p></li>
+<li id="fn67"><p><a href="https://leanpub.com/dataanalysisforthelifesciences" class="uri">https://leanpub.com/dataanalysisforthelifesciences</a><a href="appendices.html#fnref67" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="neural-networks-for-binary-classification.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

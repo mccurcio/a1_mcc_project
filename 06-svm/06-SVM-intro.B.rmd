@@ -14,15 +14,15 @@ output:
 
 ## Introduction
 
-Support Vector Machine (SVM) learning is a supervised learning technique that may be used as a binary classification system or to find a regression formula. Support vector machines are a “maximum margin classifier. SVM finds the separating hyperplane with the maximum margin to its closest data points.”[^62]
+Support Vector Machine (SVM) learning is a supervised learning technique that may be used as a binary classification system or to find a regression formula. Support vector machines are a “maximum margin classifier. SVM finds the separating hyperplane with the maximum margin to its closest data points.” [^62]
 
 [^62]:Nika Haghtalab & Thorsten Joachims, CS4780/5780 - Machine Learning for Intelligent Systems, Fall 2019, Cornell University, Department of Computer Science, https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote09.html
 
-Although there are many mathematical approaches to solving SVM, many of which include kernels, let us first describe the Linear SVM. Consider a situation where we need to distinguish between two circumstances, its problems, and advantages.  
+Although there are many mathematical approaches to solving SVM, many of which include kernels, let us first describe the Linear SVM used for binary classification. Consider a situation where we need to distinguish between two circumstances, or classes.
 
-In an imaginary biochemistry laboratory, researchers discover a novel enzyme found in different tissues throughout the human body. Biochemists purify the enzyme from several cadavers and several different tissue type samples. Literature suggests that this newly found enzyme has two isozymes, 1) Alpha has a high reaction rate and 2) Gamma has a lower reaction rate. It knows seems like a simple task to learn which isozyme is in which tissue samples. 
+In an imaginary biochemistry laboratory, researchers discover a novel enzyme found in different tissues throughout the human body. Biochemists purify the enzyme from several cadavers and several different tissue types. Literature suggests that this newly found enzyme has two isozymes, 1) Alpha has a high reaction rate and 2) Gamma has a lower reaction rate. It now seems like a simple task to learn which isozymes you possess. Carry out kinetic enzyme analysis on the purified samples then attempt to classify them.
 
-Enzyme kinetic analysis is required and your job is to measure reaction rate by using an assay with the production of a fluorescent compound would be appropriate then determine the Michaelis–Menten constant, ($K_M$). The $K_M$ constant is plotted on a single axis and produces the graphic below.
+Once you have carried out the kinetic analysis you then determine the Michaelis–Menten constant, $K_M$. The $K_M$ constant is plotted on a single axis and produces the graphic below.
 
 ```{r echo=FALSE}
 # Load Libraries
@@ -33,9 +33,8 @@ for (p in Libraries) {
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
----
 
-```{r echo=FALSE, fig.height=3, fig.cap="Test #1: Km of Enzymes"}
+```{r echo=FALSE, out.width='50%', fig.cap = 'Is this linearly separable data?'}
 set.seed(1000)
 x1 = rnorm(20, mean = 1.5, sd = 0.5)
 x1_max = max(x1)
@@ -45,8 +44,8 @@ midpt = (x2_min - x1_max)/2 + x1_max
 y = rep(1, 20)
 
 stripchart(x = x1,
-           main = "Test #1: Km of Enzymes",
-           xlab = "Km",
+           main = "Test #1; Enzyme Rates, Km",
+           xlab = "Km (rate of consumption per unit time)",
            xlim = c(0, 6),
            pch = 16,
            col = "green")
@@ -58,11 +57,11 @@ abline(v = x2_min, col = "red", lwd = 3)
 
 ## Linearly Separable
 
-In test #1, the isozymes can easily separated by activity alone. This first figure demonstrates that the data is "linearly separable,"[^63] Put in another way, the two groups are linearly separable if a single straight line can partition the data.
+In test #1, we can see the two isozymes can easily separated by activity alone. Figure #1 demonstrates that the data is *linearly separable.* The dataset is linearly separable if a single straight line can partition the data.  In more general terms, "if the classes are linearly separable, it can be shown that the algorithm converges to a separating hyperplane." [^63] As Cortes and Vapnik indicate the hyperplane is the decision boundary of any high dimension feature space, considering a hyperplane has one less dimension than its n-dimensional space.
 
 [^63]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, https://web.stanford.edu/~hastie/ElemStatLearn/, 2017
 
-Incidentally, in Patrick Winston's lecture on SVM, he calls SVM the "widest street approach."[^64] Why does Professor Winston use this term? There are many possible streets which can be traced but the *goal* is to find the *widest street*. Many streets may be drawn in our example, but requiring the *widest street* leads to one. In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes."[^65] As Cortes and Vapnik rightly indicate the hyperplane is the decision boundary of any high dimension feature space, considering a hyperplane has one less dimension than its n-dimensional space.
+Incidentally, in Patrick Winston's lecture on SVM, he calls SVM the "widest street approach."[^64] Why does Professor Winston use this term? There are many possible streets which can be traced but the *goal* is to find the *widest street*. Many streets may be drawn in our example, but requiring the *widest street* leads to one. In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes."[^65]
 
 [^64]:Patrick Winston, 6.034 Artificial Intelligence, Fall 2010, Massachusetts Institute of Technology: MIT OpenCourseWare, http://ocw.mit.edu/6-034F10
 
@@ -76,13 +75,12 @@ Adding the prosaic phrase *widest street* smartly leads to the idea that a wides
 
 ## Bias-Variance Trade-Off
 
-The ability to generalize is a key idea in predictive modeling. This idea harkens back to freshman classes where one studied Student's t-test and analysis of variance. 
-
+The ability to generalize is a key idea in predictive modeling. This idea harkens back to freshman classes where one studied Student's t-test and analysis of variance.
 
 $$E \left[ \left( y_0 - \hat f(x_0) \right )^2 \right ] = Var ( \hat f(x_0)) + \left [Bias (\hat f(x_0)) \right]^2 + Var(\epsilon)$$
 [^66]
 
-[^66]:Mitchell?
+[^66]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, https://web.stanford.edu/~hastie/ElemStatLearn/, 2017
 
 The bias-variance dilemma can be stated as follows.
 
@@ -120,16 +118,14 @@ abline(v = midpt, col = "black", lty = 2, lwd = 3)
 abline(v = x2_min, col = "red", lwd = 3)
 ```
 
-
 ## Understanding the hyperplane equation
 
 ```{r echo=FALSE, fig.align="center", out.width="55%"}
 include_graphics("../00-data/10-images/SVM_optimize_2.png")
 ```
-
 [^618]
 
-[^618]:Vapnik??
+[^618]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, https://web.stanford.edu/~hastie/ElemStatLearn/, 2017
 
 If we were trying to find:
 
@@ -196,26 +192,27 @@ The first mention of an SVM like system is by Vapnik and Lerner in 1963, where t
 
 For example, this experiment has chosen to investigate three possible decision boundary shapes for the two-class protein data. The three mathematical constructs which will be tested are:
 
-1. Linear hyperplane (also known as "vanilla"),
+1. Linear hyperplane (also known as "plain-vanilla"),
 2. Curvilinear or polynomial hyperplane and,
-3. A radial basis function hyperplane.
+3. A radial basis function hyperplane,
+4. Sigmoidal.
 
-Linear: $K(x, ~y) ~=~ w^T x + b$ 
+### Linear: $K(x, ~y) ~=~ w^T x + b$ 
 
 - The linear kernel does not transform the data at all. 
 
 Three common SVM kernel formulae investigated are:
 
-1. Polynomial: $K(x_i, ~y) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~~ \gamma > 0$ 
+### Polynomial: $K(x_i, ~y) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~~ \gamma > 0$ 
 
 - The polynomial kernel has a straightforward non-linear transform of the data. 
 - Such that $~\gamma, ~r$, and $d$ are kernel parameters. 
 
-2. Radial Basis Function (RBF): $K(x_i, x_j) ~=~ exp ( - {\gamma} \parallel x_i^T - x_j \parallel ^2 ), ~~ \gamma >0$
+### Radial Basis Function (RBF): $K(x_i, x_j) ~=~ exp ( - {\gamma} \parallel x_i^T - x_j \parallel ^2 ), ~~ \gamma >0$
 
 - The Gaussian RBF kernel which performs well on many data and is a good default
 
-3. Sigmoidal: $K(x, y) ~=~ {\tanh} (\gamma~ x^T ~ y ~+~ r ), ~~ \gamma >0$
+### Sigmoidal: $K(x, y) ~=~ {\tanh} (\gamma~ x^T ~ y ~+~ r ), ~~ \gamma >0$
 
 - Incidentally, The sigmoid kernel produces an SVM analogous to the activation function similar to a [perceptron] with a sigmoid activation function.[^610]
 
