@@ -13,6 +13,14 @@ This folder contains original data, R scripts (.rmd) and output files (.html) us
 | [/22-plots](https://github.com/mccurcio/a1_mcc_project/tree/master/22-plots) |
 | [/99-Bookdown_templates](https://github.com/mccurcio/a1_mcc_project/tree/master/99-Bookdown_templates) | Bookdown templates |
 | [/misc.pics](https://github.com/mccurcio/a1_mcc_project/tree/master/misc.pics) | |
-| a1_mcc_project.Rproj        | RStudio project file |
-| LICENSE                     |  |
-| README.md                   |  |
+| /code | |
+| 01-introduction.rmd | |
+| 02-eda.rmd | |
+| 03-pca.rmd | |
+| 04-logit.rmd | |
+| 05-neural_network.rmd
+| 06-svm-total.rmd | |
+| 07-conclusion.rmd | |
+| 90-all-appendices.rmd | |
+| a1_mcc_project.Rproj  | RStudio project file |
+| README.md  |  |
