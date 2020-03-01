@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  #html_document: default
+---
 
 # Exploratory Data Analysis
 
@@ -9,30 +14,37 @@
 
 The experiment described herein involves taking groups of proteins from the Uniprot.org database and comparing how well different machine learning techniques do at separating the positive from the negative control grouping. In this circumstance, proteins from the myoglobin family are analyzed against randomly chosen human proteins, which are not related to hemoglobin or myoglobin. 
 
-This work is to characterize the outliers derived from PCA and compare them to the false-positives and false-negatives generated from each of 6 machine learning approaches produces;
+This work is to characterize the *anomalous points* derived from PCA and compare them to the false-positives and false-negatives generated from each of six machine learning approaches produces. For the sake of this paper *anomalous points* are defined as values greater than  the absolute value of three times the standard deviation from of the first and second principal components. 
 
+\begin{equation}
+Anomalous ~Points > | 3 \sigma | ~~~where~~~ \sigma = \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2}
+\end{equation}
+
+Therefore the M.L techniques will be: 
+
+1. Principal Component Analysis,
 1. Logit, 
-2. SVM-Linear,
-3. SVM-polynomial, 
-4. SVM-RBF, 
-5. Neural Network.
+1. SVM-Linear,
+1. SVM-polynomial, 
+1. SVM-RBF, 
+1. Neural Network.
 
 ### Four-Step Analysis
 
 At this stage, data is inspected in a careful and structured way. Hence, I have chosen a four-step process:
 
-1. Hypothesize
-1. Summarize
-1. Visualize
-1. Normalize
+1. Hypothesize,
+1. Summarize,
+1. Visualize,
+1. Normalize.
 
 ### Useful Guides for Exploratory Data Analysis
 
 The summarization of the amino acid dataset is based on a hybrid set of guidelines; 
 
-1. NIST Handbook of Statistics, [^22] 
+1. NIST Handbook of Statistics,[^22] 
 2. Roger Peng's booklet on 'Exploratory Data Analysis with R,' [^23]
-3. 'Exploratory Data Analysis Using R,' by Ronald K. Pearson. [^24] 
+3. 'Exploratory Data Analysis Using R,' by Ronald K. Pearson.[^24] 
 
 [^22]:https://www.itl.nist.gov/div898/handbook/
 
@@ -52,7 +64,7 @@ Although exploratory data analysis does not always have a formal hypothesis test
 
 2. Can **Feature Selection** be used, and which procedures are appropriate?
 
-    2.1 Use the Random Forest technique known as Boruta [^25] for feature importance or reduction?
+    2.1 Use the Random Forest technique known as Boruta[^25] for feature importance or reduction?
 
     2.2 Will coefficients of correlation (R) find collinearity and reduce the number of features?
 
@@ -68,7 +80,7 @@ Although exploratory data analysis does not always have a formal hypothesis test
 
     3.3 Does the data have certain biases, either known or unknown?
 
-    3.4 What relationships do we expect from these variables? [^26]
+    3.4 What relationships do we expect from these variables?[^26]
 
 [^25]:Miron Kursa, Witold Rudnicki, Feature Selection with the Boruta Package, DOI:10.18637/jss.v036.i11, 2010
 
@@ -370,7 +382,7 @@ qqline(c_m_RAW_AAC[[i]], col = "red")
 
 ### Determine coefficients of correlation, RAW data
 
-An easily interpretable test is a correlation 2D-plot for investigating multicollinearity or feature reduction. Fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they measure the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^27]
+An easily interpretable test is a correlation 2D-plot for investigating multicollinearity or feature reduction. Fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they measure the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions." [^27]
 
 [^27]:Max Kuhn and Kjell Johnson, Applied Predictive Modeling, Springer Publishing, 2018, P.43
 
@@ -385,7 +397,7 @@ r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1
 
 ```{r, 225, message=FALSE, warning=FALSE}
 c_m_corr_mat <- cor(c_m_RAW_AAC[, c(2, 4:23)],
-method = "p") # "p": Pearson test for continous variables
+method = "p")                    # "p": Pearson test for continous variables
 
 corrplot(abs(c_m_corr_mat),
 title = "Correlation Plot Of AAC Features",
@@ -394,8 +406,8 @@ type = "lower",
 tl.pos = "d",
 cl.lim = c(0, 1),
 addgrid.col = "lightgrey",
-cl.pos = "b", # Color legend position bottom.
-order = "FPC", # "FPC" = first principal component order.
+cl.pos = "b",                   # Color legend position bottom.
+order = "FPC",                  # "FPC" = first principal component order.
 mar = c(1, 2, 1, 2),
 tl.col = "black")
 ```
@@ -407,7 +419,7 @@ NOTE: Amino acids shown in First Principal Component order, top to bottom.
 c_m_corr_mat["T", "N"]
 ```
 
-2. According to Max Kuhn [^28], correlation coefficients need only be addressed if the |R| >= 0.75.
+2. According to Max Kuhn[^28], correlation coefficients need only be addressed if the |R| >= 0.75.
 3. Therefore is **no reason to consider multicollinearity**.
 
 ---
@@ -434,7 +446,7 @@ How to reduce features given high correlation (|R| >= 0.75) {-}
 
 [^29]:Max Kuhn and Kjell Johnson, Applied Predictive Modeling, Springer Publishing, 2018, (http://appliedpredictivemodeling.com/)
 
-### Boruta - dimensionality reduction, RAW data
+### Boruta Random Forest Test, RAW data
 
 ```{r, 227}
 c_m_class_20 <- c_m_RAW_AAC[, -c(2, 3)] # Remove TotalAA & PID
@@ -498,11 +510,11 @@ plotImpHistory(boruta_output)
 
 Three amino acids (C, F, I) from the single amino acid percent composition are transformed by using the square root function. A quick investigation (data not shown) showed that a square root transformation would be sufficient. The square root transformation lowered the skewness from greater than 2 in all cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
-| Protein | Initial skewness | Skew after square root transform |
+| Protein          | Initial skewness | Skew after square root transform |
 | :--------------- | :--------------: | :------------------------------: |
-| C, Cysteine | 2.538162 | 0.3478132 |
-| F, Phenolalanine | 2.128118 | -0.102739 |
-| I, Isoleucine | 2.192145 | 0.2934749 |
+| C, Cysteine      |     2.538162     |            0.3478132             |
+| F, Phenolalanine |     2.128118     |            -0.102739             |
+| I, Isoleucine    |     2.192145     |            0.2934749             |
 
 ---
 
@@ -512,11 +524,11 @@ Three amino acids (C, F, I) from the single amino acid percent composition are t
 
 The $\sqrt x_i$ *Transformed* data is derived from `c_m_RAW_ACC.csv` where the amino acids C, F, I were transformed using a square root function. This transformation was done to reduce the skewness of these samples and avoid modeling problems arising from high skewness, as seen below.
 
-| Amino Acid | Initial skewness | Skew after square root transformation |
+| Amino Acid       | Initial skewness | Skew after square root transformation |
 | :--------------- | :--------------: | :-----------------------------------: |
-| C, Cysteine | 2.538162 | 0.3478132 |
-| F, Phenolalanine | 2.128118 | -0.102739 |
-| I, Isoleucine | 2.192145 | 0.2934749 |
+| C, Cysteine      |     2.538162     |               0.3478132               |
+| F, Phenolalanine |     2.128118     |               -0.102739               |
+| I, Isoleucine    |     2.192145     |               0.2934749               |
 
 ```{r, 233, message=FALSE, include=FALSE}
 # Import libraries
@@ -753,7 +765,7 @@ qqline(c_m_TRANSFORMED[[i]], col = "red")
 
 ### Determine coefficients of correlation of Transformed Data 
 
-An easily interpretable test is a correlation 2D-plot for investigating multicollinearity or feature reduction. Fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they measure the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions".[^210]
+An easily interpretable test is a correlation 2D-plot for investigating multicollinearity or feature reduction. Fewer attributes "means decreased computational time and complexity. Secondly, if two predictors are highly correlated, this implies that they measure the same underlying information. Removing one should not compromise the performance of the model and might lead to a more parsimonious and interpretable model. Third, some models can be crippled by predictors with degenerate distributions." [^210]
 
 [^210]:Max Kuhn and Kjell Johnson, Applied Predictive Modeling, Springer Publishing, 2018
 
@@ -843,7 +855,7 @@ caption = "Mean Importance Scores & Decision")
 plotImpHistory(boruta_output)
 ```
 
-The 'Boruta random forest test' shows that all features are essential. None should be dropped.
+The *Boruta random forest test* shows that all features are essential therefore none should be dropped.
 
 ## EDA Conclusion
 

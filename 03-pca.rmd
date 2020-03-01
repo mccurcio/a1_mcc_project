@@ -1,5 +1,10 @@
+---
+output:
+  pdf_document: default
+  #html_document: default
+---
 
-# Principle Component Analysis of Myoglobin/Control Protein Sets
+# Principle Component Analysis of A Binary Classification System
 
 ## Introduction
 
@@ -49,12 +54,15 @@ What do the center and scale arguments do in the `prcomp` command?
 
 There are four common methods for scaling data:
 
-| Scaling Method | Formula |
-| :--------------------- | :-------------------------------------------------------------------------: |
-| Centering | $f(x) ~=~ \large x - \bar x$ |
-| Scaling between [0, 1] | $f(x) ~=~ \Large \frac {x - min(x)} {max(x) - min(x)}$ |
+| Method                 |                                  Formula                                   |
+| :--------------------- | :------------------------------------------------------------------------: |
+| Centering              |                        $f(x) ~=~ \large x - \bar x$                        |
+|  |  |
+| Scaling between [0, 1] |           $f(x) ~=~ \Large \frac {x - min(x)} {max(x) - min(x)}$           |
+|  |  |
 | Scaling between [a, b] | $f(x) ~=~ \large (b - a)* \Large \frac {x - min(x)} {max(x) - min(x)} + a$ |
-| Normalizing | $f(x) ~=~ \Large \frac {x - mean(x)} {\sigma_x}$ |
+|  |  |
+| Normalizing            |              $f(x) ~=~ \Large \frac {x - mean(x)} {\sigma_x}$              |
 
 ```{r include=FALSE}
 ## Import data & data handling
@@ -228,11 +236,10 @@ start_time <- Sys.time() # Start timer
 
 c_m_20_PCA <- prcomp(norm_c_m_20aa)
 
-end_time <- Sys.time() # End timer
-end_time - start_time # Display time
+Sys.time() - start_time # End timer & display time difference
 ```
 
-## Screeplot and Cumulative Proportion of Variance plot
+## Screeplot & Cumulative Proportion of Variance plot
 
 Two plots are commonly used to determine the number of principal components that a researcher would generally accept as useful. The eigenvalues derived from PCA are proportional to the variances which they represent, and depending on the strategy used to calculate them, the eigenvalues are equal to the variances of the components.
 
@@ -262,14 +269,16 @@ abline(h = 1, col = "red")
 abline(v = 5, col = "green")
 ```
 
+---
+
 ```{r echo=FALSE, fig.align="center", fig.height=4, fig.width=4}
 plot(cumsum(c_m_20_PCA$sdev^2 / sum(c_m_20_PCA$sdev^2)),
-main = "Cum. Proportion of Variance Vs PC",
-sub = "(Red line p=0.9, green line PC=12)",
-ylab = "% Variance(i) / Total Variance",
-xlab = "PC(i)",
-ylim = c(0, 1),
-type = "b")
+     main = "Cum. Proportion of Variance Vs PC",
+     sub = "(Red line p=0.9, green line PC=12)",
+     ylab = "% Variance(i) / Total Variance",
+     xlab = "PC(i)",
+     ylim = c(0, 1),
+     type = "b")
 abline(h = 0.9, col = "red")
 abline(v = 12, col = "green")
 ```
@@ -285,14 +294,14 @@ If we investigate the 'cumulative proportion of variance' plot, we see an arbitr
 - Blue indicates myoglobin protein set, Class = 1
 ```{r echo=FALSE, fig.align="center", fig.height=6, fig.width=6}
 autoplot(c_m_20_PCA,
-data = c_m_transformed,
-label.show.legend = F,
-colour = "Class",
-shape = FALSE,
-label = TRUE,
-label.size = 4,
-loadings = TRUE, loadings.label = TRUE, loadings.label.size = 7,
-loadings.label.hjust = 2)
+         data = c_m_transformed,
+         label.show.legend = F,
+         colour = "Class",
+         shape = FALSE,
+         label = TRUE,
+         label.size = 4,
+         loadings = TRUE, loadings.label = TRUE, loadings.label.size = 7,
+         loadings.label.hjust = 2)
 ```
 
 The first two principal components describe 46.95% of the variance.
@@ -301,21 +310,21 @@ The first two principal components describe 46.95% of the variance.
 ## Print Biplot1.annotated.png
 ## Biplot 1 for Conclusion discussion
 png(filename = "Biplot1.annotated.png",
-width = 6,
-height = 6,
-units = "in",
-res = 300)
-autoplot(c_m_20_PCA,
-data = c_m_transformed,
-label.show.legend = F,
-colour = "Class",
-shape = FALSE,
-label = TRUE,
-label.size = 4,
-loadings = TRUE,
-loadings.label = TRUE,
-loadings.label.size = 7,
-loadings.label.hjust = 2)
+    width = 6,
+    height = 6,
+    units = "in",
+    res = 300)
+    autoplot(c_m_20_PCA,
+    data = c_m_transformed,
+    label.show.legend = F,
+    colour = "Class",
+    shape = FALSE,
+    label = TRUE,
+    label.size = 4,
+    loadings = TRUE,
+    loadings.label = TRUE,
+    loadings.label.size = 7,
+    loadings.label.hjust = 2)
 dev.off()
 ```
 
@@ -323,11 +332,11 @@ dev.off()
 
 ```{r echo=FALSE, fig.height=6, fig.width=6, fig.align="center"}
 plot(x = c_m_20_PCA$x[, 1],
-y = c_m_20_PCA$x[, 2],
-main = "Boundary (Outlier) Determination of PC1 Vs PC2",
-xlab = "PC2",
-ylab = "PC1",
-cex = 0.5)
+     y = c_m_20_PCA$x[, 2],
+     main = "Boundary (Outlier) Determination of PC1 Vs PC2",
+     xlab = "PC2",
+     ylab = "PC1",
+     cex = 0.5)
 # col = c("#bbbbbb", "#ff0000"),
 # cols <- c(1,2))
 abline(v = 3, col = "blue", lw = 1)
@@ -340,16 +349,16 @@ abline(h = 3, col = "blue", lw = 1)
 ## Print 'Biplot 2'. SAVE FOR LATER USE.
 ## Biplot 2 for Conclusion discussion
 png(filename = "Biplot.2.png",
-width = 6,
-height = 6,
-units = "in",
-res = 300)
+    width = 6,
+    height = 6,
+    units = "in",
+    res = 300)
 plot(x = c_m_20_PCA$x[, 1],
-y = c_m_20_PCA$x[, 2],
-main = "Boundary (Outlier) Determination of PC1 Vs PC2",
-xlab = "PC2",
-ylab = "PC1",
-cex = 0.5)
+     y = c_m_20_PCA$x[, 2],
+     main = "Boundary (Outlier) Determination of PC1 Vs PC2",
+     xlab = "PC2",
+     ylab = "PC1",
+     cex = 0.5)
 # col = c("#bbbbbb", "#ff0000"),
 # cols <- c(1,2))
 abline(v = 3, col = "blue", lw = 1)
@@ -359,7 +368,9 @@ abline(h = 3, col = "blue", lw = 1)
 dev.off()
 ```
 
-## Obtain Outliers From Biplot #2: PC1 Vs. PC2
+## Obtain Anomalous Points From Biplot #2: PC1 Vs. PC2
+
+Anomalous data points are data that is greater than the absolute value of 3 sigma, Anomalous Point > $| 3 \sigma |$.
 
 I have chosen to analyze the PCA biplot of the first and second principal components. The first and second components were used because they describe nearly 50% of the variance (46.95%).
 
@@ -367,9 +378,9 @@ I have chosen to analyze the PCA biplot of the first and second principal compon
 
 Rule Set Given PC1:
 
-1. Outlier_1: c_m_20_PCA$x[, 1] > 3 std dev
+1. Outlier_1: c_m_20_PCA$x[, 1] > 3 standard deviations
 
-2. Outlier_2: c_m_20_PCA$x[, 1] < -3 std dev
+2. Outlier_2: c_m_20_PCA$x[, 1] < -3 standard deviations
 ```{r}
 outliers_PC1 <- which((c_m_20_PCA$x[, 1] > 3) | (c_m_20_PCA$x[, 1] < -3))
 length(outliers_PC1)
@@ -379,9 +390,9 @@ length(outliers_PC1)
 
 Rule Set Given PC2:
 
-3. Outlier_3: c_m_20_PCA$x[, 2] > 3 std dev
+3. Outlier_3: c_m_20_PCA$x[, 2] > 3 standard deviations
 
-4. Outlier_4: c_m_20_PCA$x[, 2] < -3 std dev
+4. Outlier_4: c_m_20_PCA$x[, 2] < -3 standard deviations
 ```{r}
 outliers_PC2 <- which((c_m_20_PCA$x[, 2] > 3) | (c_m_20_PCA$x[, 2] < -3))
 length(outliers_PC2)

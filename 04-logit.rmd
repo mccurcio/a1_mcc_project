@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 
 # Logistic Regression For Binary Classification
 
@@ -17,7 +22,7 @@ Using Logistic Regression, we may calculate the presence or absence of a product
 
 In the figure below, the function's domain, $X \in \{-\infty$ to $\infty\}$, whereby its range is {0, 1}. In the figure, the *decision boundary* is $x ~=$ 0,  denoted by the *red dotted line*. At the inflection point the curves range changes from *zero*, absence, to *one*, the presence of quality or item.
 
-```{r echo=FALSE, fig.align="center"}
+```{r echo=FALSE, fig.align="center", fig.height=3.5}
 x <- seq(-6, 6, 0.05)
 y <- 1 / (1 + exp(-x))
 
@@ -31,8 +36,6 @@ abline(h = 1, col = "blue", lty = 3)
 text(-3.5, 0.48, cex = 1.75, "if x < 0 then y = 0")
 text(3.5, 0.48, cex = 1.75, "if x >= 0 then y = 1")
 ```
-
-\newpage
 
 The logistic growth curve is commonly denoted by:
 
@@ -231,6 +234,8 @@ end_time <- Sys.time()           # End timer
 end_time - start_time            # Display time
 registerDoSEQ()                  # Stop multi-core
 ```
+
+\newpage
 
 ## Logit Summary #2
 
