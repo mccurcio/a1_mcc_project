@@ -1,7 +1,8 @@
-.Rhistory      # History files
+*.Rhistory     # History files
 .Rapp.history
+.Rhistory
 
-.RData         # Session Data files
+*.RData        # Session Data files
 *.rds
 
 .Ruserdata     # User-specific files
@@ -15,7 +16,9 @@
 .Rproj.user/   # RStudio files
 
 *_cache/       # knitr, R markdown bookdown cache / files directories
-/cache/
+*/cache/
+*_cache*
+*_cache/html
 *_files/
 /files/
 _bookdown_files

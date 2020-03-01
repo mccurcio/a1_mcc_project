@@ -1,6 +1,0 @@
- Dim Reduction Techniques
-1. Parametric or model based
-  - PCA
-  - Forward feature selection
-  - Backward feature selection
-  - Parametric methods, like iterative feature selection

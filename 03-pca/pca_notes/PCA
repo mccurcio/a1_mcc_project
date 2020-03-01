@@ -1,4 +1,0 @@
-PCA reduces data by geometrically projecting them onto lower
-dimensions called principal components (PCs), with the goal of
-finding the best summary of the data using a limited number of
-PCs. 
