@@ -12,9 +12,9 @@ for (i in Libraries) { library(i, character.only = TRUE) }
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
-# Introduction
+# What is Machine Learning?
 
-At the intersection between Applied Mathematics, Computer Science, and Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its cousin Data Science difficult to define. Indeed, the most ubiquitous pictograph of Bioinformatics and Data Science may say a thousand words even if we cannot. See Figure 1. Other scientifically relevant fields one may come across which are the study of chemistry using applied mathematics and computers which begets the field of Chemoinformatics.[^15] [^16] While the career path of Health or Healthcare begets the field of Healthcare-Informatics.[^17]
+At the intersection between Applied Mathematics, Computer Science, and Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its cousin Data Science difficult to define. However, the most ubiquitous pictograph of Bioinformatics and Data Science may say a thousand words even if we cannot. See Figure 1. What separates these two pursuits is the domain knowledge that each focus on. Where Data Science may focus on understanding buying habits of individuals, Bioinformatics tends to focus on the understanding of DNA and its relevance to disease. It is now common to find new fields emerging such as the study of chemistry using applied mathematics and computers which beget the field of Chemo-informatics.[^15] [^16] Today, since hospitals are warehouses of modern medical records and knowledge they make career paths such as Healthcare-Informatics possible.[^17]
 
 [^15]:https://www.acs.org/content/acs/en/careers/college-to-career/chemistry-careers/cheminformatics.html
 
@@ -31,7 +31,7 @@ $\null\hfill$ [^11]
 
 [^11]:http://omgenomics.com/what-is-bioinformatics/
 
-Generally speaking, Data Science is a mixture of three items.  To start our data may consist of numbers, text and even pictures as input. Numerical values may be from scientific sensors or instrumentation, such as Next Generation Sequence data.[^12] Text data is sourced from articles/books or even databases of scientific articles like PubMed which show the inter-connectivity of thought and research.[^13] Graphics and pictures include graphical forms, such as relationship data that appears in genomic or proteomic or metabolic databases.[^14]
+Generally speaking, Bioinformatics derives its knowledge from various items. To start our data may consist of numbers, text and even pictures as input. Numerical values may be from scientific sensors or instrumentation, such as Next Generation[^127] DNA sequence data.[^12] Text data is sourced from articles/books or even databases of scientific articles like PubMed which show the inter-connectivity of thought and research.[^13] Graphics and pictures include graphical forms, such as relationship data that appears in genomic or proteomic or metabolic databases.[^14]
 
 [^12]:http://www.genome.ucsc.edu/
 
@@ -39,11 +39,15 @@ Generally speaking, Data Science is a mixture of three items.  To start our data
  
 [^14]:https://www.ebi.ac.uk/training/online/course/proteomics-introduction-ebi-resources/what-proteomics
 
-However, Data Science implies a process as well. One piece of this process is Reproducible Research. Reproducible Research and replication are linked but it goes beyond the ability of the work to be *independently verified*. The computer code and data must be provided. There locations explicitly spelled out such that other scientists may find and carry on the work and check all its calculations and methodology. Now that computers play such a large role procedurally the smallest error in a spreadsheet may plague the overall conclusion. Such is the case of the University of Mass. at Amherst found errors in a Harvard research paper.[^127]
+[^127]:What is Next-Generation DNA Sequencing?, https://www.ebi.ac.uk/training/online/course/ebi-next-generation-sequencing-practical-course/what-you-will-learn/what-next-generation-dna-
 
-[^127]:https://www.chronicle.com/article/UMass-Graduate-Student-Talks/138763
+However, Bioinformatics and Data Science imply a process as well. One piece of this process is Reproducible Research.[^128] Reproducible Research and replication are linked but it goes beyond the ability of the work to be *independently verified*. The computer code and data must be provided. There locations explicitly spelled out such that other scientists may find and carry on the work and check all its calculations and methodology. Now that computers play such a large role procedurally the smallest error in a spreadsheet may plague the overall conclusion. Such is the case of the University of Mass. at Amherst found errors in a Harvard research paper.[^129]
 
-## What is Machine Learning?
+[^129]:https://www.chronicle.com/article/UMass-Graduate-Student-Talks/138763
+
+[^128]:Roger Peng, The Real Reason Reproducible Research is Important, https://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/
+
+## Machine Learning Is?
 
 >"Machine learning is essentially a form of applied statistics with increased emphasis on the use of computers to statistically estimate complicated functions and a decreased emphasis on proving confidence intervals around these functions"
 >
@@ -53,7 +57,7 @@ However, Data Science implies a process as well. One piece of this process is Re
 
 ### What is Predictive Modeling?
 
-The term 'Predictive Modeling' should bring to mind work in the computer science field, also called Machine Learning (ML), Artificial Intelligence (AI), Data Mining, Knowledge discovery in databases (KDD), and possibly even encompassing Big Data as well.
+Although what this paper discusses is Predictive Modeling, it is under the umbrella of Machine Learning. The term 'Predictive Modeling' should bring to mind work in the computer science field, also called Machine Learning (ML), Artificial Intelligence (AI), Data Mining, Knowledge discovery in databases (KDD), and possibly even encompassing Big Data as well.
 
 >"Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data."
 >
@@ -77,7 +81,7 @@ In the booklet entitled "The Elements of Data Analytic Style," [^110] there is a
 1. Interpreting the results,
 1. Communicating the results.
 
-## Predictive Modeling
+### Predictive Modeling
 
 In general, there are three types of Predictive Modeling or Machine Learning approaches;
 
@@ -85,7 +89,7 @@ In general, there are three types of Predictive Modeling or Machine Learning app
 2. Unsupervised,
 3. Reinforcement.
 
-For the sake of this brevity, only Supervised & Unsupervised learning are discussed in this document.
+Due to the fact this paper only uses Supervised & Unsupervised learning and for the sake of this brevity, I discuss only the first two types of Predictive Models.
 
 ### Supervised Learning
 
@@ -112,19 +116,17 @@ $\null\hfill$ [^112]
 
 Let us investigate the K-NN algorithm and figure a little further. If we change our value of $K$ to 5, then we see a different result. By using $K = 5$, we consider the out dashed-black line. This more considerable $K$ value contains three blue widgets and two red widgets. If we ask to vote on our choice, we find that 3 blue beats the 2 red, and we assign the unknown a BLUE widget. This assignment is the opposite of the inner circle. 
 
-If a researcher were to use K-NN, then the algorithm would have to test many possible $K$ values and compare the results, then choose the $K$ with the highest accuracy. However, this is where K-NN falters. The K-NN algorithm needs to keep all data points used for its initial training (accuracy testing). Any new unknowns could be conceivably tested against any or all the previous data points. The K-NN does use a generalized rule that would make future assignments quick on the contrary. It must memorize all the points for the algorithm to work. K-NN cannot delete the points until it is complete. It is true that the algorithm is simple but not efficient. Matter and fact, as the number of feature dimensions increases, this causes the complexity (also known as Big O) to rise. The complexity of K-NN is $O(K-NN) \propto nkd$.
+If a researcher were to use K-NN, then the algorithm would have to test many possible $K$ values and compare the results, then choose the $K$ with the highest accuracy. However, this is where K-NN falters. The K-NN algorithm needs to keep all data points used for its initial training (accuracy testing). Any new unknowns could be conceivably tested against any or all the previous data points. The K-NN does use a generalized rule that would make future assignments quick on the contrary. It must memorize all the points for the algorithm to work. K-NN cannot delete the points until it is complete. It is true that the algorithm is simple but not efficient. Matter and fact, as the number of feature dimensions increases, this causes the complexity (also known as Big O) to rise. The complexity of K-NN is $O$(K-NN) $\propto nkd$.
 
 Where $n$ is the number of observations, $k$ is the number of nearest neighbors it must check, and d is the number of dimensions.[^113]
 
 [^113]:Olga Veksler, Machine Learning in Computer Vision, http://www.csd.uwo.ca/courses/CS9840a/Lecture2_knn.pdf
 
-Given that K-NN tends to 'memorize' its data to complete its task, it is considered a lazy and shallow learner. Lazy indicates that the decision is left to the moment a new point is learned of predicted. If we were to use a more generalized rule, such as {Blue for ($x <= 5$)} this would be a more dynamic and more in-depth approach by comparison.
+Given that K-NN tends to 'memorize' its data to complete its task, it is considered a lazy and shallow learner. Lazy indicates that the decision is left to the moment a new point is learned of predicted. If we were to use a more generalized rule, such as {Blue for ($x \leq 5$)} this would be a more dynamic and more in-depth approach by comparison.
 
 ### Unsupervised Learning
 
-In contrast to the supervised learning system, unsupervised learning does not require a label for it to operate.
-
-**Data set**: $(X_1), (X_2), ~. . ., ~(X_N)$ where $X$ may represent a matrix of $m$ observations by $n$ features with $\Re$ values.
+In contrast to the supervised learning system, unsupervised learning does not require a label for it to operate. For example, data set: $(X_1), (X_2), ~. . ., ~(X_N)$ where $X$ may represent a matrix of $m$ observations by $n$ features with $\Re$ values.
 
 Principal Component Analysis is an example of unsupervised learning, which we discuss in more detail in chapter 3. The data, despite or without its labels, are transformed to provide maximization of the variances in the dataset. Yet another objective of Unsupervised learning is to discover "interesting structures" in the data.[^114] There are several methods that show structure. These include clustering, knowledge discovery of latent variables, or discovering graph structure. In many instances and as a subheading to the aforementioned points, unsupervised learning can be used for dimension reduction or feature selection.
 
@@ -139,8 +141,6 @@ grid.raster(img)
 $\null\hfill$ [^115]
 
 [^115]:https://www.slideshare.net/teofili/machine-learning-with-apache-hama/20-KMeans_clustering_20
-
-It is easy to see through much or machine learning or predictive modeling if one understands bits of the inner workings of these algorithms,
 
 ### Five Challenges In Predictive Modeling
 
@@ -181,13 +181,20 @@ The bias-variance dilemma can be stated as follows.[^67]
 >
 >3. Identifying the best model requires controlling the “model complexity”, i.e., the proper architecture and number of parameters, to reach an appropriate compromise between bias and variance.
 
-One very good example is seen in figure 4, *Bias-Variance Tradeoff*. By considering the yellow-orange line we find a simple slope intercept model ($y \propto k \cdot x$) where the variance is high but the bias low and is not flexible enough. This is called underfitting. Looking at the green-blue line we see it follows the data set much more closely, e.g. ($y \propto k \cdot x^8$).  Here the variance is very low but common sense tells us that the line is overfit and would not generalize well in a real world setting. Finally leaving us with the black line which does not appear to have too many parameters, ($y \propto k \cdot x^3$).
+One very good example is seen in figure 4, *Bias-Variance Tradeoff*. By considering the yellow-orange line we find a simple slope intercept model ($y \propto k \cdot x$) where the variance is high but the bias low and is not flexible enough. This is called underfitting. Looking at the green-blue line we see it follows the data set much more closely, e.g. ($y \propto k \cdot x^8$). Here the variance is very low but common sense tells us that the line is overfit and would not generalize well in a real world setting. Finally leaving us with the black line which does not appear to have too many parameters, ($y \propto k \cdot x^3$).
 
 ## Research Description
 
 Is there a correlation between the data points, which are outliers from principal component analysis (PCA), and 6 types of predictive modeling? 
 
-This experiment is interested in determining if PCA would provide information on the false-positives and false-negatives that were an inevitable part of model building and optimization. The six predictive models that have chosen for this work are Logistic Regression, Support Vector Machines (SVM) (linear, polynomial, and radial basis function kernels), Random Forest, and a Neural Network which uses Auto-encoding.
+This experiment is interested in determining if PCA would provide information on the false-positives and false-negatives that were an inevitable part of model building and optimization. The six predictive models that have chosen for this work are Logistic Regression, Support Vector Machines (SVM) linear, polynomial kernel, and radial basis function kernel, and a Neural Network.
+
+I have studied 6 different M.L. algorithms using protein amino acid percent composition data from two classes. Class number 1 is my positive control which is a set of Myoglobin proteins, while the second class is a control group of human proteins that do not have Fe binding centers.
+
+| Group     |    Class | Number of Class | Range of Groups |
+| :-------- | -------: | --------------: | --------------: |
+| Controls  | 0 or (-) |            1217 |    1, ..., 1217 |
+| Myoglobin | 1 or (+) |            1124 | 1218, ..., 2341 |
 
 It is common for Data Scientists to test their data sets for feature importance and feature selection. One test that has interested this researcher is Principal component analysis. It can be a useful tool. PCA is an unsupervised machine learning technique which "reduces data by geometrically projecting them onto lower dimensions called principal components (PCs), with the goal of finding the best summary of the data using a limited number of PCs." [^117] However, the results that it provides may not be immediately intuitive to the layperson.
 
@@ -195,7 +202,7 @@ It is common for Data Scientists to test their data sets for feature importance 
 
 How do the advantages and disadvantages of using PCA compare with other machine learning techniques? The advantages are numerable. They include dimensionality reduction and filtering out noise inherent in the data, and it may preserve the global structure of the data. Does the global and graphical structure of the data produced by the first two principal components provide any insights into how the predictive models of Logistic Regression, Neural Networks utilizing auto-encoders, Support Vector Machines, and Random Forest? In essence, is PCA sufficiently similar to any of the applied mathematics tools of more advanced approaches? Also, this work is to teach me machine learning or predictive modeling techniques.
 
-The data for this study is from the Uniprot database. From the Uniprot database was queried for two protein groups. The first group was Myoglobin, and the second was a control group comprised of human proteins not related to Hemoglobin or Myoglobin. See Figure *Percent Amino Acid Composition*. There have been a group of papers that are striving to classify types of proteins by their amino acid structure alone. The most straightforward classification procedures involve using the percent amino acid composition (AAC). The AAC is calculated by using the count of an amino acid over the total number in that protein.
+The data for this study is from the Uniprot database. From the Uniprot database was queried for two protein groups. The first group was Myoglobin, and the second was a control group comprised of human proteins not related to Hemoglobin or Myoglobin. See Figure 5, *Percent Amino Acid Composition*. There have been a group of papers that are striving to classify types of proteins by their amino acid structure alone. The most straightforward classification procedures involve using the percent amino acid composition (AAC). The AAC is calculated by using the count of an amino acid over the total number in that protein.
 
 Percent Amino Acid Composition: 
 \begin{equation} 
@@ -227,7 +234,7 @@ Three transformations take place for this dataset.
 
 `~/00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv` and used throughout the rest of the analysis.
 
-All work uses R[^118], RStudio[^119] and a machine learning library/framework `caret`[^120].
+All work uses R,[^118] RStudio[^119] and a machine learning library/framework `caret`.[^120]
 
 [^118]:https://cran.r-project.org/
 
@@ -253,7 +260,7 @@ The `tune.grid` command set allows a researcher to experiment by varying the hyp
 
 Although some models have many parameters, the most common one is to search along a cost hyper-parameter. 
 
->The function we want to minimize or maximize is called the objective function or criterion. When we are minimizing it, we may also call it the cost function, loss function, or error function.[^122]
+>"The function we want to minimize or maximize is called the objective function or criterion. When we are minimizing it, we may also call it the cost function, loss function, or error function."[^122]
 
 [^122]:Ian Goodfellow, Yoshua Bengio, Aaron Courville, Deep Learning, MIT Press, http://www.deeplearningbook.org, 2016
 
@@ -282,7 +289,7 @@ Cross-validation is a statistical method used to estimate the skill of machine l
 
 [^125]:https://machinelearningmastery.com/k-fold-cross-validation/
 
->"The samples are randomly partitioned into k sets of roughly equal size. A model is fit using all samples except the first subset (called the first fold). The held-out samples are used for prediction by the recent model. The performance estimate measures the accuracy of the "out of bag" or "held out" samples. The first subset is returned to the training set, and the procedure repeats with the second subset held out, and so on. The k resampled estimates of performance are summarized (usually with the mean and standard error) and used to understand the relationship between the tuning parameter(s) and model utility." [^126]
+>"The samples are randomly partitioned into k sets of roughly equal size. A model is fit using all samples except the first subset (called the first fold). The held-out samples are used for prediction by the recent model. The performance estimate measures the accuracy of the *out of bag* or *held out* samples. The first subset is returned to the training set, and the procedure repeats with the second subset held out, and so on. The k resampled estimates of performance are summarized (usually with the mean and standard error) and used to understand the relationship between the tuning parameter(s) and model utility."[^126]
 
 [^126]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, 2013, ISBN 978-1-4614-6848-6
 
@@ -293,7 +300,7 @@ Cross-validation has the advantage of using the entire dataset for training and 
 ```
 fitControl <- trainControl(method = "repeatedcv",     # Type of Cross-Validation
                            number = 10,               # Number of splits
-                           repeats = 5,               # Number of 5 repetitions
+                           repeats = 5,               # Produce 5 replicates
                            savePredictions = "final") # Save FP/FN predictions
 ```
 

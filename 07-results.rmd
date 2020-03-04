@@ -1,0 +1,316 @@
+---
+title: 'Results: Compare and Contrast'
+date: "3/3/2020"
+output:
+  pdf_document: default
+  #html_document: default
+---
+
+# Results: Compare and Contrast
+
+This next section is my attempt to compare and contrast the ML Algorithms prepared in this  report.
+
+As you will remember, I have studied 6 different M.L. algorithms using protein amino acid percent composition data from two classes. Class number 1 is my positive control which is a set of Myoglobin proteins, while the second class is a control group of human proteins that do not have Fe binding centers.
+
+| Group     |  Class   | N of Class | Range of Groups |
+| :-------- | :------: | :--------: | --------------: |
+| Controls  | 0 or (-) |    1217    |    1, ..., 1217 |
+| Myoglobin | 1 or (+) |    1124    | 1218, ..., 2341 |
+
+The Six M.L Algorithms consist of:
+
+| Name                             |         Type |    Output Used For Graphing |
+| :------------------------------- | -----------: | :-------------------------: |
+| Principal Component Analysis     | Unsupervised | Anomalies > Abs($3 \sigma$) |
+| Logistic Regression              |   Supervised |                     FP & FN |
+| SVM-linear                       |   Supervised |                     FP & FN |
+| SVM-polynomial kernel            |   Supervised |                     FP & FN |
+| SVM-radial basis function kernel |   Supervised |                     FP & FN |
+| Neural Network                   |   Supervised |                     FP & FN |
+
+
+=========================
+
+## Scatter Plots of Anomalies Vs. FP & FN Outputs
+
+*To obtain False-Positive (fp) from sets:* {-}
+
+1. False-Postives $~~~\stackrel{\mathrm{def}}{=}~$ {obs = 0 $~\wedge~$ pred = 1}  
+2. False-Negatives $~\stackrel{\mathrm{def}}{=}~$ {obs = 1 $~\wedge~$ pred = 0}  
+
+
+### Anomalies Inner Joined with PC
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+Libraries = c("knitr", "readr")
+
+for(p in Libraries){
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE, fig.align = "center")
+```
+
+## Prepare PCA: PC1 and PC2 for all 2340 proteins
+
+```{r message=FALSE, warning=FALSE}
+norm_c_m_20aa <- read_csv("./00-data/03-ml_results/norm_c_m_20aa.csv")
+
+pca_values <- prcomp(norm_c_m_20aa)
+
+row_pc12 <- cbind(rowNum = 1:2340, PC1 = pca_values$x[,1], PC2 = pca_values$x[,2])
+# dim(row_pc12)
+```
+
+```{r include=FALSE}
+write.table(row_pc12,
+            file = "./00-data/05-joins_plots/row_pc12.txt",
+            sep = ",",
+            row.names = F)
+```
+
+Load Files & change column names
+```{r warning=FALSE, include=FALSE}
+# Not elegant but fast 4 me to code ;)
+logit_nums <- read_csv("./00-data/04-sort_unique_outliers/logit_nums.csv")
+pca_outliers <- read_csv("./00-data/04-sort_unique_outliers/pca_outliers.csv")
+# rf_nums <- read_csv("./00-data/04-sort_unique_outliers/rf_nums.csv")
+svm_lin_nums <- read_csv("./00-data/04-sort_unique_outliers/svm_lin_nums.csv")
+svm_poly_nums <- read_csv("./00-data/04-sort_unique_outliers/svm_poly_nums.csv")
+svm_rbf_nums <- read_csv("./00-data/04-sort_unique_outliers/svm_rbf_nums.csv")
+
+colnames(logit_nums)[1] = "rowNum" 
+colnames(pca_outliers)[1] = "rowNum" 
+# colnames(rf_nums)[1] = "rowNum" 
+colnames(svm_lin_nums)[1] = "rowNum" 
+colnames(svm_poly_nums)[1] = "rowNum" 
+colnames(svm_rbf_nums)[1] = "rowNum" 
+```
+
+Inner-join (merge) with PC 1&2 (row_pc12)
+```{r message=FALSE, warning=FALSE}
+logit_pc    <- merge(x = logit_nums,    y = row_pc12, by = "rowNum")
+pca_pc      <- merge(x = pca_outliers,  y = row_pc12, by = "rowNum")
+# rf_pc       <- merge(x = rf_nums,       y = row_pc12, by = "rowNum")
+svm_lin_pc  <- merge(x = svm_lin_nums,  y = row_pc12, by = "rowNum")
+svm_poly_pc <- merge(x = svm_poly_nums, y = row_pc12, by = "rowNum")
+svm_rbf_pc  <- merge(x = svm_rbf_nums,  y = row_pc12, by = "rowNum")
+```
+
+## Generate FP/FN & PCA-Anomalies on PCA Plots
+
+### PCA-Anomalies Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "PCA-Anomalies On PC 1 & 2 Axes",
+     sub = "(PCA-Anomalies pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(pca_pc[, 2], 
+     pca_pc[, 3], 
+     labels = pca_pc[, 1], 
+     col = "red",
+     cex = 1.4, 
+     pos = 1)
+```
+
+### Logit Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "Logit FP/FN On PC 1 & 2 Axes",
+     sub = "(Logit pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(logit_pc[, 2], 
+     logit_pc[, 3], 
+     labels = logit_pc[, 1], 
+     col = "coral",
+     cex = 1.4, 
+     pos = 1)
+```
+
+### SVM-Linear Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "SVM-Linear FP/FN On PC 1 & 2 Axes",
+     sub = "(SVM-Linear pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(svm_lin_pc[, 2], 
+     svm_lin_pc[, 3], 
+     labels = svm_lin_pc[, 1], 
+     col = "darkgoldenrod3",
+     cex = 1.4, 
+     pos = 1)
+```
+
+### SVM-Polynomial Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "SVM-Polynomial FP/FN On PC 1 & 2 Axes",
+     sub = "(SVM-Polynomial pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(svm_poly_pc[, 2], 
+     svm_poly_pc[, 3], 
+     labels = svm_poly_pc[, 1], 
+     col = "deepskyblue3",
+     cex = 1.4, 
+     pos = 1)
+```
+
+### SVM-Radial Basis Function Plot
+```{r echo=FALSE, fig.height=7, fig.width=7}
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "SVM-RBF FP/FN On PC 1 & 2 Axes",
+     sub = "(SVM-RBF pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(svm_rbf_pc[, 2], 
+     svm_rbf_pc[, 3], 
+     labels = svm_rbf_pc[, 1], 
+     col = "green4",
+     cex = 1.4, 
+     pos = 1)
+```
+
+
+### Neural Network Function Plot
+
+
+
+
+
+
+
+## Statistical Learning Method Vs Total Number of FP/FN
+
+| Statistical Method            | Total Number Produced | Unique | Total/Unique |
+| :---------------------------- | :-------------------: | :----: | :----------: |
+| Principal Componnent Analysis |          461          |  460   |    1.002     |
+| Logit                         |          537          |  119   |     4.51     |
+| SVM Linear                    |          496          |  125   |     3.97     |
+| SVM Polynomial                |          278          |   70   |     3.97     |
+| SVM Radial Basis Function     |          244          |   58   |     4.21     |
+| Random Forest                 |          190          |   46   |     4.13     |
+| Deep Learning                 |          347          |  133   |     2.61     |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======================
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load Libraries
+Libraries <- c("doMC", "knitr", "readr", "caret", "nnet", "caretEnsemble", "e1071", "kernlab")
+for (p in Libraries) {  
+    library(p, character.only = TRUE)
+}
+```
+
+
+```{r 611}
+# Import data & data handling
+c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_factor(levels = c("0", "1")),
+                                             PID = col_skip(),
+                                             TotalAA = col_skip()))
+```
+
+```{r 612}
+# Partition data into training and testing sets
+set.seed(1000)
+index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
+
+training_set <- c_m_TRANSFORMED[ index,]
+test_set     <- c_m_TRANSFORMED[-index,]
+
+Class_test <- as.factor(test_set$Class)
+```
+
+### Stacking Algorithms - Run multiple algorithms in one call.
+```{r include=FALSE}
+# new trainControl object with index specified
+trainControl <- trainControl(method = "repeatedcv",
+                             number = 10,
+                             index = createFolds(training_set$Class, 10),
+                             repeats = 5,
+                             savePredictions = "all",
+                             search = "random")
+
+algorithmList <- c('glm', 'nnet', 'svmLinear', 'svmPoly', 'svmRadialCost')
+
+set.seed(100)
+registerDoMC(cores = 3) # Start multi-processor mode
+start_time <- Sys.time() # Start timer
+
+models <- caretList(Class ~ .,
+                    data = training_set,
+                    trControl = trainControl,
+                    methodList = algorithmList)
+
+results <- resamples(models)
+```
+
+Plot the resamples output to compare the models.
+```{r}
+# Box plots to compare models
+scales <- list(x = list(relation = "free"),
+               y = list(relation = "free"))
+bwplot(results, scales = scales)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

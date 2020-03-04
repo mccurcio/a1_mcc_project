@@ -598,5 +598,3 @@ nrow(fp_fn_svmRadialCost)
 head(fp_fn_svmRadialCost)
 ```
 
-
-

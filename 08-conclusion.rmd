@@ -1,0 +1,126 @@
+---
+output:
+  pdf_document: default
+  #html_document: default
+---
+
+## Report Conclusion
+
+One of the many goals of this work is to better understand aspects of:
+
+1. Feature Selection and Extraction,
+
+
+
+1. Machine Learning, 
+2. Tuning Hyper-parameters,
+
+4. Data splitting,
+5. Pre-processing data.
+
+
+
+
+======================
+
+It is important to remember and understand that this list of "total_pca_1_2_outliers" includes BOTH negative and positive controls. The groupings are as follows:
+
+| Group                | Range of Groups |
+| :------------------- | --------------: |
+| Controls             |    1, ..., 1217 |
+| Positive (Myoglobin) | 1218, ..., 2341 |
+
+
+
+=======================
+
+
+
+
+===============================
+
+## Neural Network Conclusion
+
+Lorem ipsum
+
+========================
+
+## SVM Conclusion
+
+Lorem ipsum
+
+==============================
+
+## Over All Conclusion
+
+### Caret Ensemble
+
+```{r}
+knitr::opts_chunk$set(fig.align = "center", include = FALSE)
+```
+
+```{r 72}
+# Load Libraries
+Libraries <- c("doMC", "knitr", "readr", "caret", "nnet", 
+               "caretEnsemble", "e1071", "kernlab", "mlbench")
+for (p in Libraries) {  
+    library(p, character.only = TRUE)
+}
+```
+
+```{r 73}
+# Import data & data handling
+c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_factor(levels = c("0", "1")),
+                                             PID = col_skip(),
+                                             TotalAA = col_skip()))
+```
+
+```{r 74}
+# Partition data into training and testing sets
+set.seed(1000)
+index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
+
+training_set <- c_m_TRANSFORMED[ index,]
+test_set     <- c_m_TRANSFORMED[-index,]
+
+Class_test <- as.factor(test_set$Class)
+```
+
+```{r 75}
+### Stacking Algorithms - Run multiple algos in one call.
+# new trainControl object with index specified
+trainControl <- trainControl(method = "repeatedcv",
+                             number = 10,
+                             index = createFolds(training_set$Class, 10),
+                             repeats = 5,
+                             savePredictions = "all",
+                             search = "random")
+algorithmList <- c("glm", "nnet", "svmLinear", "svmPoly", "svmRadialCost")
+
+set.seed(100)
+registerDoMC(cores = 3)  # Start multi-processor mode 
+start_time <- Sys.time() # Start timer
+
+models <- caretList(Class ~ ., 
+                    data = training_set, 
+                    trControl = trainControl, 
+                    methodList = algorithmList) 
+
+Sys.time() - start_time    # Display time difference
+registerDoSEQ() # Stop multi-processor mode 
+```
+
+```{r 76}
+results <- resamples(models)
+##summary(results)
+```
+
+### Plot the resamples output to compare the models.
+```{r 77}
+# Box plots to compare models
+scales <- list(x = list(relation = "free"), 
+               y = list(relation = "free"))
+bwplot(results, scales = scales)
+```
+

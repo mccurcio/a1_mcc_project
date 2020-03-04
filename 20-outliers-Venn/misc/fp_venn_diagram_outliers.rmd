@@ -1,0 +1,120 @@
+---
+title: "Venn Diagram of Outliers"
+author: "MCC"
+date: "12/13/2019"
+output: html_document
+---
+
+# Venn Diagram of Outliers
+
+## Introduction
+
+```{r message=FALSE, warning=FALSE}
+## Load Libraries
+rm(list = ls())
+Libraries = c("doMC", "knitr", "readr", "ggVennDiagram", "magrittr")
+
+for(p in Libraries){  # Install Library if not present
+    if(!require(p, character.only = TRUE)) { install.packages(p) }
+    library(p, character.only = TRUE)
+}
+opts_chunk$set(cache = TRUE)
+```
+
+Import data & data handling
+
+*To obtain False-Positive (fp) from sets:* {-}
+
+1. False-Postives $~~~\stackrel{\mathrm{def}}{=}~$ {obs = 0 $~\wedge~$ pred = 1}  
+2. False-Negatives $~\stackrel{\mathrm{def}}{=}~$ {obs = 1 $~\wedge~$ pred = 0}  
+
+**LOGIT set** - fp_fn_logit
+```{r message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+fp_fn_logit          <- read_csv("../00-data/outliers/fp_fn_logit.csv")
+logit_fp         <- fp_fn_logit[which(fp_fn_logit$obs == "0" &
+                                      fp_fn_logit$pred == "1"), ]
+logit_fp <- sort(unique(unlist(logit_fp[, keep], use.names = FALSE)))
+logit_fp
+
+write_csv(x = as.data.frame(logit_fp), 
+          path = "../00-data/false_positive_outliers/logit_fp.csv")
+```
+
+**Random Forest set** - fp_fn_r_forest
+```{r message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+fp_fn_r_forest          <- read_csv("../00-data/outliers/fp_fn_r_forest.csv")
+r_forest_fp         <- fp_fn_r_forest[which(fp_fn_r_forest$obs == "0" &
+                                            fp_fn_r_forest$pred == "1"), ]
+r_forest_fp <- sort(unique(unlist(r_forest_fp[, keep], use.names = FALSE)))
+r_forest_fp
+write_csv(x = as.data.frame(r_forest_fp), 
+          path = "../00-data/false_positive_outliers/r_forest_fp.csv")
+```
+
+**SVM Linear set** - fp_fn_svm_linear
+```{r message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+fp_fn_svm_linear          <- read_csv("../00-data/outliers/fp_fn_svm_linear.csv")
+svm_linear_fp         <- fp_fn_svm_linear[which(fp_fn_svm_linear$obs == "0" &
+                                                fp_fn_svm_linear$pred == "1"), ]
+svm_linear_fp <- sort(unique(unlist(svm_linear_fp[, keep], use.names = FALSE)))
+svm_linear_fp
+write_csv(x = as.data.frame(svm_linear_fp), 
+          path = "../00-data/false_positive_outliers/svm_linear_fp.csv")
+```
+
+**SVM Polynomial Kernel set** - fp_fn_svm_poly
+```{r message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+fp_fn_svm_poly          <- read_csv("../00-data/outliers/fp_fn_svm_poly.csv")
+svm_poly_fp         <- fp_fn_svm_poly[which(fp_fn_svm_poly$obs == "0" &
+                                                fp_fn_svm_poly$pred == "1"), ]
+svm_poly_fp <- sort(unique(unlist(svm_poly_fp[, keep], use.names = FALSE)))
+svm_poly_fp
+write_csv(x = as.data.frame(svm_poly_fp), 
+          path = "../00-data/false_positive_outliers/svm_poly_fp.csv")
+```
+
+**SVM Radial Bias Kernel set** - fp_fn_svmRadialCost
+```{r message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+fp_fn_svmRadialCost          <- read_csv("../00-data/outliers/fp_fn_svmRadialCost.csv")
+svm_svmRadialCost_fp         <- fp_fn_svmRadialCost[which(fp_fn_svmRadialCost$obs == "0" &
+                                                fp_fn_svmRadialCost$pred == "1"), ]
+svm_svmRadialCost_fp <- sort(unique(unlist(svm_svmRadialCost_fp[, keep], use.names = FALSE)))
+svm_svmRadialCost_fp
+write_csv(x = as.data.frame(svm_svmRadialCost_fp), 
+          path = "../00-data/false_positive_outliers/svm_svmRadialCost_fp.csv")
+```
+
+
+```{r}
+x <- list(SVM_RBF = svm_svmRadialCost_fp,
+          SVM_Poly = svm_poly_fp,
+          RF = r_forest_fp)
+ggVennDiagram(x)  # 4d venn
+```
+
+svm_poly ∩ svm_rbf = {115,130,141,15,150,182,183,185,449,453,522,525,526,529,531,534,542,546,566,568,570,580,582,592,6,913,94)
+
+
+```{r}
+x <- list(Logit = logit_fp,
+          SVM_Linear = svm_linear_fp)
+ggVennDiagram(x) 
+```
+
+logit ∩ svm_lin = {1,10,114,130,150,182,2,249,252,254,301,407,453,46,501,503,516,518,526,531,542,547,57,573,580,655,8,88,910,912,913}
+
+
+
+
+
+

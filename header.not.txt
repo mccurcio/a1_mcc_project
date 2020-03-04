@@ -1,0 +1,10 @@
+---
+title: "Untitled"
+author: "Your Name"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    fig_caption: true
+    theme: flatly
+---

@@ -3,30 +3,25 @@ output:
   pdf_document: default
   html_document: default
 ---
-# Appendices
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(cache = TRUE)
-```
+# Appendices
 
 **Word To The Wise** 
 
-- LEARN GIT, get a Github account! Put Every computer program you write and Eevery stick of knowledge related to your work in a clean format on Git. You will benefit from it in the long run...
+- [LEARN GIT](https://try.github.io/). Get a [Github account!](https://github.com/) 
+  - Put Every computer program you write and Eevery stick of knowledge related to your work in a clean format on Git. You will benefit from it in the long run...
 
-- To Biologists and Biochemists (which I also consider myself), it is your task to become more familiar with computer languages, miscellaneous computer concepts and statistics. 
+- To Biologists and Biochemists (which I also consider myself), it is your task to become more familiar with computer languages,  computer concepts and math/statistics. 
 
-As of the writing of this booklet, Data Science and Bioinformatics are now centered around the computer languages [R](https://cran.r-project.org/) and [Python](https://www.anaconda.com/).  
+As of the writing of this booklet, Data Science and Bioinformatics are now centered around the computer languages [R](https://cran.r-project.org/) and [Python](https://www.anaconda.com/).
 
-To many researchers in data science and bioinformatics the field now includes such languages as,  
-*in no particular order*,
+To many researchers in data science and bioinformatics the field now includes such languages as, *in no particular order*,
 
 - [R](https://cran.r-project.org/)
-- [Python](https://www.anaconda.com/)  
+- [Python](https://www.anaconda.com/)
 - [Bash shell scripting](https://www.datascienceatthecommandline.com/)  
 - [SQL](https://en.wikipedia.org/wiki/SQL)  
 - [Julia](https://julialang.org/)  
-- [Perl](https://www.perl.org/) 
-- [C](https://en.wikipedia.org/wiki/C_%28programming_language%29)  
 - [Javascript](https://www.javascript.com/) 
 - [RMarkdown](https://rmarkdown.rstudio.com/), (this one is fun and easy)
 
@@ -40,6 +35,7 @@ To many researchers in data science and bioinformatics the field now includes su
 1. Both have great integrated development environments (IDEs),
    - [RStudio](https://www.rstudio.com/) is great & FREE,
    - [Spyder](https://www.spyder-ide.org/) is also great & FREE,
+   - [Atom](http://atom.io)
    - [PyCharm](https://www.jetbrains.com/pycharm/)
    - [Sublime](https://www.sublimetext.com/)
    - [Visual Studio Code](https://code.visualstudio.com/)
@@ -145,7 +141,7 @@ Where; `aa_nums[j]` is an array to saving values for later writing to file,
 `peptide` is the string to check, i.e. protein of interest, `col_titles[j]` 
 is the substring which is either a single amino acid or di-peptide.
 
-Input: .fasta  
+Input: .fasta
 Output: .csv
 
 Libraries 
@@ -314,8 +310,8 @@ c_m_RAW_AAC <- read_csv(file,
 c_m_TRANSFORMED_AAC <- c_m_RAW_AAC
 ```
 
-1. Transfrom C,F,I using sqrt(x)  
-2. Columns: C=5, F=8, I=11  
+1. Transfrom C,F,I using sqrt(x)
+2. Columns: C=5, F=8, I=11
 
 ```
 c_m_TRANSFORMED_AAC[, 5] <- sqrt(c_m_TRANSFORMED_AAC[, 5]) # C
@@ -341,13 +337,13 @@ write_csv(c_m_TRANSFORMED_AAC,
 
 **NOTE**: If you are interested in seeing what others have published search Google, Rpubs.com does not have its own search function. In Google, Search: `site:rpubs.com eda`
 
-Other sites:  
+Other sites:
 
 1. [Coursera](https://www.coursera.org/)
 1. [Stack Overflow](https://stackoverflow.com/)
 1. [Quora](https://www.quora.com/What-is-data-science)
-1. [Roger Peng's EDA](https://youtu.be/ZXrHkIz-krE?t=15)  
-1. [Bookdown](https://bookdown.org/) - **terrible** not necessary resource  
+1. [Roger Peng's EDA](https://youtu.be/ZXrHkIz-krE?t=15)
+1. [Bookdown](https://bookdown.org/) - **terrible** not necessary resource
 
 The Lean Publishing (https://leanpub.com) company contains a library in the form of FREE down-loadable books/pdfs. I recommend;
 

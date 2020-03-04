@@ -421,10 +421,10 @@ It is important to remember and understand that this list of "total_pca_1_2_outl
 
 | Group                | Range of Groups |
 | :------------------- | --------------: |
-| Controls             | 1, ..., 1217    |
+| Controls             |    1, ..., 1217 |
 | Positive (Myoglobin) | 1218, ..., 2341 |
 
-## PCA Conclusions
+## PCA Results
 
 Principal Component Analysis is very popular and an excellent choice to include during Exploratory Data. Analysis. One objective for using PCA is to filter noise from the dataset used and, in turn, increase any signal or to sufficiently delineate observations from each other. In fact, in the figure below, there are five colored groups outside the main body of observations that are marked at 'outliers.' The number of outliers obtained from PCA is 461 proteins. The premise of this experiment is to determine if PCA is an excellent representative measure for proteins that are categorized is false-positive, and false-negatives in the five subsequent machine learning model approach. It will be interesting to see if anyone of these groups will be present in the group of false-positives and false-negatives in any of the machine learning models.
 
@@ -440,14 +440,6 @@ The table and the figure below show a subset of outliers produced when the first
 |   D   |                 C, S                  |      1360, 2240      |
 |   E   |                G, D, Q                |      664, 2304       |
 
-```{r echo=FALSE, out.width="55%", fig.align="center"}
+```{r 71, echo=FALSE, out.width="55%", fig.align="center"}
 knitr::include_graphics("./00-data/10-images/Biplot1.annotated.png")
 ```
-
----
-
-Note: For more information on Eigenvalues, Eigenvectors and Eigen decomposition I suggest:
-
-1. [CodeEmporium](https://youtu.be/9oSkUej63yk)
-
-2. [Victor Lavrenko](https://youtu.be/IbE0tbjy6JQ)

@@ -274,7 +274,7 @@ nrow(fp_fn_logit) ## NOTE: NOT UNIQUE NOR SORTED
 
 - The logistic regression second test produced 536 protein samples, which are either false-positives or false-negatives. The list of 536 proteins may have duplicates. Therefore they are NOT UNIQUE NOR SORTED.
 
-## Logit Conclusion
+## Logit Results
 
 Logit is easy to implement and understand and can be used for feature selection.
 
@@ -311,4 +311,3 @@ The nine features which best described the logistic regression model were R, H, 
 The first 7 out of 8 amino acid features are seen in the proper order, as described by the Boruta Random Forest model. This is confirmation that Logit can pick up the importance of features similar to Boruta.
 
 Logit produced 536 proteins, which are false-negatives or false-positives. It should be noted that the 536 are NOT UNIQUE NOR SORTED. The number of unique FN/FP from the confusion matrix is 26. These proteins will be investigated further in the Outliers chapter, which compares these FN/FP proteins to the PCA outliers.
-
