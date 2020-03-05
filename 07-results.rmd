@@ -1,5 +1,5 @@
 ---
-title: 'Results: Compare and Contrast'
+title: "Results: Compare and Contrast"
 date: "3/3/2020"
 output:
   pdf_document: default
@@ -28,7 +28,6 @@ The Six M.L Algorithms consist of:
 | SVM-radial basis function kernel |   Supervised |                     FP & FN |
 | Neural Network                   |   Supervised |                     FP & FN |
 
-
 =========================
 
 ## Scatter Plots of Anomalies Vs. FP & FN Outputs
@@ -38,31 +37,26 @@ The Six M.L Algorithms consist of:
 1. False-Postives $~~~\stackrel{\mathrm{def}}{=}~$ {obs = 0 $~\wedge~$ pred = 1}  
 2. False-Negatives $~\stackrel{\mathrm{def}}{=}~$ {obs = 1 $~\wedge~$ pred = 0}  
 
-
 ### Anomalies Inner Joined with PC
 
-```{r message=FALSE, warning=FALSE}
+```{r 71, message=FALSE, warning=FALSE}
 ## Load Libraries
 Libraries = c("knitr", "readr")
-
 for(p in Libraries){
     library(p, character.only = TRUE)
 }
-opts_chunk$set(cache = TRUE, fig.align = "center")
+opts_chunk$set(fig.align = "center")
 ```
 
 ## Prepare PCA: PC1 and PC2 for all 2340 proteins
 
-```{r message=FALSE, warning=FALSE}
+```{r 72, message=FALSE, warning=FALSE}
 norm_c_m_20aa <- read_csv("./00-data/03-ml_results/norm_c_m_20aa.csv")
 
 pca_values <- prcomp(norm_c_m_20aa)
 
 row_pc12 <- cbind(rowNum = 1:2340, PC1 = pca_values$x[,1], PC2 = pca_values$x[,2])
 # dim(row_pc12)
-```
-
-```{r include=FALSE}
 write.table(row_pc12,
             file = "./00-data/05-joins_plots/row_pc12.txt",
             sep = ",",
@@ -70,28 +64,28 @@ write.table(row_pc12,
 ```
 
 Load Files & change column names
-```{r warning=FALSE, include=FALSE}
+```{r 73, warning=FALSE, include=FALSE}
 # Not elegant but fast 4 me to code ;)
 logit_nums <- read_csv("./00-data/04-sort_unique_outliers/logit_nums.csv")
 pca_outliers <- read_csv("./00-data/04-sort_unique_outliers/pca_outliers.csv")
-# rf_nums <- read_csv("./00-data/04-sort_unique_outliers/rf_nums.csv")
+nn_nums <- read_csv("./00-data/04-sort_unique_outliers/NN_nums.csv")
 svm_lin_nums <- read_csv("./00-data/04-sort_unique_outliers/svm_lin_nums.csv")
 svm_poly_nums <- read_csv("./00-data/04-sort_unique_outliers/svm_poly_nums.csv")
 svm_rbf_nums <- read_csv("./00-data/04-sort_unique_outliers/svm_rbf_nums.csv")
 
 colnames(logit_nums)[1] = "rowNum" 
 colnames(pca_outliers)[1] = "rowNum" 
-# colnames(rf_nums)[1] = "rowNum" 
+colnames(nn_nums)[1] = "rowNum" 
 colnames(svm_lin_nums)[1] = "rowNum" 
 colnames(svm_poly_nums)[1] = "rowNum" 
 colnames(svm_rbf_nums)[1] = "rowNum" 
 ```
 
 Inner-join (merge) with PC 1&2 (row_pc12)
-```{r message=FALSE, warning=FALSE}
+```{r 74, message=FALSE, warning=FALSE}
 logit_pc    <- merge(x = logit_nums,    y = row_pc12, by = "rowNum")
 pca_pc      <- merge(x = pca_outliers,  y = row_pc12, by = "rowNum")
-# rf_pc       <- merge(x = rf_nums,       y = row_pc12, by = "rowNum")
+nn_pc       <- merge(x = nn_nums,       y = row_pc12, by = "rowNum")
 svm_lin_pc  <- merge(x = svm_lin_nums,  y = row_pc12, by = "rowNum")
 svm_poly_pc <- merge(x = svm_poly_nums, y = row_pc12, by = "rowNum")
 svm_rbf_pc  <- merge(x = svm_rbf_nums,  y = row_pc12, by = "rowNum")
@@ -100,7 +94,7 @@ svm_rbf_pc  <- merge(x = svm_rbf_nums,  y = row_pc12, by = "rowNum")
 ## Generate FP/FN & PCA-Anomalies on PCA Plots
 
 ### PCA-Anomalies Plot
-```{r echo=FALSE, fig.height=7, fig.width=7}
+```{r 75, echo=FALSE, fig.height=7, fig.width=7, fig.pos="center"}
 plot(x = row_pc12[, 2], 
      y = row_pc12[, 3], 
      main = "PCA-Anomalies On PC 1 & 2 Axes",
@@ -120,7 +114,7 @@ text(pca_pc[, 2],
 ```
 
 ### Logit Plot
-```{r echo=FALSE, fig.height=7, fig.width=7}
+```{r 76, echo=FALSE, fig.height=7, fig.width=7}
 plot(x = row_pc12[, 2], 
      y = row_pc12[, 3], 
      main = "Logit FP/FN On PC 1 & 2 Axes",
@@ -140,7 +134,7 @@ text(logit_pc[, 2],
 ```
 
 ### SVM-Linear Plot
-```{r echo=FALSE, fig.height=7, fig.width=7}
+```{r 77, echo=FALSE, fig.height=7, fig.width=7}
 plot(x = row_pc12[, 2], 
      y = row_pc12[, 3], 
      main = "SVM-Linear FP/FN On PC 1 & 2 Axes",
@@ -160,7 +154,7 @@ text(svm_lin_pc[, 2],
 ```
 
 ### SVM-Polynomial Plot
-```{r echo=FALSE, fig.height=7, fig.width=7}
+```{r 78, echo=FALSE, fig.height=7, fig.width=7}
 plot(x = row_pc12[, 2], 
      y = row_pc12[, 3], 
      main = "SVM-Polynomial FP/FN On PC 1 & 2 Axes",
@@ -180,7 +174,7 @@ text(svm_poly_pc[, 2],
 ```
 
 ### SVM-Radial Basis Function Plot
-```{r echo=FALSE, fig.height=7, fig.width=7}
+```{r 79, echo=FALSE, fig.height=7, fig.width=7}
 plot(x = row_pc12[, 2], 
      y = row_pc12[, 3], 
      main = "SVM-RBF FP/FN On PC 1 & 2 Axes",
@@ -202,54 +196,52 @@ text(svm_rbf_pc[, 2],
 
 ### Neural Network Function Plot
 
+```{r 710, echo=FALSE, fig.height=7, fig.width=7}
+plot(x = row_pc12[, 2], 
+     y = row_pc12[, 3], 
+     main = "Neural Net FP/FN On PC 1 & 2 Axes",
+     sub = "(Neural Net pts are overlayed on PCA)",
+     xlab = "PC1",
+     ylab = "PC2",
+     pch = 16,
+     cex = 0.8,
+     col = "gray87")
+opar <- par(new = TRUE, mar = c(0,0,0,0))
+text(nn_pc[, 2], 
+     nn_pc[, 3], 
+     labels = nn_pc[, 1], 
+     col = "#E44DC7",
+     cex = 1.4, 
+     pos = 1)
+```
 
-
-
-
-
+\newpage
 
 ## Statistical Learning Method Vs Total Number of FP/FN
 
-| Statistical Method            | Total Number Produced | Unique | Total/Unique |
-| :---------------------------- | :-------------------: | :----: | :----------: |
-| Principal Componnent Analysis |          461          |  460   |    1.002     |
-| Logit                         |          537          |  119   |     4.51     |
-| SVM Linear                    |          496          |  125   |     3.97     |
-| SVM Polynomial                |          278          |   70   |     3.97     |
-| SVM Radial Basis Function     |          244          |   58   |     4.21     |
-| Random Forest                 |          190          |   46   |     4.13     |
-| Deep Learning                 |          347          |  133   |     2.61     |
-
-
-
-
-
-
-
-
-
-
-
-
-
+| Statistical Method                  | Unique |
+| :---------------------------------- | -----: |
+| Principal Componnent Analysis       |    460 |
+| Logit                               |    119 |
+| SVM Linear                          |    125 |
+| SVM Polynomial                      |     70 |
+| SVM Radial Basis Function           |     58 |
+| Random Forest (Work Not Shown Here) |     46 |
+| Deep Learning                       |     79 |
 
 
 =======================
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.align="center")
-```
-
-```{r message=FALSE, warning=FALSE}
+```{r 711, message=FALSE, warning=FALSE}
 # Load Libraries
 Libraries <- c("doMC", "knitr", "readr", "caret", "nnet", "caretEnsemble", "e1071", "kernlab")
 for (p in Libraries) {  
     library(p, character.only = TRUE)
 }
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
 ```
 
-
-```{r 611}
+```{r 712}
 # Import data & data handling
 c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                             col_types = cols(Class = col_factor(levels = c("0", "1")),
@@ -257,7 +249,7 @@ c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                                              TotalAA = col_skip()))
 ```
 
-```{r 612}
+```{r 713}
 # Partition data into training and testing sets
 set.seed(1000)
 index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
@@ -269,7 +261,7 @@ Class_test <- as.factor(test_set$Class)
 ```
 
 ### Stacking Algorithms - Run multiple algorithms in one call.
-```{r include=FALSE}
+```{r 714, include=FALSE}
 # new trainControl object with index specified
 trainControl <- trainControl(method = "repeatedcv",
                              number = 10,
@@ -278,7 +270,7 @@ trainControl <- trainControl(method = "repeatedcv",
                              savePredictions = "all",
                              search = "random")
 
-algorithmList <- c('glm', 'nnet', 'svmLinear', 'svmPoly', 'svmRadialCost')
+algorithmList <- c("glm", "nnet", "svmLinear", "svmPoly", "svmRadialCost", "nnet")
 
 set.seed(100)
 registerDoMC(cores = 3) # Start multi-processor mode
@@ -293,7 +285,7 @@ results <- resamples(models)
 ```
 
 Plot the resamples output to compare the models.
-```{r}
+```{r 715}
 # Box plots to compare models
 scales <- list(x = list(relation = "free"),
                y = list(relation = "free"))

@@ -42,7 +42,7 @@ This table portrays a high-level overview of the computing power of neuronal clu
 
 [^53]:Shepherd, G. M. (2004), The synaptic organization of the brain (5th ed.), Oxford University Press, New York.
 
-Although neurons have differing morphologies, neurons in the human brain are extremely diverse. Indeed, size and shape may not be the definitive way of classifying neurons but instead by what neurotransmitters the cells secrete. "Neurotransmitters can be classified as either excitatory or inhibitory."[^58] Currently the [NeuroPep](http://isyslab.info/NeuroPep/home.jsp) database "holds 5949 non-redundant neuropeptide entries originating from 493 organisms belonging to 65 neuropeptide families."[^59]
+Although neurons have differing morphologies, neurons in the human brain are extremely diverse. Indeed, size and shape may not be the definitive way of classifying neurons but instead by what neurotransmitters the cells secrete. "Neurotransmitters can be classified as either excitatory or inhibitory." [^58] Currently the [NeuroPep](http://isyslab.info/NeuroPep/home.jsp) database "holds 5949 non-redundant neuropeptide entries originating from 493 organisms belonging to 65 neuropeptide families."[^59]
 
 \newpage
 
@@ -349,9 +349,9 @@ for (p in Libraries) {
 ```{r 512}
 # Load Data
 c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
-                      col_types = cols(Class = col_factor(levels = c("0","1")),
-                                       PID = col_skip(),
-                                       TotalAA = col_skip()))
+                            col_types = cols(Class = col_factor(levels = c("0","1")),
+                                             PID = col_skip(),
+                                             TotalAA = col_skip()))
 ```
 
 \newpage
@@ -370,6 +370,9 @@ TrainingParameters <- trainControl(method = "repeatedcv",
                                    number = 10, 
                                    repeats = 5,
                                    savePredictions = "final") # Saves predictions
+
+TuneSizeDecay <- expand.grid(size = c(10, 12, 14, 16, 18, 20), 
+                             decay = c(1, 0.1, 0.01, 0.01))
 ```
 
 ### Train model with neural networks
@@ -382,6 +385,8 @@ start_time <- Sys.time()          # Start timer
 NNModel <- train(trainingData[,-1], 
                  trainingData$Class,
                  method = "nnet",
+                 preProcess = c("scale","center"),
+                 tuneGrid = TuneSizeDecay,
                  trControl = TrainingParameters)
 
 end_time <- Sys.time()           # End timer
@@ -435,8 +440,13 @@ write_csv(x = as.data.frame(NN_fp_fn_nums),
           path = "./00-data/04-sort_unique_outliers/NN_nums.csv")
 ```
 
-- The Neural Network set included a total of 155 unique observations containing both FP and FN.
 
 ## Neural Network Results
 
-Lorem ipsum
+The Neural Network set included a total of 79 unique observations containing both FP and FN.
+
+Accuracy was used to select the optimal model using the largest value.
+The final values used for the model were size = 20 and decay = 0.1. 
+
+This does make intuitive sense since more neurons would produce more decision boundaires.
+
