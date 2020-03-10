@@ -90,20 +90,20 @@ Although exploratory data analysis does not always have a formal hypothesis test
 
 Raw data is considered: `./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv`
 
-```{r, 21, message=FALSE}
+```{r 21, message=FALSE}
 # Import libraries
-Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
+Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta", "kableExtra")
 
 for (i in Libraries) {
 library(i, character.only = TRUE)
 }
 ```
 
-```{r, 22, include=FALSE}
+```{r 22, include=FALSE}
 opts_chunk$set(cache = TRUE)
 ```
 
-```{r, 23, message=FALSE, warning=FALSE}
+```{r 23, message=FALSE, warning=FALSE}
 # Import RAW data
 c_m_RAW_AAC <- read_csv("./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
@@ -116,7 +116,7 @@ Class <- as.factor(c_m_RAW_AAC$Class)
 
 ### Inspect RAW dataframe structure, `str()` 
 
-```{r, 24, echo=FALSE}
+```{r 24, echo=FALSE}
 str(c_m_RAW_AAC)
 ```
 
@@ -124,16 +124,16 @@ str(c_m_RAW_AAC)
 
 ### Check RAW data `head` & `tail`
 
-```{r, 25}
+```{r 25}
 head(c_m_RAW_AAC, n = 2)
 ```
-```{r, 26}
+```{r 26}
 tail(c_m_RAW_AAC, n = 2)
 ```
 
 ### Check RAW data types
 
-```{r, 27, echo=TRUE}
+```{r 27, echo=TRUE}
 is.data.frame(c_m_RAW_AAC)
 class(c_m_RAW_AAC$Class) # Col 1
 class(c_m_RAW_AAC$TotalAA) # Col 2
@@ -143,14 +143,14 @@ class(c_m_RAW_AAC$A) # Col 4
 
 ### Check RAW dataframe dimensions
 
-```{r, 28}
+```{r 28}
 dim(c_m_RAW_AAC)
 ```
 
 ### Check RAW for missing values
 
 - **No missing values found.**
-```{r, 29}
+```{r 29}
 apply(is.na(c_m_RAW_AAC), 2, which)
 
 # sapply(c_m_RAW_AAC, function(x) sum(is.na(x))) # Sum up NA by columns
@@ -161,14 +161,14 @@ apply(is.na(c_m_RAW_AAC), 2, which)
 
 - Class 0 = Control,
 - Class 1 = Myoglobin
-```{r, 210, echo=FALSE}
+```{r 210, echo=FALSE}
 class_table <- table(c_m_RAW_AAC$Class)
 class_table
 ```
 
 ### Numerical summary of RAW data
 
-```{r, 211, echo=FALSE}
+```{r 211, echo=FALSE}
 summary(c_m_RAW_AAC)
 ```
 
@@ -183,7 +183,7 @@ E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i
 
 - This Scatter-plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
-```{r, 212, echo=FALSE, out.width='60%', fig.align='center'}
+```{r 212, echo=FALSE, out.width='60%', fig.align='center'}
 AA_ave <- colMeans(c_m_RAW_AAC[, 4:23])
 plot(AA_ave,
      main = "RAW Data: Column-Means of % Composition Vs Amino Acid",
@@ -195,7 +195,7 @@ plot(AA_ave,
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
 ```
 
-```{r, 213, cache=TRUE, include=FALSE}
+```{r 213, cache=TRUE, include=FALSE}
 # * Pseudo-code for Data manipulation for Grouped Bar charts
 # + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
 # + A-2. Determine column means for each protein class
@@ -216,7 +216,7 @@ data <- data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa <- as.matrix(t(100 * data))
 ```
 
-```{r, 214, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+```{r 214, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 # A-4
 ### Grouped barchart of amino acid vs. protein category
 barplot(percent_aa,
@@ -230,7 +230,7 @@ beside = T)
 
 ### Means of percent amino acid composition of control & myoglobin categories, RAW data
 
-```{r, 215, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r 215, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 data2 <- data.frame(ctrl_means, mgb_means)
 percent_aa2 <- as.matrix(t(100 * data2))
 
@@ -245,7 +245,7 @@ beside = T)
 
 ### Boxplots of grand-means of overall amino acid composition, RAW data
 
-```{r, 216, echo=FALSE, message=FALSE, warning=FALSE}
+```{r 216, echo=FALSE, message=FALSE, warning=FALSE}
 boxplot(c_m_RAW_AAC[, 4:23],
 main = "Boxplots: All; % Composition Vs Amino Acid",
 ylab = "% AAC",
@@ -255,7 +255,7 @@ las = 1)
 
 ### Boxplots of amino acid compositions for control (only), RAW data
 
-```{r, 217, echo=FALSE}
+```{r 217, echo=FALSE}
 boxplot(ctrl_set[, 4:23],
 main = "Boxplots: Controls; % AAC Vs Amino Acid",
 ylab = "% AAC",
@@ -265,7 +265,7 @@ las = 1)
 
 ### Boxplots of amino acid compositions for myoglobin (only), RAW data
 
-```{r, 218, echo=FALSE}
+```{r 218, echo=FALSE}
 boxplot(mgb_set[, 4:23],
 ylim = c(0, 0.5),
 main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
@@ -274,7 +274,7 @@ xlab = "Amino Acid",
 las = 1)
 ```
 
-```{r, 219, echo=FALSE}
+```{r 219, echo=FALSE}
 par(mfrow = c(1, 2))
 
 boxplot(ctrl_set[, 4:23],
@@ -293,7 +293,7 @@ las = 1)
 
 ### Boxplots Of Length Of Polypeptides For RAW Data 
 
-```{r, 220, echo=FALSE}
+```{r 220, echo=FALSE}
 ctrl_totalaa <- ctrl_set[, 2]
 mgb_totalaa <- mgb_set[, 2]
 grand_totalaa <- c_m_RAW_AAC[, 2]
@@ -321,7 +321,7 @@ CV = \frac {\sigma (x)} {E [|x|]} ~~~ where ~~~ \sigma(x) \equiv \sqrt{ E[x - \m
 CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2}
 \end{equation}
 
-```{r, 221, echo=FALSE}
+```{r 221, echo=FALSE}
 AA_var_norm <- (apply(c_m_RAW_AAC[, 4:23], 2, sd)) / AA_ave
 plot(AA_var_norm,
 main = "Plot of Coefficient Of Variance (CV), RAW Data",
@@ -336,7 +336,7 @@ text(x = 2, y = 1.4, label = " C=1.24", col = "red")
 text(x = 19, y = 1.1, label = "W=0.946", col = "red")
 ```
 
-```{r, 222}
+```{r 222}
 AA_var_norm
 ```
 
@@ -354,7 +354,7 @@ Skewness ~= \frac { \frac{1}{n} \sum^n_{i=1} (x_i - \bar x)^3 } { \left( \sqrt{ 
 
 Skewness values for each A.A. are determined in totality.
 
-```{r, 223, echo=FALSE}
+```{r 223, echo=FALSE}
 AA_skewness <- (apply(c_m_RAW_AAC[, 4:23], 2, e1071::skewness))
 plot(AA_skewness,
 main = "Plot of Skewness Vs Amino Acids, RAW Data",
@@ -376,7 +376,7 @@ AA_skewness
 
 ### QQ-Plots of 20 amino acids, RAW data
 
-```{r, 224, echo=FALSE}
+```{r 224, echo=FALSE}
 AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
         "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
 par(mfrow=c(2,2))
@@ -401,7 +401,7 @@ Pearson's correlation coefficient:
 r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }
 \end{equation}
 
-```{r, 225, message=FALSE, warning=FALSE}
+```{r 225, message=FALSE, warning=FALSE}
 c_m_corr_mat <- cor(c_m_RAW_AAC[, c(2, 4:23)],
 method = "p")                    # "p": Pearson test for continous variables
 
@@ -421,7 +421,7 @@ tl.col = "black")
 NOTE: Amino acids shown in First Principal Component order, top to bottom.
 
 1. Maximum value of Correlation between T & N.
-```{r, 226, echo=FALSE}
+```{r 226, echo=FALSE}
 c_m_corr_mat["T", "N"]
 ```
 
@@ -460,13 +460,13 @@ How to reduce features given high correlation (|R| >= 0.75) {-}
 
 [^211]:https://notabug.org/mbq/Boruta/
 
-```{r, 227}
+```{r 227}
 c_m_class_20 <- c_m_RAW_AAC[, -c(2, 3)] # Remove TotalAA & PID
 Class <- as.factor(c_m_class_20$Class) # Convert 'Class' To Factor
 ```
 
 NOTE: *mcAdj = TRUE*, If True, multiple comparisons will be adjusted using the Bonferroni method to calculate p-values. Therefore, $p_i \leq \large \frac {\alpha} {m}$ where $\alpha$ is the desired p-value and $m$ is the total number of null hypotheses. 
-```{r, 228, cache=TRUE}
+```{r 228, message=FALSE, warning=FALSE, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3) # Start multi-processor mode
 start_time <- Sys.time() # Start timer
@@ -481,13 +481,13 @@ end_time <- Sys.time() # End timer
 end_time - start_time # Display elapsed time
 ```
 
-```{r, 229, eval=FALSE, include=FALSE}
+```{r 229, eval=FALSE, include=FALSE}
 names(boruta_output)
 ```
 
 ### Plot variable importance, RAW Data
 
-```{r, 230, echo=FALSE, fig.height=3.5}
+```{r 230, echo=FALSE, fig.height=3.5}
 plot(boruta_output,
 cex.axis = 1,
 las = 2,
@@ -497,21 +497,18 @@ main = "Variable Importance, RAW Data (Bigger=Better)")
 
 ### Variable importance scores, RAW Data
 
-```{r, 231, echo=FALSE, message=FALSE}
+```{r 231, echo=FALSE, message=FALSE}
 roughFixMod <- TentativeRoughFix(boruta_output)
 imps <- attStats(roughFixMod)
 imps2 <- imps[imps$decision != "Rejected", c("meanImp", "decision")]
 meanImps <- imps2[order(-imps2$meanImp), ] # descending sort
 
-knitr::kable(meanImps,
-full_width = F,
-position = "left",
-caption = "Mean Importance Scores & Decision, RAW Data")
-```
+kable(meanImps) %>% kable_styling(bootstrap_options = c("striped", "hover"))
 
-```{r, 232, eval=FALSE, include=FALSE}
-## Plot importance history
-plotImpHistory(boruta_output)
+# knitr::kable(meanImps,
+# full_width = F,
+# position = "left",
+# caption = "Mean Importance Scores & Decision, RAW Data")
 ```
 
 ### Conclusion for Boruta random forest test, RAW Data
@@ -542,7 +539,7 @@ The $\sqrt x_i$ *Transformed* data is derived from `c_m_RAW_ACC.csv` where the a
 | F, Phenolalanine |     2.128118     |               -0.102739               |
 | I, Isoleucine    |     2.192145     |               0.2934749               |
 
-```{r, 233, message=FALSE, include=FALSE}
+```{r 232, message=FALSE, include=FALSE}
 # Import libraries
 Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
 
@@ -552,7 +549,7 @@ library(i, character.only = TRUE)
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
-```{r, 234, message=FALSE, warning=FALSE}
+```{r 233, message=FALSE, warning=FALSE}
 # Import Transformed data
 c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv")
 Class <- as.factor(c_m_TRANSFORMED$Class)
@@ -560,13 +557,13 @@ Class <- as.factor(c_m_TRANSFORMED$Class)
 
 ### Check Transformed dataframe dimensions
 
-```{r, 235}
+```{r 234}
 dim(c_m_TRANSFORMED)
 ```
 
 ### Check Transformed for missing values
 
-```{r, 236}
+```{r 235}
 apply(is.na(c_m_TRANSFORMED), 2, which)
 ```
 
@@ -578,7 +575,7 @@ Number of polypeptides per Class:
 
 - Class 0 = Control,
 - Class 1 = Myoglobin
-```{r, 237, echo=FALSE}
+```{r 236, echo=FALSE}
 class_table <- table(c_m_TRANSFORMED$Class)
 class_table
 ```
@@ -594,7 +591,7 @@ E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i
 
 - This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n=2340) versus AA type.
 
-```{r, 238, echo=FALSE}
+```{r 237, echo=FALSE}
 AA_ave <- colMeans(c_m_TRANSFORMED[, 4:23])
 plot(AA_ave,
 main = "Column-Means Vs Amino Acid, TRANSFORMED data",
@@ -607,7 +604,7 @@ xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
 ```
 
-```{r, 239, echo=FALSE, cache=TRUE}
+```{r 238, echo=FALSE, cache=TRUE}
 # * Pseudo-code for Data manipulation for Grouped Bar charts
 # + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
 # + A-2. Determine column means for each protein class
@@ -628,7 +625,7 @@ data <- data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa <- as.matrix(t(100 * data))
 ```
 
-```{r, 240, eval=FALSE, include=FALSE}
+```{r 239, eval=FALSE, include=FALSE}
 # A-4
 ## Grouped barchart of $\sqrt x_i$ Transformed amino acid vs.
 ## protein category data
@@ -643,7 +640,7 @@ beside = T)
 
 ### Grouped bar chart of means for percent amino acid composition of Transformed Data; control & myoglobin categories
 
-```{r, 241, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r 240, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 data2 <- data.frame(ctrl_means, mgb_means)
 percent_aa2 <- as.matrix(t(100 * data2))
 
@@ -658,7 +655,7 @@ beside = T)
 
 ### Boxplots of grand-means of the overall amino acid composition of square-root transformed data
 
-```{r, 242, echo=FALSE, message=FALSE, warning=FALSE}
+```{r 241, echo=FALSE, message=FALSE, warning=FALSE}
 boxplot(c_m_TRANSFORMED[, 4:23],
 main = "% AAC Vs Amino Acid, TRANSFORMED data",
 ylab = "% AAC",
@@ -668,7 +665,7 @@ las = 1)
 
 ### Boxplots of amino acid compositions for control (only) of square-root transformed data
 
-```{r, 243, echo=FALSE, fig.height=4.2}
+```{r 242, echo=FALSE, fig.height=4.2}
 boxplot(ctrl_set[, 4:23],
 main = "Control, % AAC Vs Amino Acid, TRANSFORMED data",
 ylab = "% AAC",
@@ -678,7 +675,7 @@ las = 1)
 
 ### Boxplots of amino acid compositions for myoglobin of square-root transformed Data(only), TRANSFORMED data
 
-```{r, 244, echo=FALSE, fig.height=4.2}
+```{r 243, echo=FALSE, fig.height=4.2}
 boxplot(mgb_set[, 4:23],
 main = "Myoglobin, % AAC Vs Amino Acid, TRANSFORMED data",
 ylab = "% AAC",
@@ -688,7 +685,7 @@ las = 1)
 
 ### Boxplots Of Length Of Polypeptides Of Transformed Data; Myoglobin, Control & Combined
 
-```{r, 245, echo=FALSE}
+```{r 244, echo=FALSE}
 ctrl_totalaa <- ctrl_set[, 2]
 mgb_totalaa <- mgb_set[, 2]
 grand_totalaa <- c_m_TRANSFORMED[, 2]
@@ -720,7 +717,7 @@ CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)
 
 ### Plot of Coefficient Of Variance (CV)
 
-```{r, 246, echo=FALSE}
+```{r 245, echo=FALSE}
 AA_var_norm <- (apply(c_m_TRANSFORMED[, 4:23], 2, sd)) / AA_ave
 plot(AA_var_norm,
 main = "Coefficient Of Variance, TRANSFORMED data",
@@ -731,7 +728,7 @@ type = "b",
 xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
 ```
-```{r, 247}
+```{r 246}
 AA_var_norm
 ```
 
@@ -749,7 +746,7 @@ Skewness ~= \frac { \frac{1}{n} \sum^n_{i=1} (x_i - \bar x)^3 } { \left( \sqrt{ 
 
 - Skewness values for each A.A. by Class of square-root transformed data
 
-```{r, 248, echo=FALSE}
+```{r 247, echo=FALSE}
 AA_skewness <- (apply(c_m_TRANSFORMED[, 4:23], 2, e1071::skewness))
 plot(AA_skewness,
 main = "Skewness of Amino Acids, TRANSFORMED data",
@@ -763,13 +760,13 @@ axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
 abline(h = 2.0, col = "red")
 ```
 
-```{r, 249}
+```{r 248}
 AA_skewness
 ```
 
 ### QQ Plots of 20 amino acids, TRANSFORMED data
 
-```{r, 250, echo=FALSE}
+```{r 249, echo=FALSE}
 AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
 "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
 par(mfrow=c(2,2))
@@ -794,7 +791,7 @@ Pearson's correlation coefficient:
 r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }
 \end{equation}
 
-```{r, 251, echo=FALSE}
+```{r 250, echo=FALSE}
 c_m_corr_mat <- cor(c_m_TRANSFORMED[, c(2, 4:23)],
 method = "p") # "p": Pearson test for continous variables
 
@@ -811,7 +808,7 @@ mar = c(1, 2, 1, 2),
 tl.col = "black")
 ```
 
-```{r, 252}
+```{r 251}
 c_m_corr_mat["T", "N"]
 ```
 
@@ -819,7 +816,7 @@ c_m_corr_mat["T", "N"]
 
 ### Boruta - Dimensionality Reduction, TRANSFORMED data
 
-```{r, 253, echo=FALSE}
+```{r 252, echo=FALSE}
 c_m_class_20 <- c_m_TRANSFORMED[, -c(2, 3)] # Remove TotalAA & PID
 Class <- as.factor(c_m_class_20$Class) # Convert 'Class' To Factor
 ```
@@ -827,7 +824,7 @@ Class <- as.factor(c_m_class_20$Class) # Convert 'Class' To Factor
 **Perform Boruta search**
 
 NOTE: *mcAdj = TRUE*: If True, multiple comparisons will be adjusted using the Bonferroni method to calculate p-values. Therefore, $p_i \leq \frac {\alpha} {m}$ where $\alpha$ is the desired p-value and $m$ is the total number of null hypotheses. 
-```{r, 254, cache=TRUE}
+```{r 253, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3) # Start multi-processor mode
 start_time <- Sys.time() # Start timer
@@ -844,7 +841,7 @@ end_time - start_time # Display elapsed time
 
 ### Plot Variable Importance, TRANSFORMED data
 
-```{r, 255}
+```{r 254}
 plot(boruta_output,
 cex.axis = 1,
 las = 2,
@@ -854,19 +851,21 @@ main = "Variable Importance, TRANSFORMED data(Bigger=Better)")
 
 ### Variable Importance Scores, TRANSFORMED data
 
-```{r, 256, message=FALSE}
+```{r 255, message=FALSE}
 roughFixMod <- TentativeRoughFix(boruta_output)
 imps <- attStats(roughFixMod)
 imps2 <- imps[imps$decision != "Rejected", c("meanImp", "decision")]
 meanImps <- imps2[order(-imps2$meanImp), ] # descending sort
 
-knitr::kable(meanImps,
-full_width = F,
-position = "left",
-caption = "Mean Importance Scores & Decision, TRANSFORMED data")
+kable(meanImps) %>% kable_styling(bootstrap_options = c("striped", "hover"))
+
+# knitr::kable(meanImps,
+# full_width = F,
+# position = "left",
+# caption = "Mean Importance Scores & Decision, TRANSFORMED data")
 ```
 
-```{r, 257, eval=FALSE, include=FALSE}
+```{r 256, eval=FALSE, include=FALSE}
 ## Plot importance history
 plotImpHistory(boruta_output)
 ```

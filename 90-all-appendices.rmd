@@ -75,20 +75,13 @@ To many researchers in data science and bioinformatics the field now includes su
 ## Load Libraries Used In This Project
  
 If you are using Ubuntu/Linux you may need these Linux libraries first.
-
 ```
-sudo apt-get install libcurl4-openssl-dev
-sudo apt-get install libssl-dev
-sudo apt-get install libxml2-dev
+sudo apt-get install libcurl4-openssl-dev libssl-dev libxml2-dev build-essential
 ```
 
 To install `car` & `rgl`
-
 ```
-sudo apt-get install xorg
-sudo apt-get install libx11-dev
-sudo apt-get install libglu1-mesa-dev
-sudo apt-get install libfreetype6-dev
+sudo apt-get install xorg libx11-dev libglu1-mesa-dev libfreetype6-dev
 ```
 
 
@@ -110,7 +103,7 @@ load_or_install <- function(package_names) {
 ```
 
 ```
-load_or_install(c("readr", "doMC", "corrplot", "knitr", "caret", "tidyverse"))
+load_or_install(c("doMC", "corrplot", "knitr", "caret", "tidyverse"))
 
 load_or_install(c("ggplot2", "rmarkdown", "bookdown", "blogdown", "kernlab"))
 
@@ -118,9 +111,9 @@ load_or_install(c("e1071", "plyr", "RColorBrewer", "neuralnet"))
 
 load_or_install(c("rpart", "MASS", "tidyr", "ggplot2", "seqinr"))
 
-load_or_install(c("LogicReg", "randomForest", "foreach"))
+load_or_install(c("LogicReg", "randomForest", "foreach", "caretEnsemble"))
 
-load_or_install(c("import", "dplyr", "stringr", "stringi"))
+load_or_install(c("import", "dplyr", "stringr", "stringi", "readr", "tinytex"))
 ```
 
 ## Calculate the amino acid compositions (AAC) and Di-peptide compositions (DPC)

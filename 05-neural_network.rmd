@@ -448,5 +448,9 @@ The Neural Network set included a total of 79 unique observations containing bot
 Accuracy was used to select the optimal model using the largest value.
 The final values used for the model were size = 20 and decay = 0.1. 
 
-This does make intuitive sense since more neurons would produce more decision boundaires.
+Because of limitations to the software and the small size of the data set the types of configurations was not explored in further detail. The network that was used in this series of tests used only one hidden layer between 10 and 20 neurons in width.  Larger and complex structures might have brought higher accuracies. Another strategy could have been to use different types of nerual networks using 
+
+To this researcher this does make intuitive sense. If there is no redundancy in the features then 20 there must be at least 20 decision boundaries in order to classify a binary classification system. 
+
+The 
 

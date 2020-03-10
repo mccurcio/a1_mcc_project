@@ -1,0 +1,36 @@
+# Conclusion
+
+This research was carried out to investigate if there is any realtionship between the unsupervised machine learning technique of Principal Component Analysis and five alternate methods.  The five alternative methods included 3 Support Vector Machines, a Neural Network and Logistic Regression. 
+
+The comparison between PCA and the five alternate M.L. methods was done be using only the first two Principal Components, since these two comprise approximately 50% of the error of total sum of squares error. See table 7.1. 
+
+The Six M.L Algorithms consist of:
+
+| Name                             |         Type |    Output Used For Graphing |
+| :------------------------------- | -----------: | :-------------------------: |
+| Principal Component Analysis     | Unsupervised | Anomalies > Abs($3 \sigma$) |
+| Logistic Regression              |   Supervised |                     FP & FN |
+| SVM-linear                       |   Supervised |                     FP & FN |
+| SVM-polynomial kernel            |   Supervised |                     FP & FN |
+| SVM-radial basis function kernel |   Supervised |                     FP & FN |
+| Neural Network w 20 Neurons      |   Supervised |                     FP & FN |
+
+## Comparison of PCA Anomalies 
+
+of this study was that there would be a correlation or overlap of the anomalies which occured 
+
+## Comparison of Accuracy Measurements
+
+
+
+CIML.info
+
+- Our underlying assumption for the majority of this book is that learning problems are characterized by some unknown probability distribution
+
+- There are many reasons why a machine learning algorithm might fail on some learning task. There could be noise in the training data. Noise can occur both at the feature level and at the label level.
+
+- The ML algos cannot predict the labels of samples that the algo has not been given enough infomation. The models are limited to the data that is in the training set and cannot predict items that it has not seen before or outside the experimental space for which it has been trained.
+
+- This preference for one distinction (bird/non-bird) over another (fly/no-fly) is a bias that different human learners have. In the context of machine learning, it is called **inductive bias**
+
+- Underfitting and Overfitting: 'Since there are more “likes” than “hates” in the training data (12 versus 8), our empty decision tree will simply always predict “likes.” The training error, ê, is 8/20 = 40%.'

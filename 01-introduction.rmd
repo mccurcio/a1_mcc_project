@@ -5,7 +5,7 @@ date: "2/28/2020"
 output: pdf_document
 ---
 
-```{r, 11, include=FALSE}
+```{r 11, include=FALSE}
 Libraries <- c("knitr", "jpeg", "grid", "png")
 for (i in Libraries) { library(i, character.only = TRUE) }
 
@@ -27,7 +27,7 @@ At the intersection between Applied Mathematics, Computer Science, and Biologica
 img <- readPNG("./00-data/10-images/Venn-diagram-original-768x432.png")
 grid.raster(img)
 ```
-$\null\hfill$ [^11]
+[^11]
 
 [^11]:http://omgenomics.com/what-is-bioinformatics/
 
@@ -108,7 +108,7 @@ Five of the six algorithms that this report investigates are supervised. Logit, 
 ```{r 13, echo=FALSE, fig.align="center", fig.height=1, fig.cap="K-Nearest-Neighbor"}
 knitr::include_graphics("./00-data/10-images/K-Nearest-Neighbor.50.png")
 ```
-$\null\hfill$ [^112]
+[^112]
 
 [^112]:https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
 
@@ -138,7 +138,7 @@ Among the simplest unsupervised learning algorithms is K-means. K-means does not
 img <- readPNG("./00-data/10-images/k-means-2.50.png")
 grid.raster(img)
 ```
-$\null\hfill$ [^115]
+[^115]
 
 [^115]:https://www.slideshare.net/teofili/machine-learning-with-apache-hama/20-KMeans_clustering_20
 
