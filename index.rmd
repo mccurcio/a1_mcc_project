@@ -1,0 +1,14 @@
+--- 
+title: "Comparison Of 6 Machine Learning Techniques Tested For Accuracy And FP/FN Using Myoglobin Proteins Vs. Control Set"
+author: "Matthew C. Curcio"
+date: "`r Sys.Date()`"
+documentclass: book
+output:
+    bookdown::pdf_book:
+github-repo: mccurcio/sixml
+description: "Six machine learning techniques are tested for accuracy and FP/FN using myoglobin & control set."
+---
+
+# Preface {-}
+
+This is the very first part of the book.

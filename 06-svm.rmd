@@ -1,14 +1,12 @@
----
-output:
-    pdf_document: default
-    #html_document: default
----
-
 # Support Vector Machines for Binary Classification
+
+```{r}
+knitr::opts_chunk$set(cache = TRUE)
+```
 
 >"Support Vector Machines should be in the tool bag of every civilized person."
 >
-> -- Patrick Henry Winston [^61]
+>Patrick Henry Winston [^61]
 
 [^61]:Patrick Henry Winston, 6.034 Artificial Intelligence, Fall 2010, Massachusetts Institute of Technology: MIT OpenCourseWare, http://ocw.mit.edu/6-034F10
 
@@ -34,7 +32,7 @@ opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
 
-```{r 62, echo=FALSE, fig.height=3, fig.cap = 'Is linearly separable data.'}
+```{r 62,echo=FALSE,fig.height=3,fig.cap = 'Is linearly separable data.'}
 set.seed(1000)
 x1 = rnorm(20, mean = 1.5, sd = 0.5)
 x1_max = max(x1)
@@ -61,13 +59,13 @@ In test #1, we can see the two isozymes can easily separated by activity alone. 
 
 [^63]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, https://web.stanford.edu/~hastie/ElemStatLearn/, 2017
 
-Incidentally, in Patrick Winston's lecture on SVM, he calls SVM the "widest street approach."[^64] Why does Professor Winston use this term? There are many possible streets which can be traced but the *goal* is to find the *widest street*. Many streets may be drawn in our example, but requiring the *widest street* leads to one. In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes."[^65]
+Incidentally, in Patrick Winston's lecture on SVM, he calls SVM the "widest street approach." [^64] Why does Professor Winston use this term? There are many possible streets which can be traced but the *goal* is to find the *widest street*. Many streets may be drawn in our example, but requiring the *widest street* leads to one. In fact, "an optimal hyperplane is here defined as the linear decision function with maximal margin between the vectors of the two classes." [^65]
 
 [^64]:Patrick Winston, 6.034 Artificial Intelligence, Fall 2010, Massachusetts Institute of Technology: MIT OpenCourseWare, http://ocw.mit.edu/6-034F10
 
 [^65]:C. Cortes, V. Vapnik, Machine Learning, 20, 273-297, 1995
 
-```{r 63, echo=FALSE, fig.align="center", out.width="85%"}
+```{r 63,fig.height=2,echo=FALSE,fig.align="center",out.width="85%"}
 include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
 ```
 [^66]
@@ -76,7 +74,7 @@ include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
 
 Adding the prosaic phrase *widest street* smartly leads to the idea that a widest decision boundary also has the greatest ability to generalize.
 
-```{r 64, echo=FALSE, fig.align="center", out.width="70%"}
+```{r 64,fig.height=2,echo=FALSE,fig.align="center",out.width="70%"}
 include_graphics("./00-data/10-images/p-values_schematic.jpg")
 ```
 [^68]
@@ -85,7 +83,7 @@ include_graphics("./00-data/10-images/p-values_schematic.jpg")
 
 However in real life, linearly separabale data is rarely the case. Most often the activities are mixed as shown in test #2.
 
-```{r 65, echo=FALSE, fig.height=3, fig.cap = 'Is not linearly separable data.'}
+```{r 65,echo=FALSE,fig.height=3,fig.cap = 'Is not linearly separable data.'}
 set.seed(1000)
 x1 = rnorm(20, mean = 1.9, sd = 0.5)
 x2 = rnorm(20, mean = 3.25, sd = 0.75)
@@ -141,7 +139,7 @@ Divide by the norm of w:
 \widehat W^T (X_{\oplus} ~-~ X_{\ominus}) = \frac{2a}{||W||}
 \end{equation}
 
-```{r 66, echo=FALSE, fig.align="center", out.width="55%"}
+```{r 66,fig.height=2,echo=FALSE,fig.align="center",out.width="55%"}
 include_graphics("./00-data/10-images/SVM_optimize_2.png")
 ```
 [^69]
@@ -235,7 +233,7 @@ ylab = "y", xlab = "x")
 
 The simplest form of SVM utilizes a hyperplane as a separating element between the positive and control protein observations. This type of implementation is denoted as SVM-Linear (svm-lin) in this report. Here the mathematics is more easily described and can even be shown with a simple 2-dimensional graphic.
 
-```{r 68, echo=FALSE, fig.align="center", out.width="65%"}
+```{r 68,fig.height=2,echo=FALSE,fig.align="center",out.width="65%"}
 include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
 ```
 [^613]
@@ -284,7 +282,7 @@ In Webster's dictionary [^616] states a *parameter* is
 
 >a. Estimation of values which enter into the equation representing the chosen relation
 >
->b. [An] independent variable through functions of which other functions may be expressed - Frank Yates, a 20th-century statistician
+>b. "[An] independent variable through functions of which other functions may be expressed", Frank Yates, a 20th-century statistician
 
 [^616]:Webster's third new international dictionary, ISBN 0-87779-201-1, 1986
 
@@ -379,7 +377,7 @@ svmLinearGrid <- expand.grid(C = c(2^(4.5), 2^5, 2^(5.5)))
 tcontrol <- trainControl(method = "repeatedcv",
                          number = 10,
                          repeats = 5,
-                         savePredictions = "final") # IMPORTANT: Saves predictions for retreival
+                         savePredictions = "final") # Saves predictions
 
 lin_model_obj <- train(Class ~ .,
                    data = training_set,
@@ -455,7 +453,7 @@ start_time <- Sys.time() # Start timer
 tcontrol <- trainControl(method = "repeatedcv",
                          number = 10,
                          repeats = 5,
-                         savePredictions = "final") # IMPORTANT: Saves predictions for retreival
+                         savePredictions = "final") # Saves predictions
 
 poly_model_obj <- train(Class ~ .,
                    data = training_set,
@@ -551,7 +549,7 @@ tune.Grid = data.frame(expand.grid(C = 2^(seq(-5, 15, 2))))
 tcontrol <- trainControl(method = "repeatedcv",
                          number = 10,
                          repeats = 5,
-                         savePredictions = "final") # IMPORTANT: Save predictions for retreival
+                         savePredictions = "final") # Save predictions
 
 rbf_model_obj <- train(Class ~ .,
                    data = training_set,
@@ -583,7 +581,7 @@ confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
 
 ## SVM-RBF Obtain False Positives & False Negatives
 
-```{r 630}
+```{r 631}
 fp_fn_svmRadialCost <- rbf_model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
 # Write CSV in R

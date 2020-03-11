@@ -1,18 +1,10 @@
----
-title: "01-Introduction"
-author: "MCC"
-date: "2/28/2020"
-output: pdf_document
----
+# What is Machine Learning?
 
-```{r 11, include=FALSE}
+```{r 11, include=FALSE, cache=TRUE}
 Libraries <- c("knitr", "jpeg", "grid", "png")
 for (i in Libraries) { library(i, character.only = TRUE) }
-
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
-
-# What is Machine Learning?
 
 At the intersection between Applied Mathematics, Computer Science, and Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its cousin Data Science difficult to define. However, the most ubiquitous pictograph of Bioinformatics and Data Science may say a thousand words even if we cannot. See Figure 1. What separates these two pursuits is the domain knowledge that each focus on. Where Data Science may focus on understanding buying habits of individuals, Bioinformatics tends to focus on the understanding of DNA and its relevance to disease. It is now common to find new fields emerging such as the study of chemistry using applied mathematics and computers which beget the field of Chemo-informatics.[^15] [^16] Today, since hospitals are warehouses of modern medical records and knowledge they make career paths such as Healthcare-Informatics possible.[^17]
 
@@ -23,7 +15,7 @@ At the intersection between Applied Mathematics, Computer Science, and Biologica
 [^17]:https://www.usnews.com/education/best-graduate-schools/articles/2014/03/26/consider-pursuing-a-career-in-health-informatics
  
 
-```{r 12, fig.width=4, echo=FALSE, fig.align="center", fig.cap="Venn Diagrams of Bioinformatics And Data Science"}
+```{r 12, fig.height=2,fig.width=4,echo=FALSE,fig.align="center",fig.cap="Venn Diagrams of Bioinformatics And Data Science",cache=TRUE}
 img <- readPNG("./00-data/10-images/Venn-diagram-original-768x432.png")
 grid.raster(img)
 ```
@@ -61,7 +53,7 @@ Although what this paper discusses is Predictive Modeling, it is under the umbre
 
 >"Indeed, these associations are appropriate, and the methods implied by these terms are an integral piece of the predictive modeling process. But predictive modeling encompasses much more than the tools and techniques for uncovering patterns within data. The practice of predictive modeling defines the process of developing a model in a way that we can understand and quantify the model's prediction accuracy on future, yet-to-be-seen data."
 >
->--- Max Kuhn[^19]
+>Max Kuhn[^19]
 
 [^19]:Max Kuhn, Kjell Johnson, Applied Predictive Modeling, Springer, ISBN:978-1-4614-6848-6, 2013
 
@@ -93,9 +85,13 @@ Due to the fact this paper only uses Supervised & Unsupervised learning and for 
 
 ### Supervised Learning
 
-In supervised learning, data consists of observations $X_i$ (where $X$ may be a matrix of $\Re$ values) that also contains a corresponding label, $y_i$. The label $y$ maybe anyone of $C$ classes. In our case of a binary classifier, we have {'Is myoglobin', 'Is control'}.
+In supervised learning, data consists of observations $x_i$ (where $X$ may be a matrix of $\Re$ values) AND a corresponding label, $y_i$. The label $y$ maybe anyone of $C$ classes. In our case of a binary classifier, we have {'Is myoglobin', 'Is control'}.
 
-**Data set**: $(X_1, y_1), (X_2 , y_2), ~. . ., ~(X_N , y_N); ~~~y \in \{1, ..., ~C\}$, where $C$ is the number of classes
+**Data set**:
+
+- $(X_1, y_1), (X_2 , y_2), ~. . ., ~(X_N , y_N);$
+
+- $y \in \{1, ..., ~C\}$, where $C$ is the number of classes
 
 A machine learning algorithm determines a pattern from the input information and groups this with its necessary title or classification. 
 
@@ -105,14 +101,14 @@ For the K-NN algorithm to function, the data optimally most be complete with a s
 
 Five of the six algorithms that this report investigates are supervised. Logit, support vector machines, and the neural network that I have chosen require labels for the classification process.
 
-```{r 13, echo=FALSE, fig.align="center", fig.height=1, fig.cap="K-Nearest-Neighbor"}
+```{r 13,echo=FALSE,fig.align="center",fig.height=1,fig.cap="K-Nearest-Neighbor",cache=TRUE}
 knitr::include_graphics("./00-data/10-images/K-Nearest-Neighbor.50.png")
 ```
 [^112]
 
 [^112]:https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
 
-#### What is a shallow learner?
+#### What is a shallow learner? {-}
 
 Let us investigate the K-NN algorithm and figure a little further. If we change our value of $K$ to 5, then we see a different result. By using $K = 5$, we consider the out dashed-black line. This more considerable $K$ value contains three blue widgets and two red widgets. If we ask to vote on our choice, we find that 3 blue beats the 2 red, and we assign the unknown a BLUE widget. This assignment is the opposite of the inner circle. 
 
@@ -126,7 +122,15 @@ Given that K-NN tends to 'memorize' its data to complete its task, it is conside
 
 ### Unsupervised Learning
 
-In contrast to the supervised learning system, unsupervised learning does not require a label for it to operate. For example, data set: $(X_1), (X_2), ~. . ., ~(X_N)$ where $X$ may represent a matrix of $m$ observations by $n$ features with $\Re$ values.
+In contrast to the supervised learning system, unsupervised learning **does not require or use a label**. 
+
+**Data set**:
+
+- $(X_1), (X_2), ~. . ., ~(X_N)$
+
+- **No Y**
+
+where $X$ may represent a matrix of $m$ observations by $n$ features with $\Re$ values.
 
 Principal Component Analysis is an example of unsupervised learning, which we discuss in more detail in chapter 3. The data, despite or without its labels, are transformed to provide maximization of the variances in the dataset. Yet another objective of Unsupervised learning is to discover "interesting structures" in the data.[^114] There are several methods that show structure. These include clustering, knowledge discovery of latent variables, or discovering graph structure. In many instances and as a subheading to the aforementioned points, unsupervised learning can be used for dimension reduction or feature selection.
 
@@ -134,7 +138,7 @@ Principal Component Analysis is an example of unsupervised learning, which we di
 
 Among the simplest unsupervised learning algorithms is K-means. K-means does not rely on the class labels of the dataset at all. K-means may be used to determine any number of classes despite any predetermined values. K-means can discover clusters later used in classification or hierarchical feature representation. K-means has several alternative methods but, in general, calculates the distance (or conversely the similarity) of observations to a mean value of the $K$th grouping. The mean value is called the center of mass, the Physics term that provides an excellent analogy since the center of mass is a weighted average. By choosing a different number of groupings (values of $K$, much like the K-NN), then comparing the grouping by a measure of accuracy, one example being, mean square error. 
 
-```{r 14, fig.width=2, echo=FALSE, fig.align="center", fig.cap="K-Means"}
+```{r 14,fig.height=2,fig.width=2,echo=FALSE,fig.align="center",fig.cap="K-Means",cache=TRUE}
 img <- readPNG("./00-data/10-images/k-means-2.50.png")
 grid.raster(img)
 ```
@@ -146,19 +150,19 @@ grid.raster(img)
 
 To many predictive modeling is a panacea for all sorts of issues. Although it does show promise, some hurdles need research. Martin Jaggi[^116] has summarized four points that elucidate current problems in the field that need research. To this list, I have added one more point, which is commonly called the *Vaiance-Bias Tradeoff*.
 
-Problem 1: The vast majority of information in the world is unlabeled, so it would be advantageous to have a good Unsupervised machine learning algorithms to use,
+**Problem 1:** The vast majority of information in the world is unlabeled, so it would be advantageous to have a good Unsupervised machine learning algorithms to use,
 
-Problem 2: Algorithms are very specialized, too specific,
+**Problem 2:** Algorithms are very specialized, too specific,
 
-Problem 3: Transfer learning to new environments,
+**Problem 3:** Transfer learning to new environments,
 
-Problem 4: Scale, the scale of information is vast in reality, and we have computers that work in gigabytes, not the Exabytes that humans may have available to them. The scale of distributed Big Data,
+**Problem 4:** Scale, the scale of information is vast in reality, and we have computers that work in gigabytes, not the Exabytes that humans may have available to them. The scale of distributed Big Data,
 
 [^116]:https://www.machinelearning.ai/machine-learning/4-big-challenges-in-machine-learning-ft-martin-jaggi-2/
 
 The specific predictive models which are executed in this report are discussed in further detail in their own sections. 
 
-Problem 5: Bias-Variance Trade-Off.
+**Problem 5:** Bias-Variance Trade-Off.
 
 The ability to generalize is a key idea in predictive modeling. This idea harkens back to freshman classes where one studied Student's t-test and analysis of variance.
 
@@ -166,7 +170,7 @@ The ability to generalize is a key idea in predictive modeling. This idea harken
 E \left[ \left( y_0 - \hat f(x_0) \right )^2 \right ] = Var ( \hat f(x_0)) + \left [Bias (\hat f(x_0)) \right]^2 + Var(\epsilon)
 \end{equation}
 
-```{r 15, fig.width=2, echo=FALSE, fig.align="center", fig.cap="Bias-Variance Tradeoff"}
+```{r 15,fig.height=2,fig.width=2,echo=FALSE,fig.align="center",fig.cap="Bias-Variance Tradeoff",cache=TRUE}
 img <- readPNG("./00-data/10-images/bias-variance-tradeoff.png")
 grid.raster(img)
 ```
@@ -189,12 +193,12 @@ Is there a correlation between the data points, which are outliers from principa
 
 This experiment is interested in determining if PCA would provide information on the false-positives and false-negatives that were an inevitable part of model building and optimization. The six predictive models that have chosen for this work are Logistic Regression, Support Vector Machines (SVM) linear, polynomial kernel, and radial basis function kernel, and a Neural Network.
 
-I have studied 6 different M.L. algorithms using protein amino acid percent composition data from two classes. Class number 1 is my positive control which is a set of Myoglobin proteins, while the second class is a control group of human proteins that do not have Fe binding centers.
+I have studied six different M.L. algorithms using protein amino acid percent composition data from two classes. Class number 1 is my positive control which is a set of Myoglobin proteins, while the second class is a control group of human proteins that do not have Fe binding centers.
 
 | Group     |    Class | Number of Class | Range of Groups |
 | :-------- | -------: | --------------: | --------------: |
-| Controls  | 0 or (-) |            1217 |    1, ..., 1217 |
-| Myoglobin | 1 or (+) |            1124 | 1218, ..., 2341 |
+| Controls  | 0 or (-) |            1216 |    1, ..., 1216 |
+| Myoglobin | 1 or (+) |            1124 | 1217, ..., 2340 |
 
 It is common for Data Scientists to test their data sets for feature importance and feature selection. One test that has interested this researcher is Principal component analysis. It can be a useful tool. PCA is an unsupervised machine learning technique which "reduces data by geometrically projecting them onto lower dimensions called principal components (PCs), with the goal of finding the best summary of the data using a limited number of PCs." [^117] However, the results that it provides may not be immediately intuitive to the layperson.
 
@@ -202,27 +206,26 @@ It is common for Data Scientists to test their data sets for feature importance 
 
 How do the advantages and disadvantages of using PCA compare with other machine learning techniques? The advantages are numerable. They include dimensionality reduction and filtering out noise inherent in the data, and it may preserve the global structure of the data. Does the global and graphical structure of the data produced by the first two principal components provide any insights into how the predictive models of Logistic Regression, Neural Networks utilizing auto-encoders, Support Vector Machines, and Random Forest? In essence, is PCA sufficiently similar to any of the applied mathematics tools of more advanced approaches? Also, this work is to teach me machine learning or predictive modeling techniques.
 
-The data for this study is from the Uniprot database. From the Uniprot database was queried for two protein groups. The first group was Myoglobin, and the second was a control group comprised of human proteins not related to Hemoglobin or Myoglobin. See Figure 5, *Percent Amino Acid Composition*. There have been a group of papers that are striving to classify types of proteins by their amino acid structure alone. The most straightforward classification procedures involve using the percent amino acid composition (AAC). The AAC is calculated by using the count of an amino acid over the total number in that protein.
+The data for this study is from the Uniprot database. From the Uniprot database was queried for two protein groups. The first group was Myoglobin, and the second was a control group comprised of human proteins not related to Hemoglobin or Myoglobin. See Figure 1.5, *Percent Amino Acid Composition*. There have been a group of papers that are striving to classify types of proteins by their amino acid structure alone. The most straightforward classification procedures involve using the percent amino acid composition (AAC). The AAC is calculated by using the count of an amino acid over the total number in that protein.
 
-Percent Amino Acid Composition: 
+- Percent Amino Acid Composition: 
+
 \begin{equation} 
 \%AAC_X ~=~ \frac{N_{Amino~Acid~X}}{Total ~ N ~ of ~ AA}
 \end{equation}
 
-The Exploratory Data Analysis determines if features were skewed and needed must be transformed. In a random system where amino acids were chosen at random, one would expect the percent amino acid composition to be close to 5%. However, this is far from the case for the Myoglobin proteins or the control protein samples.
+The Exploratory Data Analysis determines if features were skewed and needed must be transformed. In a random system where amino acids were chosen at random, one would expect the percent amino acid composition to be close to 5%. However, this is far from the case for the Myoglobin proteins or the control protein samples. On top of this the differences between the myoglobin and control proteins can be as high as approximately 5% with the amino acid Lysine, K.
 
-```{r 16, fig.width=4, echo=FALSE, fig.align="center", fig.cap="Mean Percent Amino Acid Compositions For Control And Myoglobin"}
+```{r 16,fig.height=2,fig.width=4,echo=FALSE,fig.align="center",fig.cap="Mean Percent Amino Acid Compositions For Control And Myoglobin",cache=TRUE}
 img <- readPNG("./00-data/10-images/c_m_Mean_AAC.png")
 grid.raster(img)
 ```
-
-The experimental procedure is broken into 3 significant steps.
 
 ### Exploratory Data Analysis (EDA)
 
 During EDA, the data is checked for irregularities, such as missing data, outliers among features, skewness, and visually for normality using QQ-plots. The only irregularity that posed a significant issue was the skewness of the amino acid features. Many of 20 amino acid features had a significant number of outliers, as seen by Boxplot analysis. However, only three features had skew, which might have presented a problem. Dealing with the skew of the AA was necessary since Principal Component Analysis was a significant aspect of this experiment.
 
-Testing determined earlier that three amino acids (C, F, I) from the single amino acid percent composition needs transformation by using the square root function. The choice of transformations was Natural log, log base 10, squaring ($x^2$), and using the reciprocal ($1 / x$) of the values. The square root transformation lowered the skewness to values of less than 1.0 from high points of greater than 2 in all three cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
+Testing determined earlier that three amino acids (C, F, I) from the single amino acid percent composition needs transformation by using the square root function. The choice of transformations was natural log, log base 10, squaring ($x^2$), and using the reciprocal ($1 / x$) of the values. The square root transformation lowered the skewness to values of less than 1.0 from high points of greater than 2 in all three cases to {-0.102739 $\leq$ skew after transformation $\leq$ 0.3478132}.
 
 | Amino Acid       | Initial skewness | Skew after square root transform |
 | :--------------- | :--------------: | :------------------------------: |
@@ -234,7 +237,7 @@ Three transformations take place for this dataset.
 
 `~/00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv` and used throughout the rest of the analysis.
 
-All work uses R,[^118] RStudio[^119] and a machine learning library/framework `caret`.[^120]
+All work uses R[^118], RStudio[^119] and a machine learning library/framework `caret`.[^120]
 
 [^118]:https://cran.r-project.org/
 
@@ -246,13 +249,9 @@ All work uses R,[^118] RStudio[^119] and a machine learning library/framework `c
 
 ### Caret library for R
 
-The R/caret library is attractive to use for many reasons. It currently allows 238 machine learning models that use different options and data structures.[^121] The utility of caret is that it organizes the input and output into a standard format making the need for learning only one grammar and syntax. Caret also harmonizes the use of hyper-parameters. Work becomes reproducible.
+The R/caret library is attractive to use for many reasons. It currently allows 238 machine learning models that use different options and data structures.[^121] The utility of caret is that it organizes the input and output into a standard format making the need for learning only one grammar and syntax. Caret also harmonizes the use of hyper-parameters. Work becomes reproducible. Setting up the training section for caret, for this experiment, can be broken into three parts.
 
 [^121]:http://topepo.github.io/caret/available-models.html
-
-### Training the Predictive model
-
-Setting up the training section for caret, for this experiment, can be broken into three parts.
 
 ### Tuning Hyper-parameters
 
@@ -295,7 +294,7 @@ Cross-validation is a statistical method used to estimate the skill of machine l
 
 Cross-validation has the advantage of using the entire dataset for training and testing, increasing the opportunity that more training samples produce a better model. 
 
-### 10 Fold cross-validation repeated 5 times:
+**R Code:** 10 Fold cross-validation repeated 5 times
 
 ```
 fitControl <- trainControl(method = "repeatedcv",     # Type of Cross-Validation
@@ -308,7 +307,7 @@ fitControl <- trainControl(method = "repeatedcv",     # Type of Cross-Validation
 
 The training command produces an object of the model. The first line should point out the "formula," which is modeled. The dependent variable is first. The `~` (Tilda sign) indicates a model is called. Then the desired features can be listed or abbreviated with the all (.) sign. 
 
-Example Train command:
+**R Code:** Train command
 ```
 model_object <- train(Class ~ .,              # READ: Class is modeled by all features.
                       data = training_set,    # Data used

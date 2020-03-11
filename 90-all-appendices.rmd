@@ -1,15 +1,13 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-
 # Appendices
+
+```{r}
+knitr::opts_chunk$set(cache = TRUE)
+```
 
 **Word To The Wise** 
 
 - [LEARN GIT](https://try.github.io/). Get a [Github account!](https://github.com/) 
-  - Put Every computer program you write and Eevery stick of knowledge related to your work in a clean format on Git. You will benefit from it in the long run...
+  - Put Every computer program you write and Every stick of knowledge related to your work in a clean format on Git. You will benefit from it in the long run...
 
 - To Biologists and Biochemists (which I also consider myself), it is your task to become more familiar with computer languages,  computer concepts and math/statistics. 
 
@@ -35,11 +33,9 @@ To many researchers in data science and bioinformatics the field now includes su
 1. Both have great integrated development environments (IDEs),
    - [RStudio](https://www.rstudio.com/) is great & FREE,
    - [Spyder](https://www.spyder-ide.org/) is also great & FREE,
-   - [Atom](http://atom.io)
    - [PyCharm](https://www.jetbrains.com/pycharm/)
    - [Sublime](https://www.sublimetext.com/)
    - [Visual Studio Code](https://code.visualstudio.com/)
-   - [Vim](https://www.vim.org/)
    - [Jupyter Notebook](https://jupyter.org/)
 1. Both languages have been around for > 20 years, therefore both have tons of FREE information & tutorials on YouTube,
 
@@ -57,11 +53,11 @@ To many researchers in data science and bioinformatics the field now includes su
    1. r-base_#.#.#*.deb        (approx. 90 KB)
    1. r-base-html-#.#.#*.deb   (approx. 90 KB)
 
-1. If you do have Linux you may try this video: [How to install R.](https://www.youtube.com/watch?v=LeB15G14N7g)
+1. If you do have Linux you may try this video: [How to install R](https://www.youtube.com/watch?v=LeB15G14N7g).
    
 1. Go to: https://www.rstudio.com/
 
-1. From RStudio's homepage click, *Products* then click *RStudio* from the dropdown menu.
+1. From RStudio's homepage click, *Products* then click *RStudio* from the drop-down menu.
 
 1. Click the Download of the FREE version of RStudio Desktop
 
@@ -107,9 +103,9 @@ load_or_install(c("doMC", "corrplot", "knitr", "caret", "tidyverse"))
 
 load_or_install(c("ggplot2", "rmarkdown", "bookdown", "blogdown", "kernlab"))
 
-load_or_install(c("e1071", "plyr", "RColorBrewer", "neuralnet"))
+load_or_install(c("e1071", "plyr", "RColorBrewer", "neuralnet", "ggfortify"))
 
-load_or_install(c("rpart", "MASS", "tidyr", "ggplot2", "seqinr"))
+load_or_install(c("rpart", "MASS", "tidyr", "ggplot2", "seqinr", "Boruta", "kableExtra"))
 
 load_or_install(c("LogicReg", "randomForest", "foreach", "caretEnsemble"))
 
@@ -336,7 +332,7 @@ Other sites:
 1. [Stack Overflow](https://stackoverflow.com/)
 1. [Quora](https://www.quora.com/What-is-data-science)
 1. [Roger Peng's EDA](https://youtu.be/ZXrHkIz-krE?t=15)
-1. [Bookdown](https://bookdown.org/) - **terrible** not necessary resource
+1. [Bookdown](https://bookdown.org/) - **terrible** yet necessary resource
 
 The Lean Publishing (https://leanpub.com) company contains a library in the form of FREE down-loadable books/pdfs. I recommend;
 

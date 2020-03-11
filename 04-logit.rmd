@@ -1,10 +1,8 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-
 # Logistic Regression For Binary Classification
+
+```{r}
+knitr::opts_chunk$set(cache = TRUE)
+```
 
 ## Introduction
 
@@ -20,7 +18,7 @@ f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{mat
 
 Using Logistic Regression, we may calculate the presence or absence of a product or quality that we wish to model given a difficult situation where the transition is not clear.
 
-In the figure below, the function's domain, $X \in \{-\infty$ to $\infty\}$, whereby its range is {0, 1}. In the figure, the *decision boundary* is $x ~=$ 0,  denoted by the *red dotted line*. At the inflection point the curves range changes from *zero*, absence, to *one*, the presence of quality or item.
+In the figure below, the function's domain, $X \in \{-\infty$ to $\infty\}$, whereby its range is {0, 1}. In the figure, the *decision boundary* is $x ~=$ 0, denoted by the *red dotted line*. At the inflection point the curves range changes from *zero*, absence, to *one*, the presence of quality or item.
 
 ```{r echo=FALSE, fig.align="center", fig.height=3.5}
 x <- seq(-6, 6, 0.05)
@@ -43,7 +41,7 @@ The logistic growth curve is commonly denoted by:
 f(x) ~=~ \frac{M}{1 + Ae^{-r(x - x_0)}}
 \end{equation}
 
-where $M$ is the curve's maximum value, $r$ is the maximum growth rate (also called the Malthusian parameter[^41]), $x_0$ is the midpoint of the curve, $A$ is the number of times that the initial population must double to reach $M$.[^42]
+where $M$ is the curve's maximum value, $r$ is the maximum growth rate (also called the Malthusian parameter [^41]), $x_0$ is the midpoint of the curve, $A$ is the number of times that the initial population must double to reach $M$.[^42]
 
 [^41]:https://en.wikipedia.org/wiki/Malthusian_growth_model
 [^42]:https://en.wikipedia.org/wiki/Logistic_function
@@ -54,7 +52,7 @@ In the specific case of *Logistic Regression for Binary Classification* where we
 f(x) ~=~ \frac{1}{1 + e^{-(WX+b)}}
 \end{equation}
 
-Since the logistic equation is exponential, it is easier to work with the formula in terms of its odds or *log-odds*. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or more precisely log-odds as $\Large ln \left (\frac{p}{1-p} \right )$.
+Since the logistic equation is exponential, it is easier to work with the formula in terms of its odds or *log-odds*. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or more precisely log-odds as $\large ln \left (\frac{p}{1-p} \right )$.
 
 Simply by using log-odds, logistic regression may be more easily expressed as a set of linear equations in x.[^43] Hence we can now go from linear regression to logistic regression.
 
@@ -119,7 +117,6 @@ Now we can calculate the probabilities as well as the values for any given x val
 ```{r message=FALSE, warning=FALSE}
 # Load Libraries
 Libraries <- c("doMC", "knitr", "readr", "tidyverse", "caret")
-
 for (p in Libraries) { 
     library(p, character.only = TRUE)
 }
@@ -141,7 +138,6 @@ c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
 # Partition data into training and testing sets
 set.seed(1000)
 index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
-
 training_set.1 <- c_m_TRANSFORMED[index, ]
 ```
 
@@ -285,10 +281,10 @@ Akaike Information Criterion [^45]
 [^45]:https://en.wikipedia.org/wiki/Akaike_information_criterion
 
 \begin{equation}
-AIC ~=~ 2 K ~-~ ln (\widehat{L})
+AIC ~=~ 2 K ~-~ 2ln (\widehat{L})
 \end{equation}
 
-Where $ln (\widehat{L})$ is the log-likelihood, $K$ is the number of parameters.
+Where $ln (\widehat{L})$ is the log-likelihood estimate, $K$ is the number of parameters.
 
 #### Two Logit Models {-}
 
@@ -303,10 +299,10 @@ The nine features which best described the logistic regression model were R, H, 
 
 #### Comparison of Boruta Vs Logit: Order of Importance {-}
 
-| Test Model | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  |
-| :--------: | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
-|   Boruta   | R   | H   | P   | K   | C   | E   | Y   | T   | S   | A   | V   | U   | I   | F   | D   | G   | N   | L   | M   | Q   |
-|   Logit    | R   | H   | P   | .   | C   | E   | Y   | T   | .   | .   | .   | .   | .   | .   | D   | G   | .   | .   | .   | .   |
+| Test | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
+| :--: | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| Boruta | R | H | P | K | C | E | Y | T | S | A | V | U | I | F | D | G | N | L | M | Q |
+| Logit-9 | R | H | P | . | C | E | Y | T | . | . | . | . | . | . | D | G | . | . | . | . |
 
 The first 7 out of 8 amino acid features are seen in the proper order, as described by the Boruta Random Forest model. This is confirmation that Logit can pick up the importance of features similar to Boruta.
 

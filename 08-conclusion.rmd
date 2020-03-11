@@ -1,5 +1,9 @@
 # Conclusion
 
+```{r}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
 This research was carried out to investigate if there is any realtionship between the unsupervised machine learning technique of Principal Component Analysis and five alternate methods.  The five alternative methods included 3 Support Vector Machines, a Neural Network and Logistic Regression. 
 
 The comparison between PCA and the five alternate M.L. methods was done be using only the first two Principal Components, since these two comprise approximately 50% of the error of total sum of squares error. See table 7.1. 
@@ -19,8 +23,29 @@ The Six M.L Algorithms consist of:
 
 of this study was that there would be a correlation or overlap of the anomalies which occured 
 
+Statistical Learning Method Vs Total Number of FP/FN
+
+| Statistical Method                  | Unique |
+| :---------------------------------- | -----: |
+| Principal Componnent Analysis       |    460 |
+| Logit                               |    119 |
+| SVM Linear                          |    125 |
+| SVM Polynomial                      |     70 |
+| SVM Radial Basis Function           |     58 |
+| Deep Learning                       |     79 |
+
+
 ## Comparison of Accuracy Measurements
 
+Mean Accuracies of M.L. Techniques, n=10
+
+| Rank |  M.L. Technique | Mean Accuracy |
+| :--: | --------------: | ------------: |
+|  1   |         SVM-RBF |     0.9510603 |
+|  2   |        SVM-Poly |     0.9415091 |
+|  3   |         SVM-Lin |     0.9292275 |
+|  4   | NN w 20 Neurons |     0.9286350 |
+|  5   |           Logit |     0.9078127 |
 
 
 CIML.info

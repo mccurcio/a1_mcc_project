@@ -1,10 +1,8 @@
----
-output:
-  pdf_document: default
-  #html_document: default
----
-
 # Exploratory Data Analysis
+
+```{r,include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+```
 
 >"Exploratory data analysis (EDA) is an approach to analyzing data sets to summarize their main characteristics, often with visual methods." [^21]
 
@@ -93,7 +91,6 @@ Raw data is considered: `./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv`
 ```{r 21, message=FALSE}
 # Import libraries
 Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta", "kableExtra")
-
 for (i in Libraries) {
 library(i, character.only = TRUE)
 }
@@ -183,7 +180,7 @@ E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i
 
 - This Scatter-plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
-```{r 212, echo=FALSE, out.width='60%', fig.align='center'}
+```{r 212,echo=FALSE,out.width='60%',fig.align='center'}
 AA_ave <- colMeans(c_m_RAW_AAC[, 4:23])
 plot(AA_ave,
      main = "RAW Data: Column-Means of % Composition Vs Amino Acid",
@@ -216,7 +213,7 @@ data <- data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa <- as.matrix(t(100 * data))
 ```
 
-```{r 214, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+```{r 214,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE,include=FALSE}
 # A-4
 ### Grouped barchart of amino acid vs. protein category
 barplot(percent_aa,
@@ -230,7 +227,7 @@ beside = T)
 
 ### Means of percent amino acid composition of control & myoglobin categories, RAW data
 
-```{r 215, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r 215,echo=FALSE,message=FALSE,warning=FALSE,cache=TRUE}
 data2 <- data.frame(ctrl_means, mgb_means)
 percent_aa2 <- as.matrix(t(100 * data2))
 
@@ -245,7 +242,7 @@ beside = T)
 
 ### Boxplots of grand-means of overall amino acid composition, RAW data
 
-```{r 216, echo=FALSE, message=FALSE, warning=FALSE}
+```{r 216,echo=FALSE,message=FALSE,warning=FALSE}
 boxplot(c_m_RAW_AAC[, 4:23],
 main = "Boxplots: All; % Composition Vs Amino Acid",
 ylab = "% AAC",
@@ -255,7 +252,7 @@ las = 1)
 
 ### Boxplots of amino acid compositions for control (only), RAW data
 
-```{r 217, echo=FALSE}
+```{r 217,echo=FALSE}
 boxplot(ctrl_set[, 4:23],
 main = "Boxplots: Controls; % AAC Vs Amino Acid",
 ylab = "% AAC",
@@ -265,7 +262,7 @@ las = 1)
 
 ### Boxplots of amino acid compositions for myoglobin (only), RAW data
 
-```{r 218, echo=FALSE}
+```{r 218,echo=FALSE}
 boxplot(mgb_set[, 4:23],
 ylim = c(0, 0.5),
 main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
@@ -274,7 +271,7 @@ xlab = "Amino Acid",
 las = 1)
 ```
 
-```{r 219, echo=FALSE}
+```{r 219,echo=FALSE}
 par(mfrow = c(1, 2))
 
 boxplot(ctrl_set[, 4:23],
@@ -293,7 +290,7 @@ las = 1)
 
 ### Boxplots Of Length Of Polypeptides For RAW Data 
 
-```{r 220, echo=FALSE}
+```{r 220,echo=FALSE}
 ctrl_totalaa <- ctrl_set[, 2]
 mgb_totalaa <- mgb_set[, 2]
 grand_totalaa <- c_m_RAW_AAC[, 2]
@@ -487,7 +484,7 @@ names(boruta_output)
 
 ### Plot variable importance, RAW Data
 
-```{r 230, echo=FALSE, fig.height=3.5}
+```{r 230, echo=FALSE, fig.height=4}
 plot(boruta_output,
 cex.axis = 1,
 las = 2,
