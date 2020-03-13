@@ -1,3 +1,10 @@
+---
+title: "Appendices"
+author: "mcc"
+date: "3/13/2020"
+output: pdf_document
+---
+
 # Appendices
 
 ```{r}
@@ -21,7 +28,7 @@ To many researchers in data science and bioinformatics the field now includes su
 - [SQL](https://en.wikipedia.org/wiki/SQL)  
 - [Julia](https://julialang.org/)  
 - [Javascript](https://www.javascript.com/) 
-- [RMarkdown](https://rmarkdown.rstudio.com/), (this one is fun and easy)
+- [RMarkdown](https://rmarkdown.rstudio.com/), ([This one is fun and easy](https://www.markdowntutorial.com))
 
 #### Just start with one language {-} 
 

@@ -1,3 +1,10 @@
+---
+title: "Untitled"
+author: "mcc"
+date: "3/13/2020"
+output: pdf_document
+---
+
 # What is Machine Learning?
 
 ```{r 11, include=FALSE, cache=TRUE}
@@ -65,7 +72,7 @@ In the booklet entitled "The Elements of Data Analytic Style," [^110] there is a
 
 [^111]:Roger D. Peng and Elizabeth Matsui, The Art of Data Science, A Guide for Anyone Who Works with Data, Leanpub Books, http://leanpub.com/artofdatascience, 2015
 
-### The Epicycle of Analysis
+**The Epicycle of Analysis**
 
 1. Stating and refining the question,
 1. Exploring the data,
@@ -73,7 +80,7 @@ In the booklet entitled "The Elements of Data Analytic Style," [^110] there is a
 1. Interpreting the results,
 1. Communicating the results.
 
-### Predictive Modeling
+**Predictive Modeling**
 
 In general, there are three types of Predictive Modeling or Machine Learning approaches;
 
@@ -101,7 +108,7 @@ For the K-NN algorithm to function, the data optimally most be complete with a s
 
 Five of the six algorithms that this report investigates are supervised. Logit, support vector machines, and the neural network that I have chosen require labels for the classification process.
 
-```{r 13,echo=FALSE,fig.align="center",fig.height=1,fig.cap="K-Nearest-Neighbor",cache=TRUE}
+```{r 13,echo=FALSE,fig.align="center",fig.height=1.8,fig.cap="K-Nearest-Neighbor",cache=TRUE}
 knitr::include_graphics("./00-data/10-images/K-Nearest-Neighbor.50.png")
 ```
 [^112]
@@ -110,7 +117,7 @@ knitr::include_graphics("./00-data/10-images/K-Nearest-Neighbor.50.png")
 
 #### What is a shallow learner? {-}
 
-Let us investigate the K-NN algorithm and figure a little further. If we change our value of $K$ to 5, then we see a different result. By using $K = 5$, we consider the out dashed-black line. This more considerable $K$ value contains three blue widgets and two red widgets. If we ask to vote on our choice, we find that 3 blue beats the 2 red, and we assign the unknown a BLUE widget. This assignment is the opposite of the inner circle. 
+Let us investigate the K-NN algorithm and figure 2.2 (K-Nearest-Neighbor) a little further. If we change our value of $K$ to 5, then we see a different result. By using $K = 5$, we consider the out dashed-black line. This more considerable $K$ value contains three blue widgets and two red widgets. If we ask to vote on our choice, we find that 3 blue beats the 2 red, and we assign the unknown a BLUE widget. This assignment is the opposite of the inner circle. 
 
 If a researcher were to use K-NN, then the algorithm would have to test many possible $K$ values and compare the results, then choose the $K$ with the highest accuracy. However, this is where K-NN falters. The K-NN algorithm needs to keep all data points used for its initial training (accuracy testing). Any new unknowns could be conceivably tested against any or all the previous data points. The K-NN does use a generalized rule that would make future assignments quick on the contrary. It must memorize all the points for the algorithm to work. K-NN cannot delete the points until it is complete. It is true that the algorithm is simple but not efficient. Matter and fact, as the number of feature dimensions increases, this causes the complexity (also known as Big O) to rise. The complexity of K-NN is $O$(K-NN) $\propto nkd$.
 
@@ -122,7 +129,7 @@ Given that K-NN tends to 'memorize' its data to complete its task, it is conside
 
 ### Unsupervised Learning
 
-In contrast to the supervised learning system, unsupervised learning **does not require or use a label**. 
+In contrast to the supervised learning system, unsupervised learning does not require or use a **label** or **dependent variable**. 
 
 **Data set**:
 
@@ -138,7 +145,7 @@ Principal Component Analysis is an example of unsupervised learning, which we di
 
 Among the simplest unsupervised learning algorithms is K-means. K-means does not rely on the class labels of the dataset at all. K-means may be used to determine any number of classes despite any predetermined values. K-means can discover clusters later used in classification or hierarchical feature representation. K-means has several alternative methods but, in general, calculates the distance (or conversely the similarity) of observations to a mean value of the $K$th grouping. The mean value is called the center of mass, the Physics term that provides an excellent analogy since the center of mass is a weighted average. By choosing a different number of groupings (values of $K$, much like the K-NN), then comparing the grouping by a measure of accuracy, one example being, mean square error. 
 
-```{r 14,fig.height=2,fig.width=2,echo=FALSE,fig.align="center",fig.cap="K-Means",cache=TRUE}
+```{r 14,fig.height=2,echo=FALSE,fig.align="center",fig.cap="K-Means",cache=TRUE}
 img <- readPNG("./00-data/10-images/k-means-2.50.png")
 grid.raster(img)
 ```
@@ -170,7 +177,9 @@ The ability to generalize is a key idea in predictive modeling. This idea harken
 E \left[ \left( y_0 - \hat f(x_0) \right )^2 \right ] = Var ( \hat f(x_0)) + \left [Bias (\hat f(x_0)) \right]^2 + Var(\epsilon)
 \end{equation}
 
-```{r 15,fig.height=2,fig.width=2,echo=FALSE,fig.align="center",fig.cap="Bias-Variance Tradeoff",cache=TRUE}
+---
+
+```{r 15,fig.height=2.5,echo=FALSE,fig.align="center",fig.cap="Bias-Variance Tradeoff",cache=TRUE}
 img <- readPNG("./00-data/10-images/bias-variance-tradeoff.png")
 grid.raster(img)
 ```
@@ -185,11 +194,11 @@ The bias-variance dilemma can be stated as follows.[^67]
 >
 >3. Identifying the best model requires controlling the “model complexity”, i.e., the proper architecture and number of parameters, to reach an appropriate compromise between bias and variance.
 
-One very good example is seen in figure 4, *Bias-Variance Tradeoff*. By considering the yellow-orange line we find a simple slope intercept model ($y \propto k \cdot x$) where the variance is high but the bias low and is not flexible enough. This is called underfitting. Looking at the green-blue line we see it follows the data set much more closely, e.g. ($y \propto k \cdot x^8$). Here the variance is very low but common sense tells us that the line is overfit and would not generalize well in a real world setting. Finally leaving us with the black line which does not appear to have too many parameters, ($y \propto k \cdot x^3$).
+One very good example is seen in figure 2.4, *Bias-Variance Tradeoff*. By considering the yellow-orange line we find a simple slope intercept model ($y \propto k \cdot x$) where the variance is high but the bias low and is not flexible enough. This is called underfitting. Looking at the green-blue line we see it follows the data set much more closely, e.g. ($y \propto k \cdot x^8$). Here the variance is very low but common sense tells us that the line is overfit and would not generalize well in a real world setting. Finally leaving us with the black line which does not appear to have too many parameters, ($y \propto k \cdot x^3$).
 
 ## Research Description
 
-Is there a correlation between the data points, which are outliers from principal component analysis (PCA), and 6 types of predictive modeling? 
+Is there a correlation between the data points, which are outliers from principal component analysis (PCA), and six types of predictive modeling? 
 
 This experiment is interested in determining if PCA would provide information on the false-positives and false-negatives that were an inevitable part of model building and optimization. The six predictive models that have chosen for this work are Logistic Regression, Support Vector Machines (SVM) linear, polynomial kernel, and radial basis function kernel, and a Neural Network.
 
@@ -216,7 +225,7 @@ The data for this study is from the Uniprot database. From the Uniprot database 
 
 The Exploratory Data Analysis determines if features were skewed and needed must be transformed. In a random system where amino acids were chosen at random, one would expect the percent amino acid composition to be close to 5%. However, this is far from the case for the Myoglobin proteins or the control protein samples. On top of this the differences between the myoglobin and control proteins can be as high as approximately 5% with the amino acid Lysine, K.
 
-```{r 16,fig.height=2,fig.width=4,echo=FALSE,fig.align="center",fig.cap="Mean Percent Amino Acid Compositions For Control And Myoglobin",cache=TRUE}
+```{r 16,echo=FALSE,fig.align="center",fig.cap="Mean Percent Amino Acid Compositions For Control And Myoglobin",cache=TRUE}
 img <- readPNG("./00-data/10-images/c_m_Mean_AAC.png")
 grid.raster(img)
 ```
@@ -274,9 +283,19 @@ Cost ~=~ \left ( y_i - \hat f(x_i) \right )^2
 
 It may be important to search the literature to determine if other researchers have used a specific range of optimum value, which may speed a search. For example, C.W. Hsu et al. suggest using a broad range of 20 orders of magnitude of powers of 2,
 
-e.g. `cost = ` {$2^{-5}, 2^{-3}, ..., 2^{15}$} for an initial gross search then 
+**R Code:** Using TuneGrid command to test sequences of number such that the optimal cost function can be sought.
 
-e.g. `cost = ` {$2^{1}, 2^{1.25}, ..., 2^{5}$} switch to 4 or 5 orders of magnitude with 1/4 log steps, for a finer search when using a SVM-radial basis function.[^124]
+```
+# tuneGrid = svmLinearGrid
+svmLinearGrid <- expand.grid(C = c(2^(seq(-5, 15, 2))))
+```
+`expand.grid` will produce a sequence of numbers (in our case) from $2^{-5}, 2^{-3} ~to~ 2^{15}$ to be tested as values for the cost function.
+
+Then switch to 4 or 5 orders of magnitude with 1/4 log steps,[^124]
+
+e.g. cost = `expand.grid(c(2^(seq(1, 5, 0.25))))`
+
+for a finer search gird.
 
 [^124]:Chih-Wei Hsu, et al., A Practical Guide to Support Vector Classification, 2016, http://www.csie.ntu.edu.tw/~cjlin
 
@@ -313,7 +332,7 @@ model_object <- train(Class ~ .,              # READ: Class is modeled by all fe
                       data = training_set,    # Data used
                       trControl = fitControl, # Cross Validation setup
                       method = "svmLinear",   # Use caret ML method
-                      tune.Grid = grid)       # Hyperparameter grid exploration
+                      tune.Grid = Grid)       # Hyperparameter grid exploration
 ```
 
 ### Analysis of results

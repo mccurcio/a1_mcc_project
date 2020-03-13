@@ -91,7 +91,8 @@ Although exploratory data analysis does not always have a formal hypothesis test
 
 Raw data is considered: `./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv`
 
-```{r 21, message=FALSE}
+
+```r
 # Import libraries
 Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta", "kableExtra")
 for (i in Libraries) {
@@ -99,11 +100,10 @@ library(i, character.only = TRUE)
 }
 ```
 
-```{r 22, include=FALSE}
-opts_chunk$set(cache = TRUE)
-```
 
-```{r 23, message=FALSE, warning=FALSE}
+
+
+```r
 # Import RAW data
 c_m_RAW_AAC <- read_csv("./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
@@ -116,43 +116,160 @@ Class <- as.factor(c_m_RAW_AAC$Class)
 
 ### Inspect RAW dataframe structure, `str()` 
 
-```{r 24, echo=FALSE}
-str(c_m_RAW_AAC)
+
+```
+## Classes 'spec_tbl_df', 'tbl_df', 'tbl' and 'data.frame':	2340 obs. of  23 variables:
+##  $ Class  : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ TotalAA: num  226 221 624 1014 699 ...
+##  $ PID    : chr  "C1" "C2" "C3" "C4" ...
+##  $ A      : num  0.2655 0.2081 0.0433 0.0661 0.0644 ...
+##  $ C      : num  0 0 0.00962 0.01381 0.03577 ...
+##  $ D      : num  0.00442 0.00452 0.04647 0.06114 0.02861 ...
+##  $ E      : num  0.031 0.0271 0.0833 0.074 0.0472 ...
+##  $ F      : num  0.00442 0.00452 0.02564 0.02959 0.06295 ...
+##  $ G      : num  0.0708 0.0769 0.0817 0.07 0.0443 ...
+##  $ H      : num  0 0 0.0176 0.0187 0.0157 ...
+##  $ I      : num  0.00885 0.0181 0.03045 0.04734 0.0701 ...
+##  $ K      : num  0.28761 0.27602 0.00962 0.12426 0.05579 ...
+##  $ L      : num  0.0442 0.0452 0.0577 0.0888 0.1359 ...
+##  $ M      : num  0.00442 0.00452 0.01442 0.02465 0.02289 ...
+##  $ N      : num  0.0177 0.0136 0.0641 0.0355 0.0558 ...
+##  $ P      : num  0.0841 0.0995 0.0449 0.0434 0.0472 ...
+##  $ Q      : num  0.00442 0.00905 0.04327 0.03353 0.02861 ...
+##  $ R      : num  0.0133 0.0181 0.1202 0.0325 0.0415 ...
+##  $ S      : num  0.0575 0.0724 0.1875 0.0838 0.0787 ...
+##  $ T      : num  0.0531 0.0633 0.0625 0.0414 0.0744 ...
+##  $ V      : num  0.0442 0.0543 0.0385 0.0671 0.0458 ...
+##  $ W      : num  0 0 0.00481 0.01282 0.00715 ...
+##  $ Y      : num  0.00442 0.00452 0.01442 0.03156 0.0372 ...
+##  - attr(*, "spec")=
+##   .. cols(
+##   ..   Class = col_double(),
+##   ..   TotalAA = col_double(),
+##   ..   PID = col_character(),
+##   ..   A = col_double(),
+##   ..   C = col_double(),
+##   ..   D = col_double(),
+##   ..   E = col_double(),
+##   ..   F = col_double(),
+##   ..   G = col_double(),
+##   ..   H = col_double(),
+##   ..   I = col_double(),
+##   ..   K = col_double(),
+##   ..   L = col_double(),
+##   ..   M = col_double(),
+##   ..   N = col_double(),
+##   ..   P = col_double(),
+##   ..   Q = col_double(),
+##   ..   R = col_double(),
+##   ..   S = col_double(),
+##   ..   T = col_double(),
+##   ..   V = col_double(),
+##   ..   W = col_double(),
+##   ..   Y = col_double()
+##   .. )
 ```
 
 \newpage
 
 ### Check RAW data `head` & `tail`
 
-```{r 25}
+
+```r
 head(c_m_RAW_AAC, n = 2)
 ```
-```{r 26}
+
+```
+## # A tibble: 2 x 23
+##   Class TotalAA PID       A     C       D      E       F      G     H       I
+##   <dbl>   <dbl> <chr> <dbl> <dbl>   <dbl>  <dbl>   <dbl>  <dbl> <dbl>   <dbl>
+## 1     0     226 C1    0.265     0 0.00442 0.0310 0.00442 0.0708     0 0.00885
+## 2     0     221 C2    0.208     0 0.00452 0.0271 0.00452 0.0769     0 0.0181 
+## # ... with 12 more variables: K <dbl>, L <dbl>, M <dbl>, N <dbl>, P <dbl>,
+## #   Q <dbl>, R <dbl>, S <dbl>, T <dbl>, V <dbl>, W <dbl>, Y <dbl>
+```
+
+```r
 tail(c_m_RAW_AAC, n = 2)
+```
+
+```
+## # A tibble: 2 x 23
+##   Class TotalAA PID        A       C      D      E      F      G      H      I
+##   <dbl>   <dbl> <chr>  <dbl>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+## 1     1     335 M1123 0.0567 0.00299 0.0537 0.0716 0.0507 0.0507 0.0388 0.0776
+## 2     1      43 M1124 0.0698 0       0.116  0.116  0.0930 0.0465 0      0.0233
+## # ... with 12 more variables: K <dbl>, L <dbl>, M <dbl>, N <dbl>, P <dbl>,
+## #   Q <dbl>, R <dbl>, S <dbl>, T <dbl>, V <dbl>, W <dbl>, Y <dbl>
 ```
 
 ### Check RAW data types
 
-```{r 27, echo=TRUE}
+
+```r
 is.data.frame(c_m_RAW_AAC)
+```
+
+```
+## [1] TRUE
+```
+
+```r
 class(c_m_RAW_AAC$Class) # Col 1
+```
+
+```
+## [1] "numeric"
+```
+
+```r
 class(c_m_RAW_AAC$TotalAA) # Col 2
+```
+
+```
+## [1] "numeric"
+```
+
+```r
 class(c_m_RAW_AAC$PID) # Col 3
+```
+
+```
+## [1] "character"
+```
+
+```r
 class(c_m_RAW_AAC$A) # Col 4
+```
+
+```
+## [1] "numeric"
 ```
 
 ### Check RAW dataframe dimensions
 
-```{r 28}
+
+```r
 dim(c_m_RAW_AAC)
+```
+
+```
+## [1] 2340   23
 ```
 
 ### Check RAW for missing values
 
 - **No missing values found.**
-```{r 29}
-apply(is.na(c_m_RAW_AAC), 2, which)
 
+```r
+apply(is.na(c_m_RAW_AAC), 2, which)
+```
+
+```
+## integer(0)
+```
+
+```r
 # sapply(c_m_RAW_AAC, function(x) sum(is.na(x))) # Sum up NA by columns
 # c_m_RAW_AAC[rowSums(is.na(c_m_RAW_AAC)) != 0,] # Show rows where NA's is not zero
 ```
@@ -161,15 +278,59 @@ apply(is.na(c_m_RAW_AAC), 2, which)
 
 - Class 0 = Control,
 - Class 1 = Myoglobin
-```{r 210, echo=FALSE}
-class_table <- table(c_m_RAW_AAC$Class)
-class_table
+
+```
+## 
+##    0    1 
+## 1216 1124
 ```
 
 ### Numerical summary of RAW data
 
-```{r 211, echo=FALSE}
-summary(c_m_RAW_AAC)
+
+```
+##      Class           TotalAA           PID                  A          
+##  Min.   :0.0000   Min.   :   2.0   Length:2340        Min.   :0.00000  
+##  1st Qu.:0.0000   1st Qu.: 109.8   Class :character   1st Qu.:0.05108  
+##  Median :0.0000   Median : 154.0   Mode  :character   Median :0.07364  
+##  Mean   :0.4803   Mean   : 353.8                      Mean   :0.07835  
+##  3rd Qu.:1.0000   3rd Qu.: 407.0                      3rd Qu.:0.10261  
+##  Max.   :1.0000   Max.   :4660.0                      Max.   :0.28000  
+##        C                  D                 E                 F          
+##  Min.   :0.000000   Min.   :0.00000   Min.   :0.00000   Min.   :0.00000  
+##  1st Qu.:0.000000   1st Qu.:0.03401   1st Qu.:0.05435   1st Qu.:0.03801  
+##  Median :0.007034   Median :0.05195   Median :0.07143   Median :0.04545  
+##  Mean   :0.011970   Mean   :0.04900   Mean   :0.07451   Mean   :0.05135  
+##  3rd Qu.:0.020408   3rd Qu.:0.06567   3rd Qu.:0.09091   3rd Qu.:0.05501  
+##  Max.   :0.159420   Max.   :0.17647   Max.   :0.50000   Max.   :0.37500  
+##        G                 H                 I                 K          
+##  Min.   :0.00000   Min.   :0.00000   Min.   :0.00000   Min.   :0.00000  
+##  1st Qu.:0.04544   1st Qu.:0.01324   1st Qu.:0.04348   1st Qu.:0.05797  
+##  Median :0.06394   Median :0.02297   Median :0.05992   Median :0.08182  
+##  Mean   :0.06193   Mean   :0.02890   Mean   :0.06839   Mean   :0.08386  
+##  3rd Qu.:0.08625   3rd Qu.:0.04095   3rd Qu.:0.08216   3rd Qu.:0.12081  
+##  Max.   :0.36364   Max.   :0.13333   Max.   :0.50000   Max.   :0.28761  
+##        L                 M                 N                 P          
+##  Min.   :0.00000   Min.   :0.00000   Min.   :0.00000   Min.   :0.00000  
+##  1st Qu.:0.07480   1st Qu.:0.01087   1st Qu.:0.01948   1st Qu.:0.02464  
+##  Median :0.09136   Median :0.01948   Median :0.04145   Median :0.03401  
+##  Mean   :0.09313   Mean   :0.01949   Mean   :0.04228   Mean   :0.03825  
+##  3rd Qu.:0.11688   3rd Qu.:0.02721   3rd Qu.:0.05788   3rd Qu.:0.04772  
+##  Max.   :0.25000   Max.   :0.11111   Max.   :0.12563   Max.   :0.20635  
+##        Q                 R                 S                 T          
+##  Min.   :0.00000   Min.   :0.00000   Min.   :0.00000   Min.   :0.00000  
+##  1st Qu.:0.02212   1st Qu.:0.01476   1st Qu.:0.04348   1st Qu.:0.03247  
+##  Median :0.03598   Median :0.03896   Median :0.05564   Median :0.05194  
+##  Mean   :0.03342   Mean   :0.03818   Mean   :0.06191   Mean   :0.04838  
+##  3rd Qu.:0.04545   3rd Qu.:0.05370   3rd Qu.:0.06964   3rd Qu.:0.06522  
+##  Max.   :0.18182   Max.   :0.24324   Max.   :0.22619   Max.   :0.18750  
+##        V                 W                  Y          
+##  Min.   :0.00000   Min.   :0.000000   Min.   :0.00000  
+##  1st Qu.:0.04575   1st Qu.:0.001899   1st Qu.:0.01463  
+##  Median :0.05844   Median :0.011492   Median :0.02865  
+##  Mean   :0.06512   Mean   :0.012327   Mean   :0.03644  
+##  3rd Qu.:0.07405   3rd Qu.:0.017889   3rd Qu.:0.04564  
+##  Max.   :0.20000   Max.   :0.133333   Max.   :0.14286
 ```
 
 ### Visualize Descriptive Statistics using RAW Data
@@ -183,131 +344,34 @@ E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i
 
 - This Scatter-plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
-```{r 212,echo=FALSE,out.width='60%',fig.align='center'}
-AA_ave <- colMeans(c_m_RAW_AAC[, 4:23])
-plot(AA_ave,
-     main = "RAW Data: Column-Means of % Composition Vs Amino Acid",
-     ylab = "% Composition",
-     xlab = "Amino Acid",
-     ylim = c(0, 0.1),
-     type = "b",
-     xaxt = "n")
-axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
-```
 
-```{r 213, cache=TRUE, include=FALSE}
-# * Pseudo-code for Data manipulation for Grouped Bar charts
-# + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
-# + A-2. Determine column means for each protein class
-# + A-3. Calculate percentage values
-# + A-4. Produce Grouped Bar Plot
+\begin{center}\includegraphics[width=0.6\linewidth]{02-eda_files/figure-latex/212-1} \end{center}
 
-# A-1
-ctrl_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "0"), ]
-mgb_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "1"), ]
 
-# A-2
-ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
-mgb_means <- apply(mgb_set[, 4:23], 2, mean)
-grand_mean <- apply(c_m_RAW_AAC[, 4:23], 2, mean)
 
-# A-3
-data <- data.frame(ctrl_means, mgb_means, grand_mean)
-percent_aa <- as.matrix(t(100 * data))
-```
 
-```{r 214,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE,include=FALSE}
-# A-4
-### Grouped barchart of amino acid vs. protein category
-barplot(percent_aa,
-main = "Mean % A.A.Composition Of 3 Protein Groupings",
-ylab = "% AA Composition",
-ylim = c(0, 12),
-col = colorRampPalette(brewer.pal(4, "Blues"))(3),
-legend = T,
-beside = T)
-```
 
 ### Means of percent amino acid composition of control & myoglobin categories, RAW data
 
-```{r 215,echo=FALSE,message=FALSE,warning=FALSE,cache=TRUE}
-data2 <- data.frame(ctrl_means, mgb_means)
-percent_aa2 <- as.matrix(t(100 * data2))
-
-barplot(percent_aa2,
-ylim = c(0, 12),
-main = "Mean % A.A.Composition Of Control & Myoglobin",
-ylab = "% AA Composition",
-col = colorRampPalette(brewer.pal(4, "Blues"))(2),
-legend = T,
-beside = T)
-```
+![](02-eda_files/figure-latex/215-1.pdf)<!-- --> 
 
 ### Boxplots of grand-means of overall amino acid composition, RAW data
 
-```{r 216,echo=FALSE,message=FALSE,warning=FALSE}
-boxplot(c_m_RAW_AAC[, 4:23],
-main = "Boxplots: All; % Composition Vs Amino Acid",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
-```
+![](02-eda_files/figure-latex/216-1.pdf)<!-- --> 
 
 ### Boxplots of amino acid compositions for control (only), RAW data
 
-```{r 217,echo=FALSE}
-boxplot(ctrl_set[, 4:23],
-main = "Boxplots: Controls; % AAC Vs Amino Acid",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
-```
+![](02-eda_files/figure-latex/217-1.pdf)<!-- --> 
 
 ### Boxplots of amino acid compositions for myoglobin (only), RAW data
 
-```{r 218,echo=FALSE}
-boxplot(mgb_set[, 4:23],
-ylim = c(0, 0.5),
-main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
-```
+![](02-eda_files/figure-latex/218-1.pdf)<!-- --> 
 
-```{r 219,echo=FALSE}
-par(mfrow = c(1, 2))
-
-boxplot(ctrl_set[, 4:23],
-ylim = c(0, 0.3),
-main = "Boxplots: Controls",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
-
-boxplot(mgb_set[, 4:23],
-ylim = c(0, 0.3),
-main = "Boxplot: Myoglobin",
-xlab = "Amino Acid",
-las = 1)
-```
+![](02-eda_files/figure-latex/219-1.pdf)<!-- --> 
 
 ### Boxplots Of Length Of Polypeptides For RAW Data 
 
-```{r 220,echo=FALSE}
-ctrl_totalaa <- ctrl_set[, 2]
-mgb_totalaa <- mgb_set[, 2]
-grand_totalaa <- c_m_RAW_AAC[, 2]
-
-data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
-
-boxplot(data,
-ylim = c(0, 5000),
-main = "RAW Data: Length of Polypeptides Vs Control, Myoglobin & Combined",
-ylab = "Length of Polypeptides",
-xaxt = "n",
-las = 2)
-axis(1, at = 1:3, labels = c("Control", "Myoglobin", "Combined"))
-```
+![](02-eda_files/figure-latex/220-1.pdf)<!-- --> 
 
 ### Plot Coefficient Of Variance For RAW Data
 
@@ -321,23 +385,20 @@ CV = \frac {\sigma (x)} {E [|x|]} ~~~ where ~~~ \sigma(x) \equiv \sqrt{ E[x - \m
 CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)^2}
 \end{equation}
 
-```{r 221, echo=FALSE}
-AA_var_norm <- (apply(c_m_RAW_AAC[, 4:23], 2, sd)) / AA_ave
-plot(AA_var_norm,
-main = "Plot of Coefficient Of Variance (CV), RAW Data",
-sub = "(Note: Two largest values shown in red.)",
-ylab = "Coefficient Of Variance (CV)",
-xlab = "Amino Acid",
-ylim = c(0, 1.5),
-type = "b",
-xaxt = "n")
-axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
-text(x = 2, y = 1.4, label = " C=1.24", col = "red")
-text(x = 19, y = 1.1, label = "W=0.946", col = "red")
+![](02-eda_files/figure-latex/221-1.pdf)<!-- --> 
+
+
+```r
+AA_var_norm
 ```
 
-```{r 222}
-AA_var_norm
+```
+##         A         C         D         E         F         G         H         I 
+## 0.6095112 1.2444944 0.5478540 0.4156102 0.5436243 0.5201625 0.7966296 0.6005962 
+##         K         L         M         N         P         Q         R         S 
+## 0.4689544 0.3215591 0.6529752 0.7352478 0.7383244 0.5752622 0.7680977 0.4948690 
+##         T         V         W         Y 
+## 0.5830352 0.4420595 0.9461276 0.8461615
 ```
 
 \newpage
@@ -354,37 +415,27 @@ Skewness ~= \frac { \frac{1}{n} \sum^n_{i=1} (x_i - \bar x)^3 } { \left( \sqrt{ 
 
 Skewness values for each A.A. are determined in totality.
 
-```{r 223, echo=FALSE}
-AA_skewness <- (apply(c_m_RAW_AAC[, 4:23], 2, e1071::skewness))
-plot(AA_skewness,
-main = "Plot of Skewness Vs Amino Acids, RAW Data",
-ylab = "Skewness",
-xlab = "Amino Acid",
-type = "b",
-ylim = c(-0.5, 3),
-xaxt = "n")
-axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
-abline(h = 2.0, col = "red")
-text(x = 2, y = 2.8, label = " C=2.5", col = "red")
-text(x = 5, y = 2.4, label = "F=2.1", col = "red")
-text(x = 8, y = 2.4, label = "I=2.2", col = "red")
+![](02-eda_files/figure-latex/223-1.pdf)<!-- --> 
+
+
+```r
+AA_skewness
 ```
 
-```{r}
-AA_skewness
+```
+##            A            C            D            E            F            G 
+##  0.670502595  2.538162400 -0.058540442  1.782876260  2.128117638  0.091338300 
+##            H            I            K            L            M            N 
+##  1.135783661  2.192145038  0.223433207 -0.172566877  0.744002991  0.633532783 
+##            P            Q            R            S            T            V 
+##  1.493903282  0.306716333  1.241930812  1.448521897 -0.006075043  1.338971930 
+##            W            Y 
+##  1.831047440  1.694362388
 ```
 
 ### QQ-Plots of 20 amino acids, RAW data
 
-```{r 224, echo=FALSE}
-AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
-        "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
-par(mfrow=c(2,2))
-for (i in 4:23) {
-qqnorm(c_m_RAW_AAC[[i]], main = AA[[i - 3]])
-qqline(c_m_RAW_AAC[[i]], col = "red")
-}
-```
+![](02-eda_files/figure-latex/224-1.pdf)<!-- --> ![](02-eda_files/figure-latex/224-2.pdf)<!-- --> ![](02-eda_files/figure-latex/224-3.pdf)<!-- --> ![](02-eda_files/figure-latex/224-4.pdf)<!-- --> ![](02-eda_files/figure-latex/224-5.pdf)<!-- --> 
 
 ### Determine coefficients of correlation, RAW data
 
@@ -401,7 +452,8 @@ Pearson's correlation coefficient:
 r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }
 \end{equation}
 
-```{r 225, message=FALSE, warning=FALSE}
+
+```r
 c_m_corr_mat <- cor(c_m_RAW_AAC[, c(2, 4:23)], method = "p") # "p": Pearson test for continous variables
 
 corrplot(abs(c_m_corr_mat),
@@ -417,11 +469,14 @@ corrplot(abs(c_m_corr_mat),
          tl.col = "black")
 ```
 
+![](02-eda_files/figure-latex/225-1.pdf)<!-- --> 
+
 NOTE: Amino acids shown in First Principal Component order, top to bottom.
 
 1. Maximum value of Correlation between T & N.
-```{r 226, echo=FALSE}
-c_m_corr_mat["T", "N"]
+
+```
+## [1] 0.7098085
 ```
 
 2. According to Max Kuhn[^28], correlation coefficients need only be addressed if the |R| >= 0.75.
@@ -439,13 +494,15 @@ c_m_corr_mat["T", "N"]
 
 [^211]:https://notabug.org/mbq/Boruta/
 
-```{r 227}
+
+```r
 c_m_class_20 <- c_m_RAW_AAC[, -c(2, 3)] # Remove TotalAA & PID
 Class <- as.factor(c_m_class_20$Class) # Convert 'Class' To Factor
 ```
 
 NOTE: *mcAdj = TRUE*, If True, multiple comparisons will be adjusted using the Bonferroni method to calculate p-values. Therefore, $p_i \leq \large \frac {\alpha} {m}$ where $\alpha$ is the desired p-value and $m$ is the total number of null hypotheses. 
-```{r 228, message=FALSE, warning=FALSE, cache=TRUE}
+
+```r
 set.seed(1000)
 registerDoMC(cores = 3) # Start multi-processor mode
 start_time <- Sys.time() # Start timer
@@ -460,35 +517,72 @@ end_time <- Sys.time() # End timer
 end_time - start_time # Display elapsed time
 ```
 
-```{r 229, eval=FALSE, include=FALSE}
-names(boruta_output)
 ```
+## Time difference of 31.62754 secs
+```
+
+
 
 ### Plot variable importance, RAW Data
 
-```{r 230, echo=FALSE}
-plot(boruta_output,
-     cex.axis = 1,
-     las = 2,
-     ylim = c(-5, 50),
-     main = "Variable Importance, RAW Data (Bigger=Better)")
-```
+![](02-eda_files/figure-latex/230-1.pdf)<!-- --> 
 
 ### Variable importance scores, RAW Data
 
-```{r 231, echo=FALSE, message=FALSE}
-roughFixMod <- TentativeRoughFix(boruta_output)
-imps <- attStats(roughFixMod)
-imps2 <- imps[imps$decision != "Rejected", c("meanImp", "decision")]
-meanImps <- imps2[order(-imps2$meanImp), ] # descending sort
 
-kable(meanImps) %>% kable_styling(bootstrap_options = c("striped", "hover"))
-
-# knitr::kable(meanImps,
-# full_width = F,
-# position = "left",
-# caption = "Mean Importance Scores & Decision, RAW Data")
 ```
+## Warning in TentativeRoughFix(boruta_output): There are no Tentative attributes!
+## Returning original object.
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|l}
+\hline
+  & meanImp & decision\\
+\hline
+R & 43.18824 & Confirmed\\
+\hline
+H & 34.29757 & Confirmed\\
+\hline
+P & 28.70225 & Confirmed\\
+\hline
+C & 27.67710 & Confirmed\\
+\hline
+K & 27.60808 & Confirmed\\
+\hline
+E & 26.18884 & Confirmed\\
+\hline
+Y & 22.85337 & Confirmed\\
+\hline
+T & 21.67689 & Confirmed\\
+\hline
+S & 21.43716 & Confirmed\\
+\hline
+A & 20.53089 & Confirmed\\
+\hline
+N & 20.09681 & Confirmed\\
+\hline
+V & 18.77054 & Confirmed\\
+\hline
+I & 18.76492 & Confirmed\\
+\hline
+F & 18.31240 & Confirmed\\
+\hline
+D & 17.64592 & Confirmed\\
+\hline
+G & 16.15461 & Confirmed\\
+\hline
+W & 15.74107 & Confirmed\\
+\hline
+L & 15.27767 & Confirmed\\
+\hline
+M & 14.82861 & Confirmed\\
+\hline
+Q & 14.13939 & Confirmed\\
+\hline
+\end{tabular}
+\end{table}
 
 ### Conclusion for Boruta random forest test, RAW Data
 
@@ -518,16 +612,10 @@ The $\sqrt x_i$ *Transformed* data is derived from `c_m_RAW_ACC.csv` where the a
 | F, Phenolalanine |     2.128118     |               -0.102739               |
 | I, Isoleucine    |     2.192145     |               0.2934749               |
 
-```{r 232, message=FALSE, include=FALSE}
-# Import libraries
-Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
-for (i in Libraries) {
-library(i, character.only = TRUE)
-}
-opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
-```
 
-```{r 233, message=FALSE, warning=FALSE}
+
+
+```r
 # Import Transformed data
 c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv")
 Class <- as.factor(c_m_TRANSFORMED$Class)
@@ -535,14 +623,24 @@ Class <- as.factor(c_m_TRANSFORMED$Class)
 
 ### Check Transformed dataframe dimensions
 
-```{r 234}
+
+```r
 dim(c_m_TRANSFORMED)
+```
+
+```
+## [1] 2340   23
 ```
 
 ### Check Transformed for missing values
 
-```{r 235}
+
+```r
 apply(is.na(c_m_TRANSFORMED), 2, which)
+```
+
+```
+## integer(0)
 ```
 
 - No missing values found.
@@ -553,9 +651,11 @@ Number of polypeptides per Class:
 
 - Class 0 = Control,
 - Class 1 = Myoglobin
-```{r 236, echo=FALSE}
-class_table <- table(c_m_TRANSFORMED$Class)
-class_table
+
+```
+## 
+##    0    1 
+## 1216 1124
 ```
 
 ### Visualization Descriptive Statistics, TRANSFORMED data
@@ -569,115 +669,31 @@ E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i
 
 - This plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n=2340) versus AA type.
 
-```{r 237, echo=FALSE}
-AA_ave <- colMeans(c_m_TRANSFORMED[, 4:23])
-plot(AA_ave,
-     main = "Column-Means Vs Amino Acid, TRANSFORMED data",
-     ylab = "% Composition",
-     xlab = "Amino Acid",
-     sub = "(Note: The red line at 0.1 is simply an arbitrary marker)",
-     ylim = c(0, 0.3),
-     type = "b",
-     xaxt = "n")
-axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
-```
+![](02-eda_files/figure-latex/237-1.pdf)<!-- --> 
 
-```{r 238, echo=FALSE, cache=TRUE}
-# * Pseudo-code for Data manipulation for Grouped Bar charts
-# + A-1. Subset 7 protein groups, [Control:Ctrl, Myoglobin:Mgb] & Grand-Mean of both sets
-# + A-2. Determine column means for each protein class
-# + A-3. Calculate percentage values
-# + A-4. Produce Grouped Bar Plot
 
-# A-1
-ctrl_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "0"), ]
-mgb_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "1"), ]
 
-# A-2
-ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
-mgb_means <- apply(mgb_set[, 4:23], 2, mean)
-grand_mean <- apply(c_m_TRANSFORMED[, 4:23], 2, mean)
 
-# A-3
-data <- data.frame(ctrl_means, mgb_means, grand_mean)
-percent_aa <- as.matrix(t(100 * data))
-```
-
-```{r 239, eval=FALSE, include=FALSE}
-# A-4
-## Grouped barchart of $\sqrt x_i$ Transformed amino acid vs.
-## protein category data
-barplot(percent_aa,
-        main = "Mean % A.A.Composition, TRANSFORMED data",
-        ylab = "% AA Composition",
-        ylim = c(0, 30),
-        col = colorRampPalette(brewer.pal(4, "Blues"))(3),
-        legend = T,
-        beside = T)
-```
 
 ### Grouped bar chart of means for percent amino acid composition of Transformed Data; control & myoglobin categories
 
-```{r 240, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-data2 <- data.frame(ctrl_means, mgb_means)
-percent_aa2 <- as.matrix(t(100 * data2))
-
-barplot(percent_aa2,
-        ylim = c(0, 30),
-        main = "Means of % A.A.Composition, TRANSFORMED data",
-        ylab = "% AA Composition",
-        col = colorRampPalette(brewer.pal(4, "Blues"))(2),
-        legend = T,
-        beside = T)
-```
+![](02-eda_files/figure-latex/240-1.pdf)<!-- --> 
 
 ### Boxplots of grand-means of the overall amino acid composition of square-root transformed data
 
-```{r 241, echo=FALSE, message=FALSE, warning=FALSE}
-boxplot(c_m_TRANSFORMED[, 4:23],
-        main = "% AAC Vs Amino Acid, TRANSFORMED data",
-        ylab = "% AAC",
-        xlab = "Amino Acid",
-        las = 1)
-```
+![](02-eda_files/figure-latex/241-1.pdf)<!-- --> 
 
 ### Boxplots of amino acid compositions for control (only) of square-root transformed data
 
-```{r 242, echo=FALSE}
-boxplot(ctrl_set[, 4:23],
-        main = "Control, % AAC Vs Amino Acid, TRANSFORMED data",
-        ylab = "% AAC",
-        xlab = "Amino Acid",
-        las = 1)
-```
+![](02-eda_files/figure-latex/242-1.pdf)<!-- --> 
 
 ### Boxplots of amino acid compositions for myoglobin of square-root transformed Data(only), TRANSFORMED data
 
-```{r 243, echo=FALSE}
-boxplot(mgb_set[, 4:23],
-        main = "Myoglobin, % AAC Vs Amino Acid, TRANSFORMED data",
-        ylab = "% AAC",
-        xlab = "Amino Acid",
-        las = 1)
-```
+![](02-eda_files/figure-latex/243-1.pdf)<!-- --> 
 
 ### Boxplots Of Length Of Polypeptides Of Transformed Data; Myoglobin, Control & Combined
 
-```{r 244, echo=FALSE}
-ctrl_totalaa <- ctrl_set[, 2]
-mgb_totalaa <- mgb_set[, 2]
-grand_totalaa <- c_m_TRANSFORMED[, 2]
-
-data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
-
-boxplot(data,
-        ylim = c(0, 5000),
-        main = "Length of Polypeptides, TRANSFORMED data",
-        ylab = "Length of Polypeptides",
-        xaxt = "n",
-        las = 2)
-axis(1, at = 1:3, labels = c("Control", "Myoglobin", "Combined"))
-```
+![](02-eda_files/figure-latex/244-1.pdf)<!-- --> 
 
 \newpage
 
@@ -695,19 +711,19 @@ CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)
 
 ### Plot of Coefficient Of Variance (CV)
 
-```{r 245, echo=FALSE}
-AA_var_norm <- (apply(c_m_TRANSFORMED[, 4:23], 2, sd)) / AA_ave
-plot(AA_var_norm,
-     main = "Coefficient Of Variance, TRANSFORMED data",
-     ylab = "Coefficient Of Variance (CV)",
-     xlab = "Amino Acid",
-     ylim = c(0, 1.5),
-     type = "b",
-     xaxt = "n")
-axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
-```
-```{r 246}
+![](02-eda_files/figure-latex/245-1.pdf)<!-- --> 
+
+```r
 AA_var_norm
+```
+
+```
+##         A         C         D         E         F         G         H         I 
+## 0.6095112 0.8729758 0.5478540 0.4156102 0.2815745 0.5201625 0.7966296 0.2999687 
+##         K         L         M         N         P         Q         R         S 
+## 0.4689544 0.3215591 0.6529752 0.7352478 0.7383244 0.5752622 0.7680977 0.4948690 
+##         T         V         W         Y 
+## 0.5830352 0.4420595 0.9461276 0.8461615
 ```
 
 \newpage
@@ -724,36 +740,27 @@ Skewness ~= \frac { \frac{1}{n} \sum^n_{i=1} (x_i - \bar x)^3 } { \left( \sqrt{ 
 
 - Skewness values for each A.A. by Class of square-root transformed data
 
-```{r 247, echo=FALSE}
-AA_skewness <- (apply(c_m_TRANSFORMED[, 4:23], 2, e1071::skewness))
-plot(AA_skewness,
-     main = "Skewness of Amino Acids, TRANSFORMED data",
-     sub = "(Red bar at Skew=2.0 indicates all values good.)",
-     ylab = "Skewness",
-     xlab = "Amino Acid",
-     type = "b",
-     ylim = c(-0.5, 2.3),
-     xaxt = "n")
-axis(1, at = 1:20, labels = names(c_m_TRANSFORMED[, 4:23]))
-abline(h = 2.0, col = "red")
+![](02-eda_files/figure-latex/247-1.pdf)<!-- --> 
+
+
+```r
+AA_skewness
 ```
 
-```{r 248}
-AA_skewness
+```
+##            A            C            D            E            F            G 
+##  0.670502595  0.347813248 -0.058540442  1.782876260 -0.102739748  0.091338300 
+##            H            I            K            L            M            N 
+##  1.135783661  0.293474879  0.223433207 -0.172566877  0.744002991  0.633532783 
+##            P            Q            R            S            T            V 
+##  1.493903282  0.306716333  1.241930812  1.448521897 -0.006075043  1.338971930 
+##            W            Y 
+##  1.831047440  1.694362388
 ```
 
 ### QQ Plots of 20 amino acids, TRANSFORMED data
 
-```{r 249, echo=FALSE}
-AA <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
-        "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y")
-par(mfrow=c(2,2))
-for (i in 4:23) 
-  {
-  qqnorm(c_m_TRANSFORMED[[i]], main = AA[[i - 3]])
-  qqline(c_m_TRANSFORMED[[i]], col = "red")
-  }
-```
+![](02-eda_files/figure-latex/249-1.pdf)<!-- --> ![](02-eda_files/figure-latex/249-2.pdf)<!-- --> ![](02-eda_files/figure-latex/249-3.pdf)<!-- --> ![](02-eda_files/figure-latex/249-4.pdf)<!-- --> ![](02-eda_files/figure-latex/249-5.pdf)<!-- --> 
 
 ### Determine coefficients of correlation, TRANSFORMED data
 
@@ -770,40 +777,28 @@ Pearson's correlation coefficient:
 r_{xy} = \frac {\sum^n_{i=1} (x_i - \bar x)(y_1 - \bar y)} { {\sqrt {\sum^n_{i=1} (x_i - \bar x)^2 }} {\sqrt {\sum^n_{i=1} (y_i - \bar y)^2 }} }
 \end{equation}
 
-```{r 250, echo=FALSE}
-c_m_corr_mat <- cor(c_m_TRANSFORMED[, c(2, 4:23)],
-                    method = "p") # "p": Pearson test for continous variables
+![](02-eda_files/figure-latex/250-1.pdf)<!-- --> 
 
-corrplot(abs(c_m_corr_mat),
-         title = "Correlation Plot, TRANSFORMED data",
-         method = "square",
-         type = "lower",
-         tl.pos = "d",
-         cl.lim = c(0, 1),
-         addgrid.col = "lightgrey",
-         cl.pos = "b", # Color legend position bottom.
-         order = "FPC", # "FPC" = first principal component order.
-         mar = c(1, 2, 1, 2),
-         tl.col = "black")
+
+```r
+c_m_corr_mat["T", "N"]
 ```
 
-```{r 251}
-c_m_corr_mat["T", "N"]
+```
+## [1] 0.7098085
 ```
 
 **No values in the correlation matrix meet the 0.75 cut off criteria for problems.**
 
 ### Boruta - Dimensionality Reduction, TRANSFORMED data
 
-```{r 252, echo=FALSE}
-c_m_class_20 <- c_m_TRANSFORMED[, -c(2, 3)] # Remove TotalAA & PID
-Class <- as.factor(c_m_class_20$Class) # Convert 'Class' To Factor
-```
+
 
 **Perform Boruta search**
 
 NOTE: *mcAdj = TRUE*: If True, multiple comparisons will be adjusted using the Bonferroni method to calculate p-values. Therefore, $p_i \leq \frac {\alpha} {m}$ where $\alpha$ is the desired p-value and $m$ is the total number of null hypotheses. 
-```{r 253, cache=TRUE}
+
+```r
 set.seed(1000)
 registerDoMC(cores = 3) # Start multi-processor mode
 start_time <- Sys.time() # Start timer
@@ -818,9 +813,14 @@ end_time <- Sys.time() # End timer
 end_time - start_time # Display elapsed time
 ```
 
+```
+## Time difference of 31.02332 secs
+```
+
 ### Plot Variable Importance, TRANSFORMED data
 
-```{r 254}
+
+```r
 plot(boruta_output,
      cex.axis = 1,
      las = 2,
@@ -828,26 +828,77 @@ plot(boruta_output,
      main = "Variable Importance, TRANSFORMED data(Bigger=Better)")
 ```
 
+![](02-eda_files/figure-latex/254-1.pdf)<!-- --> 
+
 ### Variable Importance Scores, TRANSFORMED data
 
-```{r 255, message=FALSE}
+
+```r
 roughFixMod <- TentativeRoughFix(boruta_output)
 imps <- attStats(roughFixMod)
 imps2 <- imps[imps$decision != "Rejected", c("meanImp", "decision")]
 meanImps <- imps2[order(-imps2$meanImp), ] # descending sort
 
 kable(meanImps) %>% kable_styling(bootstrap_options = c("striped", "hover"))
+```
 
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|l}
+\hline
+  & meanImp & decision\\
+\hline
+R & 43.17613 & Confirmed\\
+\hline
+H & 34.30370 & Confirmed\\
+\hline
+P & 28.70674 & Confirmed\\
+\hline
+C & 27.72357 & Confirmed\\
+\hline
+K & 27.60838 & Confirmed\\
+\hline
+E & 26.18872 & Confirmed\\
+\hline
+Y & 22.84975 & Confirmed\\
+\hline
+T & 21.66359 & Confirmed\\
+\hline
+S & 21.44119 & Confirmed\\
+\hline
+A & 20.54316 & Confirmed\\
+\hline
+N & 20.10100 & Confirmed\\
+\hline
+V & 18.77068 & Confirmed\\
+\hline
+I & 18.69155 & Confirmed\\
+\hline
+F & 18.18632 & Confirmed\\
+\hline
+D & 17.64435 & Confirmed\\
+\hline
+G & 16.15207 & Confirmed\\
+\hline
+W & 15.77085 & Confirmed\\
+\hline
+L & 15.27614 & Confirmed\\
+\hline
+M & 14.83421 & Confirmed\\
+\hline
+Q & 14.12976 & Confirmed\\
+\hline
+\end{tabular}
+\end{table}
+
+```r
 # knitr::kable(meanImps,
 # full_width = F,
 # position = "left",
 # caption = "Mean Importance Scores & Decision, TRANSFORMED data")
 ```
 
-```{r 256, eval=FALSE, include=FALSE}
-## Plot importance history
-plotImpHistory(boruta_output)
-```
+
 
 The *Boruta random forest test* shows that all features are essential therefore none should be dropped from TRANSFORMED data.
 
@@ -869,7 +920,6 @@ The transformations of the three amino acids (C, F, I) did not appriciably chang
 
 ---
 
-```{block}
 **Information Block**
 
 How to: Dimension Reduction using High Correlation
@@ -887,7 +937,6 @@ How to reduce features given high correlation (|R| >= 0.75) {-}
 5. If A has a more significant average correlation, remove it; otherwise, remove predictor B. 
 
 6. Repeat Steps 2–4 until no absolute correlations are above the threshold. 
-```
 
 ---
 

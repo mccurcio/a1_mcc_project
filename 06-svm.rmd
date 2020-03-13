@@ -1,6 +1,13 @@
+---
+title: "Support Vector Machines For Binary Classification"
+author: "mcc"
+date: "3/13/2020"
+output: pdf_document
+---
+
 # Support Vector Machines for Binary Classification
 
-```{r}
+```{r, include=FALSE}
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
@@ -53,7 +60,7 @@ abline(v = midpt, col = "black", lwd = 3, lty = 2)
 abline(v = x2_min, col = "red", lwd = 3)
 ```
 
-## Linearly Separable
+### Linearly Separable
 
 In test #1, we can see the two isozymes can easily separated by activity alone. Figure 1 demonstrates that the data is *linearly separable.* The dataset is linearly separable if a single straight line can partition the data.  In more general terms, "if the classes are linearly separable, it can be shown that the algorithm converges to a separating hyperplane." [^63] As Cortes and Vapnik indicate the hyperplane is the decision boundary of any high dimension feature space, considering a hyperplane has one less dimension than its n-dimensional space.
 
@@ -65,7 +72,7 @@ Incidentally, in Patrick Winston's lecture on SVM, he calls SVM the "widest stre
 
 [^65]:C. Cortes, V. Vapnik, Machine Learning, 20, 273-297, 1995
 
-```{r 63,fig.height=2,echo=FALSE,fig.align="center",out.width="85%"}
+```{r 63,fig.height=2,echo=FALSE,fig.align="center",out.width="85%",fig.cap="Vapnick SVM Diagram"}
 include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
 ```
 [^66]
@@ -74,7 +81,7 @@ include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
 
 Adding the prosaic phrase *widest street* smartly leads to the idea that a widest decision boundary also has the greatest ability to generalize.
 
-```{r 64,fig.height=2,echo=FALSE,fig.align="center",out.width="70%"}
+```{r 64,fig.height=2,echo=FALSE,fig.align="center",out.width="70%",fig.cap="P Values Schematic"}
 include_graphics("./00-data/10-images/p-values_schematic.jpg")
 ```
 [^68]
@@ -101,7 +108,7 @@ abline(v = midpt, col = "black", lty = 2, lwd = 3)
 abline(v = x2_min, col = "red", lwd = 3)
 ```
 
-## Understanding the hyperplane equation
+### Understanding the hyperplane equation
 
 If we were trying to find:
 
@@ -146,7 +153,7 @@ include_graphics("./00-data/10-images/SVM_optimize_2.png")
 
 [^69]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, https://web.stanford.edu/~hastie/ElemStatLearn/, 2017
 
-## Soft Margins
+### Soft Margins
 
 In the case above, the activities overlap hence determining which isozyme is Alpha or Gamma is more difficult. In 1995, C. Cortes and V. Vapnik introduced the mathematics and ideas for "Soft Margins" or non-separable training data.[^610] 
 
@@ -158,6 +165,8 @@ The first mention of an SVM like system is by Vapnik and Lerner in 1963, where t
 
 [^611]:V. Vapnik and A. Lerner, 1963. Pattern recognition using generalized portrait method. Automation and Remote Control, 24, 774–780
 
+### Kernel Use
+
 For example, this experiment has chosen to investigate three possible decision boundary shapes for the two-class protein data. The three mathematical constructs which will be tested are:
 
 1. Linear hyperplane (also known as "plain-vanilla"),
@@ -165,22 +174,22 @@ For example, this experiment has chosen to investigate three possible decision b
 3. A radial basis function hyperplane,
 4. Sigmoidal.
 
-### Linear: $K(x, ~y) ~=~ w^T x + b$ 
+#### Linear: $K(x, ~y) ~=~ w^T x + b$ 
 
 - The linear kernel does not transform the data at all. 
 
 Three common SVM kernel formulae investigated are:
 
-### Polynomial: $K(x_i, ~y) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~~ \gamma > 0$ 
+#### Polynomial: $K(x_i, ~y) ~=~ ( \gamma ~x_i^T ~x_j ~+~ r)^{\Large d}, ~~ \gamma > 0$ 
 
 - The polynomial kernel has a straightforward non-linear transform of the data. 
 - Such that $~\gamma, ~r$, and $d$ are kernel parameters. 
 
-### Radial Basis Function (RBF): $K(x_i, x_j) ~=~ exp ( - {\gamma} \parallel x_i^T - x_j \parallel ^2 ), ~~ \gamma >0$
+#### Radial Basis Function (RBF): $K(x_i, x_j) ~=~ exp ( - {\gamma} \parallel x_i^T - x_j \parallel ^2 ), ~~ \gamma >0$
 
 - The Gaussian RBF kernel which performs well on many data and is a good default
 
-### Sigmoidal: $K(x, y) ~=~ {\tanh} (\gamma~ x^T ~ y ~+~ r ), ~~ \gamma >0$
+#### Sigmoidal: $K(x, y) ~=~ {\tanh} (\gamma~ x^T ~ y ~+~ r ), ~~ \gamma >0$
 
 - Incidentally, The sigmoid kernel produces an SVM analogous to the activation function similar to a [perceptron] with a sigmoid activation function.[^612]
 
@@ -191,7 +200,7 @@ Three common SVM kernel formulae investigated are:
 \pagebreak
 
 Plots of 4 common SVM boundary shapes: 
-```{r 67, echo=FALSE}
+```{r 67, echo=FALSE, cache=TRUE}
 xi <- seq(-5, 5, 0.1)
 yi <- seq(-5, 5, 0.1)
 par(mfrow = c(1, 4))
@@ -229,11 +238,11 @@ main = "Tanh Case",
 ylab = "y", xlab = "x")
 ```
 
-### SVM-Linear
+### SVM-Linear Intuition
 
 The simplest form of SVM utilizes a hyperplane as a separating element between the positive and control protein observations. This type of implementation is denoted as SVM-Linear (svm-lin) in this report. Here the mathematics is more easily described and can even be shown with a simple 2-dimensional graphic.
 
-```{r 68,fig.height=2,echo=FALSE,fig.align="center",out.width="65%"}
+```{r 68,fig.height=2,echo=FALSE,fig.align="center",out.width="65%", cache=TRUE}
 include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
 ```
 [^613]
@@ -305,10 +314,9 @@ By introducing a "soft margin" instead of a hard boundary, we can add a slack va
 In short, one guiding idea of SVM is a geometric one. In a binary-class learning system, the metric for the concept of the "best" classification function can be realized geometrically[^619] by using a line or a plane (more precisely called a hyperplane when discussing multi-dimensional datasets) to separate the two labeled groups. The hyperplane that separates the labeled sets is also known as a decision boundary. 
 
 [^619]:Xindong Wu, et al., Top 10 algorithms in data mining, Knowl Inf Syst, 14:1–37, DOI:10.1007/s10115-007-0114-2, 2008
+ 
 
-Incidentally, 
-
-Big O notation [^620]
+#### Big O notation [^620]
 
 |   Algorithm  |     Training     |  Prediction   |
 | :----------: | :--------------: | :-----------: |
@@ -329,7 +337,7 @@ There are three properties that make SVMs attractive for data scientists:[^621]
 >3. SVMs are a nonparametric method—they retain training examples and potentially need to store them all. On the other hand, in practice they often end up retaining only a small fraction of the number of examples—sometimes as few as a small constant times the number of dimensions. Thus SVMs combine the advantages of nonparametric and parametric models: they have the flexibility to represent complex functions, but they are resistant to overfitting.
 
 
-## SVM-Linear with No Kernel
+## SVM-Linear Model
 
 ```{r 69, message=FALSE, warning=FALSE}
 # Load Libraries
@@ -380,10 +388,10 @@ tcontrol <- trainControl(method = "repeatedcv",
                          savePredictions = "final") # Saves predictions
 
 lin_model_obj <- train(Class ~ .,
-                   data = training_set,
-                   method = "svmLinear",
-                   trControl = tcontrol,
-                   tuneGrid = svmLinearGrid)
+                       data = training_set,
+                       method = "svmLinear",
+                       trControl = tcontrol,
+                       tuneGrid = svmLinearGrid)
 
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
@@ -429,7 +437,7 @@ head(fp_fn_svm_linear)
 
 ---
 
-## SVM-Poly Model
+## SVM-Polynomial Model
 
 Partition data into training and testing sets
 ```{r 618}
@@ -442,11 +450,11 @@ test_set     <- c_m_TRANSFORMED[-index,]
 Class_test <- as.factor(test_set$Class)
 ```
 
-## SVM-Poly Training
+### SVM-Poly Training
 
 ```{r 619, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3) # Start multi-processor mode 
+registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
 
 # Create model, 10X fold CV repeated 5X
@@ -456,34 +464,34 @@ tcontrol <- trainControl(method = "repeatedcv",
                          savePredictions = "final") # Saves predictions
 
 poly_model_obj <- train(Class ~ .,
-                   data = training_set,
-                   method = "svmPoly",
-                   trControl= tcontrol)
+                        data = training_set,
+                        method = "svmPoly",
+                        trControl= tcontrol)
 
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
-registerDoSEQ() # Stop multi-processor mode 
+registerDoSEQ()          # Stop multi-processor mode 
 ```
 
-## SVM-Poly Model Summary
+### SVM-Poly Model Summary
 
 ```{r 620}
 poly_model_obj
 ```
 
-## SVM-Poly Predict test_set
+### SVM-Poly Predict test_set
 ```{r 621, cache=TRUE}
 Predicted_test_vals <- predict(poly_model_obj, test_set[, -1])
 
 summary(Predicted_test_vals)
 ```
 
-## SVM-Poly Confusion Matrix
+### SVM-Poly Confusion Matrix
 ```{r 622}
 confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
 ```
 
-## SVM-Poly Obtain False Positives & False Negatives
+### SVM-Poly Obtain False Positives & False Negatives
 
 ```{r 623}
 fp_fn_svm_poly <- poly_model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
@@ -500,13 +508,10 @@ nrow(fp_fn_svm_poly)
 head(fp_fn_svm_poly)
 ```
 
-
-# Support Vector Machine; SVM-RBF Model
-
-## Introduction
+## SVM-RBF Model
 
 ```{r 624, message=FALSE, warning=FALSE}
-## Load Libraries
+# Load Libraries
 rm(list = ls())
 Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
 
@@ -536,7 +541,7 @@ test_set     <- c_m_TRANSFORMED[-index,]
 Class_test <- as.factor(test_set$Class)
 ```
 
-## SVM-RBF Training
+### SVM-RBF Training
 ```{r 627, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3)  # Start multi-processor mode 
@@ -562,25 +567,24 @@ end_time - start_time    # Display time
 registerDoSEQ() # Stop multi-processor mode 
 ```
 
-## SVM-RBF Model Summary
+### SVM-RBF Model Summary
 ```{r 628}
 rbf_model_obj
 ```
 
-## SVM-RBF Predict test_set
+### SVM-RBF Predict test_set
 ```{r 629, cache=TRUE}
 Predicted_test_vals <- predict(rbf_model_obj, test_set[, -1])
 
 summary(Predicted_test_vals)
 ```
 
-## SVM-RBF Confusion Matrix
+### SVM-RBF Confusion Matrix
 ```{r 630}
 confusionMatrix(Predicted_test_vals, Class_test, positive = "1")
 ```
 
-## SVM-RBF Obtain False Positives & False Negatives
-
+### SVM-RBF Obtain False Positives & False Negatives
 ```{r 631}
 fp_fn_svmRadialCost <- rbf_model_obj %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
@@ -596,3 +600,8 @@ nrow(fp_fn_svmRadialCost)
 head(fp_fn_svmRadialCost)
 ```
 
+## SVM Conclusion
+
+SVM has shown that it is very versatile. Using the same amino acid dataset and by changing the type of function used to build the decision boundary one can get results in the high 90%. Even the linear SVM with no kernel transformation is able to find a hyperplane that with no more tuning than choosing a large enough range for the cost function. 
+
+It was seen that using a range for the cost starting at $2^5$ and progressing toward $2^{-15}$, stepping by one log, a wide range can be tested.  Once the cost function range is narrowed a finer tuning can be carried out using one-quarter or one-half log steps. This further narrowing of the cost function may not need to be done since the one log steps seems anecdotally sufficient. This is an easy and powerful tool.

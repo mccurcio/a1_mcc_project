@@ -1,6 +1,13 @@
+---
+title: "Logistic Regression For Binary Classification"
+author: "mcc"
+date: "3/13/2020"
+output: pdf_document
+---
+
 # Logistic Regression For Binary Classification
 
-```{r}
+```{r 41,include=FALSE}
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
@@ -20,7 +27,7 @@ Using Logistic Regression, we may calculate the presence or absence of a product
 
 In the figure below, the function's domain, $X \in \{-\infty$ to $\infty\}$, whereby its range is {0, 1}. In the figure, the *decision boundary* is $x ~=$ 0, denoted by the *red dotted line*. At the inflection point the curves range changes from *zero*, absence, to *one*, the presence of quality or item.
 
-```{r echo=FALSE, fig.align="center", fig.height=3.5}
+```{r 42,echo=FALSE, fig.align="center", fig.height=3.5}
 x <- seq(-6, 6, 0.05)
 y <- 1 / (1 + exp(-x))
 
@@ -52,69 +59,80 @@ In the specific case of *Logistic Regression for Binary Classification* where we
 f(x) ~=~ \frac{1}{1 + e^{-(WX+b)}}
 \end{equation}
 
-Since the logistic equation is exponential, it is easier to work with the formula in terms of its odds or *log-odds*. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ or more precisely log-odds as $\large ln \left (\frac{p}{1-p} \right )$.
+Since the logistic equation is exponential, it is easier to work with the formula in terms of its odds or *log-odds*. Odds are the probabilities of success over failure denoted as $\Large \frac{p}{1-p}$ and more importantly, in this situation, log-odds are $ln \left (\frac{p}{1-p} \right )$.
 
 Simply by using log-odds, logistic regression may be more easily expressed as a set of linear equations in x.[^43] Hence we can now go from linear regression to logistic regression.
 
 [^43]:http://juangabrielgomila.com/en/logistic-regression-derivation/
 
+Step #1:
 \begin{equation}
 ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}
 \end{equation}
 
-Substitute ($p$ for $Pr(y_i ~=~ 1|x_i)$) and ($1-p$ for $Pr(y_i ~=~ 0|x_i)$) and change notation to summation on the right hand side:
+Step #2:
+Substitute ($p$ for $Pr(y_i ~=~ 1|x_i)$) and ($1-p$ for $Pr(y_i ~=~ 0|x_i)$) and change notation to summation on the right hand side;
 
 \begin{equation}
 ln \left( \frac {p}{1-p} \right) =~ \sum_i^{k} \beta_i x_i
 \end{equation}
 
-Eliminate the natural log by taking the exponent on both sides:
+Step #3:
+Eliminate the natural log by taking the exponent on both sides;
 
 \begin{equation}
 \frac {p}{1-p} =~ exp \left ( \sum_i^{k} \beta_i x_i \right )
 \end{equation}
 
-Substitute $u = \sum_i^{k} \beta_i x_i$:
+Step #4:
+Substitute $u = \sum_i^{k} \beta_i x_i$;
 
 \begin{equation}
 \frac {p}{1-p} =~ e^u
 \end{equation}
 
-Rearrange to solve for $\large p$:
+Step #5:
+Rearrange to solve for $\large p$;
 
 \begin{equation}
 p(u) ~=~ \frac{e^u}{1 + e^u}
 \end{equation}
 
-Take the derivative of both sides using quotient rule:
+Step #6:
+Incidentally, to find the probabilities, take the derivative of both sides using quotient rule;
 
 \begin{equation}
 p'(u) ~=~ \frac {(e^u)(1 + e^u) - (e^u)(e^u)}{(1 + e^u)^2}
 \end{equation}
 
-Simplify:
+Step #7:
+Simplify;
 
 \begin{equation}
 p'(u) ~=~ \frac {e^u}{(1 + e^u)^2}
 \end{equation}
 
-Separate out to produce two fractions:
+Step #8:
+Separate out to produce two fractions;
 
 \begin{equation}
 p'(u) ~=~ \left ( \frac {e^u}{1 + e^u} \right ) \cdot \left ( \frac{1}{1 + e^u} \right )
 \end{equation}
 
-Substitute our previous success and failure variables back into place:
+Step #9:
+Substitute our previous success and failure variables back into place;
 
 \begin{equation}
 p'(u) ~=~ p(u) \cdot ( 1 - p(u))
 \end{equation}
 
----
-
 Now we can calculate the probabilities as well as the values for any given x value.
 
-```{r message=FALSE, warning=FALSE}
+---
+
+## Logit-20 Training Using 20 Features
+
+```{r 43,message=FALSE, warning=FALSE}
 # Load Libraries
 Libraries <- c("doMC", "knitr", "readr", "tidyverse", "caret")
 for (p in Libraries) { 
@@ -122,11 +140,11 @@ for (p in Libraries) {
 }
 ```
 
-```{r include=FALSE}
-opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
+```{r 44,include=FALSE}
+opts_chunk$set(cache=TRUE, warning=FALSE, message=FALSE)
 ```
 
-```{r}
+```{r 45}
 # Import relevant data
 c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                             col_types = cols(Class = col_factor(levels = c("0", "1")),
@@ -134,20 +152,18 @@ c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                                              TotalAA = col_skip()))
 ```
 
-```{r}
+```{r 46, cache=TRUE}
 # Partition data into training and testing sets
 set.seed(1000)
 index <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
 training_set.1 <- c_m_TRANSFORMED[index, ]
 ```
 
-The `test.set.1` and `Class.test` data sets are not produced since the Logit run with 20 features was not deemed useful. The reason for its dismissal was that is contained extraneous features.
-
-## Logit Training #1 Using 20 Features
+- The `test.set.1` and `Class.test` data sets are not produced since the Logit run with 20 features was not deemed useful. The reason for its dismissal was that is contained extraneous features.
 
 - The first training run is to determine if all 20 features (amino acids) are necessary for our logistic regression model.
 
-```{r, cache = TRUE}
+```{r 47, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3)      # Start multi-processor mode
 start_time <- Sys.time()     # Start timer
@@ -168,9 +184,9 @@ end_time - start_time       # Display time
 registerDoSEQ()             # Stop multi-processor mode
 ```
 
-## Logit Results #1
+### Logit-20 Summary #1
 
-```{r}
+```{r 48, cache=TRUE}
 summary(model_obj.1)
 ```
 
@@ -179,11 +195,11 @@ The Akaike information criterion (AIC)[^44] for model #1 is 699.72. This will be
 
 [^44]:https://en.wikipedia.org/wiki/Akaike_information_criterion
 
-## Logit Training #2 Using 9 Features
+## Logit-9 Training Using 9 Features
 
 - This test uses **ONLY** 9 features: (R, H, P, C, E, Y, T, D, G)
 
-```{r}
+```{r 49, cache=TRUE}
 # Data import & handling
 c_m_9aa <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                     col_types = cols(Class = col_factor(levels = c("0", "1")),
@@ -196,7 +212,7 @@ c_m_9aa <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                                      W = col_skip()))
 ```
 
-```{r}
+```{r 410, cache=TRUE}
 # Partition data into training and testing sets
 set.seed(1000)
 index <- createDataPartition(c_m_9aa$Class, p = 0.8, list = FALSE)
@@ -207,9 +223,7 @@ test_set.2     <- c_m_9aa[-index, ]
 Class_test.2 <- as.factor(test_set.2$Class)
 ```
 
-### Logit Training #2 Using 9 Features
-
-```{r, cache = TRUE}
+```{r 411, cache=TRUE}
 set.seed(1000)
 registerDoMC(cores = 3)           # Start multi-core
 start_time <- Sys.time()          # Start timer
@@ -233,17 +247,17 @@ registerDoSEQ()                  # Stop multi-core
 
 \newpage
 
-## Logit Summary #2
+### Logit-9 Summary
 
-```{r}
+```{r 412, cache=TRUE}
 summary(model_obj.2)
 ```
 
 \newpage
 
-## Logit Confusion Matrix #2
+### Logit-9 Confusion Matrix
 
-```{r, cache=TRUE}
+```{r 413, cache=TRUE}
 Predicted_test_vals <- predict(model_obj.2, test_set.2[, -1])
 
 confusionMatrix(Predicted_test_vals, Class_test.2, positive = "1")
@@ -252,9 +266,9 @@ confusionMatrix(Predicted_test_vals, Class_test.2, positive = "1")
 - The Akaike information criterion (AIC) for model #2 is 708.96. This will be used later to compare the models generated to rate their ability to utilize the features best.
 - The number of unique false-positives and false-negatives is 26.
 
-## Obtain List of False Positives & False Negatives
+### Obtain List of False Positives & False Negatives From Logit-9
 
-```{r}
+```{r 414, cache=TRUE}
 fp_fn_logit <- model_obj.2 %>% pluck("pred") %>% dplyr::filter(obs != pred)
 
 # Write CSV in R
@@ -270,7 +284,7 @@ nrow(fp_fn_logit) ## NOTE: NOT UNIQUE NOR SORTED
 
 - The logistic regression second test produced 536 protein samples, which are either false-positives or false-negatives. The list of 536 proteins may have duplicates. Therefore they are NOT UNIQUE NOR SORTED.
 
-## Logit Results
+## Logit Conclusion
 
 Logit is easy to implement and understand and can be used for feature selection.
 
@@ -307,3 +321,6 @@ The nine features which best described the logistic regression model were R, H, 
 The first 7 out of 8 amino acid features are seen in the proper order, as described by the Boruta Random Forest model. This is confirmation that Logit can pick up the importance of features similar to Boruta.
 
 Logit produced 536 proteins, which are false-negatives or false-positives. It should be noted that the 536 are NOT UNIQUE NOR SORTED. The number of unique FN/FP from the confusion matrix is 26. These proteins will be investigated further in the Outliers chapter, which compares these FN/FP proteins to the PCA outliers.
+
+The two tests for Logit (using 20 then 9 features) is interesting. This shows that Logit is an alternatvie way of choosing the importance of features.  As can be seen in the table "*Comparison of Boruta Vs Logit: Order of Importance*" it was seen that the first seven features lined up very closely with the Boruta Random Forest feature order of importance.
+

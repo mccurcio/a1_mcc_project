@@ -1,14 +1,56 @@
 --- 
-title: "Comparison Of 6 Machine Learning Techniques Tested For Accuracy And FP/FN Using Myoglobin Proteins Vs. Control Set"
+title: "Binary Classification Using Six Machine Learning Techniques"
 author: "Matthew C. Curcio"
 date: "`r Sys.Date()`"
-documentclass: book
 output:
-    bookdown::pdf_book:
-github-repo: mccurcio/sixml
-description: "Six machine learning techniques are tested for accuracy and FP/FN using myoglobin & control set."
+  bookdown::pdf_book:
+    always_allow_html: true
+  pdf_document:
+    always_allow_html: true
+  bookdown::gitbook:
+documentclass: book
+site: bookdown::bookdown_site
+rmd_files: ["index.rmd", "01-introduction.rmd", "02-eda.rmd", "03-pca.rmd", "04-logit.rmd", "05-neural-network.rmd", "06-svm.rmd", "07-results.rmd", "08-conclusion.rmd", "90-all-appendices.rmd"]
+description: Binary classification using six machine learning techniques (PCA, Logit, SVM-Linear, SVM-Polynomial, SVM-RBF, Neural Network) are tested for accuracy and False Positives/False Negatives using myoglobin & control set. "Binary Classification Using Six Machine Learning Techniques, Tested Against Accuracy And False Positives/False Negatives Using Myoglobin Proteins Vs. Control Set"
 ---
 
-# Preface {-}
+```{r include=FALSE}
+library(tinytex)
+```
 
-This is the very first part of the book.
+# Preface
+
+>To the Socratic paradoxes,
+>
+>"I know that I know nothing" however "Virtue is knowledge"
+
+
+## Welcome {-}
+
+I started this project because I believed this area of study was most interesting and that teaching myself this topic would carry me threw the next twenty years. 
+
+### Who This Book Is For {-}
+
+This book is for me. It is very informal like myself. It is my record of how I taught myself R, RStudio and Machine Learning via fits and starts. 
+
+The work was undertaken to fulfill the requirements of a Masters degree for Worcester Polytechnic Institute in the Department of Bioinformatics, a.k.a. Computational Biology.
+
+### Acknowledgments {-}
+
+I would like to thank Doctors Dmitry Korkine and (Randy Paffenroth(?)) for their patience and generosity.
+
+\newpage
+
+### Dedication {-}
+
+To my parents, Richard & Susan Curcio
+
+\newpage
+
+### About the Author {-}
+
+Matthew C. Curcio is a chemist, biochemist, teacher and student who loves science. I loved teaching but I loved science more.
+
+The first time I realized Data Science was a bonafide subsection of science was the day I saw a fellow scientist make a kludgey mishmash with Visual Basic and an Excel spreadsheet.
+
+\newpage

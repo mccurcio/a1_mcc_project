@@ -1,8 +1,11 @@
-# Results
+---
+title: "Results"
+author: "mcc"
+date: "3/13/2020"
+output: pdf_document
+---
 
-```{r}
-knitr::opts_chunk$set(cache = TRUE)
-```
+# Results
 
 I have studied six different M.L. algorithms using protein amino acid percent composition data from two classes. Class number 1 is Myoglobin proteins, which is the positive control set. While the second class is a control group (0) of human proteins that do not have Fe binding centers.
 
@@ -11,7 +14,7 @@ I have studied six different M.L. algorithms using protein amino acid percent co
 | Controls  | 0 or (-) |    1216    |    1, ..., 1216 |
 | Myoglobin | 1 or (+) |    1124    | 1217, ..., 2340 |
 
-The Six M.L Algorithms consist of:
+## The Six M.L Algorithms consist of:
 
 | Name                             |         Type |    Output Used For Graphing |
 | :------------------------------- | -----------: | :-------------------------: |
@@ -24,7 +27,7 @@ The Six M.L Algorithms consist of:
 
 =========================
 
-## Scatter Plots of Anomalies Vs. FP & FN Outputs {-}
+**Scatter Plots of Anomalies Vs. FP & FN Outputs**
 
 To obtain False-Positive (FP) and False-Negatives (FN) from sets:
 
@@ -38,7 +41,7 @@ Libraries = c("knitr", "readr")
 for(p in Libraries){
     library(p, character.only = TRUE)
 }
-opts_chunk$set(fig.align = "center")
+opts_chunk$set(fig.align = "center", cache=TRUE)
 ```
 
 ```{r 72, message=FALSE, warning=FALSE}
@@ -260,7 +263,7 @@ Class_test <- as.factor(test_set$Class)
 ```
 
 ### Stacking Algorithms - Run multiple algorithms in one call.
-```{r 714, echo=FALSE}
+```{r 714, echo=FALSE, cache=TRUE}
 # new trainControl object with index specified
 trainControl <- trainControl(method = "repeatedcv",
                              number = 10,
@@ -288,7 +291,7 @@ summary(results)
 ```
 
 ### Plot the resamples output to compare the models.
-```{r 716, echo=FALSE}
+```{r 716, echo=FALSE, cache=TRUE}
 # Box plots to compare models
 scales <- list(x = list(relation = "free"),
                y = list(relation = "free"))
