@@ -204,11 +204,11 @@ axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
 
 # A-1
 ctrl_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "0"), ]
-mgb_set <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "1"), ]
+mgb_set  <- c_m_RAW_AAC[which(c_m_RAW_AAC$Class == "1"), ]
 
 # A-2
 ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
-mgb_means <- apply(mgb_set[, 4:23], 2, mean)
+mgb_means  <- apply(mgb_set[, 4:23], 2, mean)
 grand_mean <- apply(c_m_RAW_AAC[, 4:23], 2, mean)
 
 # A-3
@@ -216,16 +216,16 @@ data <- data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa <- as.matrix(t(100 * data))
 ```
 
-```{r 214,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE,include=FALSE}
+```{r 214,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE}
 # A-4
 ### Grouped barchart of amino acid vs. protein category
 barplot(percent_aa,
-main = "Mean % A.A.Composition Of 3 Protein Groupings",
-ylab = "% AA Composition",
-ylim = c(0, 12),
-col = colorRampPalette(brewer.pal(4, "Blues"))(3),
-legend = T,
-beside = T)
+        main = "Mean % A.A.Composition Of 3 Protein Groupings",
+        ylab = "% AA Composition",
+        ylim = c(0, 12),
+        col = colorRampPalette(brewer.pal(4, "Blues"))(3),
+        legend = T,
+        beside = T)
 ```
 
 ### Means of percent amino acid composition of control & myoglobin categories, RAW data
@@ -235,77 +235,77 @@ data2 <- data.frame(ctrl_means, mgb_means)
 percent_aa2 <- as.matrix(t(100 * data2))
 
 barplot(percent_aa2,
-ylim = c(0, 12),
-main = "Mean % A.A.Composition Of Control & Myoglobin",
-ylab = "% AA Composition",
-col = colorRampPalette(brewer.pal(4, "Blues"))(2),
-legend = T,
-beside = T)
+        ylim = c(0, 12),
+        main = "Mean % A.A.Composition Of Control & Myoglobin",
+        ylab = "% AA Composition",
+        col = colorRampPalette(brewer.pal(4, "Blues"))(2),
+        legend = T,
+        beside = T)
 ```
 
 ### Boxplots of grand-means of overall amino acid composition, RAW data
 
 ```{r 216,echo=FALSE,message=FALSE,warning=FALSE}
 boxplot(c_m_RAW_AAC[, 4:23],
-main = "Boxplots: All; % Composition Vs Amino Acid",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
+        main = "Boxplots: All; % Composition Vs Amino Acid",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
 ```
 
 ### Boxplots of amino acid compositions for control (only), RAW data
 
 ```{r 217,echo=FALSE}
 boxplot(ctrl_set[, 4:23],
-main = "Boxplots: Controls; % AAC Vs Amino Acid",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
+        main = "Boxplots: Controls; % AAC Vs Amino Acid",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
 ```
 
 ### Boxplots of amino acid compositions for myoglobin (only), RAW data
 
 ```{r 218,echo=FALSE}
 boxplot(mgb_set[, 4:23],
-ylim = c(0, 0.5),
-main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
+        ylim = c(0, 0.5),
+        main = "Boxplot: Myoglobin; % AAC Vs Amino Acid",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
 ```
 
 ```{r 219,echo=FALSE}
 par(mfrow = c(1, 2))
 
 boxplot(ctrl_set[, 4:23],
-ylim = c(0, 0.3),
-main = "Boxplots: Controls",
-ylab = "% AAC",
-xlab = "Amino Acid",
-las = 1)
+        ylim = c(0, 0.3),
+        main = "Boxplots: Controls",
+        ylab = "% AAC",
+        xlab = "Amino Acid",
+        las = 1)
 
 boxplot(mgb_set[, 4:23],
-ylim = c(0, 0.3),
-main = "Boxplot: Myoglobin",
-xlab = "Amino Acid",
-las = 1)
+        ylim = c(0, 0.3),
+        main = "Boxplot: Myoglobin",
+        xlab = "Amino Acid",
+        las = 1)
 ```
 
 ### Boxplots Of Length Of Polypeptides For RAW Data 
 
 ```{r 220,echo=FALSE}
-ctrl_totalaa <- ctrl_set[, 2]
-mgb_totalaa <- mgb_set[, 2]
+ctrl_totalaa  <- ctrl_set[, 2]
+mgb_totalaa   <- mgb_set[, 2]
 grand_totalaa <- c_m_RAW_AAC[, 2]
 
 data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
 
 boxplot(data,
-ylim = c(0, 5000),
-main = "RAW Data: Length of Polypeptides Vs Control, Myoglobin & Combined",
-ylab = "Length of Polypeptides",
-xaxt = "n",
-las = 2)
+        ylim = c(0, 5000),
+        main = "RAW Data: Length of Polypeptides Vs Control, Myoglobin & Combined",
+        ylab = "Length of Polypeptides",
+        xaxt = "n",
+        las = 2)
 axis(1, at = 1:3, labels = c("Control", "Myoglobin", "Combined"))
 ```
 
@@ -324,13 +324,13 @@ CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)
 ```{r 221, echo=FALSE}
 AA_var_norm <- (apply(c_m_RAW_AAC[, 4:23], 2, sd)) / AA_ave
 plot(AA_var_norm,
-main = "Plot of Coefficient Of Variance (CV), RAW Data",
-sub = "(Note: Two largest values shown in red.)",
-ylab = "Coefficient Of Variance (CV)",
-xlab = "Amino Acid",
-ylim = c(0, 1.5),
-type = "b",
-xaxt = "n")
+     main = "Plot of Coefficient Of Variance (CV), RAW Data",
+     sub = "(Note: Two largest values shown in red.)",
+     ylab = "Coefficient Of Variance (CV)",
+     xlab = "Amino Acid",
+     ylim = c(0, 1.5),
+     type = "b",
+     xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
 text(x = 2, y = 1.4, label = " C=1.24", col = "red")
 text(x = 19, y = 1.1, label = "W=0.946", col = "red")
@@ -357,12 +357,12 @@ Skewness values for each A.A. are determined in totality.
 ```{r 223, echo=FALSE}
 AA_skewness <- (apply(c_m_RAW_AAC[, 4:23], 2, e1071::skewness))
 plot(AA_skewness,
-main = "Plot of Skewness Vs Amino Acids, RAW Data",
-ylab = "Skewness",
-xlab = "Amino Acid",
-type = "b",
-ylim = c(-0.5, 3),
-xaxt = "n")
+     main = "Plot of Skewness Vs Amino Acids, RAW Data",
+     ylab = "Skewness",
+     xlab = "Amino Acid",
+     type = "b",
+     ylim = c(-0.5, 3),
+     xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
 abline(h = 2.0, col = "red")
 text(x = 2, y = 2.8, label = " C=2.5", col = "red")
@@ -460,7 +460,7 @@ end_time <- Sys.time() # End timer
 end_time - start_time # Display elapsed time
 ```
 
-```{r 229, eval=FALSE, include=FALSE}
+```{r 229, eval=FALSE}
 names(boruta_output)
 ```
 
@@ -521,9 +521,10 @@ The $\sqrt x_i$ *Transformed* data is derived from `c_m_RAW_ACC.csv` where the a
 ```{r 232, message=FALSE, include=FALSE}
 # Import libraries
 Libraries <- c("knitr", "readr", "RColorBrewer", "corrplot", "doMC", "Boruta")
-for (i in Libraries) {
-library(i, character.only = TRUE)
-}
+for (i in Libraries) 
+    {
+    library(i, character.only = TRUE)
+    }
 opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
@@ -595,7 +596,7 @@ mgb_set <- c_m_TRANSFORMED[which(c_m_TRANSFORMED$Class == "1"), ]
 
 # A-2
 ctrl_means <- apply(ctrl_set[, 4:23], 2, mean)
-mgb_means <- apply(mgb_set[, 4:23], 2, mean)
+mgb_means  <- apply(mgb_set[, 4:23], 2, mean)
 grand_mean <- apply(c_m_TRANSFORMED[, 4:23], 2, mean)
 
 # A-3
@@ -603,7 +604,7 @@ data <- data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa <- as.matrix(t(100 * data))
 ```
 
-```{r 239, eval=FALSE, include=FALSE}
+```{r 239, eval=FALSE}
 # A-4
 ## Grouped barchart of $\sqrt x_i$ Transformed amino acid vs.
 ## protein category data
@@ -664,8 +665,8 @@ boxplot(mgb_set[, 4:23],
 ### Boxplots Of Length Of Polypeptides Of Transformed Data; Myoglobin, Control & Combined
 
 ```{r 244, echo=FALSE}
-ctrl_totalaa <- ctrl_set[, 2]
-mgb_totalaa <- mgb_set[, 2]
+ctrl_totalaa  <- ctrl_set[, 2]
+mgb_totalaa   <- mgb_set[, 2]
 grand_totalaa <- c_m_TRANSFORMED[, 2]
 
 data <- c(ctrl_totalaa, mgb_totalaa, grand_totalaa)
@@ -849,7 +850,7 @@ kable(meanImps) %>% kable_styling(bootstrap_options = c("striped", "hover"))
 plotImpHistory(boruta_output)
 ```
 
-The *Boruta random forest test* shows that all features are essential therefore none should be dropped from TRANSFORMED data.
+The *Boruta Random Rorest test* shows that all features are essential therefore none should be dropped from TRANSFORMED data.
 
 ## EDA Conclusion
 
