@@ -1,19 +1,9 @@
----
-title: "Neural Networks For Binary Classification"
-author: "mcc"
-date: "3/13/2020"
-output: pdf_document
----
 
 # Neural Networks For Binary Classification
 
 ```{r 51, message=FALSE, warning=FALSE, include=FALSE}
 # Load Libraries
-  Libraries <- c("knitr", "jpeg", "grid", "png")
-for (p in Libraries) {  
-    library(p, character.only = TRUE)
-}
-knitr::opts_chunk$set(cache = TRUE)
+library("knitr")
 ```
 
 >"Machine learning is essentially a form of applied statistics with increased emphasis on the use of computers to statistically estimate complicated functions and a decreased emphasis on proving confidence intervals around these functions"
@@ -46,24 +36,18 @@ This table portrays a high-level overview of the computing power of neuronal clu
 
 Although neurons have differing morphologies, neurons in the human brain are extremely diverse. Indeed, size and shape may not be the definitive way of classifying neurons but instead by what neurotransmitters the cells secrete. "Neurotransmitters can be classified as either excitatory or inhibitory." [^58] Currently the [NeuroPep](http://isyslab.info/NeuroPep/home.jsp) database "holds 5949 non-redundant neuropeptide entries originating from 493 organisms belonging to 65 neuropeptide families." [^59]
 
-\newpage
+
 
 [^58]:https://www.kenhub.com/en/library/anatomy/neurotransmitters
 
 [^59]:http://isyslab.info/NeuroPep/home.jsp
 
-```{r 52,fig.height=2,fig.width=4,echo=FALSE,fig.align="center",fig.cap='Basic Neuron Types and S.E.M. Image'}
-img <- readJPEG("./00-data/10-images/basicneurontypes.jpg")
-grid.raster(img)
-```
+![Basic Neuron Types and S.E.M. Image](./00-data/10-images/basicneurontypes.jpg)
 [^54]
 
 [^54]:https://www.howstuffworks.com/
 
-```{r 53,fig.height=2,echo=FALSE,fig.align="center",fig.cap="Two Neuron System (Image From The Public Domain)"}
-img <- readPNG("./00-data/10-images/two.neuron.system.3.png")
-grid.raster(img)
-```
+![Two Neuron System (Image From The Public Domain)](./00-data/10-images/two.neuron.system.3.png)
 
 Given an order of operation via:
 
@@ -71,23 +55,16 @@ Given an order of operation via:
 
 However, nature is more subtle and intricate than to have neurons in a series, only blinking on and off, firing or not. NN are often programmed to classify dangerous road objects, as is the case of Tesla cars. The goal of a Tesla auto-piloted car is to use all available sensors to correctly classify all the conceivable circumstances on the road. On the road, a Tesla automobile uses dozens of senors which the computer needs to evaluate and weigh the values of all these sensors to formulate a 'decision.' The altitude of the auto, derived from the GPS, may weigh less heavily than the speed of the vehicle or Lidar estimates on how close objects are. However, our goal of safe driving can be thwarted when an artificial intelligence system decides a truck is a sign and does not apply the brakes.[^55]
 
-```{r 54,fig.height=2,fig.cap="Goal of a Tesla Neural Networks is to generate the correct responses for its environment.",fig.align="center",echo=FALSE}
-img <- readPNG("./00-data/10-images/nn.black.box.png")
-grid.raster(img)
-```
+![Goal of a Tesla Neural Networks is to generate the correct responses for its environment."](./00-data/10-images/nn.black.box.png)
+
 
 [^55]:https://arstechnica.com/cars/2019/05/feds-autopilot-was-active-during-deadly-march-tesla-crash/
-
-\newpage
 
 ### The One Neuron System
 
 If we investigate a one neuron system, *our* neuron could be diagrammed in four sections.[^56]
 
-```{r 55,fig.height=3,fig.cap="One Neuron Schema",fig.align="center",echo=FALSE}
-img <- readPNG("./00-data/10-images/one.neuron.schema.2.png")
-grid.raster(img)
-```
+![One Neuron Schema](./00-data/10-images/one.neuron.schema.2.png)
 
 [^56]:Tom Mitchell, Machine Learning, McGraw-Hill, 1997, ISBN: 0070428077
 
@@ -211,16 +188,13 @@ abline(h = 0, v = 0, col = "#F24F4F")
 
 The benefit of these activation functions is that they are now differentiable. This fact becomes important for *Back-Propagation*, which is discussed later.
 
-\newpage
+
 
 ### The Two Neuron System
 
 Building up in complexity, let us could consider our first Neural Network by using *only* two neurons. In two neuron systems, let us first generalize a bit more by adding that $X$ is an array of all the inputs as is $W_1$ and $W_2$ is also an array of weights for each neuron. See figure #6.5.
 
-```{r 58,fig.height=2,fig.width=5,fig.cap="A Two Neuron System",fig.align = "center",echo=FALSE}
-img <- readPNG("./00-data/10-images/two.neuron.system.png")
-grid.raster(img)
-```
+![An Ideal Two Neuron System](./00-data/10-images/two.neuron.system.png)
 
 #### Feed-Forward In A Two Neuron Network
 
@@ -280,10 +254,7 @@ Step #2:
 
 ---
 
-```{r 59,fig.height=1,fig.cap="A Two Neuron System",fig.align = "center",echo=FALSE}
-img <- readPNG("./00-data/10-images/two.neuron.system.noframe.png")
-grid.raster(img)
-```
+![An Ideal Two Neuron System](./00-data/10-images/two.neuron.system.noframe.png)
 
 Using the chain-rule, and figure 6.6, *Two Neuron System* as a guide, we can backwards to derive the formulas for error back-propagation. We find:
 
@@ -343,7 +314,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center", cache = TRUE)
 
 ```{r 511, message=FALSE, warning=FALSE}
 # Load Libraries
-Libraries <- c("dplyr", "knitr", "readr", "caret", "MASS", "nnet", "purrr", "doMC")
+Libraries <- c("dplyr", "readr", "caret", "MASS", "nnet", "purrr")
 for (p in Libraries) {  
     library(p, character.only = TRUE)
 }
@@ -357,7 +328,7 @@ c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
                                              TotalAA = col_skip()))
 ```
 
-\newpage
+
 
 ```{r 513}
 # Create Training Data
@@ -379,9 +350,8 @@ TuneSizeDecay <- expand.grid(size = c(16, 18, 20),
 ```
 
 ### Train model with neural networks
-```{r 514, include=FALSE, cache=TRUE}
+```{r 514, message=FALSE, warning=FALSE, cache=TRUE, include=FALSE}
 set.seed(1000)
-registerDoMC(cores = 3)           # Start multi-core
 start_time <- Sys.time()          # Start timer
 
 # train model with neural networks
@@ -393,10 +363,6 @@ NNModel <- train(trainingData[,-1],
                  trControl = TrainingParameters)
 
 end_time <- Sys.time()           # End timer
-registerDoSEQ()                  # Stop multi-core
-```
-
-```{r 515}
 end_time - start_time            # Display time
 ```
 

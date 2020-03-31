@@ -2,21 +2,12 @@
 title: "Binary Classification Using Six Machine Learning Techniques"
 author: "Matthew C. Curcio"
 date: "`r Sys.Date()`"
-output:
-  bookdown::pdf_book:
-    always_allow_html: true
-  pdf_document:
-    always_allow_html: true
-  bookdown::gitbook:
-documentclass: book
 site: bookdown::bookdown_site
-rmd_files: ["index.rmd", "01-introduction.rmd", "02-eda.rmd", "03-pca.rmd", "04-logit.rmd", "05-neural-network.rmd", "06-svm.rmd", "07-results.rmd", "08-conclusion.rmd", "90-all-appendices.rmd"]
+output: bookdown::gitbook
+documentclass: book
 description: Binary classification using six machine learning techniques (PCA, Logit, SVM-Linear, SVM-Polynomial, SVM-RBF, Neural Network) are tested for accuracy and False Positives/False Negatives using myoglobin & control set. "Binary Classification Using Six Machine Learning Techniques, Tested Against Accuracy And False Positives/False Negatives Using Myoglobin Proteins Vs. Control Set"
 ---
 
-```{r include=FALSE}
-library(tinytex)
-```
 
 # Preface
 
@@ -39,13 +30,13 @@ The work was undertaken to fulfill the requirements of a Masters degree for Worc
 
 I would like to thank Doctors Dmitry Korkine and (Randy Paffenroth(?)) for their patience and generosity.
 
-\newpage
+
 
 ### Dedication {-}
 
 To my parents, Richard & Susan Curcio
 
-\newpage
+
 
 ### About the Author {-}
 
@@ -53,4 +44,3 @@ Matthew C. Curcio is a chemist, biochemist, teacher and student who loves scienc
 
 The first time I realized Data Science was a bonafide subsection of science was the day I saw a fellow scientist make a kludgey mishmash with Visual Basic and an Excel spreadsheet.
 
-\newpage

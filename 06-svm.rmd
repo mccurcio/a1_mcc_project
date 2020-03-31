@@ -1,9 +1,3 @@
----
-title: "Support Vector Machines For Binary Classification"
-author: "mcc"
-date: "3/13/2020"
-output: pdf_document
----
 
 # Support Vector Machines for Binary Classification
 
@@ -31,10 +25,7 @@ Once you have carried out the kinetic analysis you then determine the Michaelisâ
 
 ```{r 61, echo=FALSE}
 # Load Libraries
-Libraries <- c("knitr", "graphics", "e1071")
-for (p in Libraries) { 
-    library(p, character.only = TRUE)
-}
+libraries("knitr", "graphics", "e1071", "readr", "tidyverse", "caret", "kernlab")
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
 
@@ -72,18 +63,14 @@ Incidentally, in Patrick Winston's lecture on SVM, he calls SVM the "widest stre
 
 [^65]:C. Cortes, V. Vapnik, Machine Learning, 20, 273-297, 1995
 
-```{r 63,fig.height=2,echo=FALSE,fig.align="center",out.width="85%",fig.cap="Vapnick SVM Diagram"}
-include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
-```
+![Vapnick SVM Diagram](./00-data/10-images/vapnick_svm_paper_diagram.png)
 [^66]
 
 [^66]:C. Cortes, V. Vapnik, Machine Learning, 20, 273-297, 1995
 
 Adding the prosaic phrase *widest street* smartly leads to the idea that a widest decision boundary also has the greatest ability to generalize.
 
-```{r 64,fig.height=2,echo=FALSE,fig.align="center",out.width="70%",fig.cap="P Values Schematic"}
-include_graphics("./00-data/10-images/p-values_schematic.jpg")
-```
+![P Values Schematic](./00-data/10-images/p-values_schematic.jpg)
 [^68]
 
 [^68]:Allison Horst, University of California, Santa Barbara, https://github.com/allisonhorst/stats-illustrations
@@ -146,9 +133,7 @@ Divide by the norm of w:
 \widehat W^T (X_{\oplus} ~-~ X_{\ominus}) = \frac{2a}{||W||}
 \end{equation}
 
-```{r 66,fig.height=2,echo=FALSE,fig.align="center",out.width="55%"}
-include_graphics("./00-data/10-images/SVM_optimize_2.png")
-```
+![Diagram Derivation of SVM](./00-data/10-images/SVM_optimize_2.png)
 [^69]
 
 [^69]:Trevor Hastie, Robert Tibshirani, Jerome Friedman, The Elements of Statistical Learning; Data Mining, Inference, and Prediction, https://web.stanford.edu/~hastie/ElemStatLearn/, 2017
@@ -197,7 +182,6 @@ Three common SVM kernel formulae investigated are:
 
 **It is essential to note**, at this time, there are no reliable rules for which kernel, i.e., boundary shape, to use with any given data set.
 
-\pagebreak
 
 Plots of 4 common SVM boundary shapes: 
 ```{r 67, echo=FALSE, cache=TRUE}
@@ -242,9 +226,7 @@ ylab = "y", xlab = "x")
 
 The simplest form of SVM utilizes a hyperplane as a separating element between the positive and control protein observations. This type of implementation is denoted as SVM-Linear (svm-lin) in this report. Here the mathematics is more easily described and can even be shown with a simple 2-dimensional graphic.
 
-```{r 68,fig.height=2,echo=FALSE,fig.align="center",out.width="65%", cache=TRUE}
-include_graphics("./00-data/10-images/vapnick_svm_paper_diagram.png")
-```
+![vapnick_svm_paper_diagram.png](./00-data/10-images/vapnick_svm_paper_diagram.png)
 [^613]
 
 [^613]:Vladimir Vapnik & Corinna Cortes, Machine Learning, 20, 273-297, 1995
@@ -339,15 +321,6 @@ There are three properties that make SVMs attractive for data scientists:[^621]
 
 ## SVM-Linear Model
 
-```{r 69, message=FALSE, warning=FALSE}
-# Load Libraries
-Libraries <- c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
-for (p in Libraries) {  # Install Library if not present
-    if (!require(p, character.only = TRUE)) { install.packages(p) }
-    library(p, character.only = TRUE)
-}
-```
-
 ```{r 610, include=FALSE}
 opts_chunk$set(cache = TRUE, fig.align = "center")
 ```
@@ -375,7 +348,6 @@ Class_test <- as.factor(test_set$Class)
 
 ```{r 613, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
 
 # tuneGrid = svmLinearGrid
@@ -395,7 +367,6 @@ lin_model_obj <- train(Class ~ .,
 
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
-registerDoSEQ()          # Stop multi-processor mode 
 ```
 
 ### SVM-Linear Model Summary
@@ -454,7 +425,6 @@ Class_test <- as.factor(test_set$Class)
 
 ```{r 619, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
 
 # Create model, 10X fold CV repeated 5X
@@ -470,7 +440,6 @@ poly_model_obj <- train(Class ~ .,
 
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
-registerDoSEQ()          # Stop multi-processor mode 
 ```
 
 ### SVM-Poly Model Summary
@@ -510,18 +479,6 @@ head(fp_fn_svm_poly)
 
 ## SVM-RBF Model
 
-```{r 624, message=FALSE, warning=FALSE}
-# Load Libraries
-rm(list = ls())
-Libraries = c("doMC", "knitr", "readr", "tidyverse", "caret", "kernlab")
-
-for(p in Libraries){  # Install Library if not present
-    if(!require(p, character.only = TRUE)) { install.packages(p) }
-    library(p, character.only = TRUE)
-}
-opts_chunk$set(cache = TRUE)
-```
-
 Import data & data handling
 ```{r 625}
 c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
@@ -544,7 +501,6 @@ Class_test <- as.factor(test_set$Class)
 ### SVM-RBF Training
 ```{r 627, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3)  # Start multi-processor mode 
 start_time <- Sys.time() # Start timer
 
 # Create tuneGrid: Cost
@@ -564,7 +520,6 @@ rbf_model_obj <- train(Class ~ .,
 
 end_time <- Sys.time()   # End timer
 end_time - start_time    # Display time
-registerDoSEQ() # Stop multi-processor mode 
 ```
 
 ### SVM-RBF Model Summary

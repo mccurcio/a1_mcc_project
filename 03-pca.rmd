@@ -1,9 +1,3 @@
----
-title: "Principle Component Analysis of A Binary Classification System"
-author: "mcc"
-date: "3/13/2020"
-output: pdf_document
----
 
 # Principle Component Analysis of A Binary Classification System
 
@@ -49,7 +43,7 @@ It is common for the first step when carrying out a PCA is to center, scale, nor
 
 While determining the variance of your dataset, it should be clear that the order of magnitude of your data features matters significantly. The reasons for this should be clear that if one axis is in 1,000's while the second axis is between 1 and 10, the larger scale will have a higher variance distorting the results.
 
-\newpage
+
 
 What do the center and scale arguments do in the `prcomp` command?
 

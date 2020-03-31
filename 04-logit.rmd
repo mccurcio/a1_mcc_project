@@ -1,9 +1,3 @@
----
-title: "Logistic Regression For Binary Classification"
-author: "mcc"
-date: "3/13/2020"
-output: pdf_document
----
 
 # Logistic Regression For Binary Classification
 
@@ -134,7 +128,7 @@ Now we can calculate the probabilities as well as the values for any given x val
 
 ```{r 43,message=FALSE, warning=FALSE}
 # Load Libraries
-Libraries <- c("doMC", "knitr", "readr", "tidyverse", "caret")
+Libraries <- c("knitr", "readr", "tidyverse", "caret")
 for (p in Libraries) { 
     library(p, character.only = TRUE)
 }
@@ -165,7 +159,6 @@ training_set.1 <- c_m_TRANSFORMED[index, ]
 
 ```{r 47, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3)      # Start multi-processor mode
 start_time <- Sys.time()     # Start timer
 
 # Create model, 10X fold CV repeated 5X
@@ -181,7 +174,6 @@ model_obj.1 <- train(Class ~ .,
 
 end_time <- Sys.time()      # End timer
 end_time - start_time       # Display time
-registerDoSEQ()             # Stop multi-processor mode
 ```
 
 ### Logit-20 Summary #1
@@ -225,7 +217,6 @@ Class_test.2 <- as.factor(test_set.2$Class)
 
 ```{r 411, cache=TRUE}
 set.seed(1000)
-registerDoMC(cores = 3)           # Start multi-core
 start_time <- Sys.time()          # Start timer
 
 # Create model, 10X fold CV repeated 5X
@@ -242,10 +233,9 @@ model_obj.2 <- train(Class ~ .,
 
 end_time <- Sys.time()           # End timer
 end_time - start_time            # Display time
-registerDoSEQ()                  # Stop multi-core
 ```
 
-\newpage
+
 
 ### Logit-9 Summary
 
@@ -253,7 +243,7 @@ registerDoSEQ()                  # Stop multi-core
 summary(model_obj.2)
 ```
 
-\newpage
+
 
 ### Logit-9 Confusion Matrix
 
