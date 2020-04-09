@@ -3,20 +3,30 @@ output:
   pdf_document: default
   html_document: default
 ---
-# Introduction - What is Machine Learning?
+
+# Introduction - What is Bioinformatics?
 
 ```{r 11, include=FALSE, cache=TRUE}
 library(knitr)
 knitr::opts_chunk$set(cache=TRUE, fig.pos="center")
 ```
 
-At the intersection between Applied Mathematics, Computer Science, and Biological Sciences is a subset of knowledge known as Bioinformatics. Some find Bioinformatics and its cousin Data Science difficult to define. However, the most ubiquitous pictograph of Bioinformatics and Data Science may say a thousand words even if we cannot. See Figure 1. What separates these two pursuits is the domain knowledge that each focus on. Where Data Science may focus on understanding buying habits of individuals, Bioinformatics tends to focus on the understanding of DNA and its relevance to disease. It is now common to find new fields emerging such as the study of chemistry using applied mathematics and computers which beget the field of Chemo-informatics.[^15] [^16] Today, since hospitals are warehouses of modern medical records and knowledge they make career paths such as Healthcare-Informatics possible.[^17]
+At the intersection between Applied Mathematics, Computer Science, and Biological Sciences is a subset of knowledge known as Bioinformatics. The term Bioinformatics was first coined by Paulien Hogeweg and Ben Hesper in 1970 to describe "the study of informatic processes in biotic systems." [^18] Coincidentally, the development of RNA and DNA sequencing was occuring. DNA sequencing was established by Ray Wu at Cornell University in 1970. [^19] RNA sequencing was established by Walter Fiers and his coworkers at the University of Ghent, Belgium in 1972. [^20]
+
+
+Some find Bioinformatics and its cousin Data Science difficult to define. What separates these two pursuits is the domain knowledge that each focus on. Where Data Science may focus on understanding buying habits of individuals, Bioinformatics tends to focus on the understanding of DNA and its relevance to disease. It is now common to find new fields emerging such as the study of chemistry using applied mathematics and computers which beget the field of Chemo-informatics.[^15] [^16] Today, since hospitals are warehouses of modern medical records and knowledge they make career paths such as Healthcare-Informatics possible.[^17]
 
 [^15]:https://www.acs.org/content/acs/en/careers/college-to-career/chemistry-careers/cheminformatics.html
 
 [^16]:https://jcheminf.biomedcentral.com/
 
-[^17]:https://www.usnews.com/education/best-graduate-schools/articles/2014/03/26/consider-pursuing-a-career-in-health-informatics
+[^17]:https://www.usnews.com/education/be st-graduate-schools/articles/2014/03/26/consider-pursuing-a-career-in-health-informatics
+
+[^18]:Paulien Hogeweg, "The Roots of Bioinformatics in Theoretical Biology", PLoS Comput Biol. 2011 Mar; 7(3): e1002021, doi: 10.1371/journal.pcbi.1002021
+
+[^19]:https://web.archive.org/web/20090304121126/http://www.mbg.cornell.edu/faculty-staff/faculty/wu.cfm
+
+[^20]:Min Jou W, Haegeman G, Ysebaert M, Fiers W (May 1972). "Nucleotide sequence of the gene coding for the bacteriophage MS2 coat protein". Nature. 237 (5350): 82–8. Bibcode:1972Natur.237...82J. doi:10.1038/237082a0.
  
 ![Venn Diagrams of Bioinformatics And Data Science](./00-data/10-images/Venn-diagram-original-768x432.png)
 
@@ -40,7 +50,7 @@ However, Bioinformatics and Data Science imply a process as well. One piece of t
 
 [^128]:Roger Peng, The Real Reason Reproducible Research is Important, https://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/
 
-## Machine Learning Is?
+## What is Machine Learning?
 
 >"Machine learning is essentially a form of applied statistics with increased emphasis on the use of computers to statistically estimate complicated functions and a decreased emphasis on proving confidence intervals around these functions"
 >
@@ -306,7 +316,7 @@ Cross-validation has the advantage of using the entire dataset for training and 
 fitControl <- trainControl(method = "repeatedcv",     # Type of Cross-Validation
                            number = 10,               # Number of splits
                            repeats = 5,               # Produce 5 replicates
-                           savePredictions = "final") # Save FP/FN predictions
+                           savePredictions = "final") # Saves FP/FN predictions
 ```
 
 ### Train command

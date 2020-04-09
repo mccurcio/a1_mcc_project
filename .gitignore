@@ -25,5 +25,7 @@ _bookdown_files
 
 *.utf8.md      # Temp files created by R markdown
 *.knit.md
+*.log
+*.tex
 
 .Rproj.user
