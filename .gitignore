@@ -1,20 +1,13 @@
 *.Rhistory     # History files
 .Rapp.history
 .Rhistory
-
 *.RData        # Session Data files
 *.rds
-
 .Ruserdata     # User-specific files
-
 *-Ex.R         # Example code
-
 /*.tar.gz      # Output files from R CMD build
-
 /*.Rcheck/     # Output files from R CMD check
-
 .Rproj.user/   # RStudio files
-
 *_cache/       # knitr, R markdown bookdown cache / files directories
 */cache/
 *_cache*
@@ -22,10 +15,8 @@
 *_files/
 /files/
 _bookdown_files
-
 *.utf8.md      # Temp files created by R markdown
 *.knit.md
 *.log
 *.tex
-
 .Rproj.user
