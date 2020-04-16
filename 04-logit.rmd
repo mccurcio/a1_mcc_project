@@ -7,14 +7,19 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ## Introduction
 
-For individuals who have studied cell biology or biochemistry, logistic regression may be familiar as dose-response curves, enzyme kinetic curves, sigmoidal curves, median lethal dose curve (LD-50) or even an exponential growth curve given limited resources. 
+For individuals who have studied cell biology or biochemistry, logistic regression may be familiar as dose-response curves[^46], enzyme kinetic curves[^47], median lethal dose curve (LD-50)[^48] or even an exponential growth curve given limited resources[^49]. 
+
+[^46]:https://www.merckmanuals.com/professional/clinical-pharmacology/pharmacodynamics/dose-response-relationships
+[^47]:https://en.wikipedia.org/wiki/Michaelis%E2%80%93Menten_kinetics
+[^48]:https://en.wikipedia.org/wiki/Median_lethal_dose
+[^49]:https://www.khanacademy.org/science/biology/ecology/population-growth-and-regulation/a/exponential-logistic-growth
 
 However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that toggle between the logical values of zero or one.
 
 Logistic regression (Logit) derives its name from its similarity to linear regression, as we shall see below. The input/independent variable for Logit is the set of real numbers, ($X ~ \in ~ \Re$). While, the output of a Logistic Regression is not represented by {0, 1}, ($Y ~ \notin ~ \Re$),
 
 \begin{equation}
-f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right.
+f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right. ~~~where ~~x ~\in ~\Re
 \end{equation}
 
 Using Logistic Regression, we may calculate the presence or absence of a product or quality that we wish to model given a difficult situation where the transition is not clear.
