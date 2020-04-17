@@ -10,13 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r 33, message=FALSE, warning=FALSE, include=FALSE}
-# Initialize libraries
-Libraries <- c("knitr", "ggfortify")
-
-for (p in Libraries) {
-library(p, character.only = TRUE)
-}
-opts_chunk$set(cache=TRUE, warning=FALSE, message=FALSE)
+# Import libraries
+library(easypackages)
+libraries <- c("knitr", "ggfortify")
 ```
 
 ## Principle component analysis using `norm_c_m_20aa`
@@ -131,26 +127,4 @@ na = "",
 col.names = "rowNum",
 sep = ",")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

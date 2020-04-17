@@ -18,7 +18,7 @@ description: Binary classification using six machine learning techniques (PCA, L
 
 ## Welcome {-}
 
-I started this project because I believed this area of study was most interesting and that teaching myself this topic would carry me threw the next twenty years. 
+I started this project because I believed this area of study was most interesting and that teaching myself this topic would carry me threw the next couple of years. 
 
 ### Who This Book Is For {-}
 
@@ -30,13 +30,9 @@ The work was undertaken to fulfill the requirements of a Masters degree for Worc
 
 I would like to thank Doctors Dmitry Korkine and (Randy Paffenroth(?)) for their patience and generosity.
 
-
-
 ### Dedication {-}
 
 To my parents, Richard & Susan Curcio
-
-
 
 ### About the Author {-}
 

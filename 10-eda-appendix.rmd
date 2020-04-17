@@ -5,12 +5,12 @@ output:
 ---
 
 
-## EDA, Analysis of RAW data
+##  Exploratory Data Analysis Of RAW Data
 
-Raw data is considered: `./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv`
+RAW Data = `./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv`
 
 ```{r 21, message=FALSE}
-# Import libraries, NO , 
+# Import libraries
 library(easypackages)
 libraries("knitr", "doMC", "readr", "RColorBrewer", "corrplot", "Boruta", "kableExtra")
 ```
@@ -25,36 +25,10 @@ c_m_RAW_AAC <- read_csv("./00-data/02-aac_dpc_values/c_m_RAW_AAC.csv")
 Class <- as.factor(c_m_RAW_AAC$Class)
 ```
 
-### Visually inspect RAW data files
-
-1. Use the command-line interface followed by the command `less.`
-2. Check for binary instead of ASCII and bad Unicode.
-
 ### Inspect RAW dataframe structure, `str()` 
 
 ```{r 24, echo=FALSE}
 str(c_m_RAW_AAC)
-```
-
-
-
-### Check RAW data `head` & `tail`
-
-```{r 25}
-head(c_m_RAW_AAC, n = 2)
-```
-```{r 26}
-tail(c_m_RAW_AAC, n = 2)
-```
-
-### Check RAW data types
-
-```{r 27, echo=TRUE}
-is.data.frame(c_m_RAW_AAC)
-class(c_m_RAW_AAC$Class) # Col 1
-class(c_m_RAW_AAC$TotalAA) # Col 2
-class(c_m_RAW_AAC$PID) # Col 3
-class(c_m_RAW_AAC$A) # Col 4
 ```
 
 ### Check RAW dataframe dimensions
@@ -95,7 +69,7 @@ Formulas for mean:
 E[X] = \sum_{i=1}^n x_i p_i ~~; ~~~~~~ \bar x = \frac {1}{n} \sum_{i=1}^n x_i
 \end{equation}
 
-### Scatter plot of means of *Myoglobin-Control* amino acid composition of RAW Data
+### Scatter plot of means of *Myoglobin-Control* AAC of RAW Data
 
 - This Scatter-plot shows the means for each feature (column-means) in the dataset. The means represent the ungrouped or total of all proteins (where n = 2340) versus AA type.
 
@@ -241,7 +215,7 @@ CV ~~=~~ \frac{1}{\bar x} \cdot \sqrt{ \frac{1}{n-1} \sum^n_{i=1} (x_i - \bar x)
 AA_var_norm <- (apply(c_m_RAW_AAC[, 4:23], 2, sd)) / AA_ave
 plot(AA_var_norm,
      main = "Plot of Coefficient Of Variance (CV), RAW Data",
-     sub = "(Note: Two largest values shown in red.)",
+     sub = "(Note: Red values are min and max.)",
      ylab = "Coefficient Of Variance (CV)",
      xlab = "Amino Acid",
      ylim = c(0, 1.5),
@@ -249,7 +223,7 @@ plot(AA_var_norm,
      xaxt = "n")
 axis(1, at = 1:20, labels = names(c_m_RAW_AAC[, 4:23]))
 text(x = 2, y = 1.4, label = " C=1.24", col = "red")
-text(x = 19, y = 1.1, label = "W=0.946", col = "red")
+text(x = 10, y = 0.1, label = "L=0.321", col = "red")
 ```
 
 ```{r 222}
@@ -480,7 +454,6 @@ plot(AA_ave,
      main = "Column-Means Vs Amino Acid, TRANSFORMED data",
      ylab = "% Composition",
      xlab = "Amino Acid",
-     sub = "(Note: The red line at 0.1 is simply an arbitrary marker)",
      ylim = c(0, 0.3),
      type = "b",
      xaxt = "n")
@@ -508,7 +481,7 @@ data <- data.frame(ctrl_means, mgb_means, grand_mean)
 percent_aa <- as.matrix(t(100 * data))
 ```
 
-```{r 239, eval=FALSE}
+```{r 239}
 # A-4
 ## Grouped barchart of $\sqrt x_i$ Transformed amino acid vs.
 ## protein category data
