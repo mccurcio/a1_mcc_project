@@ -1,0 +1,113 @@
+---
+title: "13-neural-network-appendix"
+author: "mcc"
+date: "4/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Neural Network Experiment For Binary Classification
+
+```{r 510, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", cache = TRUE)
+```
+
+```{r 511, message=FALSE, warning=FALSE}
+# Load Libraries
+Libraries <- c("dplyr", "readr", "caret", "MASS", "nnet", "purrr")
+for (p in Libraries) {  
+    library(p, character.only = TRUE)
+}
+```
+
+```{r 512}
+# Load Data
+c_m_TRANSFORMED <- read_csv("./00-data/02-aac_dpc_values/c_m_TRANSFORMED.csv",
+                            col_types = cols(Class = col_factor(levels = c("0","1")),
+                                             PID = col_skip(),
+                                             TotalAA = col_skip()))
+```
+
+
+
+```{r 513}
+# Create Training Data
+set.seed(1000)
+# Stratified sampling
+TrainingDataIndex <- createDataPartition(c_m_TRANSFORMED$Class, p = 0.8, list = FALSE)
+
+# Create Training Data 
+trainingData <- c_m_TRANSFORMED[ TrainingDataIndex, ]
+testData     <- c_m_TRANSFORMED[-TrainingDataIndex, ]
+
+TrainingParameters <- trainControl(method = "repeatedcv", 
+                                   number = 10, 
+                                   repeats = 5,
+                                   savePredictions = "final") # Saves predictions
+
+TuneSizeDecay <- expand.grid(size = c(16, 18, 20), 
+                             decay = c(1, 0.1, 0.01))
+```
+
+### Train model with neural networks
+```{r 514, message=FALSE, warning=FALSE, cache=TRUE, include=FALSE}
+set.seed(1000)
+start_time <- Sys.time()          # Start timer
+
+# train model with neural networks
+NNModel <- train(trainingData[,-1], 
+                 trainingData$Class,
+                 method = "nnet",
+                 preProcess = c("scale","center"),
+                 tuneGrid = TuneSizeDecay,
+                 trControl = TrainingParameters)
+
+end_time <- Sys.time()           # End timer
+end_time - start_time            # Display time
+```
+
+### Confusion Matrix and Statistics
+```{r 516}
+NNPredictions <- predict(NNModel, testData)
+
+# Create confusion matrix
+cmNN <-confusionMatrix(NNPredictions, testData$Class)
+print(cmNN)
+```
+
+```{r 517}
+NNModel
+```
+
+### Obtain List of False Positives & False Negatives
+```{r 518}
+fp_fn_NNModel <- NNModel %>% pluck("pred") %>% dplyr::filter(obs != pred)
+
+# Write/save .csv
+write.table(fp_fn_NNModel,
+            file = "./00-data/03-ml_results/fp_fn_NN.csv",
+            row.names = FALSE,
+            na = "",
+            col.names = TRUE,
+            sep = ",")
+
+nrow(fp_fn_NNModel) ## NOTE: NOT UNIQUE NOR SORTED
+```
+
+### False Positive & False Negative Neural Network set
+```{r 519, message=FALSE, warning=FALSE}
+keep <- "rowIndex"
+
+fp_fn_NN <- read_csv("./00-data/03-ml_results/fp_fn_NN.csv")
+
+NN_fp_fn_nums <- sort(unique(unlist(fp_fn_NN[, keep], use.names = FALSE)))
+
+length(NN_fp_fn_nums)
+NN_fp_fn_nums
+
+write_csv(x = as.data.frame(NN_fp_fn_nums), 
+          path = "./00-data/04-sort_unique_outliers/NN_nums.csv")
+```

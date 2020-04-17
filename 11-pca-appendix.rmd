@@ -1,0 +1,156 @@
+---
+title: "11-pca-appendix"
+author: "mcc"
+date: "4/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r 33, message=FALSE, warning=FALSE, include=FALSE}
+# Initialize libraries
+Libraries <- c("knitr", "ggfortify")
+
+for (p in Libraries) {
+library(p, character.only = TRUE)
+}
+opts_chunk$set(cache=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Principle component analysis using `norm_c_m_20aa`
+
+```{r 35, cache=TRUE}
+start_time <- Sys.time() # Start timer
+
+c_m_20_PCA <- prcomp(norm_c_m_20aa)
+
+Sys.time() - start_time # End timer & display time difference
+```
+
+#### Biplot 1: PC1 Vs. PC2 with 'Class' by color labels
+
+- Black indicates control protein set, Class = 0
+
+- Blue indicates myoglobin protein set, Class = 1
+```{r 38,eval=FALSE, fig.align="center", fig.height=6, fig.width=6, include=FALSE, cache=TRUE}
+autoplot(c_m_20_PCA,
+         data = c_m_transformed,
+         label.show.legend = F,
+         colour = "Class")
+         # shape = FALSE,
+         # label = TRUE,
+         # label.size = 4,
+         # loadings = TRUE, 
+         # loadings.label = TRUE, 
+         # loadings.label.size = 7,
+         # loadings.label.hjust = 2)
+```
+
+The first two principal components describe 46.95% of the variance.
+
+```{r 39,eval=FALSE, include=FALSE, cache=TRUE}
+# Print Biplot1.annotated.png
+# Biplot 1 for Conclusion discussion
+png(filename = "Biplot1.annotated.png",
+    width = 6,
+    height = 6,
+    units = "in",
+    res = 300)
+    autoplot(c_m_20_PCA,
+    data = c_m_transformed,
+    label.show.legend = F,
+    colour = "Class",
+    shape = FALSE,
+    label = TRUE,
+    label.size = 4,
+    loadings = TRUE,
+    loadings.label = TRUE,
+    loadings.label.size = 7,
+    loadings.label.hjust = 2)
+dev.off()
+```
+
+#### Biplot 2: Determination Of 4 Rule Set For Outliers
+
+```{r 310,echo=FALSE, fig.height=6, fig.width=6, fig.align="center", cache=TRUE}
+plot(x = c_m_20_PCA$x[, 1],
+     y = c_m_20_PCA$x[, 2],
+     main = "Boundary (Outlier) Determination of PC1 Vs PC2",
+     xlab = "PC2",
+     ylab = "PC1",
+     cex = 0.5)
+# col = c("#bbbbbb", "#ff0000"),
+# cols <- c(1,2))
+abline(v = 3, col = "blue", lw = 1)
+abline(v = -3, col = "blue", lw = 1)
+abline(h = -3, col = "blue", lw = 1)
+abline(h = 3, col = "blue", lw = 1)
+```
+
+```{r 311,eval=FALSE, include=FALSE, cache=TRUE}
+# Print 'Biplot 2'. SAVE FOR LATER USE.
+# Biplot 2 for Conclusion discussion
+png(filename = "./00-data/10-images/Biplot.2.png",
+    width = 6,
+    height = 6,
+    units = "in",
+    res = 300)
+plot(x = c_m_20_PCA$x[, 1],
+     y = c_m_20_PCA$x[, 2],
+     main = "Boundary (Outlier) Determination of PC1 Vs PC2",
+     xlab = "PC2",
+     ylab = "PC1",
+     cex = 0.5)
+# col = c("#bbbbbb", "#ff0000"),
+# cols <- c(1,2))
+abline(v = 3, col = "blue", lw = 1)
+abline(v = -3, col = "blue", lw = 1)
+abline(h = -3, col = "blue", lw = 1)
+abline(h = 3, col = "blue", lw = 1)
+dev.off()
+```
+
+
+### List of all outliers (union and sorted) found using the ruleset 1 through 4
+
+- The list of total outliers is derived by taking the `union` of `outliers_PC1` and `outliers_PC2` and then using `sort.`
+
+```{r 312,cache=TRUE}
+total_pca_1_2_outliers <- union(outliers_PC1, outliers_PC2)
+total_pca_1_2_outliers <- sort(total_pca_1_2_outliers)
+
+length(total_pca_1_2_outliers)
+
+# Write out to Outliers folder
+write.table(total_pca_1_2_outliers,
+file = "./00-data/03-ml_results/pca_outliers.csv",
+row.names = FALSE,
+na = "",
+col.names = "rowNum",
+sep = ",")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
