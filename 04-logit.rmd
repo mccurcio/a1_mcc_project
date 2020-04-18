@@ -7,7 +7,7 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ## Introduction
 
-For individuals who have studied cell biology or biochemistry, logistic regression may be familiar as dose-response curves[^46], enzyme kinetic curves[^47], median lethal dose curve (LD-50)[^48] or even an exponential growth curve given limited resources[^49]. 
+For individuals who have studied biology or biochemistry, logistic regression may be familiar as dose-response curves[^46], enzyme kinetic curves[^47], median lethal dose curve (LD-50)[^48] or even an exponential growth curve, given  a set of limited resources[^49]. 
 
 [^46]:https://www.merckmanuals.com/professional/clinical-pharmacology/pharmacodynamics/dose-response-relationships
 [^47]:https://en.wikipedia.org/wiki/Michaelis%E2%80%93Menten_kinetics
@@ -16,7 +16,7 @@ For individuals who have studied cell biology or biochemistry, logistic regressi
 
 However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that toggle between the logical values of zero or one.
 
-Logistic regression (Logit) derives its name from its similarity to linear regression, as we shall see below. The input/independent variable for Logit is the set of real numbers, ($X ~ \in ~ \Re$). While, the output of a Logistic Regression is not represented by {0, 1}, ($Y ~ \notin ~ \Re$),
+Logistic regression (Logit) derives its name from its similarity to linear regression, as we shall see below. The input or independent variable(s) for Logit, may be a matrix ($X^{m ~x~ n}$) in the set of real numbers, ($X ~ \in ~ \Re$). While, the output of a Logistic Regression is represented by {0, 1}. Therefore, the output of Logit is NOT IN the set of real numbers ($Y ~ \notin ~ \Re$),
 
 \begin{equation}
 f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x < 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right. ~~~where ~~x ~\in ~\Re

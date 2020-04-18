@@ -1,10 +1,3 @@
----
-output:
-  html_document:
-    df_print: paged
-  pdf_document: default
----
-
 # What is Bioinformatics?
 
 ```{r 11, include=FALSE, cache=TRUE}
@@ -36,12 +29,14 @@ Even though the term Data Science was coined in 1996,[^14] after the name Bioinf
 
 [^110]:https://irp.nih.gov/catalyst/v19i6/systems-biology-as-defined-by-nih
 
-![Venn Diagrams of Bioinformatics And Data Science](./00-data/10-images/Venn-diagram-original-768x432.png)
+![Venn diagrams of Bioinformatics and Data Science](./00-data/10-images/Venn-diagram-original-768x432.png)
+
 [^112]
 
 [^112]:http://omgenomics.com/what-is-bioinformatics/
 
-![Bioinformatics is considered to be a very broader discipline](./00-data/10-images/ebi.bioinfo_700px_696x522.jpg)
+![A broad overview of the different types of data that fall within the scope of bioinformatics.](./00-data/10-images/ebi.bioinfo_700px_696x522.jpg)
+
 [^111]
 
 [^111]:https://www.ebi.ac.uk/training/online/course/bioinformatics-terrified/what-bioinformatics-0
@@ -62,16 +57,13 @@ This is also artful shown in the Harvard Data Science course taught by Blitzstei
 
 [^114]:Joe Blitzstein, Hanspeter Pfister, Verena Kaynig-Fittkau, Harvard Data Science course CS109, http://cs109.github.io/2015/index.html 
 
-![The Data Science Flowchart From Harvard CS109](./00-data/10-images/ds.process.png)
+![The Data Science flowchart from Harvard CS109](./00-data/10-images/ds.process.png)
+
+[^114]
 
 One piece of this process is Reproducible Research.[^113] Reproducible Research and replication are linked but it goes beyond the ability of the work to be *independently verified*. The computer code and data must be provided. There locations explicitly spelled out such that other scientists may find and carry on the work and check all its calculations and methodology. Now that computers play such a large role procedurally the smallest error in a spreadsheet may plague the overall conclusion. 
 
 [^113]:Roger Peng, The Real Reason Reproducible Research is Important, https://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/
-
-
-
-
-
 
 ## What is Machine Learning?
 
@@ -93,8 +85,6 @@ Although what this paper discusses is Predictive Modeling, it is under the umbre
 
 As an aside, I use `Predictive Modeling` and `Machine Learning` interchangeably in this document.
 
-
-
 **Predictive Modeling**
 
 In general, there are three types of Predictive Modeling or Machine Learning approaches;
@@ -105,7 +95,7 @@ In general, there are three types of Predictive Modeling or Machine Learning app
 
 Due to the fact this paper only uses Supervised & Unsupervised learning and for the sake of this brevity, I discuss only the first two types of Predictive Models.
 
-\newpage
+
 
 ### Supervised Learning
 
@@ -151,7 +141,7 @@ In contrast to the supervised learning system, unsupervised learning does not re
 
 - $(X_1), (X_2), ~. . ., ~(X_N)$
 
-- **No Y**
+- **No Y variables used**
 
 where $X$ may represent a matrix of $m$ observations by $n$ features with $\Re$ values.
 
