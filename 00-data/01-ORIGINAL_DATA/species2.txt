@@ -1,0 +1,1124 @@
+Homo sapiens 
+Mus musculus 
+Bos taurus 
+Rattus norvegicus 
+Bubalus bubalis 
+Aplysia limacina 
+Delphinapterus leucas 
+Danio rerio 
+Haliotis diversicolor 
+Ornithorhynchus anatinus 
+Callithrix jacchus 
+Physeter catodon 
+Gallus gallus 
+Equus caballus 
+Paramphistomum epiclitum 
+Lagothrix lagotricha 
+Saimiri sciureus 
+Sus scrofa 
+Meleagris gallopavo 
+Struthio camelus 
+Thunnus albacares 
+Ovis aries 
+Lagostomus maximus 
+Spalax ehrenbergi 
+Orcinus orca 
+Hystrix cristata 
+Aptenodytes forsteri 
+Auxis rochei 
+Thunnus obesus 
+Macaca fascicularis 
+Macropus rufus 
+Cryodraco antarcticus 
+Ctenodactylus gundi 
+Eschrichtius robustus 
+Anas poecilorhyncha 
+Vulpes chama 
+Phalacrocorax capillatus 
+Pongo pygmaeus 
+Bos mutus grunniens 
+Cerorhinca monocerata 
+Bison bison 
+Aotus trivirgatus 
+Thunnus orientalis 
+Notothenia neglecta 
+Nycticebus coucang 
+Stenella attenuata 
+Alligator mississippiensis 
+Pusa sibirica 
+Oryctolagus cuniculus 
+Scomber japonicus 
+Semnopithecus entellus 
+Elephas maximus 
+Equus burchelli 
+Halichoerus grypus 
+Inia geoffrensis 
+Stenella attenuata 
+Balaenoptera acutorostrata 
+Kogia sima 
+Balaenoptera edeni 
+Otolemur crassicaudatus 
+Capra hircus 
+Caretta caretta 
+Channichthys rhinoceratus 
+Chelonia mydas 
+Gobionotothen gibberifrons 
+Gorilla gorilla beringei 
+Hemitriakis japanica 
+Hylobates agilis 
+Mus musculus 
+Sus scrofa 
+Homo sapiens 
+Homo sapiens 
+Aspergillus pseudoglaucus 
+Varanus varius 
+Castor fiber 
+Cervus elaphus 
+Delphinus delphis 
+Indopacetus pacificus 
+Homo sapiens 
+Loxodonta africana 
+Lutra lutra 
+Zalophus californianus 
+Tachyglossus aculeatus aculeatus 
+Balaenoptera physalus 
+Lepilemur mustelinus 
+Megaptera novaeangliae 
+Ondatra zibethicus 
+Pan troglodytes 
+Phoca vitulina 
+Pseudochaenichthys georgianus 
+Sapajus apella 
+Sarda chiliensis 
+Sciurus vulgaris 
+Symphalangus syndactylus 
+Globicephala melas 
+Papio anubis 
+Phocoenoides dalli dalli 
+Galeorhinus galeus 
+Graptemys geographica 
+Tetraodon nigroviridis 
+Thunnus alalunga 
+Lycaon pictus 
+Thunnus thynnus 
+Meles meles 
+Ochotona princeps 
+Proechimys guairae 
+Rangifer tarandus 
+Rousettus aegyptiacus 
+Chionodraco rastrospinosus 
+Erinaceus europaeus 
+Haliotis madaka 
+Heterodontus portusjacksoni 
+Rattus norvegicus 
+Katsuwonus pelamis 
+Kogia breviceps 
+Balaenoptera borealis 
+Tursiops truncatus 
+Uria lomvia 
+Ziphius cavirostris 
+Mustelus antarcticus 
+Orycteropus afer 
+Phocoena phocoena 
+Canis lupus familiaris 
+Didelphis virginiana 
+Erythrocebus patas 
+Aethia pygmaea 
+Ailuropoda melanoleuca 
+Tupaia glis 
+Makaira nigricans 
+Mesoplodon carlhubbsi 
+Mesoplodon stejnegeri 
+Ochotona curzoniae 
+Otocyon megalotis 
+Peponocephala electra 
+Perodicticus potto edwarsi 
+Cyprinus carpio 
+Dromaius novaehollandiae 
+Homo sapiens 
+Staphylococcus epidermidis 
+Homo sapiens 
+Mus musculus 
+Candida norvegensis 
+Homo sapiens 
+Naja oxiana 
+Lithobates catesbeiana 
+Ctenodactylus gundi 
+Nostoc commune 
+Tetrahymena pyriformis 
+Tetrahymena thermophila 
+Paramecium caudatum 
+Rattus norvegicus 
+Staphylococcus epidermidis (strain ATCC 35984 / RP62A) 
+Staphylococcus epidermidis (strain ATCC 12228) 
+Liolophura japonica 
+Phacoides pectinatus 
+Buccinum undatum 
+Dolabella auricularia 
+Isoparorchis hypselobagri 
+Nerita albicilla 
+Nippostrongylus brasiliensis 
+Dicrocoelium dendriticum 
+Chironomus thummi thummi 
+Bacillus subtilis (strain 168) 
+Ascaris suum 
+Aplysia juliana 
+Biomphalaria glabrata 
+Nassarius mutabilis 
+Ctenodactylus gundi 
+Anadara inaequivalvis 
+Bursatella leachii 
+Busycotypus canaliculatus 
+Cerithidea rhizophorarum 
+Glycera dibranchiata 
+Glycera dibranchiata 
+Aplysia kurodai 
+Halobacterium salinarum (strain ATCC 700922 / JCM 11081 / NRC-1) 
+Haloferax alexandrinus JCM 10717 
+Haloferax sp. BAB2207 
+Haloferax lucentense (strain DSM 14919 / JCM 9276 / NCIMB 13854 / Aa 2.2) 
+Haloferax sulfurifontis ATCC BAA-897 
+Haloferax gibbonsii (strain ATCC 33959 / DSM 4427 / JCM 8863 / NBRC 102184 / NCIMB 2188 / Ma 2.38) 
+Haloferax prahovense (strain DSM 18310 / JCM 13924 / TL6) 
+Halogranum salarium B-1 
+Haloferax sp. ATCC BAA-645 
+Haloferax sp. ATCC BAA-646 
+Candidatus Halobonum tyrrellensis G22 
+Haloferax sp. ATCC BAA-644 
+Halococcus saccharolyticus DSM 5350 
+Haloferax volcanii (strain ATCC 29605 / DSM 3757 / JCM 8879 / NBRC 14742 / NCIMB 2012 / VKM B-1768 / DS2) 
+Haloferax denitrificans ATCC 35960 
+Haladaptatus paucihalophilus DX253 
+Balaenoptera acutorostrata scammoni 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus saprophyticus 
+Staphylococcus saprophyticus 
+Staphylococcus saprophyticus 
+Staphylococcus saprophyticus 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus xylosus 
+Staphylococcus warneri 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus carnosus 
+Staphylococcus carnosus 
+Staphylococcus carnosus 
+Staphylococcus carnosus 
+Staphylococcus saprophyticus 
+Staphylococcus equorum 
+Macaca nemestrina 
+Dasypus novemcinctus 
+Chlorocebus sabaeus 
+Bos mutus 
+Elephas maximus 
+Neophoca cinerea 
+Procavia capensis 
+Otolemur garnettii 
+Pongo abelii 
+Pan troglodytes 
+Neophocaena phocaenoides 
+Myotis davidii 
+Pan troglodytes 
+Pan troglodytes 
+Pan troglodytes 
+Cercocebus atys 
+Erignathus barbatus 
+Macaca fascicularis 
+Pteropus alecto 
+Pagophilus groenlandicus 
+Rhinopithecus bieti 
+Mesoplodon densirostris 
+Oryctolagus cuniculus 
+Neomonachus schauinslandi 
+Aotus nancymaae 
+Blarina brevicauda 
+Zalophus californianus 
+Megaptera novaeangliae 
+Trichechus manatus latirostris 
+Tursiops truncatus 
+Pan paniscus 
+Callorhinus ursinus 
+Grampus griseus 
+Condylura cristata 
+Enhydra lutris kenyoni 
+Procyon lotor 
+Kogia sima 
+Erinaceus europaeus 
+Pongo abelii 
+Pongo abelii 
+Pongo abelii 
+Pongo abelii 
+Pongo abelii 
+Myotis lucifugus 
+Eumetopias jubatus 
+Gorilla gorilla gorilla 
+Odobenus rosmarus 
+Trichechus manatus 
+Cystophora cristata 
+Trichechus manatus 
+Trichechus manatus 
+Ailuropoda melanoleuca 
+Hydrodamalis gigas 
+Hydrodamalis gigas 
+Ochotona erythrotis 
+Hyperoodon ampullatus 
+Hydrodamalis gigas 
+Sarcophilus harrisii 
+Enhydra lutris kenyoni 
+Hexaprotodon liberiensis 
+Neovison vison 
+Loxodonta africana 
+Neovison vison 
+Ailuropoda melanoleuca 
+Mirounga angustirostris 
+Mandrillus leucophaeus 
+Neophocaena asiaeorientalis asiaeorientalis 
+Delphinus capensis 
+Sousa chinensis 
+Hydrodamalis gigas 
+Ochotona erythrotis 
+Mammuthus primigenius 
+Pongo abelii 
+Rhinopithecus roxellana 
+Balaenoptera omurai 
+Physeter catodon 
+Ochotona ladacensis 
+Ochotona ladacensis 
+Ochotona ladacensis 
+Sorex palustris 
+Mesoplodon bidens 
+Leptonychotes weddellii 
+Ascaris suum 
+Ascaris suum 
+Ascaris suum 
+Clonorchis sinensis 
+Trichinella spiralis 
+Ceratitis capitata 
+Trichinella nelsoni 
+Lottia gigantea 
+Trichinella nelsoni 
+Trichinella pseudospiralis 
+Trichinella pseudospiralis 
+Lingula unguis 
+Pan troglodytes 
+Balaena mysticetus 
+Lipotes vexillifer 
+Pan troglodytes 
+Callithrix jacchus 
+Macaca mulatta 
+Canis lupus familiaris 
+Delphinapterus leucas 
+Tarsius syrichta 
+Pantholops hodgsonii 
+Mizuhopecten yessoensis 
+Aphrodita aculeata 
+Propithecus coquereli 
+Cervus elaphus hippelaphus 
+Cervus elaphus hippelaphus 
+Monodon monoceros 
+Loxodonta africana 
+Odobenus rosmarus divergens 
+Felis catus 
+Ursus maritimus 
+Ochotona erythrotis 
+Dugong dugon 
+Nomascus leucogenys 
+Pongo abelii 
+Pongo abelii 
+Eschrichtius robustus 
+Lagenorhynchus albirostris 
+Myotis brandtii 
+Camelus ferus 
+Saimiri boliviensis boliviensis 
+Balaenoptera acutorostrata 
+Cebus capucinus imitator 
+Colobus angolensis palliatus 
+Pusa hispida 
+Bos taurus 
+Tarsius syrichta 
+Odobenus rosmarus divergens 
+Odobenus rosmarus divergens 
+Bos taurus 
+Mustela putorius furo 
+Clonorchis sinensis 
+Lingula unguis 
+Clonorchis sinensis 
+Echinostoma caproni 
+Turbo cornutus 
+Scapanus orarius 
+Enhydra lutris kenyoni 
+Lanius excubitor excubitor 
+Melaniparus pallidiventris 
+Nothobranchius furzeri 
+Salmo salar 
+Lanius meridionalis koenigi 
+Antrostomus carolinensis 
+Catamblyrhynchus diadema 
+Bambusicola thoracicus 
+Chaenodraco wilsoni 
+Spinus crassirostris 
+Corvus brachyrhynchos 
+Criniger olivaceus 
+Melozone fusca 
+Leucosticte nemoricola 
+Chlamydotis macqueenii 
+Tachyphonus surinamus 
+Tyto alba 
+Lanius nubicus 
+Calochaetes coccineus 
+Cavia porcellus 
+Spalax carmeli 
+Castor canadensis 
+Spalax golani 
+Spalax carmeli 
+Spalax carmeli 
+Spalax golani 
+Spalax judaei 
+Spalax judaei 
+Poecile songarus stotzneri 
+Thunnus atlanticus 
+Poecile carolinensis 
+Scepomycter rubehoensis 
+Spinus atriceps 
+Thalasseus sandvicensis sandvicensis 
+Toxostoma lecontei 
+Gadus macrocephalus 
+Nothobranchius korthausae 
+Melozone leucotis occipitalis 
+Spinus crassirostris 
+Stercorarius pomarinus 
+Sterna eurygnatha 
+Lanius isabellinus phoenicuroides 
+Criniger olivaceus 
+Melozone crissalis 
+Platyspiza crassirostris 
+Certhidea olivacea 
+Geospiza difficilis septentrionalis 
+Camarhynchus psittacula 
+Oncorhynchus mykiss 
+Ictalurus punctatus 
+Ictalurus punctatus 
+Aegithalos caudatus 
+Callorhinchus milii 
+Artisornis metopias 
+Etheostoma caeruleum 
+Spinus notatus 
+Spinus atratus 
+Columba livia 
+Prunella collaris fennelli 
+Etheostoma spectabile pulchellum 
+Lanius collurio collurio 
+Melaniparus fasciiventer 
+Melozone leucotis leucotis 
+Melaniparus cinerascens 
+Prunella strophiata 
+Nothobranchius kadleci 
+Geospiza parvula 
+Certhidea fusca 
+Champsocephalus gunnari 
+Melaniparus niger 
+Prunella koslowi 
+Prunella rubida 
+Geospiza conirostris 
+Geospiza magnirostris 
+Aegithalos caudatus 
+Spinus barbatus 
+Aegithalos bonvaloti 
+Baeolophus inornatus 
+Lanius minor minor 
+Poecile montanus 
+Spinus lawrencei 
+Gadus morhua 
+Ceyx melanurus 
+Nothobranchius pienaari 
+Prunella immaculata 
+Alcedo argentata 
+Camarhynchus pallidus 
+Crithagra rufobrunnea 
+Lanius senator senator 
+Geospiza difficilis 
+Etheostoma spectabile 
+Poecile montanus 
+Poecile montanus 
+Stercorarius parasiticus 
+Spinus uropygialis 
+Uria aalge 
+Melozone biarcuatum 
+Lanius meridionalis meridionalis 
+Ceyx lepidus 
+Etheostoma spectabile pulchellum 
+Aimophila ruficeps 
+Anairetes reguloides reguloides 
+Tachyphonus rufiventer 
+Etheostoma caeruleum 
+Ophiophagus hannah 
+Astyanax mexicanus 
+Astyanax mexicanus 
+Anairetes parulus parulus 
+Ictalurus furcatus 
+Etheostoma fonticola 
+Buthraupis wetmorei 
+Diglossa lafresnayii 
+Cinnyris cupreus 
+Pseudoalcippe abyssinica 
+Bangsia arcaei 
+Anguilla anguilla 
+Lophospingus griseocristatus 
+Chionodraco myersi 
+Prunella rubeculoides 
+Criniger calurus 
+Stercorarius longicaudus 
+Gadus morhua 
+Gadus morhua 
+Illadopsis puveli 
+Aptenodytes forsteri 
+Alligator sinensis 
+Pseudocaranx dentex 
+Oreochromis aureus x Oreochromis niloticus 
+Pseudochaenichthys georgianus 
+Etheostoma proeliare 
+Pelecanus crispus 
+Donacospiza albifrons 
+Etheostoma lawrencei 
+Anairetes alpinus bolivianus 
+Anous tenuirostris 
+Gadus morhua 
+Prunella fulvescens nanschanica 
+Paroaria dominicana 
+Seriola lalandi 
+Pheucticus tibialis 
+Oreochromis aureus 
+Tangara vassorii 
+Margarops fuscus 
+Macruronus magellanicus 
+Calamonastes simplex 
+Buthraupis eximia 
+Poospiza ornata 
+Nestor notabilis 
+Cnemoscopus rubrirostris 
+Columba livia 
+Etheostoma spectabile pulchellum 
+Trichothraupis melanops 
+Columba livia 
+Etheostoma caeruleum 
+Xenodacnis parina 
+Nestor notabilis 
+Tychaedon coryphoeus 
+Apteronotus albifrons 
+Mimus gilvus 
+Pygoscelis adeliae 
+Deleornis fraseri 
+Dissostichus mawsoni 
+Dissostichus mawsoni 
+Pygoscelis adeliae 
+Cercotrichas signata 
+Trochalopteron elliotii 
+Cinclocerthia gutturalis 
+Oryzias latipes 
+Anairetes reguloides albiventris 
+Cercotrichas galactotes 
+Channichthys rhinoceratus 
+Haliaeetus albicilla 
+Melozone kieneri 
+Acanthidops bairdii 
+Trichopodus trichopterus 
+Poecile montanus sachalinensis 
+Latimeria chalumnae 
+Mesitornis unicolor 
+Aptenodytes forsteri 
+Aptenodytes forsteri 
+Saltator aurantiirostris 
+Larvivora ruficeps 
+Aegithalos caudatus 
+Callorhinchus milii 
+Nesospiza acunhae 
+Callorhinchus milii 
+Callorhinchus milii 
+Protopterus annectens 
+Protopterus annectens 
+Pygocentrus nattereri 
+Epinephelus bruneus 
+Callorhinchus milii 
+Cinnyris ursulae 
+Callorhinchus milii 
+Callorhinchus milii 
+Saltator atriceps 
+Callorhinchus milii 
+Piezorhina cinerea 
+Mesitornis unicolor 
+Eucometis penicillata 
+Latimeria chalumnae 
+Pipraeidea bonariensis 
+Phrynocephalus erythrurus 
+Tachyphonus delatrii 
+Tangara cyanocephala 
+Aegithalos fuliginosus 
+Poeciliopsis prolifica 
+Salmo salar 
+Heterospingus xanthopygius 
+Corvus brachyrhynchos 
+Diuca speculifera 
+Struthio camelus australis 
+Conirostrum margaritae 
+Hemispingus atropileus 
+Criniger chloronotus 
+Sericossypha albocristata 
+Conirostrum ferrugineiventre 
+Pygocentrus nattereri 
+Protopterus annectens 
+Protopterus annectens 
+Protopterus annectens 
+Protopterus annectens 
+Chionodraco hamatus 
+Spinus uropygialis 
+Thunnus maccoyii 
+Seriola quinqueradiata 
+Chlorochrysa calliparaea 
+Dolloidraco longedorsalis 
+Protopterus annectens 
+Ammomanes deserti annae 
+Protopterus annectens 
+Phrygilus erythronotus 
+Apaloderma vittatum 
+Copsychus saularis 
+Phaethon lepturus 
+Chaenocephalus aceratus 
+Nothobranchius kuhntae 
+Cisticola carruthersi 
+Scophthalmus maximus 
+Leptosomus discolor 
+Chaenocephalus aceratus 
+Poospiza torquata 
+Creurgops verticalis 
+Nothobranchius kuhntae 
+Melozone aberti 
+Dipodomys ordii 
+Neotoma lepida 
+Heterocephalus glaber 
+Eospalax fontanierii baileyi 
+Eospalax fontanierii baileyi 
+Eospalax fontanierii baileyi 
+Heterocephalus glaber 
+Heterocephalus glaber 
+Mus musculus 
+Mus musculus 
+Mus musculus 
+Fukomys damarensis 
+Mus musculus 
+Namao virus 
+Spinus magellanicus 
+Spinus dominicensis 
+Spinus magellanicus 
+Scepomycter winifredae 
+Spinus magellanicus 
+Mesocricetus auratus 
+Microtus oeconomus 
+Cricetulus griseus 
+Microtus oeconomus 
+Nannospalax galili 
+Microtus oeconomus 
+Nannospalax galili 
+Ictidomys tridecemlineatus 
+Etheostoma flabellare 
+Merops nubicus 
+Etheostoma fragi 
+Poecile palustris 
+Poecile palustris 
+Etheostoma uniporum 
+Seriola dumerili 
+Etheostoma burri 
+Rissa tridactyla 
+Gadus morhua 
+Criniger chloronotus 
+Alcedo cyanopectus 
+Iconisemion striatum 
+Geospiza fuliginosa 
+Melaniparus afer 
+Criniger ndussumensis 
+Brachyhypopomus gauderio 
+Bunocephalus coracoideus 
+Paroaria gularis 
+Poecile rufescens 
+Criniger barbatus 
+Geospiza fortis 
+Geospiza pauper 
+Podiceps cristatus 
+Melanoptila glabrirostris 
+Cyprinus carpio 
+Ptychobarbus dipogon 
+Cyprinus carpio 
+Rhamphichthys marmoratus 
+Mimus polyglottos 
+Cyprinus carpio 
+Prunella modularis 
+Neothraupis fasciata 
+Gadus morhua 
+Taeniopygia guttata 
+Geospiza scandens 
+Nothobranchius rachovii 
+Poecile weigoldicus 
+Kittacincla malabarica 
+Gubernatrix cristata 
+Cissopis leverianus 
+Prunella atrogularis huttoni 
+Dicaeum cruentatum 
+Spinus cucullatus 
+Etheostoma blennioides 
+Haplospiza rustica 
+Amazona aestiva 
+Egretta garzetta 
+Prunella atrogularis huttoni 
+Sericornis magnirostra 
+Euneornis campestris 
+Neospiza concolor 
+Iridophanes pulcherrimus 
+Neospiza concolor 
+Cryodraco antarcticus 
+Cyanomitra olivacea 
+Phyllanthus atripennis 
+Cinclocerthia ruficauda 
+Anolis carolinensis 
+Poecilia latipinna 
+Incaspiza pulchra 
+Cinclocerthia ruficauda 
+Rowettia goughensis 
+Oreomanes fraseri 
+Cathartes aura 
+Poecile montanus kamtschatkensis 
+Poecile montanus rhenanus 
+Geospiza difficilis septentrionalis 
+Certhidea olivacea 
+Embernagra platensis 
+Polystictus pectoralis 
+Cercotrichas leucosticta 
+Cardinalis cardinalis 
+Pipraeidea melanonota 
+Lanius collaris collaris 
+Poecile palustris brevirostris 
+Perca flavescens 
+Delothraupis castaneoventris 
+Acanthisitta chloris 
+Acanthisitta chloris 
+Toxostoma crissale 
+Melanodera xanthogramma 
+Melozone leucotis nigrior 
+Nemosia pileata 
+Etheostoma camurum 
+Etheostoma uniporum 
+Conothraupis speculigera 
+Dryobates pubescens 
+Oreochromis niloticus 
+Saltator striatipectus 
+Chionobathyscus dewitti 
+Chalcomitra senegalensis 
+Spinus cucullatus 
+Cathartes aura 
+Tetraodon nigroviridis 
+Oryzoborus crassirostris 
+Pagrus major 
+Siganus canaliculatus 
+Danio rerio 
+Saltator maximus 
+Rattus norvegicus 
+Calyptogena kaikoi 
+Calyptogena kaikoi 
+Arenicola marina 
+Trichinella pseudospiralis 
+Trichinella pseudospiralis 
+Ophelia bicornis 
+Trichinella britovi 
+Trichuris trichiura 
+Calyptogena nautilei 
+Calyptogena nautilei 
+Trichuris trichiura 
+Lingula unguis 
+Trichinella zimbabwensis 
+Trichinella zimbabwensis 
+Lingula unguis 
+Lingula unguis 
+Paramphistomum epiclitum 
+Trichinella sp. T9 
+Orchesella cincta 
+Trichinella sp. T6 
+Biomphalaria straminea 
+Atta cephalotes 
+Calyptogena soyoae 
+Toxocara canis 
+Stegodyphus mimosarum 
+Toxocara canis 
+Zeugodacus cucurbitae 
+Calyptogena soyoae 
+Tegula pfeifferi 
+Trichinella papuae 
+Trichinella papuae 
+Trichinella sp. T8 
+Biomphalaria tenagophila 
+Trichinella spiralis 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Haliotis discus 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Schistosoma mansoni 
+Opisthorchis viverrini 
+Aplysia juliana 
+Trichinella patagoniensis 
+Heligmosomoides polygyrus bakeri 
+Opisthorchis viverrini 
+Biomphalaria glabrata 
+Paragonimus westermani 
+Biomphalaria glabrata 
+Paragonimus westermani 
+Biomphalaria glabrata 
+Schistosoma haematobium 
+Perkinsus marinus (strain ATCC 50983 / TXsc) 
+Perkinsus marinus (strain ATCC 50983 / TXsc) 
+Perkinsus marinus (strain ATCC 50983 / TXsc) 
+Perkinsus marinus (strain ATCC 50983 / TXsc) 
+Perkinsus marinus (strain ATCC 50983 / TXsc) 
+Perkinsus marinus (strain ATCC 50983 / TXsc) 
+Arion vulgaris 
+Acromyrmex echinatior 
+Schizothorax labiatus 
+Dubusia taeniata 
+Colinus virginianus 
+Scleropages jardinii 
+Lanius senator niloticus 
+Hemitripterus americanus 
+Dacodraco hunteri 
+Hesperiphona vespertina 
+Dissostichus eleginoides 
+Poecile montanus affinis 
+Gavia stellata 
+Saltator coerulescens 
+Fulmarus glacialis 
+Takifugu rubripes 
+Melanotis caerulescens 
+Tauraco erythrolophus 
+Tersina viridis 
+Etheostoma punctulatum 
+Clarias batrachus 
+Melopyrrha nigra 
+Cyanicterus cyanicterus 
+Loxipasser anoxanthus 
+Poospiza melanoleuca 
+Anas platyrhynchos 
+Hemithraupis flavicollis 
+Opisthocomus hoazin 
+Opisthocomus hoazin 
+Colinus virginianus 
+Anairetes flavirostris huancabambae 
+Scleropages formosus 
+Scleropages formosus 
+Scleropages formosus 
+Spinus barbatus 
+Scleropages formosus 
+Pelodiscus sinensis 
+Margarops fuscatus 
+Etheostoma cinereum 
+Poospiza hypochondria 
+Ictalurus punctatus 
+Ictalurus punctatus 
+Micrurus spixii 
+Gymnodraco acuticeps 
+Etheostoma cf. spectabile TJN-2011e 
+Phalacrocorax carbo 
+Neopagetopsis ionah 
+Cinnyris reichenowi 
+Phrygilus dorsalis 
+Camaroptera brevicaudata 
+Balearica regulorum gibbericeps 
+Channa striata 
+Percina aurantiaca 
+Saltator cinctus 
+Anairetes parulus patagonicus 
+Platypharodon extremus 
+Iguana iguana 
+Chlorophanes spiza 
+Anas platyrhynchos 
+Paroaria coronata 
+Parachaenichthys charcoti 
+Pyrrhocoma ruficeps 
+Pezopetes capitalis 
+Trachurus japonicus 
+Microspingus alticola 
+Aramides ypecaha 
+Pagetopsis macropterus 
+Pantodon buchholzi 
+Rhea pennata 
+Phyllastrephus albigularis 
+Anairetes flavirostris flavirostris 
+Cinnyris venustus 
+Etheostoma burri 
+Coryphaspiza melanotis 
+Passerina ciris 
+Tenualosa ilisha 
+Pellorneum capistratum 
+Poospiza cabanisi 
+Cuculus canorus 
+Cuculus canorus 
+Amatitlania nigrofasciata 
+Lioparus chrysotis 
+Chrysothlypis chrysomelas 
+Spinus tristis 
+Thlypopsis ornata 
+Anairetes agraphia agraphia 
+Mecocerculus leucophrys 
+Callipepla squamata 
+Sander vitreus 
+Callipepla squamata 
+Emberizoides herbicola 
+Sporophila albogularis 
+Tinamus guttatus 
+Geospiza difficilis 
+Alligator mississippiensis 
+Cypsnagra hirundinacea 
+Poecile montanus 
+Poospiza whitii 
+Schistochlamys melanopis 
+Carassius auratus 
+Chloebia gouldiae 
+Micrurus fulvius 
+Phrygilus gayi 
+Cercotrichas leucophrys 
+Manacus vitellinus 
+Pinaroloxias inornata 
+Poecile hypermelaenus 
+Culicivora caudacuta 
+Serilophus lunatus 
+Etheostoma radiosum 
+Piranga ludoviciana 
+Nipponia nippon 
+Loxigilla violacea 
+Etheostoma spectabile squamosum 
+Arizelocichla kakamegae 
+Phoenicopterus ruber ruber 
+Calypte anna 
+Cyanomitra verticalis 
+Manacus vitellinus 
+Poecile montanus salicarius 
+Paramormyrops kingsleyae 
+Steatogenys elegans 
+Poecile montanus baicalensis 
+Etheostoma uniporum 
+Pterocles gutturalis 
+Etheostoma uniporum 
+Chelonia mydas 
+Chelonia mydas 
+Etheostoma microperca 
+Hemispingus superciliaris 
+Catharacta maccormicki 
+Chelonia mydas 
+Racovitzia glacialis 
+Aimophila rufescens 
+Tangara preciosa 
+Ficedula albicollis 
+Poecile montanus montanus 
+Periophthalmus magnuspinnatus 
+Pterocles gutturalis 
+Passer montanus 
+Saltator similis 
+Passer montanus 
+Saltator nigriceps 
+Chloropsis hardwickii 
+Kieneria albicollis 
+Etheostoma vitreum 
+Tangara punctata 
+Paradoxornis webbianus 
+Gambusia affinis 
+Spinus psaltria 
+Passer montanus 
+Volatinia jacarina 
+Oreochromis mossambicus 
+Hemispingus rufosuperciliaris 
+Egretta garzetta 
+Incaspiza ortizi 
+Chitala chitala 
+Dryobates pubescens 
+Poecile montanus montanus 
+Gygis alba 
+Stegastes partitus 
+Phrygilus carbonarius 
+Phrynocephalus przewalskii 
+Colius striatus 
+Crithagra rufobrunnea 
+Lanio fulvus 
+Dumetella carolinensis 
+Gymnocephalus cernuus 
+Limosa lapponica baueri 
+Fundulus heteroclitus 
+Stephanophorus diadematus 
+Seriola lalandi dorsalis 
+Cinnyris bouvieri 
+Kittacincla stricklandii 
+Catamenia homochroa 
+Lonchura striata domestica 
+Xiphophorus maculatus 
+Toxostoma redivivum 
+Phalacrocorax carbo 
+Sicalis citrina 
+Crystallaria asprella 
+Hedydipna collaris 
+Catharacta skua 
+Urothraupis stolzmanni 
+Ramphocelus sanguinolentus 
+Schizopygopsis pylzovi 
+Lampetra planeri 
+Harpagifer antarcticus 
+Nipponia nippon 
+Etheostoma whipplei 
+Anairetes flavirostris arequipae 
+Cariama cristata 
+Fundulus heteroclitus 
+Fundulus heteroclitus 
+Poecile palustris 
+Phyllastrephus cerviniventris 
+Gnathonemus petersii 
+Fundulus heteroclitus 
+Chionodraco rastrospinosus 
+Xiphophorus couchianus 
+Manorina melanocephala 
+Tachyphonus cristatus 
+Chanos chanos 
+Chanos chanos 
+Pseudocolopteryx sclateri 
+Ammocrypta pellucida 
+Cyanomitra oritis 
+Iridosornis analis 
+Eremomela gregalis 
+Paroaria capitata 
+Iguana iguana 
+Prunella collaris montana 
+Iguana iguana 
+Iguana iguana 
+Poecilia formosa 
+Percina roanoka 
+Aethopyga christinae 
+Tangara palmarum 
+Poecile palustris palustris 
+Tachyphonus coronatus 
+Platichthys flesus 
+Scleropages formosus 
+Oncorhynchus mykiss 
+Scleropages formosus 
+Bradypterus brunneus 
+Parkerthraustes humeralis 
+Poospiza hispaniolensis 
+Chlorornis riefferii 
+Hemispingus melanotis 
+Oryzias melastigma 
+Eopsaltria australis 
+Xenospingus concolor 
+Mimus gundlachii 
+Cryodraco atkinsoni 
+Kittacincla luzoniensis 
+Champsocephalus esox 
+Patagioenas fasciata monilis 
+Patagioenas fasciata monilis 
+Phrygilus fruticeti 
+Pagetopsis macropterus 
+Oryzias melastigma 
+Etheostoma luteovinctum 
+Campylomormyrus compressirostris 
+Saltator grossus 
+Porphyrospiza caerulescens 
+Oreochromis niloticus 
+Idiopsar brachyurus 
+Saltator atricollis 
+Notothenia coriiceps 
+Hemispingus verticalis 
+Prinia gracilis 
+Sphenoeacus afer 
+Stipiturus malachurus 
+Thalasseus sandvicensis acuflavidus 
+Laniarius aethiopicus 
+Spinus pinus 
+Ramphocinclus brachyurus 
+Argya squamiceps 
+Pundamilia nyererei 
+Chlorocichla flavicollis 
+Buceros rhinoceros silvestris 
+Dicaeum anthonyi 
+Anairetes flavirostris cuzcoensis 
+Prunella himalayana 
+Dissostichus eleginoides 
+Cercotrichas quadrivirgata 
+Baeolophus ridgwayi 
+Tiaris bicolor 
+Coereba flaveola 
+Tiaris bicolor 
+Diuca diuca 
+Cyanerpes cyaneus 
+Poecilia mexicana 
+Saltator rufiventris 
+Austrofundulus limnaeus 
+Carassius auratus 
+Camaroptera chloronota 
+Erpornis zantholeuca 
+Staphylococcus warneri 
+Staphylococcus warneri 
+Staphylococcus warneri 
+Pseudomonas sp. K-9 
+Staphylococcus warneri 
+Talaromyces stipitatus (strain ATCC 10500 / CBS 375.48 / QM 6759 / NRRL 1006) 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Homo sapiens 
+Caenorhabditis sinica 
+Caenorhabditis sinica 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus equorum 
+cyanobacterium G8-9 
+Staphylococcus equorum 
+Staphylococcus equorum 
+Staphylococcus carnosus 
+Staphylococcus saprophyticus 
+Staphylococcus saprophyticus 
+Staphylococcus saprophyticus 
+Staphylococcus saprophyticus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Staphylococcus xylosus 
+Legionella quateirensis 

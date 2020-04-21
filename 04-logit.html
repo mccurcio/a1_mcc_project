@@ -370,10 +370,12 @@ summary {
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>For individuals who have studied biology or biochemistry, logistic regression may be familiar as dose-response curves<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, enzyme kinetic curves<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, median lethal dose curve (LD-50)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> or even an exponential growth curve, given a set of limited resources<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
-<p>However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that toggle between the logical values of zero or one.</p>
-<p>Logistic regression (Logit) derives its name from its similarity to linear regression, as we shall see below. The input or independent variable(s) for Logit, may be a matrix (<span class="math inline">\(X^{m ~x~ n}\)</span>) in the set of real numbers, (<span class="math inline">\(X ~ \in ~ \Re\)</span>). While, the output of a Logistic Regression is represented by {0, 1}. Therefore, the output of Logit is NOT IN the set of real numbers (<span class="math inline">\(Y ~ \notin ~ \Re\)</span>),</p>
+<p>However, in the context of predictive modeling, Logistic Regression is used as a binary classifier that toggles between the logical values of zero or one.</p>
+<p>Logistic regression (Logit) derives its name from its similarity to linear regression, even though in this case the formula does not produce a regression line but instead outputs a logical value, {0, 1}. Despite its name Logistic Regression is really a classifier, moving between two classes, zero and one, as we shall see below.</p>
+<p>“We have stated that linear regression is not appropriate in the case of a qualitative response.”</p>
+<p>The input or independent variable(s) for Logit, may be a matrix (<span class="math inline">\(X^{m ~x~ n}\)</span>) in the set of real numbers, (<span class="math inline">\(X ~ \in ~ \Re\)</span>). While, the output of a Logistic Regression is represented by {0, 1}. Therefore, the output of Logit is NOT IN the set of real numbers, (<span class="math inline">\(Y ~ \notin ~ \Re\)</span>).</p>
 <p><span class="math display">\[\begin{equation}
-f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ x &lt; 0 \\ 1 ~~for~~ x \geq 0 \end{matrix} \right. ~~~where ~~x ~\in ~\Re
+f(x) = ~~ \left \{ \begin{matrix} 0 ~~for~~ X &lt; 0 \\ 1 ~~for~~ X \geq 0 \end{matrix} \right. ~~~where ~~X ~\in ~\Re
 \end{equation}\]</span></p>
 <p>Using Logistic Regression, we may calculate the presence or absence of a product or quality that we wish to model given a difficult situation where the transition is not clear.</p>
 <p>In the figure below, the function’s domain, <span class="math inline">\(X \in \{-\infty\)</span> to <span class="math inline">\(\infty\}\)</span>, whereby its range is {0, 1}. In the figure, the <em>decision boundary</em> is <span class="math inline">\(x ~=\)</span> 0, denoted by the <em>red dotted line</em>. At the inflection point the curves range changes from <em>zero</em>, absence, to <em>one</em>, the presence of quality or item.</p>
@@ -390,7 +392,10 @@ f(x) ~=~ \frac{1}{1 + e^{-(WX+b)}}
 <p>Since the logistic equation is exponential, it is easier to work with the formula in terms of its odds or <em>log-odds</em>. Odds are the probabilities of success over failure denoted as <span class="math inline">\(\Large \frac{p}{1-p}\)</span> and more importantly, in this situation, log-odds are <span class="math inline">\(ln \left (\frac{p}{1-p} \right )\)</span>.</p>
 <p>Simply by using log-odds, logistic regression may be more easily expressed as a set of linear equations in x.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Hence we can now go from linear regression to logistic regression.</p>
 <p>Step #1: <span class="math display">\[\begin{equation}
-ln ~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right ) =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}
+Odds ~=~ \frac{Probability ~of ~Success}{Probability ~of ~Failure} ~=~ \frac{p}{1-p} ~=~ \left ( \frac{Pr(y_i ~=~ 1|x_i)}{Pr(y_i ~=~ 0|x_i)} \right )
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+ =~ \beta_0 + \beta_1 x_1 +~ ... ~+ \beta_{n} x_{n}
 \end{equation}\]</span></p>
 <p>Step #2: Substitute (<span class="math inline">\(p\)</span> for <span class="math inline">\(Pr(y_i ~=~ 1|x_i)\)</span>) and (<span class="math inline">\(1-p\)</span> for <span class="math inline">\(Pr(y_i ~=~ 0|x_i)\)</span>) and change notation to summation on the right hand side;</p>
 <p><span class="math display">\[\begin{equation}
@@ -408,23 +413,6 @@ ln \left( \frac {p}{1-p} \right) =~ \sum_i^{k} \beta_i x_i
 <p><span class="math display">\[\begin{equation}
 p(u) ~=~ \frac{e^u}{1 + e^u}
 \end{equation}\]</span></p>
-<p>Step #6: Incidentally, to find the probabilities, take the derivative of both sides using quotient rule;</p>
-<p><span class="math display">\[\begin{equation}
-p'(u) ~=~ \frac {(e^u)(1 + e^u) - (e^u)(e^u)}{(1 + e^u)^2}
-\end{equation}\]</span></p>
-<p>Step #7: Simplify;</p>
-<p><span class="math display">\[\begin{equation}
-p'(u) ~=~ \frac {e^u}{(1 + e^u)^2}
-\end{equation}\]</span></p>
-<p>Step #8: Separate out to produce two fractions;</p>
-<p><span class="math display">\[\begin{equation}
-p'(u) ~=~ \left ( \frac {e^u}{1 + e^u} \right ) \cdot \left ( \frac{1}{1 + e^u} \right )
-\end{equation}\]</span></p>
-<p>Step #9: Substitute our previous success and failure variables back into place;</p>
-<p><span class="math display">\[\begin{equation}
-p'(u) ~=~ p(u) \cdot ( 1 - p(u))
-\end{equation}\]</span></p>
-<p>Now we can calculate the probabilities as well as the values for any given x value.</p>
 <hr />
 </div>
 <div id="logit-conclusion" class="section level2">
