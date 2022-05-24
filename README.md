@@ -1,7 +1,6 @@
 # a1_mcc_project
-M Curcio / Korkin / WPI project
+M Curcio 
 
-This is the Masters thesis of Matt Curcio.
 
 This folder contains original data, R scripts (.rmd) and output files (.html) used for this machine learning investigation. The investigation is to investigate different ML techniques and determine if they discriminate between two classes of proteins, myoglobin and non-myoglobin proteins. The investigation includes a comparison of PCA "outliers" versus 6 ML model False-Negative/False-Positives groupings. ML models include; PCA, Logit, NN-AE, SVM.
 
